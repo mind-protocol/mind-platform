@@ -323,6 +323,22 @@ mechanism:
     - {step 2}
   data_required: {data sources}  # observable via docks
   failure_mode: {what failure means}  # observable outcome
+
+  # When problem detected, create task_run
+  on_problem:
+    problem_id: PROBLEM_{name}  # from VOCABULARY
+    creates: task_run
+    links:
+      - type: OF
+        to: "{problem.resolves_with}"  # TASK template
+      - type: TARGET
+        to: "{affected_node}"  # what needs fixing
+      - type: ABOUT
+        to: "{problem_id}"  # the problem detected
+    properties:
+      status: pending
+      priority: "{problem.severity}"
+      created_by: "{indicator_name}"
 ```
 
 How to fill:
@@ -330,6 +346,7 @@ How to fill:
 - steps must be deterministic and minimal.
 - data_required must be observable via docks.
 - failure_mode must be observable (not speculative).
+- on_problem.problem_id must exist in VOCABULARY.
 
 ### INDICATOR
 

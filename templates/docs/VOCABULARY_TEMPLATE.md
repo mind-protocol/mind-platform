@@ -142,6 +142,54 @@ Actors execute tasks. Template describes capabilities, instance does the work.
 
 ---
 
+## PROBLEMS
+
+Problems define abnormal situations that HEALTH detects and tasks resolve.
+
+| Layer | Node | Where |
+|-------|------|-------|
+| Definition | Here (VOCABULARY) | QUOI: name, definition, severity |
+| Detection | HEALTH | COMMENT: triggers, docks, mechanism |
+| Resolution | task_run | Links to resolves_with task |
+
+### {problem_id}
+
+```yaml
+id: PROBLEM_{UPPER_SNAKE_CASE}
+definition: |
+  {Clear description of the abnormal situation}
+
+severity: critical | warning | info
+  # critical = blocks work, must fix immediately
+  # warning = degraded state, should fix soon
+  # info = notable condition, fix when convenient
+
+resolves_with: TASK_{task_name}
+  # Task template that fixes this problem
+
+detection_hint: |
+  {Brief hint for HEALTH on how to detect this}
+  # Full detection logic goes in HEALTH.md
+```
+
+**Example:**
+
+```yaml
+id: PROBLEM_MISSING_DOC
+definition: |
+  A doc expected in the chain is absent.
+  Chain incomplete = understanding blocked.
+
+severity: critical
+
+resolves_with: TASK_create_doc
+
+detection_hint: |
+  Compare docs_found vs docs_expected from chain template.
+```
+
+---
+
 ## TERMINOLOGY PROPOSALS
 
 | Propose | Instead Of | Reason |
