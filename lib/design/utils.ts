@@ -1,4 +1,4 @@
-import { colors, type Layer, type NodeType, type VerificationState } from './tokens';
+import { colors, type Layer, type NodeType, type VerificationState } from './theme';
 
 /**
  * Add alpha channel to hex color

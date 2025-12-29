@@ -1,4 +1,4 @@
-import { colors } from '@/lib/design/tokens';
+import { colors } from '@/lib/design';
 import { LayerCard } from './LayerCard';
 
 const LAYERS = [

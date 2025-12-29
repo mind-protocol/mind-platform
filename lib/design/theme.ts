@@ -1,6 +1,7 @@
 // =============================================================================
-// DESIGN TOKENS — Mind Protocol Design Language
+// DESIGN THEME — Mind Protocol Design Language
 // =============================================================================
+// Note: "tokens" reserved for $MIND token (Solana)
 
 // Color primitives (Zinc scale for neutrals)
 const zinc = {

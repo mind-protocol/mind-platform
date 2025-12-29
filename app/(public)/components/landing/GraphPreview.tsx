@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { colors } from '@/lib/design/tokens';
+import { colors } from '@/lib/design';
 
 interface Node {
   x: number;

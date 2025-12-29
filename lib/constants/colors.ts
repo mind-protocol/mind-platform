@@ -1,5 +1,5 @@
-// Re-export from design tokens for backwards compatibility
-import { colors } from '@/lib/design/tokens';
+// Re-export from design theme for backwards compatibility
+import { colors } from '@/lib/design/theme';
 
 export const LAYER_COLORS = colors.layer;
 export const NODE_TYPE_COLORS = colors.nodeType;

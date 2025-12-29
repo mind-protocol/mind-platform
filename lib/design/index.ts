@@ -9,7 +9,7 @@ export {
   type Layer,
   type NodeType,
   type VerificationState,
-} from './tokens';
+} from './theme';
 
 export {
   alpha,
