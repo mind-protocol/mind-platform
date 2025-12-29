@@ -148,8 +148,8 @@ Problems define abnormal situations that HEALTH detects and tasks resolve.
 
 | Layer | Node | Where |
 |-------|------|-------|
-| Definition | Here (VOCABULARY) | QUOI: name, definition, severity |
-| Detection | HEALTH | COMMENT: triggers, docks, mechanism |
+| Definition | Here (VOCABULARY) | WHAT: name, definition, severity |
+| Detection | HEALTH | HOW: triggers, docks, mechanism |
 | Resolution | task_run | Links to resolves_with task |
 
 ### {problem_id}
