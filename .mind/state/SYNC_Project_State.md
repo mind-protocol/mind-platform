@@ -37,12 +37,12 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 - **Owner:** agent
 - **Context:** Hero, HowItWorks (4-layer cards), WhatYouCanDo, LiveStats sections. Uses design tokens.
 
-### Design Tokens (Complete)
+### Design Theme (Complete)
 
 - **Area:** `lib/design/`
 - **Status:** implemented
 - **Owner:** agent
-- **Context:** tokens.ts (colors, typography, spacing), utils.ts (color utilities), index.ts (unified export). Legacy compat: lib/constants/colors.ts.
+- **Context:** theme.ts (colors, typography, spacing), utils.ts (color utilities), index.ts (unified export). "Tokens" name reserved for $MIND Solana token.
 
 ### Next: Navigation + Footer
 
@@ -55,12 +55,33 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 
 ## RECENT CHANGES
 
-### 2025-12-29: Implemented Landing Page + Design Tokens
+### 2025-12-29: Updated Doc Templates with Nature Vocabulary
 
-- **What:** Created design token system (lib/design/) and landing page components (Hero, HowItWorks, WhatYouCanDo, LiveStats).
-- **Why:** Landing page is P0. Design tokens provide consistent styling.
-- **Impact:** / route now shows full landing page. Design tokens ready for use across modules.
-- **Files:** lib/design/tokens.ts, lib/design/utils.ts, app/(public)/components/landing/*.tsx, app/api/stats/route.ts
+- **What:** Fixed VOCABULARY_TEMPLATE and HEALTH_TEMPLATE to use proper link `nature` vocabulary instead of custom link types.
+- **Why:** Schema has single `link` type with semantics in `nature` field. Templates were using `[OF]`, `[TARGET]` notation which doesn't exist.
+- **Impact:** Templates now use `serves`, `concerns` nature verbs. HEALTH on_problem creates proper narrative nodes with links.
+- **Files:** templates/docs/VOCABULARY_TEMPLATE.md, templates/docs/HEALTH_TEMPLATE.md, .mind/docs/*.md
+
+### 2025-12-29: Membrane Procedures for Registry
+
+- **What:** Created membrane procedures (`registry_list_citizens.yaml`, `registry_list_orgs.yaml`) and deleted REST API routes.
+- **Why:** User directive: "pas de calls api, que membrane". Data access through MCP procedures only.
+- **Impact:** Registry fetches data via membrane procedures, not HTTP API.
+- **Files:** .mind/procedures/registry_*.yaml, deleted app/api/registry/
+
+### 2025-12-29: Documented L4 Registry Rules (P1-P9)
+
+- **What:** Created PATTERNS_Registry_Rules.md documenting the 9 foundational registry rules.
+- **Why:** Registry architecture principles need to be explicit and traceable.
+- **Impact:** P1-P9 rules documented: registry=existence, JWT verification, hash routing, membrane only, etc.
+- **Files:** docs/registry/PATTERNS_Registry_Rules.md
+
+### 2025-12-29: Implemented Landing Page + Design Theme
+
+- **What:** Created design theme system (lib/design/theme.ts) and landing page components (Hero, HowItWorks, WhatYouCanDo, LiveStats).
+- **Why:** Landing page is P0. Design theme provides consistent styling. "Tokens" name reserved for $MIND.
+- **Impact:** / route now shows full landing page. Design theme ready for use across modules.
+- **Files:** lib/design/theme.ts, lib/design/utils.ts, app/(public)/components/landing/*.tsx
 
 ### 2025-12-29: Restructured Templates Directory
 
@@ -142,16 +163,16 @@ Connectome frontend builds and runs. System Map visualization removed per your r
 
 ### Immediate (This Sprint)
 
-- [x] Create `lib/design/` design tokens
+- [x] Create `lib/design/` design theme
 - [x] Implement landing page (P0)
-- [ ] Create TopNav component
-- [ ] Create Footer component
-- [ ] Load Inter + JetBrains Mono fonts
+- [x] Create TopNav component
+- [x] Create Footer component
+- [x] Load Inter + JetBrains Mono fonts
+- [x] Create membrane procedures for registry
 
 ### High Priority
 
-- [ ] Implement `/api/registry/*` routes
-- [ ] Implement registry UI components
+- [ ] Implement registry UI with membrane procedures
 - [ ] Create `docs/auth/` doc chain
 - [ ] Test end-to-end with running FalkorDB database
 
