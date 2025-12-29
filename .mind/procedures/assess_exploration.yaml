@@ -1,0 +1,241 @@
+# Protocol: Assess Exploration Quality
+# Diagnose suboptimal SubEntity exploration and propose improvements
+#
+# SKILL: templates/mind/skills/SKILL_Assess_SubEntity_Exploration_Quality_From_Logs.md
+# HEALTH: docs/physics/subentity/HEALTH_SubEntity.md
+
+name: assess_exploration
+version: "1.0"
+purpose: |
+  Diagnose suboptimal exploration outcomes by tracing symptoms through
+  the 5-layer diagnostic model (Output → Behaviors → Physics → Protocol → Skill)
+  to identify root causes and propose improvements.
+
+# =============================================================================
+# TRIGGERS
+# =============================================================================
+
+triggers:
+  - condition: exploration_health_check_error
+    description: Health checker returned ERROR status
+    auto_invoke: true
+
+  - condition: exploration_health_check_warn
+    description: Health checker returned WARNING status
+    auto_invoke: false  # Manual review
+
+  - condition: actor_reports_problem
+    description: Actor explicitly reports wrong/incomplete answer
+    auto_invoke: true
+
+  - condition: manual_investigation
+    description: Human requests exploration analysis
+    auto_invoke: false
+
+# =============================================================================
+# INPUTS
+# =============================================================================
+
+inputs:
+  required:
+    - name: exploration_id
+      type: string
+      description: Exploration ID to analyze
+
+  optional:
+    - name: symptom
+      type: string
+      description: What went wrong (from actor or human)
+      default: ""
+
+    - name: expected_outcome
+      type: string
+      description: What should have happened
+      default: ""
+
+    - name: actor_context
+      type: string
+      description: What the actor was trying to do
+      default: ""
+
+# =============================================================================
+# STEPS
+# =============================================================================
+
+steps:
+  # Step 1: Generate diagnostic report
+  - id: generate_report
+    action: run_command
+    command: |
+      python -m engine.physics.health.diagnostic_report_generator {exploration_id}
+    outputs:
+      - report_path: engine/data/logs/traversal/diagnostic_{exploration_id}.md
+
+  # Step 2: Load context
+  - id: load_context
+    action: read_files
+    files:
+      - path: "{report_path}"
+        as: diagnostic_report
+      - path: engine/data/logs/traversal/traversal_{exploration_id}.jsonl
+        as: traversal_log
+      - path: templates/mind/skills/SKILL_Assess_SubEntity_Exploration_Quality_From_Logs.md
+        as: diagnostic_skill
+
+  # Step 3: LLM analysis using skill
+  - id: analyze_with_skill
+    action: llm_invoke
+    skill: mind.assess_subentity_exploration
+    prompt: |
+      You are diagnosing a suboptimal SubEntity exploration.
+
+      ## Diagnostic Report
+      {diagnostic_report}
+
+      ## Symptom (if provided)
+      {symptom}
+
+      ## Expected Outcome (if provided)
+      {expected_outcome}
+
+      ## Actor Context (if provided)
+      {actor_context}
+
+      ## Your Task
+
+      Using the 5-layer diagnostic model from the skill:
+
+      1. **Layer 1 (Output):** Was the output wrong? Did relevant narratives exist?
+
+      2. **Layer 2 (Behaviors):** Did the state machine behave correctly?
+         Check state transitions, branching, merging, termination.
+
+      3. **Layer 3 (Physics):** Were scores appropriate?
+         Check semantic alignment, polarity, novelty, divergence, energy injection.
+
+      4. **Layer 4 (Protocol):** Was the exploration configured correctly?
+         Check query, intention, intention_type, origin selection.
+
+      5. **Layer 5 (Skill):** Should exploration have been used at all?
+         Was this the right tool for the actor's task?
+
+      For each layer, provide:
+      - Observation (what you see)
+      - Assessment (is this layer the problem?)
+      - Evidence (specific log references)
+
+      Then identify:
+      - Root cause (which layer, which mechanism)
+      - Proposed improvements (specific, actionable)
+      - Follow-up actions (who should do what)
+
+    outputs:
+      - diagnosis: Full layer-by-layer analysis
+      - root_cause: {layer, mechanism, evidence}
+      - improvements: List of proposed changes
+      - follow_up_actions: List of next steps
+
+  # Step 4: Save diagnosis
+  - id: save_diagnosis
+    action: write_file
+    path: engine/data/logs/traversal/diagnosis_{exploration_id}.md
+    content: |
+      # Diagnosis: {exploration_id}
+
+      **Generated:** {timestamp}
+      **Root Cause Layer:** {root_cause.layer}
+
+      ## Analysis
+
+      {diagnosis}
+
+      ## Root Cause
+
+      - **Layer:** {root_cause.layer}
+      - **Mechanism:** {root_cause.mechanism}
+      - **Evidence:** {root_cause.evidence}
+
+      ## Proposed Improvements
+
+      {improvements}
+
+      ## Follow-up Actions
+
+      {follow_up_actions}
+
+# =============================================================================
+# OUTPUTS
+# =============================================================================
+
+outputs:
+  files:
+    - path: engine/data/logs/traversal/diagnostic_{exploration_id}.md
+      description: Structured diagnostic report (metrics + context)
+
+    - path: engine/data/logs/traversal/diagnosis_{exploration_id}.md
+      description: LLM diagnosis with root cause and improvements
+
+  data:
+    - name: root_cause
+      type: object
+      properties:
+        layer: int (1-5)
+        mechanism: string
+        evidence: string
+
+    - name: improvements
+      type: list
+      items:
+        layer: int
+        change: string
+        rationale: string
+        validation: string
+
+    - name: follow_up_actions
+      type: list
+      items:
+        action: string
+        owner: string (agent_id or "human")
+
+# =============================================================================
+# GATES
+# =============================================================================
+
+gates:
+  diagnosis_quality:
+    - Root cause identified with evidence (not speculation)
+    - Layer correctly attributed
+    - Evidence traceable to log lines
+
+  improvement_quality:
+    - Each improvement addresses identified cause
+    - Changes are specific (not "make it better")
+    - Layer of change matches layer of cause
+
+# =============================================================================
+# ESCALATION
+# =============================================================================
+
+escalation:
+  conditions:
+    - All 5 layers checked with no clear cause
+    - Evidence contradictory
+    - Multiple plausible root causes
+
+  action: |
+    Create @mind:escalation with:
+    - Full analysis performed
+    - Hypotheses considered
+    - Why diagnosis is inconclusive
+    - Recommended next steps (more data, human review, etc.)
+
+# =============================================================================
+# REFERENCES
+# =============================================================================
+
+references:
+  skill: templates/mind/skills/SKILL_Assess_SubEntity_Exploration_Quality_From_Logs.md
+  health_doc: docs/physics/subentity/HEALTH_SubEntity.md
+  behaviors: docs/physics/subentity/BEHAVIORS_SubEntity.md
+  algorithm: docs/physics/subentity/ALGORITHM_SubEntity.md
+  validation: docs/physics/subentity/VALIDATION_SubEntity.md

@@ -1,0 +1,128 @@
+# Link Nature Vocabulary
+#
+# When creating or updating a link, describe its nature using this vocabulary.
+# The nature determines the link's physics: how energy flows, how permanent
+# the relationship is, and what emotions color it.
+#
+# Format: [pre_modifier] + verb + [, post_modifier]
+#
+# Examples:
+#   "proves"
+#   "suddenly proves"
+#   "suddenly proves, with admiration"
+#   "perhaps contradicts, with sadness"
+#   "definitely believes in"
+
+# =============================================================================
+# VERBS
+# =============================================================================
+#
+# Choose the verb that best describes the relationship between the two nodes.
+
+base_verbs:
+  - encompasses
+  - contains
+  - elaborates
+  - exemplifies
+  - acts on
+  - influences
+  - interacts with
+  - receives from
+  - undergoes
+  - is linked to
+  - coexists with
+
+ownership_verbs:
+  - belongs to
+  - owns
+  - holds
+  - uses
+  - depends on
+  - serves
+
+evidential_verbs:
+  - proves
+  - refutes
+  - suggests
+  - questions
+  - evokes
+  - symbolizes
+  - confirms
+  - contradicts
+  - supports
+  - illustrates
+
+spatial_verbs:
+  - shelters
+  - welcomes
+  - imprisons
+  - protects
+  - isolates
+  - encloses
+  - exposes
+  - occupies
+  - inhabits
+  - flees
+  - dominates
+
+actor_verbs:
+  - expresses
+  - initiates
+  - believes in
+  - doubts
+  - created
+  - is defined by
+
+narrative_verbs:
+  - radically contradicts
+  - is in tension with
+  - is the mechanism of
+  - contextualizes
+
+# =============================================================================
+# PRE-MODIFIERS
+# =============================================================================
+#
+# Add before the verb to express certainty, surprise, or intensity.
+
+certainty:
+  - perhaps
+  - probably
+  - clearly
+  - definitely
+
+surprise:
+  - suddenly
+  - unexpectedly
+  - as expected
+  - inevitably
+
+intensity:
+  - intensely
+  - actively
+  - weakly
+  - barely
+
+# =============================================================================
+# POST-MODIFIERS
+# =============================================================================
+#
+# Add after the verb (with a comma) to express the emotional tone.
+
+anger_fear:
+  - with rage
+  - with hostility
+  - with apprehension
+  - with terror
+
+trust_disgust:
+  - with disgust
+  - with distrust
+  - with confidence
+  - with admiration
+
+joy_sadness:
+  - with despair
+  - with sadness
+  - with satisfaction
+  - with euphoria

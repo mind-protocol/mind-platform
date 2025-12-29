@@ -1,22 +1,22 @@
 # Repository Map: mind-platform/app
 
-*Generated: 2025-12-29 02:13*
+*Generated: 2025-12-29 03:12*
 
 ## Statistics
 
-- **Files:** 10
-- **Directories:** 21
-- **Total Size:** 62.7K
+- **Files:** 20
+- **Directories:** 24
+- **Total Size:** 76.3K
 - **Doc Files:** 0
-- **Code Files:** 10
-- **Areas:** 6 (docs/ subfolders)
+- **Code Files:** 20
+- **Areas:** 8 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
-- **DOCS Links:** 2 (0.2 avg per code file)
+- **DOCS Links:** 3 (0.15 avg per code file)
 
 ### By Language
 
-- typescript: 7
-- tsx: 2
+- tsx: 11
+- typescript: 8
 - css: 1
 
 ## File Tree
@@ -31,17 +31,27 @@
 │   │   └── (..1 more files)
 │   └── wallet/ (61)
 │       └── (..1 more files)
-├── (public)/ (348)
+├── (public)/ (12.9K)
+│   ├── components/ (12.2K)
+│   │   └── landing/ (12.2K)
+│   │       ├── ActionCard.tsx (652)
+│   │       ├── GraphPreview.tsx (3.4K)
+│   │       ├── Hero.tsx (1.5K)
+│   │       ├── HowItWorks.tsx (1.3K)
+│   │       ├── LayerCard.tsx (787)
+│   │       ├── LiveStats.tsx (839)
+│   │       ├── StatCounter.tsx (1.0K)
+│   │       └── WhatYouCanDo.tsx (2.7K)
 │   ├── docs/
+│   │   └── (..1 more files)
+│   ├── marketplace/ (66)
 │   │   └── (..1 more files)
 │   ├── registry/ (63)
 │   │   └── (..1 more files)
 │   ├── schema/ (61)
 │   │   └── (..1 more files)
-│   ├── templates/ (64)
-│   │   └── (..1 more files)
-│   └── (..1 more files)
-├── api/ (4.9K)
+│   └── page.tsx (531) →
+├── api/ (5.9K)
 │   ├── connectome/ (3.3K)
 │   │   ├── graph/ (903)
 │   │   │   └── route.ts (903)
@@ -51,8 +61,10 @@
 │   │   │   └── route.ts (1.2K)
 │   │   └── tick/ (429)
 │   │       └── (..1 more files)
-│   └── sse/ (1.6K)
-│       └── route.ts (1.6K)
+│   ├── sse/ (1.6K)
+│   │   └── route.ts (1.6K)
+│   └── stats/ (989)
+│       └── route.ts (989)
 └── connectome/ (58.5K)
     ├── components/ (35.3K)
     │   ├── connectome_page_shell_route_layout_and_control_surface.tsx (13.8K) →
@@ -66,6 +78,56 @@
 ```
 
 ## File Details
+
+### `(public)/components/landing/ActionCard.tsx`
+
+**Definitions:**
+- `ActionCard()`
+
+### `(public)/components/landing/GraphPreview.tsx`
+
+**Definitions:**
+- `GraphPreview()`
+- `resize()`
+- `animate()`
+- `generateNodes()`
+- `generateEdges()`
+- `updatePhysics()`
+- `draw()`
+
+### `(public)/components/landing/Hero.tsx`
+
+**Definitions:**
+- `Hero()`
+
+### `(public)/components/landing/HowItWorks.tsx`
+
+**Definitions:**
+- `HowItWorks()`
+
+### `(public)/components/landing/LayerCard.tsx`
+
+**Definitions:**
+- `LayerCard()`
+
+### `(public)/components/landing/LiveStats.tsx`
+
+**Definitions:**
+- `LiveStats()`
+
+### `(public)/components/landing/StatCounter.tsx`
+
+**Definitions:**
+- `StatCounter()`
+
+### `(public)/components/landing/WhatYouCanDo.tsx`
+
+**Definitions:**
+- `WhatYouCanDo()`
+
+### `(public)/page.tsx`
+
+**Docs:** `docs/landing/IMPLEMENTATION_Landing_Code.md`
 
 ### `api/connectome/graph/route.ts`
 
@@ -83,6 +145,11 @@
 - `GET()`
 
 ### `api/sse/route.ts`
+
+**Definitions:**
+- `GET()`
+
+### `api/stats/route.ts`
 
 **Definitions:**
 - `GET()`

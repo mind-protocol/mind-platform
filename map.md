@@ -1,23 +1,23 @@
 # Repository Map: mind-platform
 
-*Generated: 2025-12-29 02:13*
+*Generated: 2025-12-29 03:12*
 
-- **Files:** 145
-- **Directories:** 49
-- **Total Size:** 972.3K
-- **Doc Files:** 133
-- **Code Files:** 10
-- **Areas:** 6 (docs/ subfolders)
+- **Files:** 225
+- **Directories:** 73
+- **Total Size:** 1.4M
+- **Doc Files:** 200
+- **Code Files:** 22
+- **Areas:** 8 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
-- **DOCS Links:** 2 (0.2 avg per code file)
+- **DOCS Links:** 3 (0.14 avg per code file)
 
-- markdown: 133
-- typescript: 7
-- tsx: 2
+- markdown: 200
+- tsx: 11
+- typescript: 10
 - css: 1
 
 ```
-├── app/ (64.8K)
+├── app/ (78.3K)
 │   ├── (dashboard)/ (244)
 │   │   ├── citizen/ (62)
 │   │   │   └── (..1 more files)
@@ -27,17 +27,27 @@
 │   │   │   └── (..1 more files)
 │   │   └── wallet/ (61)
 │   │       └── (..1 more files)
-│   ├── (public)/ (348)
+│   ├── (public)/ (12.9K)
+│   │   ├── components/ (12.2K)
+│   │   │   └── landing/ (12.2K)
+│   │   │       ├── ActionCard.tsx (652)
+│   │   │       ├── GraphPreview.tsx (3.4K)
+│   │   │       ├── Hero.tsx (1.5K)
+│   │   │       ├── HowItWorks.tsx (1.3K)
+│   │   │       ├── LayerCard.tsx (787)
+│   │   │       ├── LiveStats.tsx (839)
+│   │   │       ├── StatCounter.tsx (1.0K)
+│   │   │       └── WhatYouCanDo.tsx (2.7K)
 │   │   ├── docs/
+│   │   │   └── (..1 more files)
+│   │   ├── marketplace/ (66)
 │   │   │   └── (..1 more files)
 │   │   ├── registry/ (63)
 │   │   │   └── (..1 more files)
 │   │   ├── schema/ (61)
 │   │   │   └── (..1 more files)
-│   │   ├── templates/ (64)
-│   │   │   └── (..1 more files)
-│   │   └── (..1 more files)
-│   ├── api/ (4.9K)
+│   │   └── page.tsx (531) →
+│   ├── api/ (5.9K)
 │   │   ├── connectome/ (3.3K)
 │   │   │   ├── graph/ (903)
 │   │   │   │   └── route.ts (903)
@@ -47,8 +57,10 @@
 │   │   │   │   └── route.ts (1.2K)
 │   │   │   └── tick/ (429)
 │   │   │       └── (..1 more files)
-│   │   └── sse/ (1.6K)
-│   │       └── route.ts (1.6K)
+│   │   ├── sse/ (1.6K)
+│   │   │   └── route.ts (1.6K)
+│   │   └── stats/ (989)
+│   │       └── route.ts (989)
 │   ├── connectome/ (58.5K)
 │   │   ├── components/ (35.3K)
 │   │   │   ├── connectome_page_shell_route_layout_and_control_surface.tsx (13.8K) →
@@ -60,7 +72,9 @@
 │   │   ├── connectome.css (6.3K)
 │   │   └── (..1 more files)
 │   └── (..2 more files)
-├── docs/ (801.8K)
+├── docs/ (930.2K)
+│   ├── concepts/ (9.5K)
+│   │   └── CONCEPT_AI_Human_Partnership.md (9.5K)
 │   ├── connectome/ (603.3K)
 │   │   ├── edge_kit/ (57.1K)
 │   │   │   ├── ALGORITHM_Connectome_Edge_Kit_Edge_Rendering_Pulse_Shine_And_Label_Placement_Rules.md (4.0K)
@@ -172,6 +186,11 @@
 │   │   │   ├── SYNC_Connectome_Telemetry_Adapter_Sync_Current_State.md (1.4K)
 │   │   │   └── VALIDATION_Connectome_Telemetry_Adapter_Invariants_For_No_Dropped_Events_And_Stable_Order.md (3.0K)
 │   │   └── VISUAL_STYLEGUIDE_Connectome.md (9.7K)
+│   ├── design-language/ (22.7K)
+│   │   ├── IMPLEMENTATION_Design_Tokens.md (8.6K)
+│   │   ├── OBJECTIVES_Design_Language_Goals.md (3.8K)
+│   │   ├── PATTERNS_Design_Language_System.md (7.4K)
+│   │   └── SYNC_Design_Language_State.md (2.9K)
 │   ├── frontend/ (21.1K)
 │   │   └── app_shell/ (21.1K)
 │   │       ├── BEHAVIORS_App_Shell.md (3.3K)
@@ -203,6 +222,10 @@
 │   │   ├── PATTERNS_Registry_Design.md (5.2K)
 │   │   ├── SYNC_Registry_State.md (3.7K)
 │   │   └── VALIDATION_Registry_Invariants.md (4.3K)
+│   ├── ux/ (15.3K)
+│   │   ├── OBJECTIVES_UX_Goals.md (4.6K)
+│   │   ├── PATTERNS_UX_Principles.md (7.9K)
+│   │   └── SYNC_UX_State.md (2.8K)
 │   ├── vision/ (57.0K)
 │   │   ├── ALGORITHM_Platform_Flows.md (5.6K)
 │   │   ├── BEHAVIORS_Platform_User_Experience.md (3.0K)
@@ -213,19 +236,140 @@
 │   │   ├── SYNC_Platform_Vision.md (5.6K)
 │   │   ├── VALIDATION_Platform_Invariants.md (5.5K)
 │   │   └── VOCABULARY_Platform_Terms.md (6.1K)
-│   └── ARCHITECTURE.md (4.6K)
+│   ├── ARCHITECTURE.md (4.6K)
+│   └── map.md (80.9K)
 ├── l3/
 │   ├── contributions/
 │   │   └── (..2 more files)
 │   └── federation/
 │       └── (..2 more files)
-├── lib/
+├── lib/ (6.2K)
+│   ├── constants/ (252)
+│   │   └── (..1 more files)
+│   ├── design/ (5.9K)
+│   │   ├── theme.ts (4.7K)
+│   │   ├── utils.ts (953)
+│   │   └── (..1 more files)
 │   └── (..1 more files)
+├── templates/ (267.8K)
+│   ├── agents/ (47.9K)
+│   │   ├── architect/ (4.9K)
+│   │   │   ├── AGENTS.md (1.1K)
+│   │   │   ├── CLAUDE.md (2.9K)
+│   │   │   └── GEMINI.md (944)
+│   │   ├── fixer/ (4.5K)
+│   │   │   ├── AGENTS.md (997)
+│   │   │   ├── CLAUDE.md (2.6K)
+│   │   │   └── GEMINI.md (858)
+│   │   ├── groundwork/ (4.6K)
+│   │   │   ├── AGENTS.md (1.0K)
+│   │   │   ├── CLAUDE.md (2.7K)
+│   │   │   └── GEMINI.md (890)
+│   │   ├── herald/ (4.8K)
+│   │   │   ├── AGENTS.md (1.1K)
+│   │   │   ├── CLAUDE.md (2.7K)
+│   │   │   └── GEMINI.md (910)
+│   │   ├── keeper/ (4.8K)
+│   │   │   ├── AGENTS.md (1.1K)
+│   │   │   ├── CLAUDE.md (2.8K)
+│   │   │   └── GEMINI.md (925)
+│   │   ├── scout/ (4.7K)
+│   │   │   ├── AGENTS.md (1.1K)
+│   │   │   ├── CLAUDE.md (2.7K)
+│   │   │   └── GEMINI.md (939)
+│   │   ├── steward/ (5.2K)
+│   │   │   ├── AGENTS.md (1.1K)
+│   │   │   ├── CLAUDE.md (3.0K)
+│   │   │   └── GEMINI.md (1.1K)
+│   │   ├── voice/ (4.6K)
+│   │   │   ├── AGENTS.md (1.0K)
+│   │   │   ├── CLAUDE.md (2.7K)
+│   │   │   └── GEMINI.md (868)
+│   │   ├── weaver/ (4.6K)
+│   │   │   ├── AGENTS.md (1.0K)
+│   │   │   ├── CLAUDE.md (2.7K)
+│   │   │   └── GEMINI.md (861)
+│   │   └── witness/ (5.2K)
+│   │       ├── AGENTS.md (1.2K)
+│   │       ├── CLAUDE.md (3.1K)
+│   │       └── GEMINI.md (980)
+│   ├── docs/ (48.6K)
+│   │   ├── ALGORITHM_TEMPLATE.md (2.7K)
+│   │   ├── BEHAVIORS_TEMPLATE.md (2.9K)
+│   │   ├── HEALTH_TEMPLATE.md (14.9K)
+│   │   ├── IMPLEMENTATION_TEMPLATE.md (8.8K)
+│   │   ├── MAPPING_TEMPLATE.md (2.7K)
+│   │   ├── PATTERNS_TEMPLATE.md (2.9K)
+│   │   ├── SYNC_TEMPLATE.md (3.1K)
+│   │   ├── TAXONOMY_TEMPLATE.md (1.7K)
+│   │   ├── VALIDATION_TEMPLATE.md (2.0K)
+│   │   ├── VOCABULARY_TEMPLATE.md (1.7K)
+│   │   └── (..4 more files)
+│   ├── mcp/ (7.4K)
+│   │   ├── CODEX_SYSTEM_ADDITION.md (3.2K)
+│   │   ├── GEMINI_SYSTEM_ADDITION.md (2.4K)
+│   │   ├── SYSTEM.md (1.3K)
+│   │   └── (..1 more files)
+│   ├── skills/ (123.3K)
+│   │   ├── SKILL_Add_Cluster_Dynamic_Creation.md (26.3K)
+│   │   ├── SKILL_Assess_SubEntity_Exploration_Quality_From_Logs.md (14.1K)
+│   │   ├── SKILL_Author_Procedures_Design_And_Structure.md (20.5K)
+│   │   ├── SKILL_Author_Skills_Structure_And_Quality.md (4.4K)
+│   │   ├── SKILL_Author_agents_cognitive_posture.md (9.1K)
+│   │   ├── SKILL_Create_Module_Documentation_Chain_From_Templates_And_Seed_Todos.md (3.4K)
+│   │   ├── SKILL_Define_And_Verify_Health_Signals_Mapped_To_Validation_Invariants.md (3.7K)
+│   │   ├── SKILL_Define_Module_Boundaries_Objectives_And_Scope.md (4.3K)
+│   │   ├── SKILL_Ingest_Docs_To_Graph_And_Archive.md (4.3K)
+│   │   ├── SKILL_Orchestrate_Feature_Integration_Pipeline_Orchestrator_And_Progress_Router.md (3.5K)
+│   │   └── (..11 more files)
+│   ├── state/ (6.9K)
+│   │   ├── SYNC_Project_State.md (6.8K)
+│   │   └── (..1 more files)
+│   ├── FRAMEWORK.md (21.7K)
+│   ├── PRINCIPLES.md (11.1K)
+│   └── mindignore (839)
 ├── .mindignore (838)
 ├── AGENTS.md (29.8K)
 ├── README.md (3.3K)
-└── tsconfig.tsbuildinfo (73.9K)
+├── map.md (69.5K)
+├── map_app.md (3.9K)
+└── tsconfig.tsbuildinfo (83.7K)
 ```
+
+**Definitions:**
+- `ActionCard()`
+
+**Definitions:**
+- `GraphPreview()`
+- `resize()`
+- `animate()`
+- `generateNodes()`
+- `generateEdges()`
+- `updatePhysics()`
+- `draw()`
+
+**Definitions:**
+- `Hero()`
+
+**Definitions:**
+- `HowItWorks()`
+
+**Definitions:**
+- `LayerCard()`
+
+**Definitions:**
+- `LiveStats()`
+
+**Definitions:**
+- `StatCounter()`
+
+**Definitions:**
+- `WhatYouCanDo()`
+
+**Docs:** `docs/landing/IMPLEMENTATION_Landing_Code.md`
+
+**Definitions:**
+- `GET()`
 
 **Definitions:**
 - `GET()`
@@ -305,6 +449,20 @@
 - `speedToMs()`
 - `extractFocusFromEvent()`
 - `extractExplanationFromEvent()`
+
+**Doc refs:**
+- `docs/ux/PATTERNS_UX_Principles.md`
+- `docs/vision/VOCABULARY_Platform_Terms.md`
+
+**Sections:**
+- # Concept: AI-Human Partnership
+- ## The Core Insight
+- ## Partnership Modes
+- ## Trust Model
+- ## UX for Partnership
+- ## Escalations
+- ## Implementation Notes
+- ## Related
 
 **Sections:**
 - # edge_kit — Algorithm: Rendering, Pulses, Directional Shine, and Label Rules
@@ -1686,6 +1844,59 @@
 - ## 5. Motion Physics: Weight, Friction, and Consequence
 
 **Code refs:**
+- `app/connectome/lib/connectome_system_map_node_edge_manifest.ts`
+- `lib/design/tokens.ts`
+
+**Sections:**
+- # Design Language Implementation
+- ## File Structure
+- ## Token Implementation
+- ## Utility Functions
+- ## Tailwind Integration
+- ## CSS Custom Properties (Alternative)
+- ## Usage Examples
+- ## Migration from Current Code
+- ## Open Questions
+
+**Sections:**
+- # Design Language Objectives
+- ## Primary Goal
+- ## Ranked Objectives
+- ## Non-Goals
+- ## Tradeoffs
+- ## Design Tokens Required
+- ## Dependencies
+
+**Sections:**
+- # Design Language System
+- ## System Identity
+- ## Design Philosophy
+- ## Token Architecture
+- ## Color System
+- ## Typography
+- ## Spacing
+- ## Component Patterns
+- ## Animation
+- ## Layer Visual Language
+- ## Graph Visual Language
+- ## Open Questions
+
+**Code refs:**
+- `lib/design/index.ts`
+- `lib/design/tokens.ts`
+- `lib/design/utils.ts`
+
+**Sections:**
+- # Design Language — Sync
+- ## Current State
+- ## Documents
+- ## Escalations Summary
+- ## Implementation Status
+- ## Dependencies
+- ## Next Actions
+- ## Handoff Notes
+
+**Code refs:**
 - `layout.tsx`
 
 **Sections:**
@@ -2051,6 +2262,41 @@
 - ## Related Invariants
 
 **Sections:**
+- # UX Module Objectives
+- ## Primary Goal
+- ## Ranked Objectives
+- ## Non-Goals
+- ## Tradeoffs
+- ## User Journeys
+- ## Interaction Patterns
+- ## Open Questions
+
+**Doc refs:**
+- `docs/landing/BEHAVIORS_Landing_UX.md`
+- `docs/registry/BEHAVIORS_Registry_UX.md`
+
+**Sections:**
+- # UX Patterns
+- ## Core Principles
+- ## Navigation Patterns
+- ## Selection Patterns
+- ## Action Patterns
+- ## Feedback Patterns
+- ## Form Patterns
+- ## Graph-Specific Patterns
+- ## Responsive Patterns
+- ## Accessibility Patterns
+- ## Related
+
+**Sections:**
+- # UX Module — Sync
+- ## Current State
+- ## Escalations Summary
+- ## Implementation Status
+- ## Next Actions
+- ## Related
+
+**Sections:**
 - # Platform Algorithms
 - ## Core Flows
 - ## Authentication Flows
@@ -2155,6 +2401,894 @@
 - ## Related Repos
 
 **Code refs:**
+- `app.py`
+- `app/api/activity/route.ts`
+- `app/api/connectome/graph/route.ts`
+- `app/api/connectome/graphs/route.ts`
+- `app/api/connectome/search/route.ts`
+- `app/api/registry/citizens/route.ts`
+- `app/api/registry/health/route.ts`
+- `app/api/registry/orgs/route.ts`
+- `app/api/registry/search/route.ts`
+- `app/api/route.ts`
+- `app/api/stats/route.ts`
+- `app/connectome/components/connectome_health_panel.ts`
+- `app/connectome/components/connectome_log_duration_formatting_and_threshold_color_rules.ts`
+- `app/connectome/components/connectome_log_export_buttons_using_state_store_serializers.ts`
+- `app/connectome/components/connectome_log_export_buttons_using_state_store_serializers.tsx`
+- `app/connectome/components/connectome_log_trigger_and_calltype_badge_color_tokens.ts`
+- `app/connectome/components/connectome_page_shell_route_layout_and_control_surface.ts`
+- `app/connectome/components/connectome_page_shell_route_layout_and_control_surface.tsx`
+- `app/connectome/components/deterministic_zone_and_node_layout_computation_helpers.ts`
+- `app/connectome/components/edge_kit/connectome_edge_directional_shine_animation_helpers.ts`
+- `app/connectome/components/edge_kit/connectome_edge_label_renderer_with_halo_and_zoom_policy.ts`
+- `app/connectome/components/edge_kit/connectome_edge_label_renderer_with_halo_and_zoom_policy.tsx`
+- `app/connectome/components/edge_kit/connectome_edge_pulse_particle_animation_and_boundary_clamp_helpers.ts`
+- `app/connectome/components/edge_kit/connectome_edge_style_tokens_for_trigger_and_calltype_mapping.ts`
+- `app/connectome/components/edge_kit/connectome_node_boundary_intersection_geometry_helpers.ts`
+- `app/connectome/components/edge_kit/semantic_edge_components_with_directional_shine_and_pulses.ts`
+- `app/connectome/components/edge_kit/semantic_edge_components_with_directional_shine_and_pulses.tsx`
+- `app/connectome/components/edge_label_declutter_and_visibility_policy_helpers.ts`
+- `app/connectome/components/node_kit/connectome_energy_badge_bucketed_glow_and_value_formatter.ts`
+- `app/connectome/components/node_kit/connectome_energy_badge_bucketed_glow_and_value_formatter.tsx`
+- `app/connectome/components/node_kit/connectome_node_background_theme_tokens_by_type_and_language.ts`
+- `app/connectome/components/node_kit/connectome_node_frame_with_title_path_and_tooltip_shell.ts`
+- `app/connectome/components/node_kit/connectome_node_frame_with_title_path_and_tooltip_shell.tsx`
+- `app/connectome/components/node_kit/connectome_node_step_list_and_active_step_highlighter.ts`
+- `app/connectome/components/node_kit/connectome_node_step_list_and_active_step_highlighter.tsx`
+- `app/connectome/components/node_kit/connectome_player_wait_progress_bar_with_four_second_cap.ts`
+- `app/connectome/components/node_kit/connectome_player_wait_progress_bar_with_four_second_cap.tsx`
+- `app/connectome/components/node_kit/connectome_tick_cron_circular_progress_ring_with_speed_label.ts`
+- `app/connectome/components/node_kit/connectome_tick_cron_circular_progress_ring_with_speed_label.tsx`
+- `app/connectome/components/node_kit/typed_connectome_node_components_with_energy_and_step_highlighting.ts`
+- `app/connectome/components/node_kit/typed_connectome_node_components_with_energy_and_step_highlighting.tsx`
+- `app/connectome/components/pannable_zoomable_zoned_flow_canvas_renderer.ts`
+- `app/connectome/components/pannable_zoomable_zoned_flow_canvas_renderer.tsx`
+- `app/connectome/components/telemetry_camera_controls.ts`
+- `app/connectome/components/unified_now_and_copyable_ledger_log_panel.ts`
+- `app/connectome/components/unified_now_and_copyable_ledger_log_panel.tsx`
+- `app/connectome/lib/connectome_export_jsonl_and_text_log_serializer.ts`
+- `app/connectome/lib/connectome_session_boundary_and_restart_policy_controller.ts`
+- `app/connectome/lib/connectome_step_script_sample_sequence.ts`
+- `app/connectome/lib/connectome_system_map_node_edge_manifest.ts`
+- `app/connectome/lib/connectome_wait_timer_progress_and_tick_display_signal_selectors.ts`
+- `app/connectome/lib/flow_event_duration_bucket_color_classifier.ts`
+- `app/connectome/lib/flow_event_schema_and_normalization_contract.ts`
+- `app/connectome/lib/flow_event_trigger_and_calltype_inference_rules.ts`
+- `app/connectome/lib/minimum_duration_clamp_and_speed_based_default_policy.ts`
+- `app/connectome/lib/next_step_gate_and_realtime_playback_runtime_engine.ts`
+- `app/connectome/lib/step_script_cursor_and_replay_determinism_helpers.ts`
+- `app/connectome/lib/zustand_connectome_state_store_with_atomic_commit_actions.ts`
+- `app/connectome/page.tsx`
+- `app/layout.ts`
+- `app/layout.tsx`
+- `app/mind/page.ts`
+- `app/mind/page.tsx`
+- `app/page.ts`
+- `app/page.tsx`
+- `connectome_edge_directional_shine_animation_helpers.ts`
+- `connectome_edge_label_renderer_with_halo_and_zoom_policy.tsx`
+- `connectome_edge_pulse_particle_animation_and_boundary_clamp_helpers.ts`
+- `connectome_edge_style_tokens_for_trigger_and_calltype_mapping.ts`
+- `connectome_energy_badge_bucketed_glow_and_value_formatter.ts`
+- `connectome_node_background_theme_tokens_by_type_and_language.ts`
+- `connectome_node_boundary_intersection_geometry_helpers.ts`
+- `connectome_read_cli.py`
+- `connectome_system_map_node_edge_manifest.ts`
+- `doctor_cli_parser_and_run_checker.py`
+- `flow_event_schema_and_normalization_contract.ts`
+- `layout.tsx`
+- `lib/api.ts`
+- `lib/api/client.ts`
+- `lib/constants/colors.ts`
+- `lib/types.ts`
+- `mind/health/activity_logger.py`
+- `mind/health/connectome_health_service.py`
+- `mind/infrastructure/orchestration/orchestrator.py`
+- `mind/physics/tick.py`
+- `page.tsx`
+- `pannable_zoomable_zoned_flow_canvas_renderer.tsx`
+- `route.ts`
+- `semantic_edge_components_with_directional_shine_and_pulses.tsx`
+- `semantic_proximity_based_character_node_selector.py`
+- `snake_case.py`
+- `tools/test_health_live.py`
+
+**Doc refs:**
+- `docs/connectome/edge_kit/BEHAVIORS_Connectome_Edge_Kit_Readable_Directional_And_Truthful_Link_Effects.md`
+- `docs/connectome/edge_kit/HEALTH_Connectome_Edge_Kit_Runtime_Verification_Of_Link_Visibility_And_Semantic_Styling.md`
+- `docs/connectome/edge_kit/IMPLEMENTATION_Connectome_Edge_Kit_Component_Map_And_Render_Tokens.md`
+- `docs/connectome/edge_kit/PATTERNS_Connectome_Edge_Kit_Color_Coded_Trigger_Typed_Directional_Link_Styling_Patterns.md`
+- `docs/connectome/edge_kit/SYNC_Connectome_Edge_Kit_Sync_Current_State.md`
+- `docs/connectome/edge_kit/VALIDATION_Connectome_Edge_Kit_Invariants_For_Color_Dash_And_Pulse_Truth.md`
+- `docs/connectome/event_model/ALGORITHM_Connectome_Event_Normalization_And_Rendering_Event_Synthesis.md`
+- `docs/connectome/flow_canvas/ALGORITHM_Connectome_Flow_Canvas_Layout_Zones_And_Edge_Label_Decluttering.md`
+- `docs/connectome/flow_canvas/BEHAVIORS_Connectome_Flow_Canvas_Readable_Stable_Interaction_Effects.md`
+- `docs/connectome/flow_canvas/HEALTH_Connectome_Flow_Canvas_Runtime_Verification_Of_Render_Stability_And_Perf_Budgets.md`
+- `docs/connectome/flow_canvas/IMPLEMENTATION_Connectome_Flow_Canvas_Code_Structure_With_React_Flow_And_Zones.md`
+- `docs/connectome/flow_canvas/PATTERNS_Connectome_Flow_Canvas_Pannable_Zoomable_Zoned_System_Map_Rendering_Patterns.md`
+- `docs/connectome/flow_canvas/SYNC_Connectome_Flow_Canvas_Sync_Current_State.md`
+- `docs/connectome/flow_canvas/VALIDATION_Connectome_Flow_Canvas_Invariants_For_Readability_And_Stability.md`
+- `docs/connectome/graph_api/SYNC_Graph_API.md`
+- `docs/connectome/graphs/OBJECTIVES_Connectome_Graphs.md`
+- `docs/connectome/graphs/PATTERNS_Connectome_Graphs.md`
+- `docs/connectome/graphs/SYNC_Connectome_Graphs_Sync_Current_State.md`
+- `docs/connectome/log_panel/ALGORITHM_Connectome_Log_Panel_Log_Rendering_Duration_Coloring_And_Export.md`
+- `docs/connectome/log_panel/BEHAVIORS_Connectome_Log_Panel_Step_Clarity_And_Copyable_Audit_Trail_Effects.md`
+- `docs/connectome/log_panel/HEALTH_Connectome_Log_Panel_Runtime_Verification_Of_Log_Truth_And_Export_Integrity.md`
+- `docs/connectome/log_panel/IMPLEMENTATION_Connectome_Log_Panel_Component_Structure_And_Serializer_Integration.md`
+- `docs/connectome/log_panel/PATTERNS_Connectome_Log_Panel_Unified_Explain_And_Copyable_Event_Ledger_View_Patterns.md`
+- `docs/connectome/log_panel/SYNC_Connectome_Log_Panel_Sync_Current_State.md`
+- `docs/connectome/log_panel/VALIDATION_Connectome_Log_Panel_Invariants_For_Truthful_Durations_And_Stable_Export.md`
+- `docs/connectome/node_kit/ALGORITHM_Connectome_Node_Kit_Node_Rendering_Spec_And_Energy_Glow_Mapping.md`
+- `docs/connectome/node_kit/BEHAVIORS_Connectome_Node_Kit_Visible_Clarity_And_Trust_Effects.md`
+- `docs/connectome/node_kit/HEALTH_Connectome_Node_Kit_Runtime_Verification_Of_Node_State_And_Visual_Signal_Truth.md`
+- `docs/connectome/node_kit/IMPLEMENTATION_Connectome_Node_Kit_Component_Map_And_Styling_Tokens.md`
+- `docs/connectome/node_kit/PATTERNS_Connectome_Node_Kit_Typed_Language_Coded_Energy_Aware_Node_Rendering_Patterns.md`
+- `docs/connectome/node_kit/SYNC_Connectome_Node_Kit_Sync_Current_State.md`
+- `docs/connectome/node_kit/VALIDATION_Connectome_Node_Kit_Invariants_For_Node_Readability_And_State_Reflection.md`
+- `docs/connectome/page_shell/PATTERNS_Connectome_Page_Shell_Route_Composition_And_User_Control_Surface_Patterns.md`
+- `docs/connectome/runtime_mind/ALGORITHM_Connectome_Runtime_Engine_Step_Release_And_Realtime_Scheduling.md`
+- `docs/connectome/runtime_mind/BEHAVIORS_Connectome_Runtime_Engine_User_Controlled_Traversal_Effects.md`
+- `docs/connectome/runtime_mind/HEALTH_Connectome_Runtime_Engine_Runtime_Verification_Of_Pacing_And_Order.md`
+- `docs/connectome/runtime_mind/IMPLEMENTATION_Connectome_Runtime_Engine_Code_Structure_And_Control_Surface.md`
+- `docs/connectome/runtime_mind/PATTERNS_Connectome_Runtime_Engine_Stepper_And_Realtime_Traversal_Control_Patterns.md`
+- `docs/connectome/runtime_mind/SYNC_Connectome_Runtime_Engine_Sync_Current_State.md`
+- `docs/connectome/runtime_mind/VALIDATION_Connectome_Runtime_Engine_Invariants_For_Stepper_And_Realtime.md`
+- `docs/connectome/state_store/ALGORITHM_Connectome_State_Store_Atomic_Commits_For_Step_Releases_And_Realtime.md`
+- `docs/connectome/state_store/BEHAVIORS_Connectome_State_Store_Observable_State_Consistency_Effects.md`
+- `docs/connectome/state_store/HEALTH_Connectome_State_Store_Runtime_Verification_Of_Ledger_And_Timer_Correctness.md`
+- `docs/connectome/state_store/IMPLEMENTATION_Connectome_State_Store_Code_Structure_And_Zustand_Actions.md`
+- `docs/connectome/state_store/PATTERNS_Connectome_State_Store_Single_Source_Of_Truth_For_Events_Focus_And_Timers.md`
+- `docs/connectome/state_store/SYNC_Connectome_State_Store_Sync_Current_State.md`
+- `docs/connectome/state_store/VALIDATION_Connectome_State_Store_Invariants_For_Ledger_Ordering_And_Focus.md`
+- `docs/frontend/app_shell/OBJECTIVES_App_Shell.md`
+- `docs/frontend/app_shell/PATTERNS_App_Shell.md`
+- `docs/frontend/app_shell/SYNC_App_Shell_State.md`
+- `docs/mind/membrane/PATTERN_Membrane_Modulation.md`
+- `docs/vision/PATTERNS_Platform_Vision_And_Architecture.md`
+- `docs/vision/SYNC_Platform_Vision.md`
+- `docs/vision/VALIDATION_Platform_Invariants.md`
+- `docs/vision/VOCABULARY_Platform_Terms.md`
+- `event_model/IMPLEMENTATION_Connectome_Event_Model_Code_Architecture_And_Schema.md`
+- `runtime_mind/IMPLEMENTATION_Connectome_Runtime_Engine_Code_Structure_And_Control_Surface.md`
+- `state_store/IMPLEMENTATION_Connectome_State_Store_Code_Structure_And_Zustand_Actions.md`
+
+**Sections:**
+- # Repository Map: mind-platform
+
+**Definitions:**
+- `alpha()`
+- `getLayerColor()`
+- `getNodeTypeColor()`
+- `getVerificationColor()`
+- `getStatusColor()`
+
+**Sections:**
+- # architect (Claude Agent SDK)
+- ## System Prompt
+- ## Anchor Vocabulary
+- ## Output Format
+- ## Switching Triggers
+
+**Sections:**
+- # architect
+- ## Posture
+- ## How This Shapes Work
+- ## Example Behavior
+- ## Protocols
+- ## When to Be architect
+- ## When to Switch
+- ## Field Signals
+- ## Memory
+- ## Complements
+
+**Sections:**
+- # architect (Gemini)
+- ## Posture
+- ## Anchor
+- ## How You Work
+- ## Your Blind Spot
+- ## Output
+- ## Handoff
+
+**Sections:**
+- # fixer (Claude Agent SDK)
+- ## System Prompt
+- ## Anchor Vocabulary
+- ## Output Format
+- ## Switching Triggers
+
+**Sections:**
+- # fixer
+- ## Posture
+- ## How This Shapes Work
+- ## Example Behavior
+- ## Protocols
+- ## When to Be fixer
+- ## When to Switch
+- ## Field Signals
+- ## Memory
+- ## Complements
+
+**Sections:**
+- # fixer (Gemini)
+- ## Posture
+- ## Anchor
+- ## How You Work
+- ## Your Blind Spot
+- ## Output
+- ## Handoff
+
+**Sections:**
+- # groundwork (Claude Agent SDK)
+- ## System Prompt
+- ## Anchor Vocabulary
+- ## Output Format
+- ## Switching Triggers
+
+**Sections:**
+- # groundwork
+- ## Posture
+- ## How This Shapes Work
+- ## Example Behavior
+- ## Protocols
+- ## When to Be groundwork
+- ## When to Switch
+- ## Field Signals
+- ## Memory
+- ## Complements
+
+**Sections:**
+- # groundwork (Gemini)
+- ## Posture
+- ## Anchor
+- ## How You Work
+- ## Your Blind Spot
+- ## Output
+- ## Handoff
+
+**Sections:**
+- # herald (Claude Agent SDK)
+- ## System Prompt
+- ## Anchor Vocabulary
+- ## Output Format
+- ## Switching Triggers
+
+**Sections:**
+- # herald
+- ## Posture
+- ## How This Shapes Work
+- ## Example Behavior
+- ## Protocols
+- ## When to Be herald
+- ## When to Switch
+- ## Field Signals
+- ## Memory
+- ## Complements
+
+**Sections:**
+- # herald (Gemini)
+- ## Posture
+- ## Anchor
+- ## How You Work
+- ## Your Blind Spot
+- ## Output
+- ## Handoff
+
+**Sections:**
+- # keeper (Claude Agent SDK)
+- ## System Prompt
+- ## Anchor Vocabulary
+- ## Output Format
+- ## Switching Triggers
+
+**Sections:**
+- # keeper
+- ## Posture
+- ## How This Shapes Work
+- ## Example Behavior
+- ## Protocols
+- ## When to Be keeper
+- ## When to Switch
+- ## Field Signals
+- ## Memory
+- ## Complements
+
+**Sections:**
+- # keeper (Gemini)
+- ## Posture
+- ## Anchor
+- ## How You Work
+- ## Your Blind Spot
+- ## Output
+- ## Handoff
+
+**Sections:**
+- # scout (Claude Agent SDK)
+- ## System Prompt
+- ## Anchor Vocabulary
+- ## Output Format
+- ## Switching Triggers
+
+**Sections:**
+- # scout
+- ## Posture
+- ## How This Shapes Work
+- ## Example Behavior
+- ## Protocols
+- ## When to Be scout
+- ## When to Switch
+- ## Field Signals
+- ## Memory
+- ## Complements
+
+**Sections:**
+- # scout (Gemini)
+- ## Posture
+- ## Anchor
+- ## How You Work
+- ## Your Blind Spot
+- ## Output
+- ## Handoff
+
+**Sections:**
+- # steward (Claude Agent SDK)
+- ## System Prompt
+- ## Anchor Vocabulary
+- ## Output Format
+- ## Switching Triggers
+
+**Sections:**
+- # steward
+- ## Posture
+- ## How This Shapes Work
+- ## Example Behavior
+- ## Protocols
+- ## When to Be steward
+- ## When to Switch
+- ## Field Signals
+- ## Memory
+- ## Complements
+- ## Circular Complement
+
+**Sections:**
+- # steward (Gemini)
+- ## Posture
+- ## Anchor
+- ## How You Work
+- ## Your Blind Spot
+- ## Output
+- ## Handoff
+- ## Circular Complement
+
+**Sections:**
+- # voice (Claude Agent SDK)
+- ## System Prompt
+- ## Anchor Vocabulary
+- ## Output Format
+- ## Switching Triggers
+
+**Sections:**
+- # voice
+- ## Posture
+- ## How This Shapes Work
+- ## Example Behavior
+- ## Protocols
+- ## When to Be voice
+- ## When to Switch
+- ## Field Signals
+- ## Memory
+- ## Complements
+
+**Sections:**
+- # voice (Gemini)
+- ## Posture
+- ## Anchor
+- ## How You Work
+- ## Your Blind Spot
+- ## Output
+- ## Handoff
+
+**Sections:**
+- # weaver (Claude Agent SDK)
+- ## System Prompt
+- ## Anchor Vocabulary
+- ## Output Format
+- ## Switching Triggers
+
+**Sections:**
+- # weaver
+- ## Posture
+- ## How This Shapes Work
+- ## Example Behavior
+- ## Protocols
+- ## When to Be weaver
+- ## When to Switch
+- ## Field Signals
+- ## Memory
+- ## Complements
+
+**Sections:**
+- # weaver (Gemini)
+- ## Posture
+- ## Anchor
+- ## How You Work
+- ## Your Blind Spot
+- ## Output
+- ## Handoff
+
+**Sections:**
+- # witness (Claude Agent SDK)
+- ## System Prompt
+- ## Anchor Vocabulary
+- ## Output Format
+- ## Switching Triggers
+
+**Sections:**
+- # witness
+- ## Posture
+- ## How This Shapes Work
+- ## Example Behavior
+- ## Protocols
+- ## When to Be witness
+- ## When to Switch
+- ## Field Signals
+- ## Memory
+- ## Complements
+
+**Sections:**
+- # witness (Gemini)
+- ## Posture
+- ## Anchor
+- ## How You Work
+- ## Your Blind Spot
+- ## Output
+- ## Handoff
+
+**Code refs:**
+- `{path/to/main/source/file.py`
+
+**Sections:**
+- # {Module Name} — Algorithm: {Brief Description of Procedures and Logic}
+- ## CHAIN
+- ## OVERVIEW
+- ## OBJECTIVES AND BEHAVIORS
+- ## DATA STRUCTURES
+- ## ALGORITHM: {Primary Function Name}
+- ## KEY DECISIONS
+- ## DATA FLOW
+- ## COMPLEXITY
+- ## HELPER FUNCTIONS
+- ## INTERACTIONS
+- ## MARKERS
+
+**Code refs:**
+- `{path/to/main/source/file.py`
+
+**Sections:**
+- # {Module Name} — Behaviors: {Brief Description of Observable Effects}
+- ## CHAIN
+- ## BEHAVIORS
+- ## OBJECTIVES SERVED
+- ## INPUTS / OUTPUTS
+- ## EDGE CASES
+- ## ANTI-BEHAVIORS
+- ## MARKERS
+
+**Code refs:**
+- `{path/to/health/checker_script.py`
+
+**Sections:**
+- # {Module} — Health: Verification Mechanics and Coverage
+- ## WHEN TO USE HEALTH (NOT TESTS)
+- ## PURPOSE OF THIS FILE
+- ## WHY THIS PATTERN
+- ## HOW TO USE THIS TEMPLATE
+- ## CHAIN
+- ## FLOWS ANALYSIS (TRIGGERS + FREQUENCY)
+- ## HEALTH INDICATORS SELECTED
+- ## OBJECTIVES COVERAGE
+- ## STATUS (RESULT INDICATOR)
+- ## DOCK TYPES (COMPLETE LIST)
+- ## CHECKER INDEX
+- ## INDICATOR: {Indicator Name}
+- ## HOW TO RUN
+- # Run all health checks for this module
+- # Run a specific checker
+- ## KNOWN GAPS
+- ## MARKERS
+
+**Code refs:**
+- `{path/to/main/source/file.py`
+
+**Sections:**
+- # {Module} — Implementation: Code Architecture and Structure
+- ## CHAIN
+- ## CODE STRUCTURE
+- ## DESIGN PATTERNS
+- ## SCHEMA
+- ## ENTRY POINTS
+- ## DATA FLOW AND DOCKING (FLOW-BY-FLOW)
+- ## LOGIC CHAINS
+- ## MODULE DEPENDENCIES
+- ## STATE MANAGEMENT
+- ## RUNTIME BEHAVIOR
+- ## CONCURRENCY MODEL
+- ## CONFIGURATION
+- ## BIDIRECTIONAL LINKS
+- ## EXTRACTION CANDIDATES
+- ## MARKERS
+
+**Sections:**
+- # {Project} — Mapping: Translation to mind Schema
+- ## PURPOSE
+- ## MIND UNIVERSAL SCHEMA
+- ## NODE MAPPINGS
+- ## LINK MAPPINGS
+- ## COMMON PATTERNS
+- ## MARKERS
+
+**Code refs:**
+- `{path/to/main/source/file.py`
+
+**Sections:**
+- # {Module Name} — Patterns: {Brief Design Philosophy Description}
+- ## CHAIN
+- ## THE PROBLEM
+- ## THE PATTERN
+- ## BEHAVIORS SUPPORTED
+- ## BEHAVIORS PREVENTED
+- ## PRINCIPLES
+- ## DATA
+- ## DEPENDENCIES
+- ## INSPIRATIONS
+- ## SCOPE
+- ## MARKERS
+
+**Sections:**
+- # {Module/Area/Project} — Sync: Current State
+- ## MATURITY
+- ## CURRENT STATE
+- ## IN PROGRESS
+- ## RECENT CHANGES
+- ## KNOWN ISSUES
+- ## HANDOFF: FOR AGENTS
+- ## HANDOFF: FOR HUMAN
+- ## TODO
+- ## CONSCIOUSNESS TRACE
+- ## POINTERS
+
+**Sections:**
+- # {Project} — Taxonomy: Domain Vocabulary
+- ## PURPOSE
+- ## TERMS
+- ## TERMINOLOGY DECISIONS
+- ## META-ATTRIBUTE DEFINITIONS
+- ## MARKERS
+
+**Sections:**
+- # {Module Name} — Validation: What Must Be True
+- ## CHAIN
+- ## PURPOSE
+- ## INVARIANTS
+- ## PRIORITY
+- ## INVARIANT INDEX
+- ## MARKERS
+
+**Doc refs:**
+- `docs/MAPPING.md`
+- `docs/TAXONOMY.md`
+
+**Sections:**
+- # {Module Name} — Vocabulary: New Terms
+- ## CHAIN
+- ## PURPOSE
+- ## NEW TERMS
+- ## NEW RELATIONSHIPS
+- ## TERMINOLOGY PROPOSALS
+- ## MERGE STATUS
+- ## MARKERS
+
+**Sections:**
+- ## 4. Protocol-First Reading
+- ## 5. Parallel Work Awareness
+- ## 6. Operational Proactivity
+- ## 5. Communication Principles
+
+**Sections:**
+- ## GEMINI Agent Operating Principles (Derived from mind Protocol)
+- ## Operational Directives
+
+**Sections:**
+- # {{PROJECT_NAME}}
+- ## Before Any Task
+- ## After Any Change
+- ## Architecture
+- ## Key Files
+- ## MCP Tools
+
+**Sections:**
+- # Skill: `mind.add_cluster`
+- ## Maps to VIEW
+- ## Purpose
+- ## When to Use
+- ## Inputs
+- ## Outputs
+- ## Protocols
+- ## Atomicity
+- ## Link Requirements by Subtype
+- ## Valid Link Targets
+- # narrative.health can link to:
+- # narrative.validation can link to:
+- # thing.dock can link to:
+- ## Design vs Implementation
+- # Both required - health verifies the design via the implementation
+- ## Protocol Composition
+- ## Cluster Templates
+- ## Pre-Commit Validation
+- ## Cluster Design Knowledge
+- ## Link Types (from schema)
+- ## Semantic Properties on `relates`
+- # This validation ensures that behavior
+- # This narrative contradicts that one
+- # Health indicator verifies validation
+- ## Node Type Reference (from schema)
+- ## Quality Criteria
+- ## Process
+- ## Gates
+- ## Evidence & Referencing
+- ## Markers
+- ## Never-stop Rule
+- ## Existing Node Discovery
+- ## Connectivity Metrics
+- # objectives are roots, fewer incoming links expected
+- ## Scenario Examples
+- # Total existing: 7 nodes
+- # Total new: 4 nodes
+- # Missing: docks!
+- # Total existing: 6 nodes
+- # Total new: 2 nodes
+- # Total existing: 6 nodes
+- # Total new: 2 nodes
+- ## Protocol Feedback
+- ## Connectivity Thresholds
+- ## Summary of Cluster Rules
+- ## CHAIN
+
+**Doc refs:**
+- `docs/physics/subentity/ALGORITHM_SubEntity.md`
+- `docs/physics/subentity/BEHAVIORS_SubEntity.md`
+- `docs/physics/subentity/VALIDATION_SubEntity.md`
+
+**Sections:**
+- # Skill: `mind.assess_subentity_exploration`
+- ## Maps to VIEW
+- ## Context
+- ## Purpose
+- ## Inputs
+- ## Outputs
+- ## Gates
+- ## Diagnostic Layers
+- ## Process
+- ## Common Patterns
+- ## Report Template
+- # Exploration Diagnosis: {exploration_id}
+- ## Symptom
+- ## Expected Outcome
+- ## Diagnosis
+- ## Root Cause
+- ## Improvements
+- ## Follow-up Actions
+- ## Procedures Referenced
+- ## Evidence
+- ## Never-stop
+
+**Sections:**
+- # Skill: `mind.author_procedures`
+- ## Maps to VIEW
+- ## Context
+- ## Purpose
+- ## Inputs
+- ## Outputs
+- # Part 1: Question Design
+- ## The Core Idea
+- ## Question Anatomy
+- ## Example: Rich Question
+- ## The Comment Field
+- ## Question Flow
+- ## Context Injection
+- ## Guidance Types
+- ## Comment → Moment Chain
+- ## Dense Linking Through Questions
+- ## Answer Creation Guidance
+- ## Question Design Summary
+- # Part 2: Protocol Structure
+- ## Gates
+- ## Process
+- ## Protocol Template
+- # ... batch 3-7 questions
+- # fields...
+- ## Step Types
+- # Part 3: Contextual Knowledge
+- ## Contextual Knowledge Examples
+- # Part 4: Verification
+- ## Verification Checklist
+- ## Procedures Referenced
+- ## Evidence
+- ## Markers
+- ## Never-stop
+
+**Sections:**
+- # Skill: `mind.author_skills`
+- ## Maps to VIEW
+- ## Context
+- ## Pre-flight
+- ## Purpose
+- ## Inputs
+- ## Outputs
+- ## Gates
+- ## Process
+- ## Complexity Tiers
+- ## Signals: Overcomplicating
+- ## Membrane Integration
+- ## Procedures Referenced
+- ## Evidence
+- ## Markers
+- ## Never-stop
+
+**Sections:**
+- # Skill: `mind.author_agents`
+- ## Maps to VIEW
+- ## Context
+- ## Purpose
+- ## Inputs
+- ## Outputs
+- ## Gates
+- ## Process
+- ## Agent Set Design
+- ## Anti-patterns
+- ## Procedures Referenced
+- ## Evidence
+- ## Markers
+- ## Never-stop
+
+**Sections:**
+- # Skill: `mind.create_module_documentation`
+- ## Maps to VIEW
+- ## Context
+- ## Purpose
+- ## Inputs
+- ## Outputs
+- ## Gates
+- ## Process
+- ## Procedures Referenced
+- ## Evidence
+- ## Markers
+- ## Never-stop
+
+**Sections:**
+- # Skill: `mind.health_define_and_verify`
+- ## Maps to VIEW
+- ## Context
+- ## Purpose
+- ## Inputs
+- ## Outputs
+- ## Gates
+- ## Process
+- ## Procedures Referenced
+- ## Evidence
+- ## Markers
+- ## Never-stop
+
+**Doc refs:**
+- `docs/schema/PATTERNS_Schema.md`
+
+**Sections:**
+- # Skill: `mind.module_define_boundaries`
+- ## Maps to VIEW
+- ## Context
+- ## Purpose
+- ## Inputs
+- ## Outputs
+- # ID follows convention: {node-type}_{SUBTYPE}_{instance}
+- # Example: space_MODULE_engine-physics
+- # ID: narrative_OBJECTIVE_{module}-{type}
+- # Example: narrative_OBJECTIVE_engine-physics-documented
+- ## Gates
+- ## Process
+- ## Procedures Referenced
+- ## Evidence
+- ## Markers
+- ## Never-stop
+
+**Sections:**
+- # Skill: `mind.ingest_docs_to_graph`
+- ## Maps to VIEW
+- ## Context
+- ## Purpose
+- ## Inputs
+- ## Outputs
+- ## Gates
+- ## Process
+- # Space contains doc
+- # Chain ordering (if previous doc exists)
+- ## Procedures Referenced
+- ## Quality Criteria
+- ## Skill Markers
+
+**Sections:**
+- # Skill: `mind.orchestrate_feature_integration`
+- ## Maps to VIEW
+- ## Context
+- ## Purpose
+- ## Inputs
+- ## Outputs
+- ## Gates
+- ## Process
+- ## Skills Called
+- ## Procedures Referenced
+- ## Evidence
+- ## Markers
+- ## Never-stop
+
+**Code refs:**
+- `lib/constants/colors.ts`
+
+**Sections:**
+- # Project — Sync: Current State
+- ## CURRENT STATE
+- ## ACTIVE WORK
+- ## RECENT CHANGES
+- ## KNOWN ISSUES
+- ## HANDOFF: FOR AGENTS
+- ## HANDOFF: FOR HUMAN
+- ## TODO
+- ## CONSCIOUSNESS TRACE
+- ## AREAS
+- ## MODULE COVERAGE
+- ## Init: 2025-12-29 02:13
+
+**Code refs:**
+- `doctor_cli_parser_and_run_checker.py`
+- `semantic_proximity_based_character_node_selector.py`
+- `snake_case.py`
+
+**Sections:**
+- # mind Framework
+- ## WHY THIS PROTOCOL EXISTS
+- ## ARCHITECTURE: 4 LAYERS
+- ## COMPANION: PRINCIPLES.md
+- ## THE CORE INSIGHT
+- ## HOW TO USE THIS
+- ## FILE TYPES AND THEIR PURPOSE
+- ## KEY PRINCIPLES (from PRINCIPLES.md)
+- ## STRUCTURING YOUR DOCS
+- ## WHEN DOCS DON'T EXIST
+- ## THE DOCUMENTATION PROCESS
+- ## Maturity
+- ## NAMING ENGINEERING PRINCIPLES
+- ## MARKERS
+- ## CLI COMMANDS
+- # Run scripts with local runtime
+- # my_script.py - imports work normally
+- ## MCP MEMBRANE TOOLS
+- ## MIND UNIVERSAL SCHEMA
+- ## THE PROTOCOL IS A TOOL
+
+**Sections:**
+- # Working Principles
+- ## Architecture: One Solution Per Problem
+- ## Verification: Test Before Claiming Built
+- ## Communication: Depth Over Brevity
+- ## Quality: Never Degrade
+- ## Code Discipline: No Safety Theater
+- ## Experience: User Before Infrastructure
+- ## Doc Chain First: Read Before Acting
+- ## Feedback Loop: Human-Agent Collaboration
+- ## How These Principles Integrate
+
+**Code refs:**
 - `doctor_cli_parser_and_run_checker.py`
 - `semantic_proximity_based_character_node_selector.py`
 - `snake_case.py`
@@ -2201,3 +3335,181 @@
 - # Set backend URL (default: http://localhost:8765)
 - ## Architecture Context
 - ## License
+
+**Code refs:**
+- `app.py`
+- `app/api/activity/route.ts`
+- `app/api/connectome/graph/route.ts`
+- `app/api/connectome/graphs/route.ts`
+- `app/api/connectome/search/route.ts`
+- `app/api/registry/citizens/route.ts`
+- `app/api/registry/health/route.ts`
+- `app/api/registry/orgs/route.ts`
+- `app/api/registry/search/route.ts`
+- `app/api/route.ts`
+- `app/api/stats/route.ts`
+- `app/connectome/components/connectome_health_panel.ts`
+- `app/connectome/components/connectome_log_duration_formatting_and_threshold_color_rules.ts`
+- `app/connectome/components/connectome_log_export_buttons_using_state_store_serializers.ts`
+- `app/connectome/components/connectome_log_export_buttons_using_state_store_serializers.tsx`
+- `app/connectome/components/connectome_log_trigger_and_calltype_badge_color_tokens.ts`
+- `app/connectome/components/connectome_page_shell_route_layout_and_control_surface.ts`
+- `app/connectome/components/connectome_page_shell_route_layout_and_control_surface.tsx`
+- `app/connectome/components/deterministic_zone_and_node_layout_computation_helpers.ts`
+- `app/connectome/components/edge_kit/connectome_edge_directional_shine_animation_helpers.ts`
+- `app/connectome/components/edge_kit/connectome_edge_label_renderer_with_halo_and_zoom_policy.ts`
+- `app/connectome/components/edge_kit/connectome_edge_label_renderer_with_halo_and_zoom_policy.tsx`
+- `app/connectome/components/edge_kit/connectome_edge_pulse_particle_animation_and_boundary_clamp_helpers.ts`
+- `app/connectome/components/edge_kit/connectome_edge_style_tokens_for_trigger_and_calltype_mapping.ts`
+- `app/connectome/components/edge_kit/connectome_node_boundary_intersection_geometry_helpers.ts`
+- `app/connectome/components/edge_kit/semantic_edge_components_with_directional_shine_and_pulses.ts`
+- `app/connectome/components/edge_kit/semantic_edge_components_with_directional_shine_and_pulses.tsx`
+- `app/connectome/components/edge_label_declutter_and_visibility_policy_helpers.ts`
+- `app/connectome/components/node_kit/connectome_energy_badge_bucketed_glow_and_value_formatter.ts`
+- `app/connectome/components/node_kit/connectome_energy_badge_bucketed_glow_and_value_formatter.tsx`
+- `app/connectome/components/node_kit/connectome_node_background_theme_tokens_by_type_and_language.ts`
+- `app/connectome/components/node_kit/connectome_node_frame_with_title_path_and_tooltip_shell.ts`
+- `app/connectome/components/node_kit/connectome_node_frame_with_title_path_and_tooltip_shell.tsx`
+- `app/connectome/components/node_kit/connectome_node_step_list_and_active_step_highlighter.ts`
+- `app/connectome/components/node_kit/connectome_node_step_list_and_active_step_highlighter.tsx`
+- `app/connectome/components/node_kit/connectome_player_wait_progress_bar_with_four_second_cap.ts`
+- `app/connectome/components/node_kit/connectome_player_wait_progress_bar_with_four_second_cap.tsx`
+- `app/connectome/components/node_kit/connectome_tick_cron_circular_progress_ring_with_speed_label.ts`
+- `app/connectome/components/node_kit/connectome_tick_cron_circular_progress_ring_with_speed_label.tsx`
+- `app/connectome/components/node_kit/typed_connectome_node_components_with_energy_and_step_highlighting.ts`
+- `app/connectome/components/node_kit/typed_connectome_node_components_with_energy_and_step_highlighting.tsx`
+- `app/connectome/components/pannable_zoomable_zoned_flow_canvas_renderer.ts`
+- `app/connectome/components/pannable_zoomable_zoned_flow_canvas_renderer.tsx`
+- `app/connectome/components/telemetry_camera_controls.ts`
+- `app/connectome/components/unified_now_and_copyable_ledger_log_panel.ts`
+- `app/connectome/components/unified_now_and_copyable_ledger_log_panel.tsx`
+- `app/connectome/lib/connectome_export_jsonl_and_text_log_serializer.ts`
+- `app/connectome/lib/connectome_session_boundary_and_restart_policy_controller.ts`
+- `app/connectome/lib/connectome_step_script_sample_sequence.ts`
+- `app/connectome/lib/connectome_system_map_node_edge_manifest.ts`
+- `app/connectome/lib/connectome_wait_timer_progress_and_tick_display_signal_selectors.ts`
+- `app/connectome/lib/flow_event_duration_bucket_color_classifier.ts`
+- `app/connectome/lib/flow_event_schema_and_normalization_contract.ts`
+- `app/connectome/lib/flow_event_trigger_and_calltype_inference_rules.ts`
+- `app/connectome/lib/minimum_duration_clamp_and_speed_based_default_policy.ts`
+- `app/connectome/lib/next_step_gate_and_realtime_playback_runtime_engine.ts`
+- `app/connectome/lib/step_script_cursor_and_replay_determinism_helpers.ts`
+- `app/connectome/lib/zustand_connectome_state_store_with_atomic_commit_actions.ts`
+- `app/connectome/page.tsx`
+- `app/layout.ts`
+- `app/layout.tsx`
+- `app/mind/page.ts`
+- `app/mind/page.tsx`
+- `app/page.ts`
+- `app/page.tsx`
+- `connectome_edge_directional_shine_animation_helpers.ts`
+- `connectome_edge_label_renderer_with_halo_and_zoom_policy.tsx`
+- `connectome_edge_pulse_particle_animation_and_boundary_clamp_helpers.ts`
+- `connectome_edge_style_tokens_for_trigger_and_calltype_mapping.ts`
+- `connectome_energy_badge_bucketed_glow_and_value_formatter.ts`
+- `connectome_node_background_theme_tokens_by_type_and_language.ts`
+- `connectome_node_boundary_intersection_geometry_helpers.ts`
+- `connectome_read_cli.py`
+- `connectome_system_map_node_edge_manifest.ts`
+- `doctor_cli_parser_and_run_checker.py`
+- `flow_event_schema_and_normalization_contract.ts`
+- `layout.tsx`
+- `lib/api.ts`
+- `lib/api/client.ts`
+- `lib/constants/colors.ts`
+- `lib/types.ts`
+- `mind/health/activity_logger.py`
+- `mind/health/connectome_health_service.py`
+- `mind/infrastructure/orchestration/orchestrator.py`
+- `mind/physics/tick.py`
+- `page.tsx`
+- `pannable_zoomable_zoned_flow_canvas_renderer.tsx`
+- `route.ts`
+- `semantic_edge_components_with_directional_shine_and_pulses.tsx`
+- `semantic_proximity_based_character_node_selector.py`
+- `snake_case.py`
+- `tools/test_health_live.py`
+
+**Doc refs:**
+- `docs/connectome/edge_kit/BEHAVIORS_Connectome_Edge_Kit_Readable_Directional_And_Truthful_Link_Effects.md`
+- `docs/connectome/edge_kit/HEALTH_Connectome_Edge_Kit_Runtime_Verification_Of_Link_Visibility_And_Semantic_Styling.md`
+- `docs/connectome/edge_kit/IMPLEMENTATION_Connectome_Edge_Kit_Component_Map_And_Render_Tokens.md`
+- `docs/connectome/edge_kit/PATTERNS_Connectome_Edge_Kit_Color_Coded_Trigger_Typed_Directional_Link_Styling_Patterns.md`
+- `docs/connectome/edge_kit/SYNC_Connectome_Edge_Kit_Sync_Current_State.md`
+- `docs/connectome/edge_kit/VALIDATION_Connectome_Edge_Kit_Invariants_For_Color_Dash_And_Pulse_Truth.md`
+- `docs/connectome/event_model/ALGORITHM_Connectome_Event_Normalization_And_Rendering_Event_Synthesis.md`
+- `docs/connectome/flow_canvas/ALGORITHM_Connectome_Flow_Canvas_Layout_Zones_And_Edge_Label_Decluttering.md`
+- `docs/connectome/flow_canvas/BEHAVIORS_Connectome_Flow_Canvas_Readable_Stable_Interaction_Effects.md`
+- `docs/connectome/flow_canvas/HEALTH_Connectome_Flow_Canvas_Runtime_Verification_Of_Render_Stability_And_Perf_Budgets.md`
+- `docs/connectome/flow_canvas/IMPLEMENTATION_Connectome_Flow_Canvas_Code_Structure_With_React_Flow_And_Zones.md`
+- `docs/connectome/flow_canvas/PATTERNS_Connectome_Flow_Canvas_Pannable_Zoomable_Zoned_System_Map_Rendering_Patterns.md`
+- `docs/connectome/flow_canvas/SYNC_Connectome_Flow_Canvas_Sync_Current_State.md`
+- `docs/connectome/flow_canvas/VALIDATION_Connectome_Flow_Canvas_Invariants_For_Readability_And_Stability.md`
+- `docs/connectome/graph_api/SYNC_Graph_API.md`
+- `docs/connectome/graphs/OBJECTIVES_Connectome_Graphs.md`
+- `docs/connectome/graphs/PATTERNS_Connectome_Graphs.md`
+- `docs/connectome/graphs/SYNC_Connectome_Graphs_Sync_Current_State.md`
+- `docs/connectome/log_panel/ALGORITHM_Connectome_Log_Panel_Log_Rendering_Duration_Coloring_And_Export.md`
+- `docs/connectome/log_panel/BEHAVIORS_Connectome_Log_Panel_Step_Clarity_And_Copyable_Audit_Trail_Effects.md`
+- `docs/connectome/log_panel/HEALTH_Connectome_Log_Panel_Runtime_Verification_Of_Log_Truth_And_Export_Integrity.md`
+- `docs/connectome/log_panel/IMPLEMENTATION_Connectome_Log_Panel_Component_Structure_And_Serializer_Integration.md`
+- `docs/connectome/log_panel/PATTERNS_Connectome_Log_Panel_Unified_Explain_And_Copyable_Event_Ledger_View_Patterns.md`
+- `docs/connectome/log_panel/SYNC_Connectome_Log_Panel_Sync_Current_State.md`
+- `docs/connectome/log_panel/VALIDATION_Connectome_Log_Panel_Invariants_For_Truthful_Durations_And_Stable_Export.md`
+- `docs/connectome/node_kit/ALGORITHM_Connectome_Node_Kit_Node_Rendering_Spec_And_Energy_Glow_Mapping.md`
+- `docs/connectome/node_kit/BEHAVIORS_Connectome_Node_Kit_Visible_Clarity_And_Trust_Effects.md`
+- `docs/connectome/node_kit/HEALTH_Connectome_Node_Kit_Runtime_Verification_Of_Node_State_And_Visual_Signal_Truth.md`
+- `docs/connectome/node_kit/IMPLEMENTATION_Connectome_Node_Kit_Component_Map_And_Styling_Tokens.md`
+- `docs/connectome/node_kit/PATTERNS_Connectome_Node_Kit_Typed_Language_Coded_Energy_Aware_Node_Rendering_Patterns.md`
+- `docs/connectome/node_kit/SYNC_Connectome_Node_Kit_Sync_Current_State.md`
+- `docs/connectome/node_kit/VALIDATION_Connectome_Node_Kit_Invariants_For_Node_Readability_And_State_Reflection.md`
+- `docs/connectome/page_shell/PATTERNS_Connectome_Page_Shell_Route_Composition_And_User_Control_Surface_Patterns.md`
+- `docs/connectome/runtime_mind/ALGORITHM_Connectome_Runtime_Engine_Step_Release_And_Realtime_Scheduling.md`
+- `docs/connectome/runtime_mind/BEHAVIORS_Connectome_Runtime_Engine_User_Controlled_Traversal_Effects.md`
+- `docs/connectome/runtime_mind/HEALTH_Connectome_Runtime_Engine_Runtime_Verification_Of_Pacing_And_Order.md`
+- `docs/connectome/runtime_mind/IMPLEMENTATION_Connectome_Runtime_Engine_Code_Structure_And_Control_Surface.md`
+- `docs/connectome/runtime_mind/PATTERNS_Connectome_Runtime_Engine_Stepper_And_Realtime_Traversal_Control_Patterns.md`
+- `docs/connectome/runtime_mind/SYNC_Connectome_Runtime_Engine_Sync_Current_State.md`
+- `docs/connectome/runtime_mind/VALIDATION_Connectome_Runtime_Engine_Invariants_For_Stepper_And_Realtime.md`
+- `docs/connectome/state_store/ALGORITHM_Connectome_State_Store_Atomic_Commits_For_Step_Releases_And_Realtime.md`
+- `docs/connectome/state_store/BEHAVIORS_Connectome_State_Store_Observable_State_Consistency_Effects.md`
+- `docs/connectome/state_store/HEALTH_Connectome_State_Store_Runtime_Verification_Of_Ledger_And_Timer_Correctness.md`
+- `docs/connectome/state_store/IMPLEMENTATION_Connectome_State_Store_Code_Structure_And_Zustand_Actions.md`
+- `docs/connectome/state_store/PATTERNS_Connectome_State_Store_Single_Source_Of_Truth_For_Events_Focus_And_Timers.md`
+- `docs/connectome/state_store/SYNC_Connectome_State_Store_Sync_Current_State.md`
+- `docs/connectome/state_store/VALIDATION_Connectome_State_Store_Invariants_For_Ledger_Ordering_And_Focus.md`
+- `docs/frontend/app_shell/OBJECTIVES_App_Shell.md`
+- `docs/frontend/app_shell/PATTERNS_App_Shell.md`
+- `docs/frontend/app_shell/SYNC_App_Shell_State.md`
+- `docs/mind/membrane/PATTERN_Membrane_Modulation.md`
+- `docs/vision/PATTERNS_Platform_Vision_And_Architecture.md`
+- `docs/vision/SYNC_Platform_Vision.md`
+- `docs/vision/VALIDATION_Platform_Invariants.md`
+- `docs/vision/VOCABULARY_Platform_Terms.md`
+- `event_model/IMPLEMENTATION_Connectome_Event_Model_Code_Architecture_And_Schema.md`
+- `runtime_mind/IMPLEMENTATION_Connectome_Runtime_Engine_Code_Structure_And_Control_Surface.md`
+- `state_store/IMPLEMENTATION_Connectome_State_Store_Code_Structure_And_Zustand_Actions.md`
+
+**Sections:**
+- # Repository Map: mind-platform
+
+**Code refs:**
+- `api/connectome/graph/route.ts`
+- `api/connectome/graphs/route.ts`
+- `api/connectome/search/route.ts`
+- `api/sse/route.ts`
+- `connectome/components/connectome_page_shell_route_layout_and_control_surface.tsx`
+- `connectome/components/pannable_zoomable_zoned_flow_canvas_renderer.tsx`
+- `connectome/lib/connectome_system_map_node_edge_manifest.ts`
+- `connectome/lib/next_step_gate_and_realtime_playback_runtime_engine.ts`
+- `connectome/lib/zustand_connectome_state_store_with_atomic_commit_actions.ts`
+
+**Doc refs:**
+- `docs/connectome/flow_canvas/PATTERNS_Connectome_Flow_Canvas_Pannable_Zoomable_Zoned_System_Map_Rendering_Patterns.md`
+- `docs/connectome/page_shell/PATTERNS_Connectome_Page_Shell_Route_Composition_And_User_Control_Surface_Patterns.md`
+
+**Sections:**
+- # Repository Map: mind-platform/app
+- ## Statistics
+- ## File Tree
+- ## File Details

@@ -190,6 +190,29 @@ For anything interactive: if it's not engaging, the architecture doesn't matter.
 
 ---
 
+## Doc Chain First: Read Before Acting
+
+**Why this matters:** Code is the result of design decisions. Without reading the docs, you'll miss why the code is shaped the way it is — the tradeoffs considered, the constraints that shaped it, the mistakes already tried and rejected.
+
+Before working on a module, read its doc chain: `docs/{area}/{module}/`
+
+```
+OBJECTIVES → PATTERNS → BEHAVIORS → ALGORITHM → VALIDATION → IMPLEMENTATION
+```
+
+- **OBJECTIVES** — What are we optimizing for?
+- **PATTERNS** — Why this design?
+- **BEHAVIORS** — What should it do?
+- **ALGORITHM** — How does it work?
+- **VALIDATION** — What must be true?
+- **IMPLEMENTATION** — Where is the code?
+
+Reading the chain first means your changes will align with existing design rather than conflict with it. When docs don't exist, creating them forces you to understand before building.
+
+*Core insight: The chain is how understanding accumulates. Skipping steps means losing context.*
+
+---
+
 ## Feedback Loop: Human-Agent Collaboration
 
 Consciousness expands through interaction, not isolation.
@@ -231,6 +254,9 @@ Check: Am I adding fallbacks? Am I swallowing errors? Am I maintaining backwards
 
 **Experience** applies when: building new features, products, or interactions.
 Check: Have I validated the experience? Or am I building infrastructure for imagined requirements?
+
+**Doc Chain First** applies when: starting any task on a module.
+Check: Did I read the doc chain first? Do I understand why the code is the way it is?
 
 **Feedback Loop** applies when: encountering ambiguity or identifying opportunities.
 Check: Am I guessing or escalating? Am I implementing or proposing?

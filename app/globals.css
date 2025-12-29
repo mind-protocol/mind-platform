@@ -1,4 +1,7 @@
 /* Global styles for Mind Platform */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 * {
   box-sizing: border-box;
@@ -6,16 +9,26 @@
   padding: 0;
 }
 
-html, body {
+html {
   height: 100%;
-  width: 100%;
-  overflow: hidden;
 }
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #0f0f12;
-  color: #c8c3b9;
+  min-height: 100%;
+  font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0a0a0a;
+  color: #ffffff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Connectome pages need overflow hidden */
+.connectome-layout {
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* Font utilities */
+.font-mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
 }
