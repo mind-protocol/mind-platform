@@ -35,9 +35,16 @@ THIS:            SYNC_Nature.md (you are here)
 
 ### Nature Vocabulary
 
-10 core nature values defined:
-- `serves`, `concerns`, `blocks`, `includes`, `is about`
-- `imports`, `uses`, `executes`, `claims`, `resolves`
+Rich vocabulary defined in `nature.yaml`:
+- **base**: encompasses, contains, elaborates, exemplifies, acts on...
+- **ownership**: belongs to, owns, holds, uses, depends on, serves, claims
+- **evidential**: proves, refutes, suggests, confirms, contradicts, resolves...
+- **spatial**: shelters, welcomes, includes, protects, dominates...
+- **actor**: expresses, initiates, believes in, executes...
+- **narrative**: concerns, is about, blocks, contextualizes...
+- **import**: imports, requires, needs, extends, inherits from
+
+Plus modifiers for certainty, surprise, intensity, emotion, and temporality.
 
 ---
 
@@ -49,6 +56,7 @@ THIS:            SYNC_Nature.md (you are here)
 - Removed all references to internal physics (transparent to agents)
 - Unified vocabulary for links AND nodes
 - Renamed from "grammar" to "nature"
+- Created `nature.yaml` with rich verb vocabulary and modifiers
 
 ---
 
@@ -56,7 +64,6 @@ THIS:            SYNC_Nature.md (you are here)
 
 1. **Update templates** to use nature vocabulary consistently
 2. **Add nature validation** to MCP tools
-3. **Create nature.yaml** procedure for reference
 
 ---
 

@@ -49,22 +49,36 @@ node:
 
 ---
 
-## CORE NATURE VALUES
+## NATURE VOCABULARY
 
-### Relationship Natures (for links)
+Full vocabulary defined in `nature.yaml`. Use any verb that expresses the relationship.
 
-| Nature | Meaning | From → To |
-|--------|---------|-----------|
-| `serves` | supports, helps, works for | instance → template |
-| `concerns` | is about, affects | action → target |
-| `blocks` | prevents, hinders | blocker → blocked |
-| `includes` | contains, encompasses | container → contained |
-| `is about` | describes, explains | doc → subject |
-| `imports` | depends on, requires | dependent → dependency |
-| `uses` | employs, applies | user → tool |
-| `executes` | runs, performs | runner → runnable |
-| `claims` | takes ownership of | owner → owned |
-| `resolves` | fixes, solves | fixer → fixed |
+### Verb Categories
+
+| Category | Examples |
+|----------|----------|
+| **base** | encompasses, contains, elaborates, exemplifies, acts on, influences |
+| **ownership** | belongs to, owns, holds, uses, depends on, serves, claims |
+| **evidential** | proves, refutes, suggests, confirms, contradicts, supports, resolves |
+| **spatial** | shelters, welcomes, includes, protects, isolates, dominates |
+| **actor** | expresses, initiates, believes in, doubts, created, executes |
+| **narrative** | concerns, is about, blocks, contextualizes, is in tension with |
+| **import** | imports, requires, needs, extends, inherits from |
+
+### Modifiers
+
+Add modifiers for nuance:
+
+```yaml
+# Pre-modifiers (before verb)
+certainty: perhaps, probably, clearly, definitely
+surprise: suddenly, unexpectedly, as expected, inevitably
+intensity: intensely, actively, weakly, barely
+
+# Post-modifiers (after verb with comma)
+emotional: with confidence, with admiration, with sadness...
+temporal: temporarily, permanently, periodically, conditionally
+```
 
 ### Character Natures (for nodes)
 
@@ -124,8 +138,10 @@ link:
 
 ## CHOOSING NATURE
 
-| Scenario | Use Nature |
-|----------|------------|
+Common patterns:
+
+| Scenario | Nature |
+|----------|--------|
 | Instance to template | `serves` |
 | Task operates on X | `concerns` |
 | X blocks Y | `blocks` |
@@ -137,21 +153,14 @@ link:
 | Actor takes task | `claims` |
 | Task fixes problem | `resolves` |
 
+For richer expression, combine with modifiers:
+- `"suddenly blocks"` - unexpected interruption
+- `"definitely proves, with confidence"` - strong evidence
+- `"perhaps suggests"` - tentative connection
+
 ---
 
 ## ANTI-PATTERNS
-
-### Creating new nature values
-
-```yaml
-# WRONG - inventing nature
-nature: "my_custom_relationship"
-
-# RIGHT - use existing vocabulary
-nature: "serves"  # or concerns, blocks, etc.
-```
-
-Custom semantics go in node content, not in nature field.
 
 ### Using nature for metadata
 
@@ -167,8 +176,12 @@ priority: high
 created_at: 2024-01-01
 ```
 
+### Unrecognized verbs
+
+Use verbs from `nature.yaml`. If a verb isn't there and you need it, add it to the yaml — don't invent one-off values.
+
 ---
 
 ## MARKERS
 
-<!-- @mind:todo Consider: triggers, creates, replaces -->
+<!-- @mind:todo Add character natures to nature.yaml -->

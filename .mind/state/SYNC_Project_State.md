@@ -55,6 +55,13 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 
 ## RECENT CHANGES
 
+### 2025-12-29: Renamed Grammar to Nature, Created nature.yaml
+
+- **What:** Renamed `docs/grammar/` → `docs/nature/`, rewrote entire doc chain to focus on semantics (zero physics), renamed `link_nature_vocab.yaml` → `nature.yaml`.
+- **Why:** Nature is the MCP field for describing stimulus. Physics is transparent to agents. Rich vocabulary needed (not just 10 core verbs).
+- **Impact:** Nature vocabulary with 60+ verbs plus modifiers. Same vocabulary for links AND nodes. VOCABULARY_Nature.md references nature.yaml.
+- **Files:** docs/nature/*, templates/nature.yaml, .mind/nature.yaml
+
 ### 2025-12-29: Updated Doc Templates with Nature Vocabulary
 
 - **What:** Fixed VOCABULARY_TEMPLATE and HEALTH_TEMPLATE to use proper link `nature` vocabulary instead of custom link types.
