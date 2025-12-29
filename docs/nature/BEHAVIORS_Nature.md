@@ -1,8 +1,8 @@
-# Grammar — Behaviors
+# Nature — Behaviors
 
 ```
 STATUS: CANONICAL
-MODULE: templates/grammar
+MODULE: nature
 ```
 
 ---
@@ -10,18 +10,18 @@ MODULE: templates/grammar
 ## CHAIN
 
 ```
-OBJECTIVES:      ./OBJECTIVES_Grammar.md
-PATTERNS:        ./PATTERNS_Grammar.md
-VOCABULARY:      ./VOCABULARY_Grammar.md
-THIS:            BEHAVIORS_Grammar.md (you are here)
-ALGORITHM:       ./ALGORITHM_Grammar.md
+OBJECTIVES:      ./OBJECTIVES_Nature.md
+PATTERNS:        ./PATTERNS_Nature.md
+VOCABULARY:      ./VOCABULARY_Nature.md
+THIS:            BEHAVIORS_Nature.md (you are here)
+ALGORITHM:       ./ALGORITHM_Nature.md
 ```
 
 ---
 
 ## PURPOSE
 
-Observable behaviors of the grammar system. What happens when.
+Observable behaviors of the nature system. What happens when.
 
 ---
 

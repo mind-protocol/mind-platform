@@ -1,9 +1,9 @@
-# Grammar — Sync
+# Nature — Sync
 
 ```
 STATUS: CANONICAL
 LAST_UPDATED: 2024-12-29
-MODULE: templates/grammar
+MODULE: nature
 ```
 
 ---
@@ -11,9 +11,9 @@ MODULE: templates/grammar
 ## CHAIN
 
 ```
-IMPLEMENTATION:  ./IMPLEMENTATION_Grammar.md
-HEALTH:          ./HEALTH_Grammar.md
-THIS:            SYNC_Grammar.md (you are here)
+IMPLEMENTATION:  ./IMPLEMENTATION_Nature.md
+HEALTH:          ./HEALTH_Nature.md
+THIS:            SYNC_Nature.md (you are here)
 ```
 
 ---
@@ -37,7 +37,7 @@ THIS:            SYNC_Grammar.md (you are here)
 
 | Component | Platform | MCP Runtime |
 |-----------|----------|-------------|
-| Grammar docs | ✓ Written | — |
+| Nature docs | ✓ Written | — |
 | Task templates | ○ TODO | — |
 | Detection code | — | ○ TODO |
 | Claim code | — | ○ TODO |
@@ -50,9 +50,9 @@ THIS:            SYNC_Grammar.md (you are here)
 
 ### 2024-12-29
 
-- Created grammar doc chain in `templates/docs/grammar/`
+- Created nature doc chain in `templates/docs/nature/`
 - Defined detection → task_run → execution → resolution flow
-- Established invariants for grammar compliance
+- Established invariants for nature compliance
 - Mapped implementation structure
 
 ---
@@ -65,11 +65,11 @@ THIS:            SYNC_Grammar.md (you are here)
    - TASK_update_sync.md
    - TASK_ingest_docs.md
 
-2. **Implement grammar runtime** in MCP
-   - `runtime/grammar/detection.py`
-   - `runtime/grammar/claim.py`
-   - `runtime/grammar/execution.py`
-   - `runtime/grammar/resolution.py`
+2. **Implement nature runtime** in MCP
+   - `runtime/nature/detection.py`
+   - `runtime/nature/claim.py`
+   - `runtime/nature/execution.py`
+   - `runtime/nature/resolution.py`
 
 3. **Replace doctor with health**
    - Remove `doctor_check` tool
@@ -78,7 +78,7 @@ THIS:            SYNC_Grammar.md (you are here)
 
 4. **Update MCP tools**
    - `task_list` queries graph for task_runs
-   - `agent_spawn` uses grammar claim/execute
+   - `agent_spawn` uses nature claim/execute
 
 ---
 
@@ -92,7 +92,7 @@ None currently.
 
 **For next agent:**
 
-The grammar doc chain is complete. It defines HOW the protocol works:
+The nature doc chain is complete. It defines HOW the protocol works:
 - Problems detected → task_runs created
 - Actors claim task_runs → execute procedures
 - Completion → resolution verified

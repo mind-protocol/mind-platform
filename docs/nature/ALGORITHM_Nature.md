@@ -1,8 +1,8 @@
-# Grammar — Algorithm: The Protocol Grammar
+# Nature — Algorithm: The Protocol Nature
 
 ```
 STATUS: CANONICAL
-MODULE: templates/grammar
+MODULE: nature
 ```
 
 ---
@@ -10,20 +10,20 @@ MODULE: templates/grammar
 ## CHAIN
 
 ```
-OBJECTIVES:      ./OBJECTIVES_Grammar.md
-PATTERNS:        ./PATTERNS_Grammar.md
-VOCABULARY:      ./VOCABULARY_Grammar.md
-BEHAVIORS:       ./BEHAVIORS_Grammar.md
-THIS:            ALGORITHM_Grammar.md (you are here)
-VALIDATION:      ./VALIDATION_Grammar.md
-IMPLEMENTATION:  ./IMPLEMENTATION_Grammar.md
+OBJECTIVES:      ./OBJECTIVES_Nature.md
+PATTERNS:        ./PATTERNS_Nature.md
+VOCABULARY:      ./VOCABULARY_Nature.md
+BEHAVIORS:       ./BEHAVIORS_Nature.md
+THIS:            ALGORITHM_Nature.md (you are here)
+VALIDATION:      ./VALIDATION_Nature.md
+IMPLEMENTATION:  ./IMPLEMENTATION_Nature.md
 ```
 
 ---
 
 ## PURPOSE
 
-**This is THE grammar.** The single specification that defines how detection, task creation, execution, and resolution work.
+**This is THE nature.** The single specification that defines how detection, task creation, execution, and resolution work.
 
 MCP runtime implements this specification exactly.
 

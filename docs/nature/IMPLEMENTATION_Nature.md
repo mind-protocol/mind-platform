@@ -1,8 +1,8 @@
-# Grammar — Implementation
+# Nature — Implementation
 
 ```
 STATUS: CANONICAL
-MODULE: templates/grammar
+MODULE: nature
 ```
 
 ---
@@ -10,18 +10,18 @@ MODULE: templates/grammar
 ## CHAIN
 
 ```
-ALGORITHM:       ./ALGORITHM_Grammar.md
-VALIDATION:      ./VALIDATION_Grammar.md
-THIS:            IMPLEMENTATION_Grammar.md (you are here)
-HEALTH:          ./HEALTH_Grammar.md
-SYNC:            ./SYNC_Grammar.md
+ALGORITHM:       ./ALGORITHM_Nature.md
+VALIDATION:      ./VALIDATION_Nature.md
+THIS:            IMPLEMENTATION_Nature.md (you are here)
+HEALTH:          ./HEALTH_Nature.md
+SYNC:            ./SYNC_Nature.md
 ```
 
 ---
 
 ## PURPOSE
 
-Where the grammar is implemented and how files are structured.
+Where the nature is implemented and how files are structured.
 
 ---
 
@@ -31,19 +31,19 @@ Where the grammar is implemented and how files are structured.
 
 ```
 mind-platform/
+├── docs/
+│   └── nature/               # THIS DOC CHAIN
+│       ├── OBJECTIVES_Nature.md
+│       ├── PATTERNS_Nature.md
+│       ├── VOCABULARY_Nature.md
+│       ├── BEHAVIORS_Nature.md
+│       ├── ALGORITHM_Nature.md
+│       ├── VALIDATION_Nature.md
+│       ├── IMPLEMENTATION_Nature.md
+│       ├── HEALTH_Nature.md
+│       └── SYNC_Nature.md
+│
 ├── templates/
-│   ├── docs/
-│   │   └── grammar/           # THIS DOC CHAIN
-│   │       ├── OBJECTIVES_Grammar.md
-│   │       ├── PATTERNS_Grammar.md
-│   │       ├── VOCABULARY_Grammar.md
-│   │       ├── BEHAVIORS_Grammar.md
-│   │       ├── ALGORITHM_Grammar.md   # THE GRAMMAR
-│   │       ├── VALIDATION_Grammar.md
-│   │       ├── IMPLEMENTATION_Grammar.md
-│   │       ├── HEALTH_Grammar.md
-│   │       └── SYNC_Grammar.md
-│   │
 │   ├── tasks/                 # Task templates
 │   │   └── TASK_*.md
 │   ├── skills/                # Skill definitions
@@ -65,7 +65,7 @@ mind-mcp/
 │   └── server.py              # MCP tool handlers
 │
 └── runtime/
-    ├── grammar/               # Grammar implementation
+    ├── nature/               # Nature implementation
     │   ├── detection.py       # Section 1 of ALGORITHM
     │   ├── claim.py           # Section 2 of ALGORITHM
     │   ├── execution.py       # Section 3 of ALGORITHM
@@ -88,7 +88,7 @@ mind-mcp/
 ```
 .mind/
 ├── docs/
-│   └── grammar/               # Copied from platform
+│   └── nature/               # Copied from platform
 │       └── *.md
 │
 ├── tasks/                     # System + custom tasks
@@ -112,11 +112,11 @@ mind-mcp/
 
 | Section | File | Function |
 |---------|------|----------|
-| 1. Detection | `grammar/detection.py` | `evaluate_trigger()`, `evaluate_indicator()`, `create_task_run_if_needed()` |
-| 2. Claim | `grammar/claim.py` | `actor_find_work()`, `actor_claim()` |
-| 3. Execution | `grammar/execution.py` | `prepare_execution()`, `execute_procedure()` |
-| 4. Resolution | `grammar/resolution.py` | `complete_task_run()`, `fail_task_run()` |
-| 5. Verification | `grammar/verification.py` | `verify_resolution()` |
+| 1. Detection | `nature/detection.py` | `evaluate_trigger()`, `evaluate_indicator()`, `create_task_run_if_needed()` |
+| 2. Claim | `nature/claim.py` | `actor_find_work()`, `actor_claim()` |
+| 3. Execution | `nature/execution.py` | `prepare_execution()`, `execute_procedure()` |
+| 4. Resolution | `nature/resolution.py` | `complete_task_run()`, `fail_task_run()` |
+| 5. Verification | `nature/verification.py` | `verify_resolution()` |
 
 ### MCP Tools → Code
 
@@ -134,7 +134,7 @@ mind-mcp/
 ```
 mind init
   │
-  ├── Copy templates/docs/grammar/ → .mind/docs/grammar/
+  ├── Copy templates/docs/nature/ → .mind/docs/nature/
   ├── Copy templates/tasks/ → .mind/tasks/
   ├── Copy templates/skills/ → .mind/skills/
   ├── Copy templates/actors/ → .mind/actors/
@@ -154,7 +154,7 @@ mind init
 ```
 MCP Server Start
   │
-  ├── Load grammar from .mind/docs/grammar/ALGORITHM_Grammar.md
+  ├── Load nature from .mind/docs/nature/ALGORITHM_Nature.md
   ├── Load indicators from .mind/docs/*/HEALTH_*.md
   ├── Load tasks from .mind/tasks/TASK_*.md
   │

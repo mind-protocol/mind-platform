@@ -1,8 +1,8 @@
-# Grammar — Vocabulary
+# Nature — Vocabulary
 
 ```
 STATUS: CANONICAL
-MODULE: templates/grammar
+MODULE: nature
 ```
 
 ---
@@ -10,18 +10,18 @@ MODULE: templates/grammar
 ## CHAIN
 
 ```
-OBJECTIVES:      ./OBJECTIVES_Grammar.md
-PATTERNS:        ./PATTERNS_Grammar.md
-THIS:            VOCABULARY_Grammar.md (you are here)
-BEHAVIORS:       ./BEHAVIORS_Grammar.md
-ALGORITHM:       ./ALGORITHM_Grammar.md
+OBJECTIVES:      ./OBJECTIVES_Nature.md
+PATTERNS:        ./PATTERNS_Nature.md
+THIS:            VOCABULARY_Nature.md (you are here)
+BEHAVIORS:       ./BEHAVIORS_Nature.md
+ALGORITHM:       ./ALGORITHM_Nature.md
 ```
 
 ---
 
 ## PURPOSE
 
-Define the entities that participate in the grammar.
+Define the entities that participate in the nature.
 
 ---
 

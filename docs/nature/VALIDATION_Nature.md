@@ -1,8 +1,8 @@
-# Grammar — Validation
+# Nature — Validation
 
 ```
 STATUS: CANONICAL
-MODULE: templates/grammar
+MODULE: nature
 ```
 
 ---
@@ -10,20 +10,20 @@ MODULE: templates/grammar
 ## CHAIN
 
 ```
-OBJECTIVES:      ./OBJECTIVES_Grammar.md
-PATTERNS:        ./PATTERNS_Grammar.md
-VOCABULARY:      ./VOCABULARY_Grammar.md
-BEHAVIORS:       ./BEHAVIORS_Grammar.md
-ALGORITHM:       ./ALGORITHM_Grammar.md
-THIS:            VALIDATION_Grammar.md (you are here)
-IMPLEMENTATION:  ./IMPLEMENTATION_Grammar.md
+OBJECTIVES:      ./OBJECTIVES_Nature.md
+PATTERNS:        ./PATTERNS_Nature.md
+VOCABULARY:      ./VOCABULARY_Nature.md
+BEHAVIORS:       ./BEHAVIORS_Nature.md
+ALGORITHM:       ./ALGORITHM_Nature.md
+THIS:            VALIDATION_Nature.md (you are here)
+IMPLEMENTATION:  ./IMPLEMENTATION_Nature.md
 ```
 
 ---
 
 ## PURPOSE
 
-Invariants that must hold. If violated, the grammar implementation is broken.
+Invariants that must hold. If violated, the nature implementation is broken.
 
 ---
 

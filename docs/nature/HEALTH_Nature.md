@@ -1,8 +1,8 @@
-# Grammar — Health
+# Nature — Health
 
 ```
 STATUS: CANONICAL
-MODULE: templates/grammar
+MODULE: nature
 ```
 
 ---
@@ -10,28 +10,28 @@ MODULE: templates/grammar
 ## CHAIN
 
 ```
-VALIDATION:      ./VALIDATION_Grammar.md
-IMPLEMENTATION:  ./IMPLEMENTATION_Grammar.md
-THIS:            HEALTH_Grammar.md (you are here)
-SYNC:            ./SYNC_Grammar.md
+VALIDATION:      ./VALIDATION_Nature.md
+IMPLEMENTATION:  ./IMPLEMENTATION_Nature.md
+THIS:            HEALTH_Nature.md (you are here)
+SYNC:            ./SYNC_Nature.md
 ```
 
 ---
 
 ## PURPOSE
 
-Health indicators for the grammar system itself. Monitors that the grammar is being followed correctly.
+Health indicators for the nature system itself. Monitors that the nature is being followed correctly.
 
 ---
 
 ## FLOWS
 
-### F1: Grammar Execution Flow
+### F1: Nature Execution Flow
 
 ```
 trigger: on_tool_call
 frequency: every MCP tool invocation
-risk: high (grammar violations corrupt state)
+risk: high (nature violations corrupt state)
 ```
 
 ### F2: State Consistency Flow
@@ -51,7 +51,7 @@ risk: medium (inconsistent state causes confusion)
 ```yaml
 name: Invariant Compliance
 priority: critical
-rationale: Grammar invariants must hold at all times
+rationale: Nature invariants must hold at all times
 
 docks:
   - point: health_check.start
@@ -59,7 +59,7 @@ docks:
     payload: {}
 
 mechanism: |
-  Run all invariant checks from VALIDATION_Grammar.md
+  Run all invariant checks from VALIDATION_Nature.md
   For each violation: log error, create incident
 
 signals:

@@ -1,8 +1,8 @@
-# Grammar — Patterns
+# Nature — Patterns
 
 ```
 STATUS: CANONICAL
-MODULE: templates/grammar
+MODULE: nature
 ```
 
 ---
@@ -10,11 +10,11 @@ MODULE: templates/grammar
 ## CHAIN
 
 ```
-OBJECTIVES:      ./OBJECTIVES_Grammar.md
-THIS:            PATTERNS_Grammar.md (you are here)
-VOCABULARY:      ./VOCABULARY_Grammar.md
-BEHAVIORS:       ./BEHAVIORS_Grammar.md
-ALGORITHM:       ./ALGORITHM_Grammar.md
+OBJECTIVES:      ./OBJECTIVES_Nature.md
+THIS:            PATTERNS_Nature.md (you are here)
+VOCABULARY:      ./VOCABULARY_Nature.md
+BEHAVIORS:       ./BEHAVIORS_Nature.md
+ALGORITHM:       ./ALGORITHM_Nature.md
 ```
 
 ---
@@ -23,7 +23,7 @@ ALGORITHM:       ./ALGORITHM_Grammar.md
 
 ### State Machine, Not Workflow
 
-The grammar defines **state transitions**, not step-by-step workflows. Each entity (task_run, actor) has defined states and valid transitions between them.
+The nature defines **state transitions**, not step-by-step workflows. Each entity (task_run, actor) has defined states and valid transitions between them.
 
 ```
 task_run: pending → running → completed
@@ -32,11 +32,11 @@ task_run: pending → running → completed
 actor: ready → running → ready
 ```
 
-The grammar says what transitions are valid. Procedures say how to make them happen.
+The nature says what transitions are valid. Procedures say how to make them happen.
 
 ### Graph as Truth
 
-All state is in the graph. The grammar operates on graph state:
+All state is in the graph. The nature operates on graph state:
 - Read nodes/links to evaluate conditions
 - Write nodes/links to record transitions
 - Never hold state outside the graph
