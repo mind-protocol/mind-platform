@@ -1,0 +1,91 @@
+procedure: registry_list_orgs
+version: "1.0"
+description: Query registered organizations from the L4 registry graph
+
+triggers:
+  - event: "User browses registry orgs tab"
+  - event: "UI requests organization list"
+
+contextual_knowledge:
+  domain: |
+    Organizations = L2 entities in the Mind Protocol ecosystem.
+    Each org has: id, name, wallet, endpoint, verification state.
+    Organizations contain citizens (L1) as members.
+    citizen_count = number of citizens with org_membership pointing to this org.
+  constraints: |
+    - Only return active orgs by default
+    - Include citizen_count aggregation
+    - Include verification badge state
+  quality_criteria: |
+    Good: Returns list with id, name, citizen_count, verification, registered_date
+    Bad: Returns raw graph nodes without citizen count
+
+inputs:
+  filters:
+    verification:
+      type: enum
+      options: [all, unverified, pending, provisional, verified, rejected]
+      default: all
+    status:
+      type: enum
+      options: [all, active, pending, suspended]
+      default: active
+    limit:
+      type: number
+      default: 50
+    offset:
+      type: number
+      default: 0
+
+steps:
+  query_orgs:
+    type: query
+    auto_fetch:
+      - query:
+          find: actor
+          where:
+            type: organization
+            status: "{filters.status}"
+          limit: "{filters.limit}"
+          offset: "{filters.offset}"
+        store_as: orgs
+      - query:
+          find: actor
+          where:
+            type: organization
+          count: true
+        store_as: total_count
+    next: enrich_with_counts
+
+  enrich_with_counts:
+    type: query
+    for_each: orgs
+    auto_fetch:
+      - query:
+          find: actor
+          where:
+            type: citizen
+            org_membership: "{item.id}"
+          count: true
+        store_as: "citizen_counts.{item.id}"
+    next: transform_response
+
+  transform_response:
+    type: transform
+    map: orgs
+    to:
+      id: "{item.id}"
+      name: "{item.name}"
+      wallet: "{item.wallet}"
+      endpoint: "{item.endpoint}"
+      status: "{item.status}"
+      registered_date: "{item.created_at}"
+      citizen_count: "{citizen_counts[item.id] | default(0)}"
+      verification: "{item.verification | default('unverified')}"
+    next: $complete
+
+output:
+  returns:
+    items: "{transformed}"
+    count: "{total_count}"
+    hasMore: "{total_count > filters.offset + filters.limit}"

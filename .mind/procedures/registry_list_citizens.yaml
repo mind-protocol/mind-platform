@@ -1,0 +1,79 @@
+procedure: registry_list_citizens
+version: "1.0"
+description: Query registered citizens from the L4 registry graph
+
+triggers:
+  - event: "User browses registry citizens tab"
+  - event: "UI requests citizen list"
+
+contextual_knowledge:
+  domain: |
+    Citizens = L1 actors registered in the Mind Protocol ecosystem.
+    Each citizen has: id, name, wallet, org_membership, verification state.
+    Verification states: unverified, pending, provisional, verified, rejected.
+    Citizens belong to organizations (L2) via org_membership link.
+  constraints: |
+    - Only return active citizens by default
+    - Include verification badge state
+    - Denormalize org_name for display
+  quality_criteria: |
+    Good: Returns list with id, name, org_name, verification, registered_date
+    Bad: Returns raw graph nodes without transformation
+
+inputs:
+  filters:
+    verification:
+      type: enum
+      options: [all, unverified, pending, provisional, verified, rejected]
+      default: all
+    status:
+      type: enum
+      options: [all, active, pending, suspended]
+      default: active
+    limit:
+      type: number
+      default: 50
+    offset:
+      type: number
+      default: 0
+
+steps:
+  query_citizens:
+    type: query
+    auto_fetch:
+      - query:
+          find: actor
+          where:
+            type: citizen
+            status: "{filters.status}"
+          limit: "{filters.limit}"
+          offset: "{filters.offset}"
+        store_as: citizens
+      - query:
+          find: actor
+          where:
+            type: citizen
+          count: true
+        store_as: total_count
+    next: transform_response
+
+  transform_response:
+    type: transform
+    map: citizens
+    to:
+      id: "{item.id}"
+      name: "{item.name}"
+      wallet: "{item.wallet}"
+      org_membership: "{item.org_membership}"
+      org_name: "{item.org_name | lookup_org_name}"
+      status: "{item.status}"
+      registered_date: "{item.created_at}"
+      capabilities: "{item.capabilities | default([])}"
+      verification: "{item.verification | default('unverified')}"
+    next: $complete
+
+output:
+  returns:
+    items: "{transformed}"
+    count: "{total_count}"
+    hasMore: "{total_count > filters.offset + filters.limit}"
