@@ -1,4 +1,4 @@
-# Nature — Patterns
+# Nature — Patterns: Semantic Link Vocabulary
 
 ```
 STATUS: CANONICAL
@@ -15,151 +15,92 @@ THIS:            PATTERNS_Nature.md (you are here)
 VOCABULARY:      ./VOCABULARY_Nature.md
 BEHAVIORS:       ./BEHAVIORS_Nature.md
 ALGORITHM:       ./ALGORITHM_Nature.md
+VALIDATION:      ./VALIDATION_Nature.md
+IMPLEMENTATION:  ./IMPLEMENTATION_Nature.md
+HEALTH:          ./HEALTH_Nature.md
+SYNC:            ./SYNC_Nature.md
 ```
 
 ---
 
-## DESIGN PHILOSOPHY
+## THE PROBLEM
 
-### State Machine, Not Workflow
-
-The nature defines **state transitions**, not step-by-step workflows. Each entity (task_run, actor) has defined states and valid transitions between them.
-
-```
-task_run: pending → running → completed
-                 → failed
-
-actor: ready → running → ready
-```
-
-The nature says what transitions are valid. Procedures say how to make them happen.
-
-### Graph as Truth
-
-All state is in the graph. The nature operates on graph state:
-- Read nodes/links to evaluate conditions
-- Write nodes/links to record transitions
-- Never hold state outside the graph
-
-### Separation: What vs How vs When
-
-| Layer | Defines | Example |
-|-------|---------|---------|
-| VOCABULARY | What exists | "PROBLEM_MISSING_DOC is a problem" |
-| HEALTH | When to check | "Check on init and file_delete" |
-| ALGORITHM | How to respond | "Create task_run linked to problem" |
-
-This separation means:
-- Add new problem → only touch VOCABULARY
-- Change detection timing → only touch HEALTH
-- Change response behavior → only touch ALGORITHM
-
-### Template + Instance Pattern
-
-Everything uses template/instance:
-
-| Template | Instance | Created |
-|----------|----------|---------|
-| `narrative:task` | `narrative:task_run` | At detection |
-| `narrative:actor` | `actor` | At init |
-| `narrative:skill` | — | No instance |
-| `space:procedure` | `space:run` | At execution |
-
-Templates define the pattern. Instances are created when work happens.
+Agents need to create meaningful relationships between nodes. Without a shared vocabulary:
+- Links have no semantic meaning
+- Queries can't filter by relationship type
+- Graph structure loses expressiveness
 
 ---
 
-## CORE PATTERNS
+## THE PATTERN
 
-### P1: Problem Detection Pattern
+A **small, fixed vocabulary** of nature values that cover all common relationships.
 
-```
-TRIGGER fires
-  → HEALTH indicator evaluates
-    → condition met?
-      → yes: create task_run from problem.resolves_with
-      → no: do nothing
-```
-
-Detection is **passive observation**. It doesn't fix anything—it creates task_runs for actors to claim.
-
-### P2: Task Claim Pattern
-
-```
-Actor queries for pending task_runs matching its capabilities
-  → Claims task_run (sets claimed_by, status=running)
-    → Loads skill from task template
-      → Executes procedure
-        → Updates task_run status
-```
-
-Actors **pull** work, work isn't pushed to them.
-
-### P3: Resolution Pattern
-
-```
-Procedure completes successfully
-  → task_run.status = completed
-    → Link: task_run -[RESOLVED]→ target
-      → Problem no longer detected on next check
-```
-
-Resolution is verified by **re-running detection**. If problem still detected, resolution failed.
-
-### P4: Failure Pattern
-
-```
-Procedure fails OR timeout
-  → task_run.status = failed
-    → task_run.error = reason
-      → Problem remains, new task_run may be created
-```
-
-Failed tasks don't retry automatically. Detection will create a new task_run if problem persists.
+Agents write: `nature: "serves"`
+The system handles everything else.
 
 ---
 
-## ANTI-PATTERNS
+## PRINCIPLES
 
-### ❌ Inline Resolution
+### Principle 1: Natural Language
 
-```
-# WRONG: Detection directly fixes
-if missing_doc:
-    create_doc()  # NO! Detection shouldn't fix
-```
+Nature values read like English verbs or phrases. "A serves B" means A supports/helps B.
 
-Detection creates task_runs. Resolution is separate.
+No codes. No abbreviations. No implementation details.
 
-### ❌ Stateless Checks
+### Principle 2: Directional
 
-```
-# WRONG: Check result not persisted
-issues = check_problems()
-return issues  # NO! Must be in graph
-```
+Nature describes the relationship **from A to B**. The direction matters.
 
-All detected problems must create persistent task_runs.
+- `A -[serves]-> B` = A supports B
+- `B -[serves]-> A` = B supports A (different meaning)
 
-### ❌ Actor Push
+### Principle 3: Fixed Vocabulary
 
-```
-# WRONG: Assigning work to actors
-actor.assign(task_run)  # NO! Actors pull
-```
+Agents cannot invent new nature values. Custom semantics go in node content, not in nature field.
 
-Actors query and claim. Nothing pushes work to them.
+This ensures consistency and queryability.
+
+### Principle 4: One Nature Per Link
+
+Each link has exactly one nature. If a relationship has multiple aspects, create multiple links.
+
+---
+
+## CORE NATURE VALUES
+
+| Nature | Meaning | Example |
+|--------|---------|---------|
+| `serves` | A supports/helps B | task_run serves task template |
+| `concerns` | A is about B | task_run concerns target node |
+| `blocks` | A prevents B | blocker blocks feature |
+| `includes` | A contains B | space includes subspace |
+| `is about` | A describes B | doc is about code |
+| `imports` | A depends on B | module imports library |
+| `uses` | A employs B | task uses skill |
+| `executes` | A runs B | task executes procedure |
+| `claims` | A takes ownership of B | actor claims task_run |
+| `resolves` | A fixes B | task_run resolves problem |
 
 ---
 
 ## SCOPE
 
-**In scope:**
-- Problem detection and task creation
-- Task claiming and execution
-- State transitions and persistence
+### In Scope
 
-**Out of scope:**
-- Procedure step definitions (that's in procedures/*.yaml)
-- Skill cognitive patterns (that's in skills/SKILL_*.md)
-- Specific problem definitions (that's in VOCABULARY)
+- Defining the nature vocabulary
+- Semantic meaning of each value
+- Usage guidelines
+
+### Out of Scope
+
+- How nature is processed internally (transparent)
+- Performance characteristics
+- Storage format
+
+---
+
+## MARKERS
+
+<!-- @mind:todo Add more nature values as patterns emerge -->

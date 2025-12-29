@@ -1,4 +1,4 @@
-# Nature — Validation
+# Nature — Validation: What Makes Valid Nature Usage
 
 ```
 STATUS: CANONICAL
@@ -23,176 +23,102 @@ IMPLEMENTATION:  ./IMPLEMENTATION_Nature.md
 
 ## PURPOSE
 
-Invariants that must hold. If violated, the nature implementation is broken.
+Rules that define valid nature usage. If violated, the link/node is malformed.
 
 ---
 
 ## INVARIANTS
 
-### I1: Single Active Task Per Target-Problem
+### V1: Known Nature Values Only
 
 ```
-INVARIANT: For any (problem_id, target) pair, at most ONE task_run
-           can have status IN ['pending', 'running']
+INVARIANT: nature must be one of the defined values
 
-VIOLATION: Multiple active task_runs for same problem+target
+VALID:   serves, concerns, blocks, includes, is about,
+         imports, uses, executes, claims, resolves
 
-CHECK:
-  MATCH (tr1:narrative {type: 'task_run', status: 'pending'})
-        -[:TARGET]-> (t) <-[:TARGET]-
-        (tr2:narrative {type: 'task_run', status: 'pending'})
-  WHERE tr1 <> tr2
-  AND tr1.problem_id = tr2.problem_id
-  RETURN count(*) = 0
+INVALID: "my_custom_nature", "related_to", "linked"
 ```
 
-### I2: Claimed Task Has Actor
+### V2: Nature is Required on Links
 
 ```
-INVARIANT: If task_run.status = 'running', then CLAIMED_BY link exists
+INVARIANT: every link must have a nature field
 
-VIOLATION: Running task_run without actor claim
+VALID:
+  link:
+    from: a
+    to: b
+    nature: serves
 
-CHECK:
-  MATCH (tr:narrative {type: 'task_run', status: 'running'})
-  WHERE NOT (tr)-[:CLAIMED_BY]->(:actor)
-  RETURN count(*) = 0
+INVALID:
+  link:
+    from: a
+    to: b
+    # missing nature
 ```
 
-### I3: Running Actor Has Task
+### V3: Direction Consistency
 
 ```
-INVARIANT: If actor.status = 'running', then actor has claimed a task_run
+INVARIANT: nature semantics match direction
 
-VIOLATION: Running actor without claimed task
+VALID:   instance -[serves]-> template
+INVALID: template -[serves]-> instance
 
-CHECK:
-  MATCH (a:actor {status: 'running'})
-  WHERE NOT (:narrative {type: 'task_run', status: 'running'})-[:CLAIMED_BY]->(a)
-  RETURN count(*) = 0
+VALID:   actor -[claims]-> task_run
+INVALID: task_run -[claims]-> actor
 ```
 
-### I4: Completed Task Has Resolution
+### V4: One Nature Per Link
 
 ```
-INVARIANT: If task_run.status = 'completed', then RESOLVED link exists
+INVARIANT: each link has exactly one nature
 
-VIOLATION: Completed task without resolution link
+VALID:
+  - from: a, to: b, nature: serves
+  - from: a, to: c, nature: uses
 
-CHECK:
-  MATCH (tr:narrative {type: 'task_run', status: 'completed'})
-  WHERE NOT (tr)-[:RESOLVED]->()
-  RETURN count(*) = 0
+INVALID:
+  - from: a, to: b, nature: [serves, concerns]
 ```
 
-### I5: Task Run Has Template
+### V5: Appropriate Nature for Node Types
 
 ```
-INVARIANT: Every task_run has [OF] link to task template
+INVARIANT: nature makes semantic sense for node types
 
-VIOLATION: Orphan task_run
+VALID:   task_run -[serves]-> task (instance to template)
+INVALID: task_run -[includes]-> task (wrong semantic)
 
-CHECK:
-  MATCH (tr:narrative {type: 'task_run'})
-  WHERE NOT (tr)-[:OF]->(:narrative {type: 'task'})
-  RETURN count(*) = 0
-```
-
-### I6: Task Run Has Target
-
-```
-INVARIANT: Every task_run has [TARGET] link
-
-VIOLATION: Task_run without target
-
-CHECK:
-  MATCH (tr:narrative {type: 'task_run'})
-  WHERE NOT (tr)-[:TARGET]->()
-  RETURN count(*) = 0
-```
-
-### I7: Actor Has Template
-
-```
-INVARIANT: Every actor has [OF] link to actor template
-
-VIOLATION: Orphan actor
-
-CHECK:
-  MATCH (a:actor)
-  WHERE NOT (a)-[:OF]->(:narrative {type: 'actor'})
-  RETURN count(*) = 0
-```
-
-### I8: Terminal States Are Final
-
-```
-INVARIANT: task_run in ['completed', 'failed'] never changes status
-
-VIOLATION: Status change after terminal state
-
-CHECK: (Requires temporal tracking - verify via audit log)
-```
-
-### I9: Pending Precedes Running
-
-```
-INVARIANT: task_run must pass through 'pending' before 'running'
-
-VIOLATION: Direct creation in running state
-
-CHECK: created_at < claimed_at for all running task_runs
-```
-
-### I10: No Circular Claims
-
-```
-INVARIANT: An actor cannot claim a task_run that targets itself
-
-VIOLATION: Self-referential task
-
-CHECK:
-  MATCH (tr:narrative {type: 'task_run'})-[:TARGET]->(a:actor)
-        <-[:CLAIMED_BY]-(tr)
-  RETURN count(*) = 0
+VALID:   actor -[claims]-> task_run (owner to work)
+INVALID: task -[claims]-> actor (wrong direction)
 ```
 
 ---
 
-## BEHAVIORAL INVARIANTS
+## VALIDATION CHECKS
 
-### B1: Detection Idempotence
-
-```
-INVARIANT: Running detection twice with same state produces same result
-           (no duplicate task_runs)
-
-TEST: Run detection, run again immediately, verify no new task_runs
-```
-
-### B2: Claim Atomicity
-
-```
-INVARIANT: Claiming is atomic - no partial claims
-
-TEST: Concurrent claim attempts result in exactly one success
-```
-
-### B3: Resolution Verification
-
-```
-INVARIANT: After task_run completed, re-running detection for same
-           problem+target should not detect problem
-
-TEST: Complete task, run detection, verify no new task_run
-```
+| Check | Pass Condition |
+|-------|----------------|
+| Known nature | nature ∈ vocabulary |
+| Has nature | link.nature is not null |
+| Direction valid | FROM/TO types match nature semantics |
+| Single nature | typeof nature is string, not array |
 
 ---
 
-## VALIDATION SCHEDULE
+## ERROR MESSAGES
 
-| Invariant | Check Frequency |
-|-----------|-----------------|
-| I1-I7 | Every health_check |
-| I8-I10 | On state transitions |
-| B1-B3 | Integration tests |
+| Violation | Message |
+|-----------|---------|
+| Unknown nature | `Invalid nature '{value}'. Use: serves, concerns, blocks, ...` |
+| Missing nature | `Link requires nature field` |
+| Wrong direction | `Nature '{nature}' expects {expected_from} -> {expected_to}` |
+| Multiple natures | `Link can only have one nature` |
+
+---
+
+## MARKERS
+
+<!-- @mind:todo Add validation for node character natures -->

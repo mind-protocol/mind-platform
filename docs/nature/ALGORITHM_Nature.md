@@ -1,4 +1,4 @@
-# Nature — Algorithm: The Protocol Nature
+# Nature — Algorithm: Choosing the Right Nature
 
 ```
 STATUS: CANONICAL
@@ -23,287 +23,144 @@ IMPLEMENTATION:  ./IMPLEMENTATION_Nature.md
 
 ## PURPOSE
 
-**This is THE nature.** The single specification that defines how detection, task creation, execution, and resolution work.
-
-MCP runtime implements this specification exactly.
+How to choose the correct nature value for a link or node.
 
 ---
 
-## 1. DETECTION
-
-### 1.1 Trigger Evaluation
+## DECISION TREE
 
 ```
-ON trigger(type, payload):
-  indicators = load_health_indicators()
-
-  FOR each indicator IN indicators:
-    IF indicator.trigger MATCHES type:
-      evaluate_indicator(indicator, payload)
-```
-
-### 1.2 Indicator Evaluation
-
-```
-FUNCTION evaluate_indicator(indicator, payload):
-  condition = indicator.condition
-  result = evaluate_condition(condition, payload)
-
-  IF result.problem_detected:
-    problem_id = result.problem_id
-    target = result.target
-
-    create_task_run_if_needed(problem_id, target)
-```
-
-### 1.3 Task Run Creation
-
-```
-FUNCTION create_task_run_if_needed(problem_id, target):
-  # Check for existing pending/running task_run
-  existing = QUERY graph:
-    MATCH (tr:narrative {type: 'task_run', status: IN ['pending', 'running']})
-    -[:TARGET]-> (target)
-    -[:OF]-> (t:narrative {type: 'task'})
-    WHERE t.resolves = problem_id
-    RETURN tr
-
-  IF existing IS NOT NULL:
-    RETURN  # Already being handled
-
-  # Get task template from problem definition
-  problem = lookup_problem(problem_id)
-  task_id = problem.resolves_with
-  task = get_node(task_id)
-
-  # Create task_run
-  task_run = CREATE node:
-    node_type: narrative
-    type: task_run
-    id: "task_run_" + uuid()
-    status: pending
-    created_at: now()
-    synthesis: "Task run: " + task.name + " on " + target.id
-
-  # Link to template and target
-  CREATE link: task_run -[OF]-> task
-  CREATE link: task_run -[TARGET]-> target
+What relationship are you describing?
+│
+├── Instance to template?
+│   └── serves
+│
+├── Action to target?
+│   └── concerns
+│
+├── Owner to owned?
+│   └── claims
+│
+├── Fixer to fixed?
+│   └── resolves
+│
+├── Blocker to blocked?
+│   └── blocks
+│
+├── Container to contained?
+│   └── includes
+│
+├── Doc to subject?
+│   └── is about
+│
+├── Dependent to dependency?
+│   └── imports
+│
+├── User to tool?
+│   └── uses
+│
+└── Runner to runnable?
+    └── executes
 ```
 
 ---
 
-## 2. CLAIM
+## STEP BY STEP
 
-### 2.1 Actor Query
+### Step 1: Identify the Relationship Type
 
-```
-FUNCTION actor_find_work(actor):
-  actor_type = actor.type
-  capabilities = get_actor_capabilities(actor_type)
+Ask: "What is the FROM node doing to/with the TO node?"
 
-  # Find pending task_runs this actor can handle
-  candidates = QUERY graph:
-    MATCH (tr:narrative {type: 'task_run', status: 'pending'})
-    -[:OF]-> (t:narrative {type: 'task'})
-    WHERE t.executor IN capabilities
-    RETURN tr, t
-    ORDER BY tr.created_at ASC
+| If FROM is... | And TO is... | Then nature is... |
+|---------------|--------------|-------------------|
+| an instance | its template | `serves` |
+| a task/action | what it operates on | `concerns` |
+| an owner | what it owns | `claims` |
+| a resolver | what it resolved | `resolves` |
+| a blocker | what it blocks | `blocks` |
+| a container | what it contains | `includes` |
+| documentation | what it describes | `is about` |
+| a dependent | what it needs | `imports` |
+| a user | what it uses | `uses` |
+| a runner | what it runs | `executes` |
 
-  RETURN candidates
-```
+### Step 2: Verify Direction
 
-### 2.2 Claim Task Run
+Nature describes **FROM → TO**. Check that direction makes sense:
 
-```
-FUNCTION actor_claim(actor, task_run):
-  # Verify still pending (race condition guard)
-  IF task_run.status != 'pending':
-    RETURN error("Already claimed")
+- `task_run -[serves]-> task` ✓ (instance serves template)
+- `task -[serves]-> task_run` ✗ (backwards)
 
-  # Update task_run
-  UPDATE task_run:
-    status: running
-    claimed_at: now()
+### Step 3: One Nature Per Link
 
-  # Create claim link
-  CREATE link: task_run -[CLAIMED_BY]-> actor
+If relationship has multiple aspects, create multiple links:
 
-  # Update actor
-  UPDATE actor:
-    status: running
-
-  RETURN success
+```yaml
+# Task both uses a skill AND executes a procedure
+links:
+  - from: task_123
+    to: skill_debug
+    nature: uses
+  - from: task_123
+    to: procedure_investigate
+    nature: executes
 ```
 
 ---
 
-## 3. EXECUTION
+## COMMON PATTERNS
 
-### 3.1 Load Execution Context
+### Template/Instance Pattern
 
-```
-FUNCTION prepare_execution(task_run):
-  task = FOLLOW task_run -[OF]-> task
-  target = FOLLOW task_run -[TARGET]-> target
-  skill = FOLLOW task -[USES]-> skill (optional)
-  procedure = FOLLOW task -[EXECUTES]-> procedure
-
-  RETURN {task, target, skill, procedure}
+```yaml
+# Always: instance -[serves]-> template
+task_run -[serves]-> task
+actor -[serves]-> actor_template
+procedure_run -[serves]-> procedure
 ```
 
-### 3.2 Execute Procedure
+### Work Assignment Pattern
 
-```
-FUNCTION execute_procedure(procedure, context):
-  # Create run instance
-  run = CREATE node:
-    node_type: space
-    type: run
-    id: "run_" + uuid()
-    status: active
-    current_step: procedure.steps[0].id
-    context: context
+```yaml
+# Actor claims work
+actor -[claims]-> task_run
 
-  CREATE link: run -[OF]-> procedure
+# Task concerns target
+task_run -[concerns]-> target_node
 
-  # Execute steps
-  FOR each step IN procedure.steps:
-    UPDATE run.current_step = step.id
-
-    result = execute_step(step, run.context)
-
-    IF result.error:
-      RETURN {status: 'failed', error: result.error}
-
-    IF step.branches:
-      next_step = evaluate_branches(step.branches, result)
-      CONTINUE from next_step
-
-  UPDATE run.status = completed
-  RETURN {status: 'completed'}
+# Task resolves problem
+task_run -[resolves]-> problem
 ```
 
-### 3.3 Agent Execution (for executor=agent)
+### Documentation Pattern
 
-```
-FUNCTION agent_execute(actor, task_run, context):
-  skill = context.skill
+```yaml
+# Doc describes code
+PATTERNS.md -[is about]-> module
 
-  IF skill IS NOT NULL:
-    # Load skill instructions
-    instructions = skill.content
-    # Agent follows skill cognitive pattern
-    # (This happens in the LLM, not in code)
-
-  # Execute procedure with agent interaction
-  result = execute_procedure_interactive(context.procedure, context)
-
-  RETURN result
+# Code imports dependency
+module -[imports]-> library
 ```
 
-### 3.4 Automated Execution (for executor=automated)
+### Hierarchy Pattern
 
-```
-FUNCTION automated_execute(task_run, context):
-  procedure = context.procedure
-
-  # Execute procedure without agent
-  # Each step has code_action that runs directly
-  result = execute_procedure_automated(procedure, context)
-
-  RETURN result
+```yaml
+# Parent includes child
+space -[includes]-> subspace
+category -[includes]-> item
 ```
 
 ---
 
-## 4. RESOLUTION
+## WHEN UNSURE
 
-### 4.1 Successful Completion
-
-```
-FUNCTION complete_task_run(task_run, result):
-  target = FOLLOW task_run -[TARGET]-> target
-  actor = FOLLOW task_run -[CLAIMED_BY]-> actor
-
-  # Update task_run
-  UPDATE task_run:
-    status: completed
-    completed_at: now()
-    result: result
-
-  # Create resolution link
-  CREATE link: task_run -[RESOLVED]-> target
-
-  # Release actor
-  UPDATE actor:
-    status: ready
-```
-
-### 4.2 Failed Completion
-
-```
-FUNCTION fail_task_run(task_run, error):
-  actor = FOLLOW task_run -[CLAIMED_BY]-> actor
-
-  # Update task_run
-  UPDATE task_run:
-    status: failed
-    failed_at: now()
-    error: error
-
-  # Release actor
-  UPDATE actor:
-    status: ready
-
-  # No RESOLVED link - problem persists
-```
+1. **Read the nature aloud**: "A serves B" - does that sound right?
+2. **Check VOCABULARY_Nature.md** for exact definitions
+3. **Look at existing links** in the graph for similar patterns
+4. **Default to `concerns`** if truly ambiguous - it's the most general
 
 ---
 
-## 5. VERIFICATION
+## MARKERS
 
-### 5.1 Resolution Verification
-
-```
-FUNCTION verify_resolution(task_run):
-  target = FOLLOW task_run -[TARGET]-> target
-  task = FOLLOW task_run -[OF]-> task
-  problem_id = task.resolves
-
-  # Re-run detection for this specific target
-  result = evaluate_problem_for_target(problem_id, target)
-
-  IF result.problem_detected:
-    RETURN {verified: false, reason: "Problem still exists"}
-
-  RETURN {verified: true}
-```
-
----
-
-## STATE MACHINE SUMMARY
-
-```
-         ┌─────────────────────────────────────────┐
-         │                                         │
-         ▼                                         │
-    [pending] ──claim──▶ [running] ──success──▶ [completed]
-         │                   │
-         │                   │
-         │                   └──failure──▶ [failed]
-         │                                    │
-         │                                    │
-         └────────────────────────────────────┘
-                   (new task_run on retry)
-```
-
----
-
-## PSEUDOCODE CONVENTIONS
-
-- `QUERY graph:` = Cypher-like graph query
-- `CREATE node:` = Create node with properties
-- `CREATE link:` = Create link between nodes
-- `UPDATE x:` = Update node properties
-- `FOLLOW x -[R]-> y` = Traverse link
-- `RETURN` = Return value from function
+<!-- @mind:todo Add examples from real graph data -->

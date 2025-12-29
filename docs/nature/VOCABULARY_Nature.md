@@ -1,4 +1,4 @@
-# Nature — Vocabulary
+# Nature — Vocabulary: The Stimulus Field
 
 ```
 STATUS: CANONICAL
@@ -21,207 +21,154 @@ ALGORITHM:       ./ALGORITHM_Nature.md
 
 ## PURPOSE
 
-Define the entities that participate in the nature.
+Define the `nature` field - the unified way to describe stimulus between entities.
+
+**Same vocabulary applies to links AND nodes.**
 
 ---
 
-## NODE TYPES
+## WHAT IS NATURE
 
-### task
+Nature describes **what kind of stimulus** flows between entities.
 
-**Template node:** `narrative` with `type: task`
-
-Defines a type of work that can be done.
-
-```yaml
-node_type: narrative
-type: task
-id: task_{snake_case_name}
-
-content: |
-  Definition, inputs, outputs, skill, procedure
-synthesis: "Task: {name} - {one line description}"
-```
-
-**Links from task:**
-- `[USES]` → skill (narrative:skill)
-- `[EXECUTES]` → procedure (space:procedure)
-
-### task_run
-
-**Instance node:** `narrative` with `type: task_run`
-
-A specific execution of a task.
+- On a **link**: nature describes the relationship from A to B
+- On a **node**: nature describes the node's inherent character
 
 ```yaml
-node_type: narrative
-type: task_run
-id: task_run_{uuid}
-status: pending | running | completed | failed
+# Link nature
+link:
+  from: task_run_123
+  to: task_template_456
+  nature: serves
 
-content: |
-  Execution context, error if failed
-synthesis: "Task run: {task_name} on {target} - {status}"
-```
-
-**Links from task_run:**
-- `[OF]` → task template (narrative:task)
-- `[TARGET]` → affected node (thing, narrative, etc.)
-- `[CLAIMED_BY]` → actor executing
-
-### actor
-
-**Instance node:** `actor` with `type: {actor_name}`
-
-An entity that executes tasks. Created at init from actor templates.
-
-```yaml
-node_type: actor
-type: witness | groundwork | monitor | embedder | ...
-id: actor_{name}
-status: ready | running
-
-content: |
-  Current state, last activity
-synthesis: "Actor: {name} ({type}) - {status}"
-```
-
-**Links from actor:**
-- `[OF]` → actor template (narrative:actor)
-- `[CLAIMS]` → task_run being executed
-
-### actor template
-
-**Template node:** `narrative` with `type: actor`
-
-Defines an actor's capabilities and triggers.
-
-```yaml
-node_type: narrative
-type: actor
-id: actor_template_{name}
-
-content: |
-  Purpose, capabilities, triggers
-synthesis: "Actor template: {name} - {purpose}"
-```
-
-### skill
-
-**Template node:** `narrative` with `type: skill`
-
-Cognitive pattern for agents. No instances—skills are referenced, not instantiated.
-
-```yaml
-node_type: narrative
-type: skill
-id: skill_{snake_case_name}
-
-content: |
-  Gates, process, outputs
-synthesis: "Skill: {name} - {purpose}"
-```
-
-### procedure
-
-**Template node:** `space` with `type: procedure`
-
-Structured steps. Creates run instances during execution.
-
-```yaml
-node_type: space
-type: procedure
-id: procedure_{name}
-
-content: |
-  Steps, branching logic
-synthesis: "Procedure: {name} - {purpose}"
-```
-
-### run
-
-**Instance node:** `space` with `type: run`
-
-Execution state of a procedure.
-
-```yaml
-node_type: space
-type: run
-id: run_{uuid}
-status: active | completed | aborted
-current_step: {step_id}
-
-content: |
-  Execution context, answers collected
-synthesis: "Run: {procedure_name} - step {current_step}"
+# Node nature (in content/metadata)
+node:
+  type: task_run
+  nature: execution  # inherent character
 ```
 
 ---
 
-## PROBLEMS
+## CORE NATURE VALUES
 
-Problems are defined in module VOCABULARY docs, not here. This doc defines the **structure** of a problem definition.
+### Relationship Natures (for links)
 
-### Problem Definition Structure
+| Nature | Meaning | From → To |
+|--------|---------|-----------|
+| `serves` | supports, helps, works for | instance → template |
+| `concerns` | is about, affects | action → target |
+| `blocks` | prevents, hinders | blocker → blocked |
+| `includes` | contains, encompasses | container → contained |
+| `is about` | describes, explains | doc → subject |
+| `imports` | depends on, requires | dependent → dependency |
+| `uses` | employs, applies | user → tool |
+| `executes` | runs, performs | runner → runnable |
+| `claims` | takes ownership of | owner → owned |
+| `resolves` | fixes, solves | fixer → fixed |
+
+### Character Natures (for nodes)
+
+| Nature | Meaning | Applies To |
+|--------|---------|------------|
+| `template` | defines pattern | task, actor, procedure |
+| `instance` | specific execution | task_run, actor, run |
+| `reference` | pointer, not copied | skill, config |
+| `event` | point in time | moment |
+| `state` | persistent condition | status nodes |
+
+---
+
+## USAGE EXAMPLES
+
+### Creating a task_run
 
 ```yaml
-id: PROBLEM_{UPPER_SNAKE_CASE}
-definition: |
-  Clear description of the abnormal situation.
-  What makes this a problem. Why it matters.
+# The task_run node
+node:
+  node_type: narrative
+  type: task_run
+  nature: instance  # it's an instance, not a template
 
-severity: critical | warning | info
-  # critical = blocks work, must fix immediately
-  # warning = degraded state, should fix soon
-  # info = notable condition, fix when convenient
+# Link to template
+link:
+  from: task_run_123
+  to: task_create_doc
+  nature: serves  # instance serves template
 
-resolves_with: TASK_{task_name}
-  # Task template that fixes this problem
+# Link to target
+link:
+  from: task_run_123
+  to: missing_doc_node
+  nature: concerns  # task concerns the target
+```
 
-detection_hint: |
-  Brief hint for HEALTH on how to detect this.
-  Full detection logic goes in HEALTH.md
+### Actor claiming work
+
+```yaml
+link:
+  from: actor_groundwork
+  to: task_run_123
+  nature: claims  # actor claims the task_run
+```
+
+### Problem resolution
+
+```yaml
+link:
+  from: task_run_123
+  to: problem_node
+  nature: resolves  # task_run resolves the problem
 ```
 
 ---
 
-## STATUS VALUES
+## CHOOSING NATURE
 
-### task_run.status
-
-| Status | Meaning | Transitions to |
-|--------|---------|----------------|
-| `pending` | Created, waiting for actor | `running` |
-| `running` | Actor claimed and executing | `completed`, `failed` |
-| `completed` | Successfully resolved | — (terminal) |
-| `failed` | Execution failed | — (terminal) |
-
-### actor.status
-
-| Status | Meaning | Transitions to |
-|--------|---------|----------------|
-| `ready` | Available to claim tasks | `running` |
-| `running` | Executing a task | `ready` |
-
-### run.status (procedure)
-
-| Status | Meaning | Transitions to |
-|--------|---------|----------------|
-| `active` | Executing steps | `completed`, `aborted` |
-| `completed` | All steps done | — (terminal) |
-| `aborted` | Cancelled | — (terminal) |
+| Scenario | Use Nature |
+|----------|------------|
+| Instance to template | `serves` |
+| Task operates on X | `concerns` |
+| X blocks Y | `blocks` |
+| Parent contains child | `includes` |
+| Doc describes code | `is about` |
+| Module needs library | `imports` |
+| Task needs skill | `uses` |
+| Task runs procedure | `executes` |
+| Actor takes task | `claims` |
+| Task fixes problem | `resolves` |
 
 ---
 
-## LINK TYPES
+## ANTI-PATTERNS
 
-All links use the universal `link` type with semantic properties.
+### Creating new nature values
 
-| Semantic | From | To | Meaning |
-|----------|------|-----|---------|
-| `OF` | instance | template | "is instance of" |
-| `TARGET` | task_run | any node | "operates on" |
-| `CLAIMED_BY` | task_run | actor | "being executed by" |
-| `USES` | task | skill | "requires skill" |
-| `EXECUTES` | task | procedure | "runs procedure" |
-| `RESOLVED` | task_run | target | "fixed this" |
+```yaml
+# WRONG - inventing nature
+nature: "my_custom_relationship"
+
+# RIGHT - use existing vocabulary
+nature: "serves"  # or concerns, blocks, etc.
+```
+
+Custom semantics go in node content, not in nature field.
+
+### Using nature for metadata
+
+```yaml
+# WRONG - nature is not metadata
+nature: "high_priority"
+nature: "created_2024"
+
+# RIGHT - nature describes stimulus type
+nature: "serves"
+# Put metadata in node properties
+priority: high
+created_at: 2024-01-01
+```
+
+---
+
+## MARKERS
+
+<!-- @mind:todo Consider: triggers, creates, replaces -->

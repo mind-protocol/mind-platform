@@ -1,4 +1,4 @@
-# Nature — Health
+# Nature — Health: Verifying Correct Usage
 
 ```
 STATUS: CANONICAL
@@ -20,173 +20,93 @@ SYNC:            ./SYNC_Nature.md
 
 ## PURPOSE
 
-Health indicators for the nature system itself. Monitors that the nature is being followed correctly.
-
----
-
-## FLOWS
-
-### F1: Nature Execution Flow
-
-```
-trigger: on_tool_call
-frequency: every MCP tool invocation
-risk: high (nature violations corrupt state)
-```
-
-### F2: State Consistency Flow
-
-```
-trigger: cron:hourly, on_health_check
-frequency: hourly + on demand
-risk: medium (inconsistent state causes confusion)
-```
+Health checks for nature usage across the graph.
 
 ---
 
 ## INDICATORS
 
-### H1: Invariant Compliance
+### H1: Unknown Nature Values
 
 ```yaml
-name: Invariant Compliance
+name: Unknown Nature Check
 priority: critical
-rationale: Nature invariants must hold at all times
-
-docks:
-  - point: health_check.start
-    type: event
-    payload: {}
+rationale: Invalid nature values break queries
 
 mechanism: |
-  Run all invariant checks from VALIDATION_Nature.md
-  For each violation: log error, create incident
+  Scan all links.
+  Flag any where nature ∉ vocabulary.
 
 signals:
-  healthy: All invariants pass
-  degraded: Info-level violations only
-  critical: Any critical invariant violated
-
-throttling: Run full check max once per hour
+  healthy: All natures are valid
+  degraded: 1-5 invalid natures
+  critical: >5 invalid natures
 ```
 
-### H2: Task Run Lifecycle
+### H2: Missing Nature on Links
 
 ```yaml
-name: Task Run Lifecycle Health
-priority: high
-rationale: Task runs should complete, not stall
-
-docks:
-  - point: cron.hourly
-    type: schedule
-    payload: {}
+name: Missing Nature Check
+priority: critical
+rationale: Links without nature have no semantic meaning
 
 mechanism: |
-  Query task_runs with status='running' AND claimed_at < (now - 1 hour)
-  These are potentially stuck tasks
-  Alert if count > 0
+  Scan all links.
+  Flag any where nature is null/empty.
 
 signals:
-  healthy: No stuck task_runs
-  degraded: 1-3 stuck task_runs
-  critical: >3 stuck task_runs
-
-throttling: Alert max once per hour per stuck task
+  healthy: All links have nature
+  degraded: 1-5 missing
+  critical: >5 missing
 ```
 
-### H3: Actor Availability
+### H3: Direction Consistency
 
 ```yaml
-name: Actor Availability
-priority: high
-rationale: Work can't progress without ready actors
-
-docks:
-  - point: health_check.start
-    type: event
-    payload: {}
-
-mechanism: |
-  Query actors with status='ready'
-  Query pending task_runs
-  If pending > 0 AND ready actors = 0: problem
-
-signals:
-  healthy: Ready actors available OR no pending work
-  degraded: Pending work, few ready actors
-  critical: Pending work, zero ready actors
-
-throttling: None
-```
-
-### H4: Detection Consistency
-
-```yaml
-name: Detection Consistency
+name: Direction Check
 priority: medium
-rationale: Same input should produce same detection result
-
-docks:
-  - point: after_detection
-    type: event
-    payload: {indicator_id, result}
+rationale: Wrong direction makes queries return wrong results
 
 mechanism: |
-  Track last N detection results per indicator
-  Flag if results flip-flop (detect, not-detect, detect)
-  Flapping indicates unstable condition
+  For each link:
+    Check if FROM/TO types match nature semantics.
+    e.g., serves should be instance→template
 
 signals:
-  healthy: Stable detection results
-  degraded: Occasional flapping
-  critical: Persistent flapping
-
-throttling: Track over 1 hour window
+  healthy: All directions valid
+  degraded: Some mismatches
+  critical: Many mismatches
 ```
 
-### H5: Resolution Success Rate
+### H4: Nature Distribution
 
 ```yaml
-name: Resolution Success Rate
-priority: medium
-rationale: Tasks should resolve problems, not just complete
-
-docks:
-  - point: after_resolution
-    type: event
-    payload: {task_run_id, verified}
+name: Nature Distribution
+priority: low
+rationale: Unbalanced usage may indicate problems
 
 mechanism: |
-  Track verification results after task completion
-  Calculate success rate over last 24 hours
-  Flag if rate drops below threshold
+  Count links by nature.
+  Flag if any nature has 0 usage (dead code).
+  Flag if one nature has >90% usage (overuse).
 
 signals:
-  healthy: >90% resolution success
-  degraded: 70-90% resolution success
-  critical: <70% resolution success
-
-throttling: Calculate hourly
+  healthy: Balanced distribution
+  degraded: Some imbalance
+  critical: Major imbalance
 ```
 
 ---
 
-## GAPS
+## HOW TO RUN
 
-| Gap | Risk | Mitigation |
-|-----|------|------------|
-| No real-time invariant checking | Violations detected late | Hourly checks catch most issues |
-| No distributed lock for claims | Race conditions possible | Single MCP instance assumption |
-| No timeout enforcement | Stuck tasks accumulate | H2 indicator alerts |
+```bash
+# Check nature health (via MCP)
+health_check --module nature
+```
 
 ---
 
-## COVERAGE
+## MARKERS
 
-| Objective | Covered By |
-|-----------|------------|
-| O1: Deterministic Behavior | H4 (detection consistency) |
-| O2: Separation of Concerns | (Structural, not runtime) |
-| O3: Graph-Native | H1 (invariant checks verify graph state) |
-| O4: Executable Specification | (Verified by tests, not runtime) |
+<!-- @mind:todo Implement automated nature validation -->

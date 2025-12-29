@@ -1,4 +1,4 @@
-# Nature — Behaviors
+# Nature — Behaviors: Observable Effects
 
 ```
 STATUS: CANONICAL
@@ -21,175 +21,173 @@ ALGORITHM:       ./ALGORITHM_Nature.md
 
 ## PURPOSE
 
-Observable behaviors of the nature system. What happens when.
+Observable effects when using nature values. What happens when you apply each nature.
 
 ---
 
-## B1: Init Behavior
+## B1: Link with `serves`
 
-**When:** `mind init` runs
+**When:** Creating instance → template relationship
 
-**What happens:**
-1. Actor templates loaded from `.mind/actors/ACTOR_*.md`
-2. Actor instances created in graph (one per template)
-3. Task templates loaded from `.mind/tasks/TASK_*.md`
-4. HEALTH indicators evaluated (initial scan)
-5. task_runs created for any detected problems
+```
+GIVEN:  task_run node exists
+WHEN:   link created with nature: serves to task template
+THEN:   task_run is recognized as instance of that task
+AND:    queries for task instances return this task_run
+```
 
-**Observable:**
-- Graph contains actor nodes with status=ready
-- Graph contains task nodes (templates)
-- Graph may contain task_run nodes (pending problems)
+**Effect:** System knows task_run implements the task template.
 
 ---
 
-## B2: Detection Behavior
+## B2: Link with `concerns`
 
-**When:** Trigger fires (init, file_watch, cron, manual)
+**When:** Connecting action to target
 
-**What happens:**
-1. HEALTH indicator condition evaluated
-2. If problem detected:
-   - Lookup problem in VOCABULARY
-   - Get `resolves_with` task
-   - Check if task_run already exists for same target
-   - If no existing: create task_run (status=pending)
-3. If no problem: do nothing
+```
+GIVEN:  task_run exists
+WHEN:   link created with nature: concerns to target node
+THEN:   task_run is associated with that target
+AND:    target shows this task_run in its related actions
+```
 
-**Observable:**
-- New task_run nodes appear when problems detected
-- No duplicate task_runs for same problem+target
+**Effect:** System tracks what the action operates on.
 
 ---
 
-## B3: Claim Behavior
+## B3: Link with `claims`
 
-**When:** Actor queries for work
+**When:** Actor takes ownership of work
 
-**What happens:**
-1. Actor queries: `task_run WHERE status=pending AND task.executor matches actor.type`
-2. Actor selects task_run (oldest first, or by priority)
-3. Actor creates link: `[CLAIMED_BY]` task_run → actor
-4. Actor sets: `task_run.status = running`
-5. Actor sets: `actor.status = running`
+```
+GIVEN:  actor and task_run exist
+WHEN:   link created with nature: claims from actor to task_run
+THEN:   task_run is marked as owned by actor
+AND:    other actors see task_run as unavailable
+```
 
-**Observable:**
-- task_run.status changes pending→running
-- task_run has CLAIMED_BY link to actor
-- actor.status = running
+**Effect:** Work assignment is recorded.
 
 ---
 
-## B4: Execution Behavior
+## B4: Link with `resolves`
 
-**When:** Actor has claimed task_run
+**When:** Task completes successfully
 
-**What happens:**
-1. Actor loads task template from task_run.[OF]
-2. Actor loads skill from task.[USES]
-3. Actor starts procedure from task.[EXECUTES]
-4. Procedure run created (space:run, status=active)
-5. Procedure steps execute
-6. On each step: run.current_step updated
+```
+GIVEN:  task_run completed work
+WHEN:   link created with nature: resolves to problem/target
+THEN:   problem is marked as addressed
+AND:    detection should no longer find the problem
+```
 
-**Observable:**
-- space:run node exists, linked to procedure
-- run.current_step progresses
-- Actor performs actions defined in procedure
+**Effect:** Resolution is recorded for verification.
 
 ---
 
-## B5: Completion Behavior
+## B5: Link with `blocks`
 
-**When:** Procedure completes successfully
+**When:** Recording a dependency or blocker
 
-**What happens:**
-1. run.status = completed
-2. task_run.status = completed
-3. Link created: task_run -[RESOLVED]→ target
-4. actor.status = ready
-5. Actor releases claim (CLAIMED_BY link remains for history)
+```
+GIVEN:  two nodes where one prevents progress on other
+WHEN:   link created with nature: blocks
+THEN:   blocked node shows as waiting
+AND:    queries for blockers return the blocking node
+```
 
-**Observable:**
-- task_run.status = completed
-- RESOLVED link exists
-- actor.status = ready
-- Re-running detection should NOT find the problem
+**Effect:** Dependencies are visible.
 
 ---
 
-## B6: Failure Behavior
+## B6: Link with `includes`
 
-**When:** Procedure fails or times out
+**When:** Creating containment relationship
 
-**What happens:**
-1. run.status = aborted (if procedure) or remains active
-2. task_run.status = failed
-3. task_run.error = failure reason
-4. actor.status = ready
-5. No RESOLVED link created
+```
+GIVEN:  container and contained nodes exist
+WHEN:   link created with nature: includes
+THEN:   contained node shows as part of container
+AND:    container queries include the contained
+```
 
-**Observable:**
-- task_run.status = failed
-- task_run.error contains reason
-- Problem still detectable (may create new task_run)
+**Effect:** Hierarchy/grouping is established.
 
 ---
 
-## B7: Retry Behavior
+## B7: Link with `uses`
 
-**When:** Problem persists after failed task_run
+**When:** Recording tool/skill usage
 
-**What happens:**
-1. Next detection cycle runs
-2. Problem still detected
-3. Existing task_run is failed (terminal)
-4. New task_run created (status=pending)
-5. New task_run linked to same target
+```
+GIVEN:  task and skill nodes exist
+WHEN:   link created with nature: uses
+THEN:   task is associated with that skill
+AND:    skill usage can be tracked
+```
 
-**Observable:**
-- Multiple task_runs may exist for same problem+target
-- Only one is pending/running at a time
-- Failed ones remain in graph (history)
+**Effect:** Capabilities are linked to their consumers.
 
 ---
 
-## B8: Manual Trigger Behavior
+## B8: Link with `executes`
 
-**When:** User requests `health_check` or similar
+**When:** Recording what runs what
 
-**What happens:**
-1. All HEALTH indicators evaluated
-2. task_runs created for detected problems
-3. Results returned to user
+```
+GIVEN:  task and procedure nodes exist
+WHEN:   link created with nature: executes
+THEN:   task is linked to its implementation
+AND:    procedure can be loaded when task runs
+```
 
-**Observable:**
-- Same as detection behavior
-- User sees summary of problems found
-
----
-
-## B9: Agent Spawn Behavior
-
-**When:** `agent_spawn` called with task_run or problem
-
-**What happens:**
-1. If task_run provided: actor claims that task_run
-2. If problem provided: find/create task_run, then claim
-3. Actor executes (B4)
-4. Returns result to caller
-
-**Observable:**
-- task_run claimed and executed
-- Result contains completion status
+**Effect:** Execution path is defined.
 
 ---
 
-## TIMING EXPECTATIONS
+## B9: Link with `imports`
 
-| Behavior | Expected Duration |
-|----------|-------------------|
-| Detection (per indicator) | < 100ms |
-| Claim | < 50ms |
-| Execution | Varies by task (seconds to minutes) |
-| Completion/Failure | < 50ms |
+**When:** Recording dependencies
+
+```
+GIVEN:  module depends on library
+WHEN:   link created with nature: imports
+THEN:   dependency relationship is recorded
+AND:    dependency analysis can traverse these links
+```
+
+**Effect:** Dependency graph is queryable.
+
+---
+
+## B10: Link with `is about`
+
+**When:** Documentation references subject
+
+```
+GIVEN:  doc and subject nodes exist
+WHEN:   link created with nature: is about
+THEN:   doc is associated with subject
+AND:    subject shows related documentation
+```
+
+**Effect:** Documentation is linked to what it describes.
+
+---
+
+## QUERY BEHAVIORS
+
+| Query Goal | Filter By Nature |
+|------------|------------------|
+| Find all instances of template | `serves` pointing to template |
+| Find what task operates on | `concerns` from task |
+| Find who owns work | `claims` pointing to work |
+| Find blockers | `blocks` pointing to blocked |
+| Find children | `includes` from parent |
+| Find dependencies | `imports` from dependent |
+
+---
+
+## MARKERS
+
+<!-- @mind:todo Document compound nature queries -->

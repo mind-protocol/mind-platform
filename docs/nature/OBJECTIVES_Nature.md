@@ -25,58 +25,51 @@ SYNC:            ./SYNC_Nature.md
 
 ## PURPOSE
 
-Define the rules that govern how Mind Protocol entities interact.
+Define how agents describe relationships between nodes using the `nature` field.
 
-The nature is the **single source of truth** for:
-- How problems are detected
-- How tasks are created and executed
-- How actors claim and resolve work
-- How state transitions happen
+The `nature` field is **the only way** to express the meaning of a link. Agents write a simple phrase. The system handles everything else.
 
 ---
 
 ## RANKED OBJECTIVES
 
-### O1: Deterministic Behavior (Priority: Critical)
+### O1: Semantic Clarity (Priority: Critical)
 
-Given the same input state, the same output must occur. No ambiguity in how detection leads to task creation, or how execution leads to resolution.
+Agents must understand what each nature value means without knowing system internals.
 
-**Measure:** Any two implementations following the nature produce identical graph mutations.
+**Measure:** Agent can choose correct nature value from context alone.
 
-### O2: Separation of Concerns (Priority: Critical)
+### O2: Minimal Vocabulary (Priority: Critical)
 
-- **VOCABULARY** defines WHAT (problems, tasks, actors)
-- **HEALTH** defines WHEN (triggers, conditions)
-- **ALGORITHM** defines HOW (the nature rules)
-- **IMPLEMENTATION** defines WHERE (file structure, code)
+Small set of nature values that cover all common relationships. No proliferation.
 
-**Measure:** Changes to detection logic don't require changes to task definitions.
+**Measure:** < 15 core nature values cover 95% of use cases.
 
-### O3: Graph-Native (Priority: High)
+### O3: Intuitive Mapping (Priority: High)
 
-All state lives in the graph. No in-memory-only state. Task_runs, problems, resolutions are all nodes with links.
+Nature values read like natural language. "A serves B" = A supports/helps B.
 
-**Measure:** Full system state recoverable from graph query alone.
+**Measure:** Native speaker understands relationship from nature value alone.
 
-### O4: Executable Specification (Priority: High)
+### O4: Consistent Effects (Priority: High)
 
-The nature is not just documentation—it's the specification that runtime code implements. MCP reads the nature and executes accordingly.
+Same nature value always produces same semantic result. No surprises.
 
-**Measure:** Nature changes automatically change runtime behavior.
+**Measure:** Two links with same nature behave identically in queries/traversal.
 
 ---
 
 ## NON-OBJECTIVES
 
-- **NOT a programming language:** The nature defines state machines, not arbitrary computation.
-- **NOT extensible syntax:** The nature is fixed. Custom behavior comes from custom tasks/skills/procedures, not nature extensions.
-- **NOT human-executed:** Humans don't follow the nature manually. Agents and automation do.
+- **NOT about implementation:** Agents don't need to know how nature is processed.
+- **NOT extensible by agents:** Core vocabulary is fixed. Custom semantics come from node content, not new nature values.
+- **NOT hierarchical metadata:** Nature describes relationship, not node properties.
 
 ---
 
 ## SUCCESS CRITERIA
 
-1. MCP runtime implements nature without hardcoded special cases
-2. All problem→task→resolution flows follow the same pattern
-3. New problem types require only VOCABULARY entries, not code changes
-4. Graph state is always consistent with nature rules
+1. Agent can create meaningful links using only this documentation
+2. Nature vocabulary fits on one page
+3. No training required beyond reading examples
+4. Queries using nature values return intuitive results
