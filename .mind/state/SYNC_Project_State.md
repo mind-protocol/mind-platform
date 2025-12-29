@@ -1,37 +1,76 @@
-# mind-platform — Sync: Current State
+# Project — Sync: Current State
 
 ```
-LAST_UPDATED: 2025-12-28
-UPDATED_BY: claude
-STATUS: DESIGNING
+LAST_UPDATED: 2025-12-29
+UPDATED_BY: Claude (agent)
 ```
 
 ---
 
 ## CURRENT STATE
 
-mind-platform is the frontend + L3 (Ecosystem) layer for Mind Protocol. Contains the web UI, shared templates, and organization-level coordination.
+Mind Platform is the Next.js frontend for the Mind Protocol ecosystem. The platform serves as the **UI layer** for a 4-layer architecture:
 
-**Reality check:** Extensive Connectome UI components exist with full documentation chains, but the core runtime files that drive them are NOT implemented. The app cannot run without `app/connectome/lib/` files.
+- **L1 (Citizen):** Personal agent graphs
+- **L2 (Organization):** Team-shared knowledge
+- **L3 (Ecosystem):** Templates and procedures
+- **L4 (Protocol):** Global registry and schema
+
+The Connectome graph visualization is functional. Vision documentation is complete. Module doc chains created for **landing** (P0) and **registry**.
+
+**Documentation:**
+- `docs/vision/` — 9-file platform vision doc chain (complete)
+- `docs/landing/` — 8-file landing page doc chain (complete, P0 priority)
+- `docs/registry/` — 8-file registry module doc chain (complete)
+- `docs/connectome/` — existing implementation docs
+
+All browser-side code is self-contained — no dependencies on mind-mcp's Node.js modules.
 
 ---
 
-## MATURITY
+## ACTIVE WORK
 
-**What's canonical (documented + implemented):**
-- Connectome UI components (node_kit, edge_kit, flow canvas, log panel, health panel)
-- Extensive documentation for all connectome modules
-- Next.js app shell and route structure
+### Landing Page Implementation (Next)
 
-**What's documented but NOT implemented:**
-- `app/connectome/lib/` — runtime engine, state store, event model
-- `app/api/` — SSE, search, graph endpoints
-- `lib/mind-client.ts` — L4 WebSocket + GraphQL client
+- **Area:** `app/(public)/page.tsx`, `docs/landing/`
+- **Status:** doc chain complete, implementation pending
+- **Owner:** agent
+- **Context:** P0 priority. Landing page is first impression. Doc chain defines Hero, HowItWorks, WhatYouCanDo, LiveStats sections.
 
-**What's skeleton/placeholder:**
-- Dashboard pages (org, membrane, citizen, wallet)
-- Public pages (templates, schema, registry, docs)
-- L3 ecosystem logic (federation, contributions)
+### Design Tokens (Blocking)
+
+- **Area:** `lib/constants/colors.ts`
+- **Status:** not created
+- **Owner:** agent
+- **Context:** Shared color constants for layer colors, node type colors, verification badge colors. Needed by landing, registry, connectome.
+
+---
+
+## RECENT CHANGES
+
+### 2025-12-29: Created Landing + Registry Doc Chains
+
+- **What:** Full 8-file doc chains for landing page and registry module.
+- **Why:** User indicated landing is P0 priority. Registry is first public L4 feature.
+- **Impact:** Clear implementation blueprints for both modules. Vocabulary synced with L4 (mind-protocol).
+
+### 2025-12-29: Created Platform Vision Doc Chain
+
+- **What:** Full 9-file doc chain in `docs/vision/` covering platform objectives, patterns, vocabulary, behaviors, algorithms, invariants, implementation, health, sync.
+- **Why:** Document the platform's role in the 4-layer Mind Protocol ecosystem.
+- **Impact:** Emerging modules identified with priorities. Architecture decisions documented.
+
+### 2025-12-29: Removed System Map, Made Browser-Safe
+
+- **What:** Removed all System Map visualization components. Inlined browser-safe lib files.
+- **Why:** User requested removing System Map entirely. Browser bundle cannot import Node.js modules.
+- **Impact:** Connectome UI shows only Graph Explorer. Build passes.
+
+### 2025-12-29: Created API Routes
+
+- **What:** Added `/api/connectome/graphs`, `/api/connectome/graph`, `/api/connectome/search`, `/api/connectome/tick`, `/api/sse`
+- **Why:** Browser code calls backend via HTTP, not imports.
+- **Impact:** API routes proxy to Python backend
 
 ---
 
@@ -39,172 +78,105 @@ mind-platform is the frontend + L3 (Ecosystem) layer for Mind Protocol. Contains
 
 | Issue | Severity | Area | Notes |
 |-------|----------|------|-------|
-| Runtime lib missing | **BLOCKER** | `app/connectome/lib/` | State store, runtime engine not created |
-| API routes missing | critical | `app/api/` | No endpoints for SSE, search, graph |
-| L4 client empty | high | `lib/mind-client.ts` | WebSocket + GraphQL not implemented |
-| L3 stubs empty | medium | `l3/` | federation/contributions are empty files |
-| SYNC was outdated | fixed | `.mind/state/` | Now reflects reality |
-
----
-
-## ARCHITECTURE ALIGNMENT
-
-Per `mind-protocol-architecture-v1.md`:
-
-| Architecture Component | Platform Role | Status |
-|------------------------|---------------|--------|
-| L4 connection | WebSocket client in `lib/mind-client.ts` | ❌ Not started |
-| L3 ecosystem | Templates browser, federation | 🔲 Stubs only |
-| Connectome | Graph visualization | 🟡 UI built, runtime missing |
-| Dashboard | Citizens, org, wallet, graph | 🔲 Skeletons |
-
----
-
-## TODO
-
-### BLOCKER — Must fix before app runs
-
-- [ ] Create `app/connectome/lib/zustand_connectome_state_store_with_atomic_commit_actions.ts`
-- [ ] Create `app/connectome/lib/next_step_gate_and_realtime_playback_runtime_engine.ts`
-- [ ] Create supporting lib files (event model, step script, duration policy)
-
-### High Priority — Core functionality
-
-- [ ] Create `app/api/sse/route.ts` — SSE endpoint for telemetry
-- [ ] Create `app/api/connectome/search/route.ts` — Semantic search
-- [ ] Create `app/api/connectome/graph/route.ts` — Graph loading
-- [ ] Create `app/api/connectome/graphs/route.ts` — Available graphs list
-- [ ] Implement `lib/mind-client.ts` — L4 WebSocket + GraphQL
-
-### Medium Priority — Platform features
-
-- [ ] Implement dashboard pages (org, membrane, citizen, wallet)
-- [ ] Implement public pages (templates, schema, registry)
-- [ ] Implement L3 federation (publish, pull)
-- [ ] Implement L3 contributions (submit, review)
-
-### Low Priority — Polish
-
-- [ ] Add keyboard shortcuts to Connectome
-- [ ] Add realtime telemetry adapter
-- [ ] Add authentication
-- [ ] Add template marketplace
-
----
-
-## AREAS
-
-| Area | Status | Files | Description |
-|------|--------|-------|-------------|
-| `app/connectome/components/` | 🟡 UI built | 22 files | React components, need runtime |
-| `app/connectome/lib/` | ❌ Missing | 0 files | Runtime engine, state store |
-| `app/api/` | ❌ Missing | 0 files | API routes needed |
-| `app/(dashboard)/` | 🔲 Skeleton | 4 pages | Placeholder pages |
-| `app/(public)/` | 🔲 Skeleton | 5 pages | Placeholder pages |
-| `l3/` | 🔲 Empty | 4 files | Empty stubs |
-| `lib/` | 🔲 Empty | 1 file | mind-client.ts is empty |
-| `docs/` | ✅ Extensive | 80+ files | Full documentation chains |
-
----
-
-## TECH STACK
-
-- **Framework:** Next.js 14+ (App Router)
-- **Styling:** Custom CSS (not Tailwind yet)
-- **State:** Zustand (planned, not implemented)
-- **Graph Viz:** @xyflow/react (React Flow)
-- **API:** GraphQL to L4 (not implemented)
-- **Realtime:** WebSocket from L4 (not implemented)
+| No backend running | Low | `api/` | API routes return empty/default when backend offline |
+| Placeholder pages | Low | `app/(dashboard)/` | citizen, membrane, org, wallet are empty placeholders |
 
 ---
 
 ## HANDOFF: FOR AGENTS
 
-**Next step:** Implement `app/connectome/lib/` files following the IMPLEMENTATION docs.
+**Likely VIEW for continuing:** groundwork (implementation tasks)
 
-**Key files to read:**
-- `docs/connectome/state_store/IMPLEMENTATION_*.md`
-- `docs/connectome/runtime_engine/IMPLEMENTATION_*.md`
-- `docs/connectome/event_model/IMPLEMENTATION_*.md`
+**Current focus:** End-to-end testing with running database
+
+**Key context:**
+- Browser lib files are INLINED (not imported from mind-mcp) because mind-mcp uses Node.js modules
+- API routes at `/api/connectome/*` proxy to Python backend at `$CONNECTOME_BACKEND_URL` or `http://localhost:8765`
+- Canvas renderer uses D3 force simulation, not ReactFlow
 
 **Watch out for:**
-- Components import from lib files that don't exist
-- Documentation describes intended behavior, not current reality
-- The SYNC files in `docs/connectome/*/` are more current than this project-level SYNC was
+- Don't try to import from `@mind-protocol/connectome` in browser code — those modules use fs/child_process
+- SSE route must have `export const dynamic = 'force-dynamic'`
 
 ---
 
 ## HANDOFF: FOR HUMAN
 
 **Executive summary:**
-Connectome has extensive UI and docs but the runtime core (`app/connectome/lib/`) was never implemented. App cannot run.
+Connectome frontend builds and runs. System Map visualization removed per your request. UI now focuses on graph exploration (semantic search, node visualization). Backend integration ready via API routes.
 
-**Decisions needed:**
-1. Implement missing lib files to make Connectome functional?
-2. Or pivot to a simpler approach first?
-3. Priority: Connectome vs L4 integration vs L3 ecosystem?
+**Decisions made recently:**
+- Inlined browser-safe versions of state store and manifest rather than fixing mind-mcp's browser exports (faster path)
+- Removed reactflow CSS import (not using ReactFlow, using Canvas 2D with D3)
+
+**Needs your input:**
+- Do you want to run the dev server and test with a database?
+- Should we clean up the placeholder pages in (dashboard) and (public) route groups?
 
 **Concerns:**
-- Gap between documentation ambition and implementation reality
-- 80+ doc files for features that don't work yet
+- mind-mcp/connectome exports are not browser-safe (they import fs/path). If you want platform to import from mind-mcp again, those exports need to be restructured.
 
 ---
 
-## RECENT CHANGES
+## TODO
 
-### 2025-12-28: SYNC corrected to reflect reality
+### Immediate (This Sprint)
 
-- **What:** Updated this SYNC to accurately describe project state
-- **Why:** Previous SYNC said "skeleton only" but reality is more nuanced — extensive UI exists but runtime is missing
-- **Impact:** Clear path forward now visible
+- [ ] Create `lib/constants/colors.ts` design tokens
+- [ ] Implement landing page (P0)
+- [ ] Create TopNav component
+- [ ] Create Footer component
 
-### 2024-12-28: Repo Creation
+### High Priority
 
-- **What:** Created from ngram split
-- **Why:** Platform (UI + L3) is separate from client and protocol
-- **Impact:** Clean frontend repo with extensive docs carried over
+- [ ] Implement `/api/registry/*` routes
+- [ ] Implement registry UI components
+- [ ] Create `docs/auth/` doc chain
+- [ ] Test end-to-end with running FalkorDB database
+
+### Backlog
+
+- [ ] Create `docs/schema-explorer/` doc chain
+- [ ] Create browser-safe export entry point in mind-mcp
+- [ ] Add analytics to landing page
+- [ ] Add error states for offline backend
 
 ---
 
-## CROSS-REPO COORDINATION
+## CONSCIOUSNESS TRACE
 
-**Agents are allowed to work across all 4 repos.** This is intentional — the repos form a single system.
+**Project momentum:**
+Good. Major refactor completed. Build passes. Ready for manual testing.
 
-### Repo Map
+**Architectural concerns:**
+The browser/server split in mind-mcp is not clean — schema.ts imports fs. Should consider splitting into `browser/` and `server/` entry points.
 
-| Repo | Layer | Path | Access |
-|------|-------|------|--------|
-| `mind-mcp` | L1 Client | `/home/mind-protocol/mind-mcp` | open source |
-| `mind-protocol` | L4 Law | `/home/mind-protocol/mind-protocol` | open source |
-| `mind-platform` | L3 + UI | `/home/mind-protocol/mind-platform` | open source |
-| `mind-ops` | Ops | `/home/mind-protocol/mind-ops` | private |
+**Opportunities noticed:**
+Graph Explorer could benefit from keyboard shortcuts for navigation.
 
-### Coordination Hub: mind-ops
+---
 
-**`mind-ops` is the main cross-repo organization point.**
+## AREAS
 
-- Cross-repo issues go in `mind-ops/runbooks/cross-repo/`
-- Deployment orchestration in `mind-ops/ci/`
-- Shared secrets configuration in `mind-ops/secrets/`
-- Integration tests that span repos in `mind-ops/tests/integration/`
+| Area | Status | SYNC |
+|------|--------|------|
+| `app/connectome/` | functional | this file |
+| `app/api/` | functional | this file |
 
-### This Repo's Role
+---
 
-**mind-platform is the UI + L3 ECOSYSTEM:**
-- Web interface to the Mind Protocol
-- L3 templates (shared patterns, procedures, skills)
-- Organization management
-- Public graph browser
+## MODULE COVERAGE
 
-**Dependencies:**
-- Consumes API from `mind-protocol/api/`
-- Uses schema types from `mind-protocol/l4/schema/`
-- Connects to L4 via WebSocket (implemented in `mind-ops`)
+**Mapped modules:**
+| Module | Code | Docs | Maturity |
+|--------|------|------|----------|
+| connectome | `app/connectome/` | `docs/connectome/` | DESIGNING |
+| landing | `app/(public)/page.tsx` | `docs/landing/` | DESIGNING |
+| registry | `app/(public)/registry/` | `docs/registry/` | DESIGNING |
+| vision | - | `docs/vision/` | DESIGNING |
+| api-routes | `app/api/` | - | DESIGNING |
 
-### Sync Protocol
-
-When working on platform features:
-1. Check if API exists in `mind-protocol/api/`
-2. If not, implement API there first
-3. Then implement UI here
-4. Update both SYNCs noting the coordination
+**Unmapped code:**
+- `app/(dashboard)/` - placeholder route group (citizen, org, wallet, membrane)
+- `app/(public)/schema/` - placeholder (needs schema-explorer doc chain)
+- `app/(public)/templates/` - placeholder (needs marketplace doc chain)

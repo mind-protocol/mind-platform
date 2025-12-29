@@ -126,7 +126,7 @@ After vocabulary is validated:
 ## Evidence
 - Docs: `docs/{area}/{module}/VOCABULARY_{module}.md`
 - Central: `docs/TAXONOMY.md`, `docs/MAPPING.md`
-- Template: `.mind-mcp/templates/VOCABULARY_TEMPLATE.md`
+- Template: `.mind/templates/VOCABULARY_TEMPLATE.md`
 
 ## Markers
 - `@mind:TODO` — Term needing clarification before merge

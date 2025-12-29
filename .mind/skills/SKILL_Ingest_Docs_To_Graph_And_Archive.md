@@ -2,7 +2,6 @@
 @mind:id: SKILL.INGEST.DOCS_TO_GRAPH.ARCHIVE
 
 ## Maps to VIEW
-`.mind-mcp/views/VIEW_Ingest_Process_Raw_Data_Sources.md`
 
 ---
 

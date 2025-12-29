@@ -2,7 +2,6 @@
 @mind:id: SKILL.DEBUG.INVESTIGATE_FIX.EVIDENCE_FIRST
 
 ## Maps to VIEW
-`.mind-mcp/views/VIEW_Debug_Investigate_And_Fix_Issues.md`
 
 ---
 

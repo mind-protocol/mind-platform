@@ -2,7 +2,6 @@
 @mind:id: SKILL.REVIEW.EVALUATE.PRODUCE_AUDITABLE_REPORT
 
 ## Maps to VIEW
-`.mind-mcp/views/VIEW_Review_Evaluate_Changes.md`
 
 ---
 

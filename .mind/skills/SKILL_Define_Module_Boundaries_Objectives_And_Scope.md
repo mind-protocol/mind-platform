@@ -2,7 +2,6 @@
 @mind:id: SKILL.MODULE.DEFINE.BOUNDARIES_OBJECTIVES_SCOPE
 
 ## Maps to VIEW
-`.mind-mcp/views/VIEW_Specify_Design_Vision_And_Architecture.md`
 
 ---
 

@@ -2,7 +2,6 @@
 @mind:id: SKILL.ONBOARD.UNDERSTAND_EXISTING_CODEBASE.CONFIRM_CANON
 
 ## Maps to VIEW
-`.mind-mcp/views/VIEW_Onboard_Understand_Existing_Codebase.md`
 
 ---
 

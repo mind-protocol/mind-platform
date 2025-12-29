@@ -2,7 +2,6 @@
 @mind:id: SKILL.INGEST.RAW_DATA.ROUTE_TO_MODULES
 
 ## Maps to VIEW
-`.mind-mcp/views/VIEW_Ingest_Process_Raw_Data_Sources.md`
 
 ---
 

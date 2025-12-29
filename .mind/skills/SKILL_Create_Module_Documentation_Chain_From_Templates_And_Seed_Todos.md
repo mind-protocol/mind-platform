@@ -2,7 +2,6 @@
 @mind:id: SKILL.DOCS.CREATE_CHAIN_FROM_TEMPLATES.SEED_TODOS
 
 ## Maps to VIEW
-`.mind-mcp/views/VIEW_Document_Create_Module_Documentation.md`
 
 ---
 
@@ -27,7 +26,7 @@ Bidirectional pointers:
 - Docs reference code: `file:symbol` in IMPLEMENTATION docking points
 - Code references docs: `# DOCS: path/to/PATTERNS.md` comment in source files
 
-Templates live in `.mind-mcp/templates/`. Copy verbatim, fill placeholders.
+Templates live in `.mind/templates/`. Copy verbatim, fill placeholders.
 
 ---
 
@@ -39,7 +38,7 @@ Create module doc directory, copy templates into full chain, add TODO plans, est
 ## Inputs
 ```yaml
 module: "<area/module>"           # string, e.g., "physics/tick"
-templates_root: "<path>"          # string, default ".mind-mcp/templates"
+templates_root: "<path>"          # string, default ".mind/templates"
 ```
 
 ## Outputs

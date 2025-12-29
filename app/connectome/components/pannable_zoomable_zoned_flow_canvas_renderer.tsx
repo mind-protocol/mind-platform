@@ -102,14 +102,24 @@ const CanvasInner = () => {
     const nodeMap = new Map(nodes.map((n) => [n.id, n]));
 
     // Create edges (only for nodes that exist)
+    // Links may use from_id/to_id (API format) or node_a/node_b (schema format)
     const edges: GraphEdge[] = (searchResults.links ?? [])
-      .filter((link) => link.from_id && link.to_id && nodeMap.has(link.from_id) && nodeMap.has(link.to_id))
-      .map((link, i) => ({
-        id: `edge-${i}`,
-        source: link.from_id!,
-        target: link.to_id!,
-        type: link.type ?? "LINK",
-      }));
+      .filter((link) => {
+        const from = (link.from_id ?? link.node_a) as string | undefined;
+        const to = (link.to_id ?? link.node_b) as string | undefined;
+        return from && to && nodeMap.has(from) && nodeMap.has(to);
+      })
+      .map((link, i) => {
+        const from = (link.from_id ?? link.node_a) as string;
+        const to = (link.to_id ?? link.node_b) as string;
+        const linkType = (link.type ?? "LINK") as string;
+        return {
+          id: `edge-${i}`,
+          source: from,
+          target: to,
+          type: linkType,
+        };
+      });
 
     nodesRef.current = nodes;
     edgesRef.current = edges;

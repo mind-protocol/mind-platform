@@ -2,7 +2,6 @@
 @mind:id: SKILL.EXTEND.ADD_FEATURES.CANON_CONSTRAINTS
 
 ## Maps to VIEW
-`.mind-mcp/views/VIEW_Extend_Add_Features_To_Existing.md`
 
 ---
 

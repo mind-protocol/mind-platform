@@ -2,7 +2,6 @@
 @mind:id: SKILL.HEALTH.DEFINE_VERIFY.MAP_TO_VALIDATION
 
 ## Maps to VIEW
-`.mind-mcp/views/VIEW_Health_Define_Health_Checks_And_Verify.md`
 
 ---
 

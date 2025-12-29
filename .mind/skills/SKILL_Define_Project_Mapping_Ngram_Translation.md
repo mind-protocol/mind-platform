@@ -109,7 +109,7 @@ Insert in NODE MAPPINGS or LINK MAPPINGS section.
 ## Evidence
 - Docs: `docs/MAPPING.md`
 - Schema: `docs/schema/schema.yaml`
-- Template: `.mind-mcp/templates/MAPPING_TEMPLATE.md`
+- Template: `.mind/templates/MAPPING_TEMPLATE.md`
 
 ## Markers
 - `@mind:TODO` — Mapping that needs clarification

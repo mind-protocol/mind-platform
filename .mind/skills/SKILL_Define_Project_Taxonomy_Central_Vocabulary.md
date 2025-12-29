@@ -94,7 +94,7 @@ If this term replaces another, add to TERMINOLOGY DECISIONS table.
 
 ## Evidence
 - Docs: `docs/TAXONOMY.md`
-- Template: `.mind-mcp/templates/TAXONOMY_TEMPLATE.md`
+- Template: `.mind/templates/TAXONOMY_TEMPLATE.md`
 
 ## Markers
 - `@mind:TODO` — Term needing better definition

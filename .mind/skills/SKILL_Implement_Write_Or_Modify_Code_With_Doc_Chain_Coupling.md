@@ -2,7 +2,6 @@
 @mind:id: SKILL.IMPLEMENT.WRITE_OR_MODIFY.DOC_CHAIN_COUPLING
 
 ## Maps to VIEW
-`.mind-mcp/views/VIEW_Implement_Write_Or_Modify_Code.md`
 
 ---
 

@@ -1,7 +1,6 @@
 // DOCS: docs/frontend/app_shell/PATTERNS_App_Shell.md
 import "./globals.css";
 import "./connectome/connectome.css";
-import "reactflow/dist/style.css";
 import type { ReactNode } from "react";
 
 export const metadata = {

@@ -60,7 +60,7 @@ SYNC files track current state. They're how you understand what's happening and 
 ### 1. Check State First
 
 ```
-.mind-mcp/state/SYNC_Project_State.md
+.mind/state/SYNC_Project_State.md
 ```
 
 Understand what's happening, what changed recently, any handoffs for you.
@@ -82,7 +82,7 @@ Agents are cognitive stances that shape how you approach work. Pick the one matc
 | **herald** | Announce → summarize → handoff | Status updates, handoffs, summaries |
 | **steward** | Maintain → clean → organize | Refactoring, cleanup, organization |
 
-Agent files live in `.mind-mcp/agents/{agent}/CLAUDE.md`
+Agent files live in `.mind/agents/{agent}/CLAUDE.md`
 
 ### 3. Use Procedures for Structured Work
 
@@ -115,7 +115,7 @@ Procedures live in `procedures/*.yaml`
 Skills are executable capabilities with gates and processes. Load them when needed:
 
 ```
-.mind-mcp/skills/SKILL_{name}.md
+.mind/skills/SKILL_{name}.md
 ```
 
 Skills define:
@@ -167,8 +167,8 @@ After changes, update SYNC files:
 
 | Pattern | Purpose | When to Load |
 |---------|---------|--------------|
-| `.mind-mcp/agents/{name}/` | Cognitive posture files | When adopting a posture |
-| `.mind-mcp/skills/SKILL_*.md` | Executable capabilities | When performing that capability |
+| `.mind/agents/{name}/` | Cognitive posture files | When adopting a posture |
+| `.mind/skills/SKILL_*.md` | Executable capabilities | When performing that capability |
 | `procedures/*.yaml` | Structured dialogues | Via membrane tools |
 
 ---
@@ -274,7 +274,7 @@ If you're initializing on an existing project:
 
 ## WHEN DOCS DON'T EXIST
 
-Create them. Use templates in `.mind-mcp/templates/`.
+Create them. Use templates in `.mind/templates/`.
 
 At minimum, create:
 - PATTERNS (why this module exists, what design approach)
@@ -410,17 +410,56 @@ When blocked: Add `@mind:escalation`, then `@mind:proposition` with your best gu
 The `mind` command is available for project management:
 
 ```bash
-mind init [--force]    # Initialize/re-sync protocol files
-mind validate          # Check protocol invariants
-mind doctor            # Health checks (auto-archives large SYNCs)
-mind sync              # Show SYNC status (auto-archives large SYNCs)
-mind work [path] [objective]           # AI-assisted work on a path
-mind solve-markers     # Review escalations and propositions
-mind context <file>    # Get doc context for a file
-mind prompt            # Generate bootstrap prompt for LLM
-mind overview          # Generate repo map with file tree, links, definitions
-mind docs-fix          # Work doc chains and create minimal missing docs
+mind init [--database falkordb|neo4j]  # Initialize .mind/ with runtime
+mind status                             # Show mind status and modules
+mind upgrade                            # Check for protocol updates
+mind validate                           # Check protocol invariants
+mind doctor                             # Health checks
+mind sync                               # Show SYNC status
+mind work [path] [objective]            # AI-assisted work on a path
+mind solve-markers                      # Review escalations and propositions
+mind context <file>                     # Get doc context for a file
+mind prompt                             # Generate bootstrap prompt for LLM
+mind overview                           # Generate repo map
+mind docs-fix                           # Create minimal missing docs
 ```
+
+### Local Runtime
+
+`mind init` copies the full Python runtime to `.mind/mind/`. This allows projects to run mind locally without installing the package.
+
+**Structure after init:**
+```
+.mind/
+├── PRINCIPLES.md, FRAMEWORK.md    # Protocol docs
+├── agents/, skills/, procedures/   # Agent definitions
+├── state/                          # SYNC files
+├── database_config.yaml            # Database configuration
+└── mind/                           # Python runtime (186 files)
+    ├── physics/                    # Physics simulation
+    ├── graph/                      # Graph operations
+    ├── connectome/                 # Dialogue runner
+    ├── infrastructure/             # DB adapters, embeddings
+    └── traversal/                  # Traversal logic
+```
+
+**Usage:**
+```bash
+# Run scripts with local runtime
+PYTHONPATH=".mind:$PYTHONPATH" python3 my_script.py
+```
+
+```python
+# my_script.py - imports work normally
+from mind.physics.constants import DECAY_RATE
+from mind.connectome import ConnectomeRunner
+from mind.infrastructure.database.factory import get_database_adapter
+```
+
+**Database configuration:**
+- Config file: `.mind/database_config.yaml`
+- Environment template: `.env.mind.example`
+- Environment vars override config values
 
 ### Overview Command
 

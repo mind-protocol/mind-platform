@@ -5,12 +5,9 @@
 import { useEffect, useRef, useState } from "react";
 import "../connectome.css";
 import FlowCanvas from "./pannable_zoomable_zoned_flow_canvas_renderer";
-import LogPanel from "./unified_now_and_copyable_ledger_log_panel";
-import ConnectomeHealthPanel from "./connectome_health_panel";
 import {
   dispatch_runtime_command,
   initialize_connectome_runtime,
-  release_next_step,
 } from "../lib/next_step_gate_and_realtime_playback_runtime_engine";
 import { useConnectomeStore } from "../lib/zustand_connectome_state_store_with_atomic_commit_actions";
 
@@ -18,7 +15,6 @@ export default function ConnectomePageShell() {
   const mode = useConnectomeStore((state) => state.mode);
   const speed = useConnectomeStore((state) => state.speed);
   const telemetryStatus = useConnectomeStore((state) => state.telemetry_status);
-  const healthEvent = useConnectomeStore((state) => state.connectome_health);
   const graphName = useConnectomeStore((state) => state.graph_name);
   const setGraphName = useConnectomeStore((state) => state.set_graph_name);
   const availableGraphs = useConnectomeStore((state) => state.available_graphs);
@@ -162,8 +158,10 @@ export default function ConnectomePageShell() {
       try {
         const result = await dispatch_runtime_command({ kind: "next_step" });
         if (result && typeof result === "object" && "status" in result) {
-          if (result.status === "error") {
-            setSearchStatus(`Tick error: ${result.notes}`);
+          if (result.status === "blocked") {
+            setSearchStatus(`Tick blocked: ${result.notes}`);
+          } else if (result.status === "end_of_script") {
+            setSearchStatus(`End of script`);
           } else {
             setSearchStatus(`Tick: ${result.notes || "complete"}`);
           }
@@ -188,8 +186,10 @@ export default function ConnectomePageShell() {
     try {
       const result = await dispatch_runtime_command({ kind: "next_step" });
       if (result && typeof result === "object" && "status" in result) {
-        if (result.status === "error") {
-          setSearchStatus(`Tick error: ${result.notes}`);
+        if (result.status === "blocked") {
+          setSearchStatus(`Tick blocked: ${result.notes}`);
+        } else if (result.status === "end_of_script") {
+          setSearchStatus(`End of script`);
         } else {
           setSearchStatus(`Tick: ${result.notes || "complete"}`);
         }
@@ -393,12 +393,8 @@ export default function ConnectomePageShell() {
       </div>
 
       <div className="connectome-layout">
-        <aside className="connectome-sidebar">
-          <ConnectomeHealthPanel ev={healthEvent} />
-        </aside>
         <main className="connectome-main-content">
           <FlowCanvas />
-          <LogPanel />
         </main>
       </div>
     </div>
