@@ -20,6 +20,44 @@ This protocol solves these problems through:
 
 ---
 
+## ARCHITECTURE: 4 LAYERS
+
+Mind Protocol operates across four layers:
+
+| Layer | Rôle | Contenu |
+|-------|------|---------|
+| **L1** | Citizen | Graph personnel, mémoire individuelle |
+| **L2** | Organization | Coordination équipe, instances partagées |
+| **L3** | Ecosystem | Templates partagés (procedures, vocabularies, mappings) |
+| **L4** | Protocol | Loi, registry, schema canonique |
+
+### MCP et les Layers
+
+**MCP** = interface pour interagir avec ton graph (L1/L2). Le serveur MCP expose des outils pour:
+- Requêter le graph (`graph_query`)
+- Exécuter des procédures (`procedure_start`, `procedure_continue`)
+- Gérer les tâches et agents
+
+**L3 templates** = tirés depuis `mind-platform/templates/` lors de `mind init` ou `mind sync`.
+
+### Template Distribution
+
+`mind-platform/templates/` est la **source de vérité** pour tous les templates du protocole.
+
+```
+mind-platform/templates/     ──(mind init)──▶    .mind/
+├── agents/                                      ├── agents/
+├── skills/                                      ├── skills/
+├── procedures/                                  ├── procedures/
+├── docs/                                        ├── templates/
+└── mcp/                                         └── (configs)
+```
+
+**L3 (Ecosystem)** = templates MÉTIER (procédures domain-specific, vocabulaires partagés)
+**templates/** = templates PROTOCOLE (infrastructure Mind, copiés à chaque projet)
+
+---
+
 ## COMPANION: PRINCIPLES.md
 
 This file (FRAMEWORK.md) tells you **what to load and where to update**.
