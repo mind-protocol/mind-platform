@@ -1,23 +1,23 @@
 # Repository Map: mind-platform
 
-*Generated: 2025-12-29 03:12*
+*Generated: 2025-12-29 03:24*
 
-- **Files:** 225
-- **Directories:** 73
-- **Total Size:** 1.4M
+- **Files:** 229
+- **Directories:** 74
+- **Total Size:** 1.5M
 - **Doc Files:** 200
-- **Code Files:** 22
+- **Code Files:** 26
 - **Areas:** 8 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
-- **DOCS Links:** 3 (0.14 avg per code file)
+- **DOCS Links:** 4 (0.15 avg per code file)
 
 - markdown: 200
-- tsx: 11
+- tsx: 14
 - typescript: 10
-- css: 1
+- css: 2
 
 ```
-├── app/ (78.3K)
+├── app/ (85.6K)
 │   ├── (dashboard)/ (244)
 │   │   ├── citizen/ (62)
 │   │   │   └── (..1 more files)
@@ -27,17 +27,21 @@
 │   │   │   └── (..1 more files)
 │   │   └── wallet/ (61)
 │   │       └── (..1 more files)
-│   ├── (public)/ (12.9K)
-│   │   ├── components/ (12.2K)
-│   │   │   └── landing/ (12.2K)
-│   │   │       ├── ActionCard.tsx (652)
-│   │   │       ├── GraphPreview.tsx (3.4K)
-│   │   │       ├── Hero.tsx (1.5K)
-│   │   │       ├── HowItWorks.tsx (1.3K)
-│   │   │       ├── LayerCard.tsx (787)
-│   │   │       ├── LiveStats.tsx (839)
-│   │   │       ├── StatCounter.tsx (1.0K)
-│   │   │       └── WhatYouCanDo.tsx (2.7K)
+│   ├── (public)/ (19.6K)
+│   │   ├── components/ (18.6K)
+│   │   │   ├── landing/ (12.2K)
+│   │   │   │   ├── ActionCard.tsx (652)
+│   │   │   │   ├── GraphPreview.tsx (3.4K)
+│   │   │   │   ├── Hero.tsx (1.5K)
+│   │   │   │   ├── HowItWorks.tsx (1.3K)
+│   │   │   │   ├── LayerCard.tsx (787)
+│   │   │   │   ├── LiveStats.tsx (839)
+│   │   │   │   ├── StatCounter.tsx (1.0K)
+│   │   │   │   └── WhatYouCanDo.tsx (2.7K)
+│   │   │   └── nav/ (6.4K)
+│   │   │       ├── Footer.tsx (3.5K)
+│   │   │       ├── TopNav.tsx (2.8K)
+│   │   │       └── (..1 more files)
 │   │   ├── docs/
 │   │   │   └── (..1 more files)
 │   │   ├── marketplace/ (66)
@@ -46,7 +50,8 @@
 │   │   │   └── (..1 more files)
 │   │   ├── schema/ (61)
 │   │   │   └── (..1 more files)
-│   │   └── page.tsx (531) →
+│   │   ├── page.tsx (531) →
+│   │   └── (..1 more files)
 │   ├── api/ (5.9K)
 │   │   ├── connectome/ (3.3K)
 │   │   │   ├── graph/ (903)
@@ -71,8 +76,9 @@
 │   │   │   └── zustand_connectome_state_store_with_atomic_commit_actions.ts (10.0K)
 │   │   ├── connectome.css (6.3K)
 │   │   └── (..1 more files)
-│   └── (..2 more files)
-├── docs/ (930.2K)
+│   ├── globals.css (642)
+│   └── layout.tsx (728) →
+├── docs/ (965.1K)
 │   ├── concepts/ (9.5K)
 │   │   └── CONCEPT_AI_Human_Partnership.md (9.5K)
 │   ├── connectome/ (603.3K)
@@ -237,7 +243,7 @@
 │   │   ├── VALIDATION_Platform_Invariants.md (5.5K)
 │   │   └── VOCABULARY_Platform_Terms.md (6.1K)
 │   ├── ARCHITECTURE.md (4.6K)
-│   └── map.md (80.9K)
+│   └── map.md (115.8K)
 ├── l3/
 │   ├── contributions/
 │   │   └── (..2 more files)
@@ -331,9 +337,9 @@
 ├── .mindignore (838)
 ├── AGENTS.md (29.8K)
 ├── README.md (3.3K)
-├── map.md (69.5K)
-├── map_app.md (3.9K)
-└── tsconfig.tsbuildinfo (83.7K)
+├── map.md (114.8K)
+├── map_app.md (5.3K)
+└── tsconfig.tsbuildinfo (85.1K)
 ```
 
 **Definitions:**
@@ -365,6 +371,12 @@
 
 **Definitions:**
 - `WhatYouCanDo()`
+
+**Definitions:**
+- `Footer()`
+
+**Definitions:**
+- `TopNav()`
 
 **Docs:** `docs/landing/IMPLEMENTATION_Landing_Code.md`
 
@@ -449,6 +461,8 @@
 - `speedToMs()`
 - `extractFocusFromEvent()`
 - `extractExplanationFromEvent()`
+
+**Docs:** `docs/frontend/app_shell/PATTERNS_App_Shell.md`
 
 **Doc refs:**
 - `docs/ux/PATTERNS_UX_Principles.md`
@@ -2401,6 +2415,10 @@
 - ## Related Repos
 
 **Code refs:**
+- `api/connectome/graph/route.ts`
+- `api/connectome/graphs/route.ts`
+- `api/connectome/search/route.ts`
+- `api/sse/route.ts`
 - `app.py`
 - `app/api/activity/route.ts`
 - `app/api/connectome/graph/route.ts`
@@ -2466,6 +2484,11 @@
 - `app/mind/page.tsx`
 - `app/page.ts`
 - `app/page.tsx`
+- `connectome/components/connectome_page_shell_route_layout_and_control_surface.tsx`
+- `connectome/components/pannable_zoomable_zoned_flow_canvas_renderer.tsx`
+- `connectome/lib/connectome_system_map_node_edge_manifest.ts`
+- `connectome/lib/next_step_gate_and_realtime_playback_runtime_engine.ts`
+- `connectome/lib/zustand_connectome_state_store_with_atomic_commit_actions.ts`
 - `connectome_edge_directional_shine_animation_helpers.ts`
 - `connectome_edge_label_renderer_with_halo_and_zoom_policy.tsx`
 - `connectome_edge_pulse_particle_animation_and_boundary_clamp_helpers.ts`
@@ -2481,6 +2504,9 @@
 - `lib/api.ts`
 - `lib/api/client.ts`
 - `lib/constants/colors.ts`
+- `lib/design/index.ts`
+- `lib/design/tokens.ts`
+- `lib/design/utils.ts`
 - `lib/types.ts`
 - `mind/health/activity_logger.py`
 - `mind/health/connectome_health_service.py`
@@ -2495,6 +2521,8 @@
 - `tools/test_health_live.py`
 
 **Doc refs:**
+- `docs/MAPPING.md`
+- `docs/TAXONOMY.md`
 - `docs/connectome/edge_kit/BEHAVIORS_Connectome_Edge_Kit_Readable_Directional_And_Truthful_Link_Effects.md`
 - `docs/connectome/edge_kit/HEALTH_Connectome_Edge_Kit_Runtime_Verification_Of_Link_Visibility_And_Semantic_Styling.md`
 - `docs/connectome/edge_kit/IMPLEMENTATION_Connectome_Edge_Kit_Component_Map_And_Render_Tokens.md`
@@ -2545,7 +2573,15 @@
 - `docs/frontend/app_shell/OBJECTIVES_App_Shell.md`
 - `docs/frontend/app_shell/PATTERNS_App_Shell.md`
 - `docs/frontend/app_shell/SYNC_App_Shell_State.md`
+- `docs/landing/BEHAVIORS_Landing_UX.md`
+- `docs/landing/IMPLEMENTATION_Landing_Code.md`
 - `docs/mind/membrane/PATTERN_Membrane_Modulation.md`
+- `docs/physics/subentity/ALGORITHM_SubEntity.md`
+- `docs/physics/subentity/BEHAVIORS_SubEntity.md`
+- `docs/physics/subentity/VALIDATION_SubEntity.md`
+- `docs/registry/BEHAVIORS_Registry_UX.md`
+- `docs/schema/PATTERNS_Schema.md`
+- `docs/ux/PATTERNS_UX_Principles.md`
 - `docs/vision/PATTERNS_Platform_Vision_And_Architecture.md`
 - `docs/vision/SYNC_Platform_Vision.md`
 - `docs/vision/VALIDATION_Platform_Invariants.md`
@@ -3337,6 +3373,10 @@
 - ## License
 
 **Code refs:**
+- `api/connectome/graph/route.ts`
+- `api/connectome/graphs/route.ts`
+- `api/connectome/search/route.ts`
+- `api/sse/route.ts`
 - `app.py`
 - `app/api/activity/route.ts`
 - `app/api/connectome/graph/route.ts`
@@ -3402,6 +3442,11 @@
 - `app/mind/page.tsx`
 - `app/page.ts`
 - `app/page.tsx`
+- `connectome/components/connectome_page_shell_route_layout_and_control_surface.tsx`
+- `connectome/components/pannable_zoomable_zoned_flow_canvas_renderer.tsx`
+- `connectome/lib/connectome_system_map_node_edge_manifest.ts`
+- `connectome/lib/next_step_gate_and_realtime_playback_runtime_engine.ts`
+- `connectome/lib/zustand_connectome_state_store_with_atomic_commit_actions.ts`
 - `connectome_edge_directional_shine_animation_helpers.ts`
 - `connectome_edge_label_renderer_with_halo_and_zoom_policy.tsx`
 - `connectome_edge_pulse_particle_animation_and_boundary_clamp_helpers.ts`
@@ -3417,6 +3462,9 @@
 - `lib/api.ts`
 - `lib/api/client.ts`
 - `lib/constants/colors.ts`
+- `lib/design/index.ts`
+- `lib/design/tokens.ts`
+- `lib/design/utils.ts`
 - `lib/types.ts`
 - `mind/health/activity_logger.py`
 - `mind/health/connectome_health_service.py`
@@ -3431,6 +3479,8 @@
 - `tools/test_health_live.py`
 
 **Doc refs:**
+- `docs/MAPPING.md`
+- `docs/TAXONOMY.md`
 - `docs/connectome/edge_kit/BEHAVIORS_Connectome_Edge_Kit_Readable_Directional_And_Truthful_Link_Effects.md`
 - `docs/connectome/edge_kit/HEALTH_Connectome_Edge_Kit_Runtime_Verification_Of_Link_Visibility_And_Semantic_Styling.md`
 - `docs/connectome/edge_kit/IMPLEMENTATION_Connectome_Edge_Kit_Component_Map_And_Render_Tokens.md`
@@ -3481,7 +3531,15 @@
 - `docs/frontend/app_shell/OBJECTIVES_App_Shell.md`
 - `docs/frontend/app_shell/PATTERNS_App_Shell.md`
 - `docs/frontend/app_shell/SYNC_App_Shell_State.md`
+- `docs/landing/BEHAVIORS_Landing_UX.md`
+- `docs/landing/IMPLEMENTATION_Landing_Code.md`
 - `docs/mind/membrane/PATTERN_Membrane_Modulation.md`
+- `docs/physics/subentity/ALGORITHM_SubEntity.md`
+- `docs/physics/subentity/BEHAVIORS_SubEntity.md`
+- `docs/physics/subentity/VALIDATION_SubEntity.md`
+- `docs/registry/BEHAVIORS_Registry_UX.md`
+- `docs/schema/PATTERNS_Schema.md`
+- `docs/ux/PATTERNS_UX_Principles.md`
 - `docs/vision/PATTERNS_Platform_Vision_And_Architecture.md`
 - `docs/vision/SYNC_Platform_Vision.md`
 - `docs/vision/VALIDATION_Platform_Invariants.md`
@@ -3498,6 +3556,7 @@
 - `api/connectome/graphs/route.ts`
 - `api/connectome/search/route.ts`
 - `api/sse/route.ts`
+- `api/stats/route.ts`
 - `connectome/components/connectome_page_shell_route_layout_and_control_surface.tsx`
 - `connectome/components/pannable_zoomable_zoned_flow_canvas_renderer.tsx`
 - `connectome/lib/connectome_system_map_node_edge_manifest.ts`
@@ -3507,6 +3566,7 @@
 **Doc refs:**
 - `docs/connectome/flow_canvas/PATTERNS_Connectome_Flow_Canvas_Pannable_Zoomable_Zoned_System_Map_Rendering_Patterns.md`
 - `docs/connectome/page_shell/PATTERNS_Connectome_Page_Shell_Route_Composition_And_User_Control_Surface_Patterns.md`
+- `docs/landing/IMPLEMENTATION_Landing_Code.md`
 
 **Sections:**
 - # Repository Map: mind-platform/app

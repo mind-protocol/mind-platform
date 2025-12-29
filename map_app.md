@@ -1,23 +1,23 @@
 # Repository Map: mind-platform/app
 
-*Generated: 2025-12-29 03:12*
+*Generated: 2025-12-29 03:24*
 
 ## Statistics
 
-- **Files:** 20
-- **Directories:** 24
-- **Total Size:** 76.3K
+- **Files:** 24
+- **Directories:** 25
+- **Total Size:** 84.1K
 - **Doc Files:** 0
-- **Code Files:** 20
+- **Code Files:** 24
 - **Areas:** 8 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
-- **DOCS Links:** 3 (0.15 avg per code file)
+- **DOCS Links:** 4 (0.17 avg per code file)
 
 ### By Language
 
-- tsx: 11
+- tsx: 14
 - typescript: 8
-- css: 1
+- css: 2
 
 ## File Tree
 
@@ -31,17 +31,21 @@
 │   │   └── (..1 more files)
 │   └── wallet/ (61)
 │       └── (..1 more files)
-├── (public)/ (12.9K)
-│   ├── components/ (12.2K)
-│   │   └── landing/ (12.2K)
-│   │       ├── ActionCard.tsx (652)
-│   │       ├── GraphPreview.tsx (3.4K)
-│   │       ├── Hero.tsx (1.5K)
-│   │       ├── HowItWorks.tsx (1.3K)
-│   │       ├── LayerCard.tsx (787)
-│   │       ├── LiveStats.tsx (839)
-│   │       ├── StatCounter.tsx (1.0K)
-│   │       └── WhatYouCanDo.tsx (2.7K)
+├── (public)/ (19.6K)
+│   ├── components/ (18.6K)
+│   │   ├── landing/ (12.2K)
+│   │   │   ├── ActionCard.tsx (652)
+│   │   │   ├── GraphPreview.tsx (3.4K)
+│   │   │   ├── Hero.tsx (1.5K)
+│   │   │   ├── HowItWorks.tsx (1.3K)
+│   │   │   ├── LayerCard.tsx (787)
+│   │   │   ├── LiveStats.tsx (839)
+│   │   │   ├── StatCounter.tsx (1.0K)
+│   │   │   └── WhatYouCanDo.tsx (2.7K)
+│   │   └── nav/ (6.4K)
+│   │       ├── Footer.tsx (3.5K)
+│   │       ├── TopNav.tsx (2.8K)
+│   │       └── (..1 more files)
 │   ├── docs/
 │   │   └── (..1 more files)
 │   ├── marketplace/ (66)
@@ -50,7 +54,8 @@
 │   │   └── (..1 more files)
 │   ├── schema/ (61)
 │   │   └── (..1 more files)
-│   └── page.tsx (531) →
+│   ├── page.tsx (531) →
+│   └── (..1 more files)
 ├── api/ (5.9K)
 │   ├── connectome/ (3.3K)
 │   │   ├── graph/ (903)
@@ -65,16 +70,18 @@
 │   │   └── route.ts (1.6K)
 │   └── stats/ (989)
 │       └── route.ts (989)
-└── connectome/ (58.5K)
-    ├── components/ (35.3K)
-    │   ├── connectome_page_shell_route_layout_and_control_surface.tsx (13.8K) →
-    │   └── pannable_zoomable_zoned_flow_canvas_renderer.tsx (21.5K) →
-    ├── lib/ (16.6K)
-    │   ├── connectome_system_map_node_edge_manifest.ts (3.6K)
-    │   ├── next_step_gate_and_realtime_playback_runtime_engine.ts (3.1K)
-    │   └── zustand_connectome_state_store_with_atomic_commit_actions.ts (10.0K)
-    ├── connectome.css (6.3K)
-    └── (..1 more files)
+├── connectome/ (58.5K)
+│   ├── components/ (35.3K)
+│   │   ├── connectome_page_shell_route_layout_and_control_surface.tsx (13.8K) →
+│   │   └── pannable_zoomable_zoned_flow_canvas_renderer.tsx (21.5K) →
+│   ├── lib/ (16.6K)
+│   │   ├── connectome_system_map_node_edge_manifest.ts (3.6K)
+│   │   ├── next_step_gate_and_realtime_playback_runtime_engine.ts (3.1K)
+│   │   └── zustand_connectome_state_store_with_atomic_commit_actions.ts (10.0K)
+│   ├── connectome.css (6.3K)
+│   └── (..1 more files)
+├── globals.css (642)
+└── layout.tsx (728) →
 ```
 
 ## File Details
@@ -124,6 +131,16 @@
 
 **Definitions:**
 - `WhatYouCanDo()`
+
+### `(public)/components/nav/Footer.tsx`
+
+**Definitions:**
+- `Footer()`
+
+### `(public)/components/nav/TopNav.tsx`
+
+**Definitions:**
+- `TopNav()`
 
 ### `(public)/page.tsx`
 
@@ -230,3 +247,7 @@
 - `speedToMs()`
 - `extractFocusFromEvent()`
 - `extractExplanationFromEvent()`
+
+### `layout.tsx`
+
+**Docs:** `docs/frontend/app_shell/PATTERNS_App_Shell.md`
