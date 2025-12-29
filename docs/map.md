@@ -1,17 +1,17 @@
 # Repository Map: mind-platform
 
-*Generated: 2025-12-29 18:54*
+*Generated: 2025-12-29 19:37*
 
-- **Files:** 248
-- **Directories:** 77
+- **Files:** 227
+- **Directories:** 67
 - **Total Size:** 1.6M
-- **Doc Files:** 212
+- **Doc Files:** 191
 - **Code Files:** 33
 - **Areas:** 8 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
 - **DOCS Links:** 5 (0.15 avg per code file)
 
-- markdown: 212
+- markdown: 191
 - tsx: 19
 - typescript: 12
 - css: 2
@@ -86,7 +86,7 @@
 │   │   └── (..2 more files)
 │   ├── globals.css (642)
 │   └── layout.tsx (728) →
-├── docs/ (971.5K)
+├── docs/ (972.9K)
 │   ├── concepts/ (9.5K)
 │   │   └── CONCEPT_AI_Human_Partnership.md (9.5K)
 │   ├── connectome/ (603.3K)
@@ -252,7 +252,7 @@
 │   │   ├── VALIDATION_Platform_Invariants.md (5.5K)
 │   │   └── VOCABULARY_Platform_Terms.md (6.1K)
 │   ├── ARCHITECTURE.md (4.6K)
-│   └── map.md (119.0K)
+│   └── map.md (120.4K)
 ├── l3/
 │   ├── contributions/
 │   │   └── (..2 more files)
@@ -266,7 +266,7 @@
 │   │   ├── utils.ts (953)
 │   │   └── (..1 more files)
 │   └── (..1 more files)
-├── templates/ (285.6K)
+├── templates/ (277.5K)
 │   ├── actors/ (8.2K)
 │   │   ├── ACTOR_Architect.md (883)
 │   │   ├── ACTOR_Fixer.md (780)
@@ -278,58 +278,27 @@
 │   │   ├── ACTOR_Voice.md (804)
 │   │   ├── ACTOR_Weaver.md (840)
 │   │   └── ACTOR_Witness.md (910)
-│   ├── agents/ (47.9K)
-│   │   ├── architect/ (4.9K)
-│   │   │   ├── AGENTS.md (1.1K)
-│   │   │   ├── CLAUDE.md (2.9K)
-│   │   │   └── GEMINI.md (944)
-│   │   ├── fixer/ (4.5K)
-│   │   │   ├── AGENTS.md (997)
-│   │   │   ├── CLAUDE.md (2.6K)
-│   │   │   └── GEMINI.md (858)
-│   │   ├── groundwork/ (4.6K)
-│   │   │   ├── AGENTS.md (1.0K)
-│   │   │   ├── CLAUDE.md (2.7K)
-│   │   │   └── GEMINI.md (890)
-│   │   ├── herald/ (4.8K)
-│   │   │   ├── AGENTS.md (1.1K)
-│   │   │   ├── CLAUDE.md (2.7K)
-│   │   │   └── GEMINI.md (910)
-│   │   ├── keeper/ (4.8K)
-│   │   │   ├── AGENTS.md (1.1K)
-│   │   │   ├── CLAUDE.md (2.8K)
-│   │   │   └── GEMINI.md (925)
-│   │   ├── scout/ (4.7K)
-│   │   │   ├── AGENTS.md (1.1K)
-│   │   │   ├── CLAUDE.md (2.7K)
-│   │   │   └── GEMINI.md (939)
-│   │   ├── steward/ (5.2K)
-│   │   │   ├── AGENTS.md (1.1K)
-│   │   │   ├── CLAUDE.md (3.0K)
-│   │   │   └── GEMINI.md (1.1K)
-│   │   ├── voice/ (4.6K)
-│   │   │   ├── AGENTS.md (1.0K)
-│   │   │   ├── CLAUDE.md (2.7K)
-│   │   │   └── GEMINI.md (868)
-│   │   ├── weaver/ (4.6K)
-│   │   │   ├── AGENTS.md (1.0K)
-│   │   │   ├── CLAUDE.md (2.7K)
-│   │   │   └── GEMINI.md (861)
-│   │   └── witness/ (5.2K)
-│   │       ├── AGENTS.md (1.2K)
-│   │       ├── CLAUDE.md (3.1K)
-│   │       └── GEMINI.md (980)
-│   ├── docs/ (51.2K)
+│   ├── docs/ (91.0K)
+│   │   ├── grammar/ (38.4K)
+│   │   │   ├── ALGORITHM_Grammar.md (7.0K)
+│   │   │   ├── BEHAVIORS_Grammar.md (4.5K)
+│   │   │   ├── HEALTH_Grammar.md (4.0K)
+│   │   │   ├── IMPLEMENTATION_Grammar.md (5.4K)
+│   │   │   ├── OBJECTIVES_Grammar.md (2.5K)
+│   │   │   ├── PATTERNS_Grammar.md (3.9K)
+│   │   │   ├── SYNC_Grammar.md (2.2K)
+│   │   │   ├── VALIDATION_Grammar.md (4.1K)
+│   │   │   └── VOCABULARY_Grammar.md (4.9K)
 │   │   ├── ALGORITHM_TEMPLATE.md (2.7K)
 │   │   ├── BEHAVIORS_TEMPLATE.md (2.9K)
-│   │   ├── HEALTH_TEMPLATE.md (14.9K)
+│   │   ├── HEALTH_TEMPLATE.md (15.1K)
 │   │   ├── IMPLEMENTATION_TEMPLATE.md (8.8K)
 │   │   ├── MAPPING_TEMPLATE.md (2.7K)
 │   │   ├── PATTERNS_TEMPLATE.md (2.9K)
 │   │   ├── SYNC_TEMPLATE.md (3.1K)
 │   │   ├── TAXONOMY_TEMPLATE.md (1.7K)
 │   │   ├── VALIDATION_TEMPLATE.md (2.0K)
-│   │   ├── VOCABULARY_TEMPLATE.md (2.9K)
+│   │   ├── VOCABULARY_TEMPLATE.md (4.0K)
 │   │   └── (..6 more files)
 │   ├── mcp/ (7.4K)
 │   │   ├── CODEX_SYSTEM_ADDITION.md (3.2K)
@@ -358,7 +327,7 @@
 ├── .mindignore (838)
 ├── AGENTS.md (29.8K)
 ├── README.md (3.3K)
-├── map.md (120.4K)
+├── map.md (117.9K)
 ├── map_app.md (6.8K)
 └── tsconfig.tsbuildinfo (86.9K)
 ```
@@ -2736,286 +2705,141 @@
 - ## Complements
 
 **Sections:**
-- # architect (Claude Agent SDK)
-- ## System Prompt
-- ## Anchor Vocabulary
-- ## Output Format
-- ## Switching Triggers
+- # Grammar — Algorithm: The Protocol Grammar
+- ## CHAIN
+- ## PURPOSE
+- ## 1. DETECTION
+- # Check for existing pending/running task_run
+- # Get task template from problem definition
+- # Create task_run
+- # Link to template and target
+- ## 2. CLAIM
+- # Find pending task_runs this actor can handle
+- # Verify still pending (race condition guard)
+- # Update task_run
+- # Create claim link
+- # Update actor
+- ## 3. EXECUTION
+- # Create run instance
+- # Execute steps
+- # Load skill instructions
+- # Agent follows skill cognitive pattern
+- # (This happens in the LLM, not in code)
+- # Execute procedure with agent interaction
+- # Execute procedure without agent
+- # Each step has code_action that runs directly
+- ## 4. RESOLUTION
+- # Update task_run
+- # Create resolution link
+- # Release actor
+- # Update task_run
+- # Release actor
+- # No RESOLVED link - problem persists
+- ## 5. VERIFICATION
+- # Re-run detection for this specific target
+- ## STATE MACHINE SUMMARY
+- ## PSEUDOCODE CONVENTIONS
 
 **Sections:**
-- # architect
-- ## Posture
-- ## How This Shapes Work
-- ## Example Behavior
-- ## Protocols
-- ## When to Be architect
-- ## When to Switch
-- ## Field Signals
-- ## Memory
-- ## Complements
+- # Grammar — Behaviors
+- ## CHAIN
+- ## PURPOSE
+- ## B1: Init Behavior
+- ## B2: Detection Behavior
+- ## B3: Claim Behavior
+- ## B4: Execution Behavior
+- ## B5: Completion Behavior
+- ## B6: Failure Behavior
+- ## B7: Retry Behavior
+- ## B8: Manual Trigger Behavior
+- ## B9: Agent Spawn Behavior
+- ## TIMING EXPECTATIONS
 
 **Sections:**
-- # architect (Gemini)
-- ## Posture
-- ## Anchor
-- ## How You Work
-- ## Your Blind Spot
-- ## Output
-- ## Handoff
+- # Grammar — Health
+- ## CHAIN
+- ## PURPOSE
+- ## FLOWS
+- ## INDICATORS
+- ## GAPS
+- ## COVERAGE
+
+**Code refs:**
+- `claim.py`
+- `detection.py`
+- `execution.py`
+- `grammar/claim.py`
+- `grammar/detection.py`
+- `grammar/execution.py`
+- `grammar/resolution.py`
+- `grammar/verification.py`
+- `task_query.py`
+- `task_state.py`
 
 **Sections:**
-- # fixer (Claude Agent SDK)
-- ## System Prompt
-- ## Anchor Vocabulary
-- ## Output Format
-- ## Switching Triggers
+- # Grammar — Implementation
+- ## CHAIN
+- ## PURPOSE
+- ## FILE STRUCTURE
+- ## CODE MAPPING
+- ## INIT FLOW
+- ## RUNTIME FLOW
+- ## DATA FLOW
 
 **Sections:**
-- # fixer
-- ## Posture
-- ## How This Shapes Work
-- ## Example Behavior
-- ## Protocols
-- ## When to Be fixer
-- ## When to Switch
-- ## Field Signals
-- ## Memory
-- ## Complements
+- # Grammar — Objectives
+- ## CHAIN
+- ## PURPOSE
+- ## RANKED OBJECTIVES
+- ## NON-OBJECTIVES
+- ## SUCCESS CRITERIA
 
 **Sections:**
-- # fixer (Gemini)
-- ## Posture
-- ## Anchor
-- ## How You Work
-- ## Your Blind Spot
-- ## Output
-- ## Handoff
+- # Grammar — Patterns
+- ## CHAIN
+- ## DESIGN PHILOSOPHY
+- ## CORE PATTERNS
+- ## ANTI-PATTERNS
+- # WRONG: Detection directly fixes
+- # WRONG: Check result not persisted
+- # WRONG: Assigning work to actors
+- ## SCOPE
+
+**Code refs:**
+- `runtime/grammar/claim.py`
+- `runtime/grammar/detection.py`
+- `runtime/grammar/execution.py`
+- `runtime/grammar/resolution.py`
 
 **Sections:**
-- # groundwork (Claude Agent SDK)
-- ## System Prompt
-- ## Anchor Vocabulary
-- ## Output Format
-- ## Switching Triggers
+- # Grammar — Sync
+- ## CHAIN
+- ## CURRENT STATE
+- ## RECENT CHANGES
+- ## NEXT STEPS
+- ## BLOCKERS
+- ## HANDOFF
 
 **Sections:**
-- # groundwork
-- ## Posture
-- ## How This Shapes Work
-- ## Example Behavior
-- ## Protocols
-- ## When to Be groundwork
-- ## When to Switch
-- ## Field Signals
-- ## Memory
-- ## Complements
+- # Grammar — Validation
+- ## CHAIN
+- ## PURPOSE
+- ## INVARIANTS
+- ## BEHAVIORAL INVARIANTS
+- ## VALIDATION SCHEDULE
 
 **Sections:**
-- # groundwork (Gemini)
-- ## Posture
-- ## Anchor
-- ## How You Work
-- ## Your Blind Spot
-- ## Output
-- ## Handoff
-
-**Sections:**
-- # herald (Claude Agent SDK)
-- ## System Prompt
-- ## Anchor Vocabulary
-- ## Output Format
-- ## Switching Triggers
-
-**Sections:**
-- # herald
-- ## Posture
-- ## How This Shapes Work
-- ## Example Behavior
-- ## Protocols
-- ## When to Be herald
-- ## When to Switch
-- ## Field Signals
-- ## Memory
-- ## Complements
-
-**Sections:**
-- # herald (Gemini)
-- ## Posture
-- ## Anchor
-- ## How You Work
-- ## Your Blind Spot
-- ## Output
-- ## Handoff
-
-**Sections:**
-- # keeper (Claude Agent SDK)
-- ## System Prompt
-- ## Anchor Vocabulary
-- ## Output Format
-- ## Switching Triggers
-
-**Sections:**
-- # keeper
-- ## Posture
-- ## How This Shapes Work
-- ## Example Behavior
-- ## Protocols
-- ## When to Be keeper
-- ## When to Switch
-- ## Field Signals
-- ## Memory
-- ## Complements
-
-**Sections:**
-- # keeper (Gemini)
-- ## Posture
-- ## Anchor
-- ## How You Work
-- ## Your Blind Spot
-- ## Output
-- ## Handoff
-
-**Sections:**
-- # scout (Claude Agent SDK)
-- ## System Prompt
-- ## Anchor Vocabulary
-- ## Output Format
-- ## Switching Triggers
-
-**Sections:**
-- # scout
-- ## Posture
-- ## How This Shapes Work
-- ## Example Behavior
-- ## Protocols
-- ## When to Be scout
-- ## When to Switch
-- ## Field Signals
-- ## Memory
-- ## Complements
-
-**Sections:**
-- # scout (Gemini)
-- ## Posture
-- ## Anchor
-- ## How You Work
-- ## Your Blind Spot
-- ## Output
-- ## Handoff
-
-**Sections:**
-- # steward (Claude Agent SDK)
-- ## System Prompt
-- ## Anchor Vocabulary
-- ## Output Format
-- ## Switching Triggers
-
-**Sections:**
-- # steward
-- ## Posture
-- ## How This Shapes Work
-- ## Example Behavior
-- ## Protocols
-- ## When to Be steward
-- ## When to Switch
-- ## Field Signals
-- ## Memory
-- ## Complements
-- ## Circular Complement
-
-**Sections:**
-- # steward (Gemini)
-- ## Posture
-- ## Anchor
-- ## How You Work
-- ## Your Blind Spot
-- ## Output
-- ## Handoff
-- ## Circular Complement
-
-**Sections:**
-- # voice (Claude Agent SDK)
-- ## System Prompt
-- ## Anchor Vocabulary
-- ## Output Format
-- ## Switching Triggers
-
-**Sections:**
-- # voice
-- ## Posture
-- ## How This Shapes Work
-- ## Example Behavior
-- ## Protocols
-- ## When to Be voice
-- ## When to Switch
-- ## Field Signals
-- ## Memory
-- ## Complements
-
-**Sections:**
-- # voice (Gemini)
-- ## Posture
-- ## Anchor
-- ## How You Work
-- ## Your Blind Spot
-- ## Output
-- ## Handoff
-
-**Sections:**
-- # weaver (Claude Agent SDK)
-- ## System Prompt
-- ## Anchor Vocabulary
-- ## Output Format
-- ## Switching Triggers
-
-**Sections:**
-- # weaver
-- ## Posture
-- ## How This Shapes Work
-- ## Example Behavior
-- ## Protocols
-- ## When to Be weaver
-- ## When to Switch
-- ## Field Signals
-- ## Memory
-- ## Complements
-
-**Sections:**
-- # weaver (Gemini)
-- ## Posture
-- ## Anchor
-- ## How You Work
-- ## Your Blind Spot
-- ## Output
-- ## Handoff
-
-**Sections:**
-- # witness (Claude Agent SDK)
-- ## System Prompt
-- ## Anchor Vocabulary
-- ## Output Format
-- ## Switching Triggers
-
-**Sections:**
-- # witness
-- ## Posture
-- ## How This Shapes Work
-- ## Example Behavior
-- ## Protocols
-- ## When to Be witness
-- ## When to Switch
-- ## Field Signals
-- ## Memory
-- ## Complements
-
-**Sections:**
-- # witness (Gemini)
-- ## Posture
-- ## Anchor
-- ## How You Work
-- ## Your Blind Spot
-- ## Output
-- ## Handoff
+- # Grammar — Vocabulary
+- ## CHAIN
+- ## PURPOSE
+- ## NODE TYPES
+- ## PROBLEMS
+- # critical = blocks work, must fix immediately
+- # warning = degraded state, should fix soon
+- # info = notable condition, fix when convenient
+- # Task template that fixes this problem
+- ## STATUS VALUES
+- ## LINK TYPES
 
 **Code refs:**
 - `{path/to/main/source/file.py`
@@ -3064,6 +2888,7 @@
 - ## DOCK TYPES (COMPLETE LIST)
 - ## CHECKER INDEX
 - ## INDICATOR: {Indicator Name}
+- # When problem detected, create task_run (narrative node)
 - ## HOW TO RUN
 - # Run all health checks for this module
 - # Run a specific checker
@@ -3159,6 +2984,12 @@
 - ## NEW RELATIONSHIPS
 - ## TASKS
 - ## ACTORS
+- ## PROBLEMS
+- # critical = blocks work, must fix immediately
+- # warning = degraded state, should fix soon
+- # info = notable condition, fix when convenient
+- # Task template that fixes this problem
+- # Full detection logic goes in HEALTH.md
 - ## TERMINOLOGY PROPOSALS
 - ## MERGE STATUS
 - ## MARKERS
@@ -3591,6 +3422,7 @@
 - `app/mind/page.tsx`
 - `app/page.ts`
 - `app/page.tsx`
+- `claim.py`
 - `connectome/components/connectome_page_shell_route_layout_and_control_surface.tsx`
 - `connectome/components/pannable_zoomable_zoned_flow_canvas_renderer.tsx`
 - `connectome/lib/connectome_system_map_node_edge_manifest.ts`
@@ -3605,8 +3437,15 @@
 - `connectome_node_boundary_intersection_geometry_helpers.ts`
 - `connectome_read_cli.py`
 - `connectome_system_map_node_edge_manifest.ts`
+- `detection.py`
 - `doctor_cli_parser_and_run_checker.py`
+- `execution.py`
 - `flow_event_schema_and_normalization_contract.ts`
+- `grammar/claim.py`
+- `grammar/detection.py`
+- `grammar/execution.py`
+- `grammar/resolution.py`
+- `grammar/verification.py`
 - `layout.tsx`
 - `lib/api.ts`
 - `lib/api/client.ts`
@@ -3622,9 +3461,15 @@
 - `page.tsx`
 - `pannable_zoomable_zoned_flow_canvas_renderer.tsx`
 - `route.ts`
+- `runtime/grammar/claim.py`
+- `runtime/grammar/detection.py`
+- `runtime/grammar/execution.py`
+- `runtime/grammar/resolution.py`
 - `semantic_edge_components_with_directional_shine_and_pulses.tsx`
 - `semantic_proximity_based_character_node_selector.py`
 - `snake_case.py`
+- `task_query.py`
+- `task_state.py`
 - `tools/test_health_live.py`
 
 **Doc refs:**
