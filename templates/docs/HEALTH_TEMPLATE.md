@@ -298,13 +298,13 @@ How to fill:
 
 ```yaml
 docks:
-  - point: {event_or_hook_name}  # e.g. init_scan.after_module_load
+  - point: {thing_node_id}  # links to thing node representing observable point
     type: {event|schedule|hook}
     payload: {data available}  # e.g. {module_id, docs_found[], docs_expected[]}
 ```
 
 How to fill:
-- point must match a real event/hook in the system.
+- point links to a thing node (observable point in the system).
 - payload describes what data the check receives.
 
 ### ALGORITHM / CHECK MECHANISM
