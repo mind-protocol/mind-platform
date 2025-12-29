@@ -1,6 +1,6 @@
 # Repository Map: mind-platform/app
 
-*Generated: 2025-12-29 19:37*
+*Generated: 2025-12-29 22:08*
 
 ## Statistics
 
@@ -9,7 +9,7 @@
 - **Total Size:** 92.4K
 - **Doc Files:** 0
 - **Code Files:** 31
-- **Areas:** 8 (docs/ subfolders)
+- **Areas:** 11 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
 - **DOCS Links:** 5 (0.16 avg per code file)
 

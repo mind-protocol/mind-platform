@@ -1,19 +1,20 @@
 # Repository Map: mind-platform
 
-*Generated: 2025-12-29 19:37*
+*Generated: 2025-12-29 22:08*
 
-- **Files:** 227
-- **Directories:** 67
-- **Total Size:** 1.6M
-- **Doc Files:** 191
-- **Code Files:** 33
-- **Areas:** 8 (docs/ subfolders)
+- **Files:** 262
+- **Directories:** 76
+- **Total Size:** 1.7M
+- **Doc Files:** 219
+- **Code Files:** 40
+- **Areas:** 11 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
-- **DOCS Links:** 5 (0.15 avg per code file)
+- **DOCS Links:** 5 (0.12 avg per code file)
 
-- markdown: 191
+- markdown: 219
 - tsx: 19
 - typescript: 12
+- python: 7
 - css: 2
 
 ```
@@ -86,7 +87,44 @@
 │   │   └── (..2 more files)
 │   ├── globals.css (642)
 │   └── layout.tsx (728) →
-├── docs/ (972.9K)
+├── capabilities/ (37.5K)
+│   └── create-doc-chain/ (37.5K)
+│       ├── runtime/ (3.9K)
+│       │   ├── checks.py (3.7K)
+│       │   └── (..1 more files)
+│       ├── skills/ (1.3K)
+│       │   └── SKILL_write_doc.md (1.3K)
+│       ├── tasks/ (1.3K)
+│       │   └── TASK_create_doc.md (1.3K)
+│       ├── ALGORITHM.md (5.7K)
+│       ├── BEHAVIORS.md (3.2K)
+│       ├── HEALTH.md (5.9K)
+│       ├── IMPLEMENTATION.md (3.9K)
+│       ├── OBJECTIVES.md (1.9K)
+│       ├── PATTERNS.md (1.9K)
+│       ├── SYNC.md (2.3K)
+│       ├── VALIDATION.md (2.8K)
+│       └── VOCABULARY.md (3.4K)
+├── docs/ (1.1M)
+│   ├── capabilities/ (32.5K)
+│   │   ├── ALGORITHM_Capabilities.md (6.8K)
+│   │   ├── BEHAVIORS_Capabilities.md (3.3K)
+│   │   ├── HEALTH_Capabilities.md (4.0K)
+│   │   ├── IMPLEMENTATION_Capabilities.md (4.4K)
+│   │   ├── OBJECTIVES_Capabilities.md (2.3K)
+│   │   ├── PATTERNS_Capabilities.md (3.6K)
+│   │   ├── SYNC_Capabilities.md (2.8K)
+│   │   ├── VALIDATION_Capabilities.md (2.9K)
+│   │   └── VOCABULARY_Capabilities.md (2.5K)
+│   ├── capability-runtime/ (42.9K)
+│   │   ├── ALGORITHM_Capability_Runtime.md (8.7K)
+│   │   ├── BEHAVIORS_Capability_Runtime.md (3.2K)
+│   │   ├── HEALTH_Capability_Runtime.md (5.4K)
+│   │   ├── IMPLEMENTATION_Capability_Runtime.md (6.5K)
+│   │   ├── OBJECTIVES_Capability_Runtime.md (2.3K)
+│   │   ├── PATTERNS_Capability_Runtime.md (6.7K)
+│   │   ├── SYNC_Capability_Runtime.md (4.3K)
+│   │   └── VALIDATION_Capability_Runtime.md (5.8K)
 │   ├── concepts/ (9.5K)
 │   │   └── CONCEPT_AI_Human_Partnership.md (9.5K)
 │   ├── connectome/ (603.3K)
@@ -220,6 +258,16 @@
 │   │   ├── PATTERNS_Landing_Design.md (11.4K)
 │   │   ├── SYNC_Landing_State.md (4.9K)
 │   │   └── VALIDATION_Landing_Invariants.md (5.0K)
+│   ├── nature/ (24.2K)
+│   │   ├── ALGORITHM_Nature.md (3.3K)
+│   │   ├── BEHAVIORS_Nature.md (4.0K)
+│   │   ├── HEALTH_Nature.md (1.9K)
+│   │   ├── IMPLEMENTATION_Nature.md (1.6K)
+│   │   ├── OBJECTIVES_Nature.md (2.1K)
+│   │   ├── PATTERNS_Nature.md (2.6K)
+│   │   ├── SYNC_Nature.md (2.0K)
+│   │   ├── VALIDATION_Nature.md (2.5K)
+│   │   └── VOCABULARY_Nature.md (4.2K)
 │   ├── ngram_feature/ (15.7K)
 │   │   ├── ALGORITHM_Ngram_Feature_Placeholder_Page.md (5.8K)
 │   │   ├── BEHAVIORS_Ngram_Feature_Placeholder_Page.md (2.6K)
@@ -252,7 +300,7 @@
 │   │   ├── VALIDATION_Platform_Invariants.md (5.5K)
 │   │   └── VOCABULARY_Platform_Terms.md (6.1K)
 │   ├── ARCHITECTURE.md (4.6K)
-│   └── map.md (120.4K)
+│   └── map.md (118.2K)
 ├── l3/
 │   ├── contributions/
 │   │   └── (..2 more files)
@@ -266,7 +314,16 @@
 │   │   ├── utils.ts (953)
 │   │   └── (..1 more files)
 │   └── (..1 more files)
-├── templates/ (277.5K)
+├── runtime/ (19.7K)
+│   ├── capability/ (19.7K)
+│   │   ├── __init__.py (1.1K)
+│   │   ├── context.py (2.0K)
+│   │   ├── decorators.py (4.6K)
+│   │   ├── dispatch.py (6.3K)
+│   │   ├── loader.py (2.8K)
+│   │   └── registry.py (3.0K)
+│   └── (..1 more files)
+├── templates/ (238.9K)
 │   ├── actors/ (8.2K)
 │   │   ├── ACTOR_Architect.md (883)
 │   │   ├── ACTOR_Fixer.md (780)
@@ -278,20 +335,10 @@
 │   │   ├── ACTOR_Voice.md (804)
 │   │   ├── ACTOR_Weaver.md (840)
 │   │   └── ACTOR_Witness.md (910)
-│   ├── docs/ (91.0K)
-│   │   ├── grammar/ (38.4K)
-│   │   │   ├── ALGORITHM_Grammar.md (7.0K)
-│   │   │   ├── BEHAVIORS_Grammar.md (4.5K)
-│   │   │   ├── HEALTH_Grammar.md (4.0K)
-│   │   │   ├── IMPLEMENTATION_Grammar.md (5.4K)
-│   │   │   ├── OBJECTIVES_Grammar.md (2.5K)
-│   │   │   ├── PATTERNS_Grammar.md (3.9K)
-│   │   │   ├── SYNC_Grammar.md (2.2K)
-│   │   │   ├── VALIDATION_Grammar.md (4.1K)
-│   │   │   └── VOCABULARY_Grammar.md (4.9K)
+│   ├── docs/ (52.4K)
 │   │   ├── ALGORITHM_TEMPLATE.md (2.7K)
 │   │   ├── BEHAVIORS_TEMPLATE.md (2.9K)
-│   │   ├── HEALTH_TEMPLATE.md (15.1K)
+│   │   ├── HEALTH_TEMPLATE.md (15.0K)
 │   │   ├── IMPLEMENTATION_TEMPLATE.md (8.8K)
 │   │   ├── MAPPING_TEMPLATE.md (2.7K)
 │   │   ├── PATTERNS_TEMPLATE.md (2.9K)
@@ -327,7 +374,7 @@
 ├── .mindignore (838)
 ├── AGENTS.md (29.8K)
 ├── README.md (3.3K)
-├── map.md (117.9K)
+├── map.md (129.5K)
 ├── map_app.md (6.8K)
 └── tsconfig.tsbuildinfo (86.9K)
 ```
@@ -474,6 +521,411 @@
 - `extractExplanationFromEvent()`
 
 **Docs:** `docs/frontend/app_shell/PATTERNS_App_Shell.md`
+
+**Definitions:**
+- `def chain_completeness()`
+- `def placeholder_detection()`
+
+**Sections:**
+- # Skill: write_doc
+- ## Purpose
+- ## Gates
+- ## Process
+- ## Tips
+- ## Executes
+- ## Used By
+
+**Sections:**
+- # Task: create_doc
+- ## Purpose
+- ## Resolves
+- ## Inputs
+- ## Outputs
+- ## Executor
+- ## Uses
+- ## Executes
+- ## Validation
+- ## Instance (task_run)
+
+**Sections:**
+- # Create Doc Chain — Algorithm
+- ## CHAIN
+- ## PURPOSE
+- ## DETECTION ALGORITHM
+- # 1. Find all code modules
+- # Returns: ["auth", "utils", "api", ...]
+- # 2. Find all doc chains
+- # Returns: {"auth": ["OBJECTIVES", "PATTERNS", ...], ...}
+- # 3. Expected chain
+- # UNDOCUMENTED
+- # Check completeness
+- # INCOMPLETE_CHAIN
+- ## TASK CREATION ALGORITHM
+- # 1. Get task template
+- # 2. Determine nature based on severity
+- # 3. Create task_run node
+- # Create Documentation: {problem['target']}
+- # 4. Create links
+- ## EXECUTION ALGORITHM
+- # 1. Load skill
+- # 2. Start procedure
+- # 3. Execute steps
+- # Each step = one doc file
+- # Agent fills template
+- # Write doc
+- # Mark step complete
+- # 4. End procedure
+- ## VALIDATION ALGORITHM
+- # 1. All files present?
+- # 2. No placeholders?
+- # 3. Structure matches template?
+- # 4. Result
+- ## DECISION TREE
+
+**Sections:**
+- # Create Doc Chain — Behaviors
+- ## CHAIN
+- ## PURPOSE
+- ## B1: Missing Doc Detection
+- ## B2: Incomplete Chain Detection
+- ## B3: Task Creation
+- ## B4: Agent Pickup
+- ## B5: Doc Creation
+- ## B6: Validation
+- ## B7: Resolution Confirmation
+- ## BEHAVIOR SUMMARY
+
+**Sections:**
+- # Create Doc Chain — Health
+- ## CHAIN
+- ## PURPOSE
+- ## FLOWS
+- ## INDICATORS
+- ## KNOWN GAPS
+
+**Sections:**
+- # Create Doc Chain — Implementation
+- ## CHAIN
+- ## PURPOSE
+- ## FILE STRUCTURE
+- ## KEY COMPONENTS
+- # capabilities/create-doc-chain/runtime/checks.py
+- # TASK_create_doc.md
+- ## Inputs
+- ## Outputs
+- ## Uses
+- ## Executes
+- # SKILL_write_doc.md
+- ## Gates
+- ## Process
+- # PROCEDURE_create_doc.yaml
+- ## INTEGRATION POINTS
+
+**Sections:**
+- # Create Doc Chain — Objectives
+- ## CHAIN
+- ## PURPOSE
+- ## RANKED OBJECTIVES
+- ## NON-OBJECTIVES
+- ## TRADEOFFS
+- ## SUCCESS SIGNALS
+
+**Sections:**
+- # Create Doc Chain — Patterns
+- ## CHAIN
+- ## THE PROBLEM
+- ## THE PATTERN
+- ## PRINCIPLES
+- ## DESIGN DECISIONS
+- ## SCOPE
+
+**Sections:**
+- # Create Doc Chain — Sync
+- ## CHAIN
+- ## CURRENT STATE
+- ## RECENT CHANGES
+- ## NEXT STEPS
+- ## HANDOFF
+
+**Sections:**
+- # Create Doc Chain — Validation
+- ## CHAIN
+- ## PURPOSE
+- ## INVARIANTS
+- ## VALIDATION CHECKS
+- ## ERROR MESSAGES
+- ## TASK COMPLETION CRITERIA
+
+**Sections:**
+- # Create Doc Chain — Vocabulary
+- ## CHAIN
+- ## PURPOSE
+- ## TERMS
+- ## PROBLEMS
+- ## USAGE
+- # In HEALTH.md
+
+**Sections:**
+- # Capabilities — Algorithm
+- ## CHAIN
+- ## PURPOSE
+- ## CAPABILITY LIFECYCLE
+- ## STEP 1: DETECTION
+- ## STEP 2: TASK CREATION
+- ## STEP 3: PICKUP
+- ## STEP 4: EXECUTION
+- ## STEP 5: VALIDATION
+- ## STEP 6: RESOLUTION
+- ## DECISION TREE: TRIGGER ROUTING
+
+**Sections:**
+- # Capabilities — Behaviors
+- ## CHAIN
+- ## PURPOSE
+- ## B1: Capability Discovery
+- ## B2: Problem Detection
+- ## B3: Task Creation
+- ## B4: Task Pickup
+- ## B5: Skill Loading
+- ## B6: Execution
+- ## B7: Validation
+- ## B8: Resolution
+- ## BEHAVIOR SUMMARY
+
+**Sections:**
+- # Capabilities — Health
+- ## CHAIN
+- ## PURPOSE
+- ## DOCKS
+- ## INDICATORS
+- # Complete Capability Docs
+- # Fix Resolution Path
+- # Review Orphan Capability
+- # Sync Capability Docs
+- ## HOW TO RUN
+- # Check all capability health
+- # Check specific capability
+- # Run via MCP
+
+**Sections:**
+- # Capabilities — Implementation
+- ## CHAIN
+- ## PURPOSE
+- ## FILE STRUCTURE
+- ## KEY COMPONENTS
+- ## INTEGRATION POINTS
+- # HEALTH.md triggers health checks
+- # Connects to: .mind/mind/health/
+- # tasks/ folder contains task templates
+- # on_problem references these templates
+- # task_run instances created when problems detected
+- # Connects to: .mind/mind/tasks/
+- # skills/ folder contains skill definitions
+- # Tasks reference skills
+- # Agents load skills when claiming tasks
+- # Connects to: .mind/skills/
+- # procedures/ folder contains procedure definitions
+- # Skills reference procedures
+- # Procedures guide step-by-step execution
+- # Connects to: .mind/procedures/
+- ## CLI COMMANDS
+- # List capabilities
+- # Validate a capability
+- # Run capability health check
+- # Create new capability from template
+- ## MCP TOOLS
+- # Query capabilities
+- # Get capability details
+- # Trigger capability check
+
+**Sections:**
+- # Capabilities — Objectives
+- ## CHAIN
+- ## PURPOSE
+- ## RANKED OBJECTIVES
+- ## NON-OBJECTIVES
+- ## TRADEOFFS
+- ## SUCCESS SIGNALS
+
+**Sections:**
+- # Capabilities — Patterns
+- ## CHAIN
+- ## THE PROBLEM
+- ## THE PATTERN
+- ## ORGAN METAPHORS
+- ## PRINCIPLES
+- ## ARCHITECTURE
+- ## SCOPE
+
+**Sections:**
+- # Capabilities — Sync
+- ## CHAIN
+- ## CURRENT STATE
+- ## RECENT CHANGES
+- ## NEXT STEPS
+- ## HANDOFF
+
+**Sections:**
+- # Capabilities — Validation
+- ## CHAIN
+- ## PURPOSE
+- ## INVARIANTS
+- ## VALIDATION CHECKS
+- ## ERROR MESSAGES
+
+**Sections:**
+- # Capabilities — Vocabulary
+- ## CHAIN
+- ## PURPOSE
+- ## TERMS
+- ## PROBLEMS
+- ## USAGE
+- # In a capability's HEALTH.md
+
+**Sections:**
+- # Capability Runtime — Algorithm
+- ## CHAIN
+- ## A1: Capability Discovery
+- ## A2: Load Checks from Capability
+- # Dynamic import
+- # Collect @check decorated functions
+- ## A3: Check Registration
+- ## A4: Trigger Dispatch
+- # Build context
+- # ... read-only accessors
+- # Call check with timeout
+- ## A5: Task Creation from Signal
+- # Create task_run node
+- # Link to task template
+- # Link to problem
+- ## A6: MCP Startup Integration
+- # Phase 1: Discovery
+- # Phase 2: Registration
+- # Phase 3: Run init triggers
+- # Phase 4: Setup file watcher
+- # Phase 5: Setup cron
+- ## DATA STRUCTURES
+- # Convenience accessors
+- # Read-only methods
+- ## SEQUENCE: Full Trigger Flow
+- ## DECORATOR IMPLEMENTATION
+- # mind/capability/decorators.py
+- # Register in module's __checks__ list
+
+**Code refs:**
+- `__init__.py`
+
+**Sections:**
+- # Capability Runtime — Behaviors
+- ## CHAIN
+- ## B1: Capability Discovery
+- ## B2: Handler Registration
+- ## B3: Trigger Dispatch
+- ## B4: Task Creation
+- ## B5: Health Check Integration
+- ## B6: Graceful Degradation
+- ## BEHAVIOR MATRIX
+- ## ERROR BEHAVIORS
+
+**Sections:**
+- # Capability Runtime — Health
+- ## CHAIN
+- ## HEALTH SIGNALS
+- ## HEALTH MATRIX
+- ## MONITORING IMPLEMENTATION
+- # H1: Load success
+- # H2: Handlers registered
+- # H3: Latency
+- # H4: Error rate
+- ## DASHBOARD OUTPUT
+
+**Code refs:**
+- `mcp/health.py`
+- `mcp/server.py`
+- `runtime/capability/base.py`
+- `runtime/capability/dispatch.py`
+- `runtime/capability/loader.py`
+- `runtime/capability/registry.py`
+
+**Sections:**
+- # Capability Runtime — Implementation
+- ## CHAIN
+- ## CODE LOCATIONS
+- ## KEY CLASSES
+- # Injected by MCP
+- # Find CHECKS list or scan for decorated functions
+- ## DATA FLOW
+- ## CONFIGURATION
+- ## DEPENDENCIES
+- ## IMPLEMENTATION STATUS
+- ## FILE STRUCTURE (Full)
+
+**Code refs:**
+- `mcp/server.py`
+- `runtime/ingest/docs.py`
+
+**Sections:**
+- # Capability Runtime — Objectives
+- ## PURPOSE
+- ## RANKED OBJECTIVES
+- ## NON-OBJECTIVES
+- ## TRADEOFFS
+- ## DEPENDENCIES
+
+**Sections:**
+- # Capability Runtime — Patterns
+- ## CHAIN
+- ## CORE PATTERN: Self-Contained Capabilities
+- ## PATTERN: Decorator-Based Health Checks
+- # capabilities/create-doc-chain/runtime/checks.py
+- ## PATTERN: Trigger Types
+- ## PATTERN: Signal Return Values
+- # Simple returns
+- # With context data (for task creation)
+- ## PATTERN: Check Context
+- ## PATTERN: Task Creation Flow
+- ## PATTERN: Capability Isolation
+- # MCP loader (runtime/capability/loader.py)
+- # Continue loading other capabilities
+- ## PATTERN: Context Propagation
+- # Trigger info
+- # Payload (varies by trigger type)
+- # Read-only accessors (see Check Context section)
+- ## ANTI-PATTERNS
+- ## DESIGN RATIONALE
+
+**Code refs:**
+- `base.py`
+- `dispatch.py`
+- `loader.py`
+- `mcp/server.py`
+- `registry.py`
+- `runtime/capability/base.py`
+- `runtime/capability/dispatch.py`
+- `runtime/capability/loader.py`
+- `runtime/capability/registry.py`
+
+**Sections:**
+- # Capability Runtime — Sync
+- ## CHAIN
+- ## CURRENT STATE
+- ## WHAT'S DESIGNED
+- ## IMPLEMENTATION PLAN
+- ## OPEN QUESTIONS
+- ## DEPENDENCIES
+- ## HANDOFF: FOR IMPLEMENTER
+- # __init__.py
+- ## RELATED DOCS
+
+**Sections:**
+- # Capability Runtime — Validation
+- ## CHAIN
+- ## INVARIANTS
+- # Load each capability independently
+- # Verify other capabilities still work
+- # Check for imports from sibling capabilities
+- ## VALIDATION MATRIX
+- ## TEST SCENARIOS
 
 **Doc refs:**
 - `docs/ux/PATTERNS_UX_Principles.md`
@@ -2101,6 +2553,117 @@
 - ## Security Invariants
 - ## Related Invariants
 
+**Sections:**
+- # Nature — Algorithm: Choosing the Right Nature
+- ## CHAIN
+- ## PURPOSE
+- ## DECISION TREE
+- ## STEP BY STEP
+- # Task both uses a skill AND executes a procedure
+- ## COMMON PATTERNS
+- # Always: instance -[serves]-> template
+- # Actor claims work
+- # Task concerns target
+- # Task resolves problem
+- # Doc describes code
+- # Code imports dependency
+- # Parent includes child
+- ## WHEN UNSURE
+- ## MARKERS
+
+**Sections:**
+- # Nature — Behaviors: Observable Effects
+- ## CHAIN
+- ## PURPOSE
+- ## B1: Link with `serves`
+- ## B2: Link with `concerns`
+- ## B3: Link with `claims`
+- ## B4: Link with `resolves`
+- ## B5: Link with `blocks`
+- ## B6: Link with `includes`
+- ## B7: Link with `uses`
+- ## B8: Link with `executes`
+- ## B9: Link with `imports`
+- ## B10: Link with `is about`
+- ## QUERY BEHAVIORS
+- ## MARKERS
+
+**Sections:**
+- # Nature — Health: Verifying Correct Usage
+- ## CHAIN
+- ## PURPOSE
+- ## INDICATORS
+- ## HOW TO RUN
+- # Check nature health (via MCP)
+- ## MARKERS
+
+**Sections:**
+- # Nature — Implementation: Where Nature Lives
+- ## CHAIN
+- ## PURPOSE
+- ## FILE STRUCTURE
+- ## NATURE IN MCP CALLS
+- # Creating a link
+- ## TRANSPARENCY PRINCIPLE
+- ## MARKERS
+
+**Sections:**
+- # Nature — Objectives
+- ## CHAIN
+- ## PURPOSE
+- ## RANKED OBJECTIVES
+- ## NON-OBJECTIVES
+- ## SUCCESS CRITERIA
+
+**Sections:**
+- # Nature — Patterns: Semantic Link Vocabulary
+- ## CHAIN
+- ## THE PROBLEM
+- ## THE PATTERN
+- ## PRINCIPLES
+- ## CORE NATURE VALUES
+- ## SCOPE
+- ## MARKERS
+
+**Sections:**
+- # Nature — Sync
+- ## CHAIN
+- ## CURRENT STATE
+- ## RECENT CHANGES
+- ## NEXT STEPS
+- ## HANDOFF
+
+**Sections:**
+- # Nature — Validation: What Makes Valid Nature Usage
+- ## CHAIN
+- ## PURPOSE
+- ## INVARIANTS
+- # missing nature
+- ## VALIDATION CHECKS
+- ## ERROR MESSAGES
+- ## MARKERS
+
+**Sections:**
+- # Nature — Vocabulary: The Stimulus Field
+- ## CHAIN
+- ## PURPOSE
+- ## WHAT IS NATURE
+- # Link nature
+- # Node nature (in content/metadata)
+- ## NATURE VOCABULARY
+- # Pre-modifiers (before verb)
+- # Post-modifiers (after verb with comma)
+- ## USAGE EXAMPLES
+- # The task_run node
+- # Link to template
+- # Link to target
+- ## CHOOSING NATURE
+- ## ANTI-PATTERNS
+- # WRONG - nature is not metadata
+- # RIGHT - nature describes stimulus type
+- # Put metadata in node properties
+- ## MARKERS
+
 **Code refs:**
 - `app/mind/page.ts`
 
@@ -2507,6 +3070,7 @@
 - `app/mind/page.tsx`
 - `app/page.ts`
 - `app/page.tsx`
+- `claim.py`
 - `connectome/components/connectome_page_shell_route_layout_and_control_surface.tsx`
 - `connectome/components/pannable_zoomable_zoned_flow_canvas_renderer.tsx`
 - `connectome/lib/connectome_system_map_node_edge_manifest.ts`
@@ -2521,8 +3085,15 @@
 - `connectome_node_boundary_intersection_geometry_helpers.ts`
 - `connectome_read_cli.py`
 - `connectome_system_map_node_edge_manifest.ts`
+- `detection.py`
 - `doctor_cli_parser_and_run_checker.py`
+- `execution.py`
 - `flow_event_schema_and_normalization_contract.ts`
+- `grammar/claim.py`
+- `grammar/detection.py`
+- `grammar/execution.py`
+- `grammar/resolution.py`
+- `grammar/verification.py`
 - `layout.tsx`
 - `lib/api.ts`
 - `lib/api/client.ts`
@@ -2538,9 +3109,15 @@
 - `page.tsx`
 - `pannable_zoomable_zoned_flow_canvas_renderer.tsx`
 - `route.ts`
+- `runtime/grammar/claim.py`
+- `runtime/grammar/detection.py`
+- `runtime/grammar/execution.py`
+- `runtime/grammar/resolution.py`
 - `semantic_edge_components_with_directional_shine_and_pulses.tsx`
 - `semantic_proximity_based_character_node_selector.py`
 - `snake_case.py`
+- `task_query.py`
+- `task_state.py`
 - `tools/test_health_live.py`
 
 **Doc refs:**
@@ -2624,6 +3201,60 @@
 - `getVerificationColor()`
 - `getStatusColor()`
 
+**Definitions:**
+- `class CheckContext`
+- `def list_files()`
+- `def read_file()`
+- `def file_exists()`
+- `def query_graph()`
+- `def log()`
+
+**Definitions:**
+- `def chain_completeness()`
+- `class Signal`
+- `def healthy()`
+- `def degraded()`
+- `def critical()`
+- `def check()`
+- `def decorator()`
+- `class triggers`
+- `class file`
+- `def on_delete()`
+- `def on_create()`
+- `def on_modify()`
+- `class init`
+- `def after_scan()`
+- `def startup()`
+- `class cron`
+- `def daily()`
+- `def hourly()`
+- `def every()`
+- `class manual`
+- `def invoke()`
+- `class graph`
+- `def on_node_create()`
+- `def on_link_create()`
+
+**Definitions:**
+- `def timeout()`
+- `def handler()`
+- `def dispatch_trigger()`
+- `def create_task_runs()`
+- `def run_checks()`
+
+**Definitions:**
+- `def load_checks()`
+- `def discover_capabilities()`
+
+**Definitions:**
+- `class TriggerRegistry`
+- `def __init__()`
+- `def register()`
+- `def register_check()`
+- `def get_checks()`
+- `def get_all_triggers()`
+- `def get_stats()`
+
 **Sections:**
 - # Architect
 - ## Purpose
@@ -2704,143 +3335,6 @@
 - ## Implementation
 - ## Complements
 
-**Sections:**
-- # Grammar — Algorithm: The Protocol Grammar
-- ## CHAIN
-- ## PURPOSE
-- ## 1. DETECTION
-- # Check for existing pending/running task_run
-- # Get task template from problem definition
-- # Create task_run
-- # Link to template and target
-- ## 2. CLAIM
-- # Find pending task_runs this actor can handle
-- # Verify still pending (race condition guard)
-- # Update task_run
-- # Create claim link
-- # Update actor
-- ## 3. EXECUTION
-- # Create run instance
-- # Execute steps
-- # Load skill instructions
-- # Agent follows skill cognitive pattern
-- # (This happens in the LLM, not in code)
-- # Execute procedure with agent interaction
-- # Execute procedure without agent
-- # Each step has code_action that runs directly
-- ## 4. RESOLUTION
-- # Update task_run
-- # Create resolution link
-- # Release actor
-- # Update task_run
-- # Release actor
-- # No RESOLVED link - problem persists
-- ## 5. VERIFICATION
-- # Re-run detection for this specific target
-- ## STATE MACHINE SUMMARY
-- ## PSEUDOCODE CONVENTIONS
-
-**Sections:**
-- # Grammar — Behaviors
-- ## CHAIN
-- ## PURPOSE
-- ## B1: Init Behavior
-- ## B2: Detection Behavior
-- ## B3: Claim Behavior
-- ## B4: Execution Behavior
-- ## B5: Completion Behavior
-- ## B6: Failure Behavior
-- ## B7: Retry Behavior
-- ## B8: Manual Trigger Behavior
-- ## B9: Agent Spawn Behavior
-- ## TIMING EXPECTATIONS
-
-**Sections:**
-- # Grammar — Health
-- ## CHAIN
-- ## PURPOSE
-- ## FLOWS
-- ## INDICATORS
-- ## GAPS
-- ## COVERAGE
-
-**Code refs:**
-- `claim.py`
-- `detection.py`
-- `execution.py`
-- `grammar/claim.py`
-- `grammar/detection.py`
-- `grammar/execution.py`
-- `grammar/resolution.py`
-- `grammar/verification.py`
-- `task_query.py`
-- `task_state.py`
-
-**Sections:**
-- # Grammar — Implementation
-- ## CHAIN
-- ## PURPOSE
-- ## FILE STRUCTURE
-- ## CODE MAPPING
-- ## INIT FLOW
-- ## RUNTIME FLOW
-- ## DATA FLOW
-
-**Sections:**
-- # Grammar — Objectives
-- ## CHAIN
-- ## PURPOSE
-- ## RANKED OBJECTIVES
-- ## NON-OBJECTIVES
-- ## SUCCESS CRITERIA
-
-**Sections:**
-- # Grammar — Patterns
-- ## CHAIN
-- ## DESIGN PHILOSOPHY
-- ## CORE PATTERNS
-- ## ANTI-PATTERNS
-- # WRONG: Detection directly fixes
-- # WRONG: Check result not persisted
-- # WRONG: Assigning work to actors
-- ## SCOPE
-
-**Code refs:**
-- `runtime/grammar/claim.py`
-- `runtime/grammar/detection.py`
-- `runtime/grammar/execution.py`
-- `runtime/grammar/resolution.py`
-
-**Sections:**
-- # Grammar — Sync
-- ## CHAIN
-- ## CURRENT STATE
-- ## RECENT CHANGES
-- ## NEXT STEPS
-- ## BLOCKERS
-- ## HANDOFF
-
-**Sections:**
-- # Grammar — Validation
-- ## CHAIN
-- ## PURPOSE
-- ## INVARIANTS
-- ## BEHAVIORAL INVARIANTS
-- ## VALIDATION SCHEDULE
-
-**Sections:**
-- # Grammar — Vocabulary
-- ## CHAIN
-- ## PURPOSE
-- ## NODE TYPES
-- ## PROBLEMS
-- # critical = blocks work, must fix immediately
-- # warning = degraded state, should fix soon
-- # info = notable condition, fix when convenient
-- # Task template that fixes this problem
-- ## STATUS VALUES
-- ## LINK TYPES
-
 **Code refs:**
 - `{path/to/main/source/file.py`
 
@@ -2871,9 +3365,6 @@
 - ## ANTI-BEHAVIORS
 - ## MARKERS
 
-**Code refs:**
-- `{path/to/health/checker_script.py`
-
 **Sections:**
 - # {Module} — Health: Verification Mechanics and Coverage
 - ## WHEN TO USE HEALTH (NOT TESTS)
@@ -2881,6 +3372,7 @@
 - ## WHY THIS PATTERN
 - ## HOW TO USE THIS TEMPLATE
 - ## CHAIN
+- ## IMPLEMENTS
 - ## FLOWS ANALYSIS (TRIGGERS + FREQUENCY)
 - ## HEALTH INDICATORS SELECTED
 - ## OBJECTIVES COVERAGE
@@ -2888,7 +3380,7 @@
 - ## DOCK TYPES (COMPLETE LIST)
 - ## CHECKER INDEX
 - ## INDICATOR: {Indicator Name}
-- # When problem detected, create task_run (narrative node)
+- # ... check logic ...
 - ## HOW TO RUN
 - # Run all health checks for this module
 - # Run a specific checker
@@ -3352,6 +3844,7 @@
 - ## License
 
 **Code refs:**
+- `__init__.py`
 - `api/connectome/graph/route.ts`
 - `api/connectome/graphs/route.ts`
 - `api/connectome/search/route.ts`
@@ -3422,6 +3915,7 @@
 - `app/mind/page.tsx`
 - `app/page.ts`
 - `app/page.tsx`
+- `base.py`
 - `claim.py`
 - `connectome/components/connectome_page_shell_route_layout_and_control_surface.tsx`
 - `connectome/components/pannable_zoomable_zoned_flow_canvas_renderer.tsx`
@@ -3438,6 +3932,7 @@
 - `connectome_read_cli.py`
 - `connectome_system_map_node_edge_manifest.ts`
 - `detection.py`
+- `dispatch.py`
 - `doctor_cli_parser_and_run_checker.py`
 - `execution.py`
 - `flow_event_schema_and_normalization_contract.ts`
@@ -3454,17 +3949,26 @@
 - `lib/design/tokens.ts`
 - `lib/design/utils.ts`
 - `lib/types.ts`
+- `loader.py`
+- `mcp/health.py`
+- `mcp/server.py`
 - `mind/health/activity_logger.py`
 - `mind/health/connectome_health_service.py`
 - `mind/infrastructure/orchestration/orchestrator.py`
 - `mind/physics/tick.py`
 - `page.tsx`
 - `pannable_zoomable_zoned_flow_canvas_renderer.tsx`
+- `registry.py`
 - `route.ts`
+- `runtime/capability/base.py`
+- `runtime/capability/dispatch.py`
+- `runtime/capability/loader.py`
+- `runtime/capability/registry.py`
 - `runtime/grammar/claim.py`
 - `runtime/grammar/detection.py`
 - `runtime/grammar/execution.py`
 - `runtime/grammar/resolution.py`
+- `runtime/ingest/docs.py`
 - `semantic_edge_components_with_directional_shine_and_pulses.tsx`
 - `semantic_proximity_based_character_node_selector.py`
 - `snake_case.py`

@@ -1,11 +1,13 @@
-mcp_version: "0.1.0"
-protocol_version: "0.1.0"  # L4 schema version from mind-protocol
-
+agents:
+  enabled: true
+  mode: active
 doctor:
-  monolith_lines: 800
-  stale_sync_days: 14
+  disabled_checks: []
   docs_ref_search_chars: 2000
+  gemini_model_fallback_status: {}
   hook_check_chars: 1000
   ignore: []
-  disabled_checks: []
-  gemini_model_fallback_status: {}
+  monolith_lines: 800
+  stale_sync_days: 14
+mcp_version: 0.1.0
+protocol_version: 0.1.0

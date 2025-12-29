@@ -55,6 +55,89 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 
 ## RECENT CHANGES
 
+### 2025-12-29: Capability Runtime Init Integration
+
+- **What:** Implemented capability discovery and init integration.
+- **Why:** Capabilities need to be copied to `.mind/capabilities/` at init time and their health checks need to be discoverable by MCP.
+- **Implementation:**
+  - `runtime/capability/` - MCP-side decorator, loader, registry, dispatch
+  - `@check()` decorator with `Signal.healthy/degraded/critical()` returns
+  - `triggers.*` builders: file, init, cron, git, ci, stream, graph, manual
+  - Capabilities import from `runtime.capability` (single source of truth - no separate capabilities/runtime/)
+  - `get_capabilities_path()` in mind-mcp/runtime/core_utils.py (sources from mind-platform)
+  - `copy_capabilities_to_target.py` helper for init
+  - Added step 2 in init.py: copies capabilities to `.mind/capabilities/`
+- **Discovery:** MCP discovers capabilities with checks from `.mind/capabilities/*/runtime/checks.py`
+- **Current status:** 3 capabilities have runtime checks (add-tests: 4, create-doc-chain: 4, investigate-runtime: 2)
+
+### 2025-12-29: Created sync-state Capability
+
+- **What:** Full 15-file capability in `capabilities/sync-state/` for state synchronization management.
+- **Why:** Need structured capability to handle 4 sync-related problems from problems.yaml: STALE_SYNC, YAML_DRIFT, DOCS_NOT_INGESTED, MODULE_BLOCKED.
+- **Impact:**
+  - 9-file doc chain: OBJECTIVES, PATTERNS, VOCABULARY, BEHAVIORS, ALGORITHM, VALIDATION, IMPLEMENTATION, HEALTH, SYNC
+  - 4 task templates: TASK_update_sync, TASK_regenerate_yaml, TASK_ingest_docs, TASK_unblock_module
+  - 1 skill: SKILL_update_sync
+  - 1 procedure: PROCEDURE_update_sync.yaml
+  - Runtime code: checks.py with 4 health check functions (H1-H4)
+  - HEALTH.md with 4 indicators and on_signal triggers for each problem type
+  - Mixed execution: YAML_DRIFT and DOCS_NOT_INGESTED are automated, STALE_SYNC and MODULE_BLOCKED require agent
+- **Files:** capabilities/sync-state/*
+
+### 2025-12-29: Created maintain-links Capability
+
+- **What:** Full 15-file capability in `capabilities/maintain-links/` for code-doc link maintenance.
+- **Why:** Need structured capability to handle 2 link-related problems from problems.yaml: ORPHAN_DOCS, BROKEN_IMPL_LINK.
+- **Impact:**
+  - 9-file doc chain: OBJECTIVES, PATTERNS, VOCABULARY, BEHAVIORS, ALGORITHM, VALIDATION, IMPLEMENTATION, HEALTH, SYNC
+  - 2 task templates: TASK_fix_orphan_docs, TASK_fix_impl_link
+  - 1 skill: SKILL_fix_links
+  - 1 procedure: PROCEDURE_fix_links.yaml
+  - Runtime code: checks.py with 2 health check functions (H1: impl_link_validity, H2: orphan_doc_detection)
+  - HEALTH.md with 2 indicators and on_signal triggers
+  - Auto-resolution for simple renames (single file match)
+  - Preserve-over-delete policy for ambiguous orphan situations
+- **Files:** capabilities/maintain-links/*
+
+### 2025-12-29: Created add-tests Capability
+
+- **What:** Full 17-file capability in `capabilities/add-tests/` for test coverage management and invariant validation.
+- **Why:** Need structured capability to handle 4 test-related problems from problems.yaml: MISSING_TESTS, INVARIANT_UNTESTED, TEST_NO_VALIDATES, HEALTH_FAILED.
+- **Impact:**
+  - 9-file doc chain: OBJECTIVES, PATTERNS, VOCABULARY, BEHAVIORS, ALGORITHM, VALIDATION, IMPLEMENTATION, HEALTH, SYNC
+  - 4 task templates: TASK_add_tests, TASK_test_invariant, TASK_add_validates_markers, TASK_fix_health
+  - 1 skill: SKILL_write_tests
+  - 1 procedure: PROCEDURE_add_tests.yaml
+  - Runtime code: checks.py with 4 health check functions (H1-H4)
+  - HEALTH.md with 4 indicators and on_signal triggers
+- **Files:** capabilities/add-tests/*
+
+### 2025-12-29: Created fix-membrane Capability
+
+- **What:** Full 17-file capability in `capabilities/fix-membrane/` for repairing broken procedure YAML files.
+- **Why:** Need structured capability to handle 4 membrane problems from problems.yaml: MEMBRANE_NO_PROTOCOLS, MEMBRANE_PARSE_ERROR, MEMBRANE_INVALID_STEP, MEMBRANE_MISSING_FIELDS.
+- **Impact:**
+  - 9-file doc chain: OBJECTIVES, PATTERNS, VOCABULARY, BEHAVIORS, ALGORITHM, VALIDATION, IMPLEMENTATION, HEALTH, SYNC
+  - 4 task templates: TASK_create_procedures, TASK_fix_yaml_syntax, TASK_fix_step_structure, TASK_add_missing_fields
+  - 1 skill: SKILL_fix_procedure
+  - 1 procedure: PROCEDURE_fix_membrane.yaml
+  - Runtime code: checks.py with 4 health check functions (H1-H4)
+  - HEALTH.md with 4 indicators and on_signal triggers
+- **Files:** capabilities/fix-membrane/*
+
+### 2025-12-29: Created investigate-runtime Capability
+
+- **What:** Full 15-file capability in `capabilities/investigate-runtime/` for runtime issue investigation.
+- **Why:** Need structured capability to handle LOG_ERROR and HOOK_UNDOC problems from problems.yaml.
+- **Impact:**
+  - 9-file doc chain: OBJECTIVES, PATTERNS, VOCABULARY, BEHAVIORS, ALGORITHM, VALIDATION, IMPLEMENTATION, HEALTH, SYNC
+  - 2 task templates: TASK_investigate_error, TASK_document_hook
+  - 1 skill: SKILL_investigate
+  - 1 procedure: PROCEDURE_investigate.yaml
+  - Runtime code: checks.py with @check decorators for H1 (log errors) and H2 (undocumented hooks)
+  - HEALTH.md with 2 indicators and on_signal triggers
+- **Files:** capabilities/investigate-runtime/*
+
 ### 2025-12-29: Created capability-runtime Module Doc Chain
 
 - **What:** Full 8-file doc chain in `docs/capability-runtime/` defining the V2 capability plugin architecture.
@@ -355,6 +438,11 @@ Graph Explorer could benefit from keyboard shortcuts for navigation.
 | capability-runtime | `runtime/capability/` | `docs/capability-runtime/` | DESIGNING |
 | capabilities | - | `docs/capabilities/` | CANONICAL |
 | create-doc-chain | `capabilities/create-doc-chain/runtime/` | `capabilities/create-doc-chain/` | DESIGNING |
+| investigate-runtime | `capabilities/investigate-runtime/runtime/` | `capabilities/investigate-runtime/` | CANONICAL |
+| fix-membrane | `capabilities/fix-membrane/runtime/` | `capabilities/fix-membrane/` | CANONICAL |
+| add-tests | `capabilities/add-tests/runtime/` | `capabilities/add-tests/` | CANONICAL |
+| maintain-links | `capabilities/maintain-links/runtime/` | `capabilities/maintain-links/` | CANONICAL |
+| sync-state | `capabilities/sync-state/runtime/` | `capabilities/sync-state/` | CANONICAL |
 | connectome | `app/connectome/` | `docs/connectome/` | DESIGNING |
 | landing | `app/(public)/` | `docs/landing/` | CANONICAL |
 | registry | `app/(public)/registry/` | `docs/registry/` | DESIGNING |
@@ -513,6 +601,18 @@ Graph Explorer could benefit from keyboard shortcuts for navigation.
 ---
 
 ## Init: 2025-12-29 19:38
+
+| Setting | Value |
+|---------|-------|
+| Version | v0.0.0 |
+| Database | falkordb |
+| Graph | mind_platform |
+
+**Steps completed:** ecosystem, runtime, ai_configs, skills, database_config, database_setup, file_ingest, seed_inject, env_example, mcp_config, gitignore, overview, embeddings
+
+---
+
+## Init: 2025-12-29 22:09
 
 | Setting | Value |
 |---------|-------|
