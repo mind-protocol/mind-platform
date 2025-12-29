@@ -298,20 +298,14 @@ How to fill:
 
 ```yaml
 docks:
-  input:
-    id: {dock_id_from_implementation}  # must exist in IMPLEMENTATION
-    method: {module.function}  # fully qualified
-    location: {file:line}  # repo-relative path + line
-  output:
-    id: {dock_id_from_implementation}
-    method: {module.function}
-    location: {file:line}
+  - point: {event_or_hook_name}  # e.g. init_scan.after_module_load
+    type: {event|schedule|hook}
+    payload: {data available}  # e.g. {module_id, docs_found[], docs_expected[]}
 ```
 
 How to fill:
-- ids must exist in IMPLEMENTATION docking list.
-- method should be fully qualified.
-- location must include repo-relative path + line.
+- point must match a real event/hook in the system.
+- payload describes what data the check receives.
 
 ### ALGORITHM / CHECK MECHANISM
 
@@ -332,7 +326,13 @@ mechanism:
         node_type: narrative
         type: task_run
         name: "{problem_id}_{timestamp}"
-        content: "{problem.definition}"
+        content: |
+          # {problem_id}
+
+          {problem.definition}
+
+          **Target:** {affected_node}
+          **Status:** pending
         synthesis: "Task to resolve {problem_id} on {affected_node}"
       links:
         - node_a: "{task_run.id}"
@@ -341,11 +341,6 @@ mechanism:
         - node_a: "{task_run.id}"
           node_b: "{affected_node}"
           nature: "concerns"
-      moment:
-        node_type: moment
-        type: event
-        status: active
-        content: "Detected {problem_id}, created task_run"
 ```
 
 How to fill:
@@ -355,31 +350,18 @@ How to fill:
 - failure_mode must be observable (not speculative).
 - on_problem.problem_id must exist in VOCABULARY.
 
-### INDICATOR
+### SIGNALS
 
 ```yaml
-indicator:
-  error:
-    - name: {name}
-      linked_validation: [{V1}, {V2}]  # VALIDATION IDs this indicates
-      meaning: {what is violated}  # precise failure description
-      default_action: {page/alert/stop}  # operational response
-  warning:
-    - name: {name}
-      linked_validation: [{V1}]
-      meaning: {what is degraded}
-      default_action: {warn/log}
-  info:
-    - name: {name}
-      linked_validation: [{V2}]
-      meaning: {what is observed}
-      default_action: {log/notify}
+signals:
+  healthy: {condition for healthy state}
+  degraded: {condition for degraded state}
+  critical: {condition for critical state}
 ```
 
 How to fill:
-- each indicator name should be stable and searchable.
-- linked_validation must list relevant VALIDATION IDs.
-- default_action should match real operational response.
+- Each state describes a condition in plain language.
+- States map to operational response (healthy=ok, degraded=warn, critical=alert).
 
 ### THROTTLING STRATEGY
 
