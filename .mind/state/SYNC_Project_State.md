@@ -30,23 +30,43 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 
 ## ACTIVE WORK
 
-### Landing Page Implementation (Next)
+### Landing Page (Complete)
 
-- **Area:** `app/(public)/page.tsx`, `docs/landing/`
-- **Status:** doc chain complete, implementation pending
+- **Area:** `app/(public)/page.tsx`, `app/(public)/components/landing/`
+- **Status:** implemented
 - **Owner:** agent
-- **Context:** P0 priority. Landing page is first impression. Doc chain defines Hero, HowItWorks, WhatYouCanDo, LiveStats sections.
+- **Context:** Hero, HowItWorks (4-layer cards), WhatYouCanDo, LiveStats sections. Uses design tokens.
 
-### Design Tokens (Blocking)
+### Design Tokens (Complete)
 
-- **Area:** `lib/constants/colors.ts`
-- **Status:** not created
+- **Area:** `lib/design/`
+- **Status:** implemented
 - **Owner:** agent
-- **Context:** Shared color constants for layer colors, node type colors, verification badge colors. Needed by landing, registry, connectome.
+- **Context:** tokens.ts (colors, typography, spacing), utils.ts (color utilities), index.ts (unified export). Legacy compat: lib/constants/colors.ts.
+
+### Next: Navigation + Footer
+
+- **Area:** `app/(public)/components/nav/`
+- **Status:** pending
+- **Owner:** agent
+- **Context:** TopNav and Footer components for public layout.
 
 ---
 
 ## RECENT CHANGES
+
+### 2025-12-29: Implemented Landing Page + Design Tokens
+
+- **What:** Created design token system (lib/design/) and landing page components (Hero, HowItWorks, WhatYouCanDo, LiveStats).
+- **Why:** Landing page is P0. Design tokens provide consistent styling.
+- **Impact:** / route now shows full landing page. Design tokens ready for use across modules.
+- **Files:** lib/design/tokens.ts, lib/design/utils.ts, app/(public)/components/landing/*.tsx, app/api/stats/route.ts
+
+### 2025-12-29: Restructured Templates Directory
+
+- **What:** Moved config files to templates/ root, kept MCP system prompts in templates/mcp/, created SYSTEM.md base template.
+- **Why:** Cleaner separation between protocol configs and MCP-specific files.
+- **Impact:** `mind init` copies templates/ to .mind/. MCP transforms SYSTEM.md → CLAUDE.md/GEMINI.md/AGENTS.md.
 
 ### 2025-12-29: Created Landing + Registry Doc Chains
 
@@ -122,10 +142,11 @@ Connectome frontend builds and runs. System Map visualization removed per your r
 
 ### Immediate (This Sprint)
 
-- [ ] Create `lib/constants/colors.ts` design tokens
-- [ ] Implement landing page (P0)
+- [x] Create `lib/design/` design tokens
+- [x] Implement landing page (P0)
 - [ ] Create TopNav component
 - [ ] Create Footer component
+- [ ] Load Inter + JetBrains Mono fonts
 
 ### High Priority
 
@@ -171,15 +192,17 @@ Graph Explorer could benefit from keyboard shortcuts for navigation.
 | Module | Code | Docs | Maturity |
 |--------|------|------|----------|
 | connectome | `app/connectome/` | `docs/connectome/` | DESIGNING |
-| landing | `app/(public)/page.tsx` | `docs/landing/` | DESIGNING |
+| landing | `app/(public)/` | `docs/landing/` | CANONICAL |
 | registry | `app/(public)/registry/` | `docs/registry/` | DESIGNING |
 | vision | - | `docs/vision/` | DESIGNING |
+| design-language | `lib/design/` | `docs/design-language/` | CANONICAL |
+| ux | - | `docs/ux/` | DESIGNING |
 | api-routes | `app/api/` | - | DESIGNING |
 
 **Unmapped code:**
 - `app/(dashboard)/` - placeholder route group (citizen, org, wallet, membrane)
 - `app/(public)/schema/` - placeholder (needs schema-explorer doc chain)
-- `app/(public)/templates/` - placeholder (needs marketplace doc chain)
+- `app/(public)/marketplace/` - placeholder (renamed from templates)
 
 ## Init: 2025-12-29 02:13
 
