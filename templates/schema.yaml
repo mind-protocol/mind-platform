@@ -1,0 +1,927 @@
+# MIND Graph Schema v1.9.0
+# Query vs Intention + Complete Physics + SubEntity Traversal + Synthesis v2.0 + Temporal Fields + Node Subtype + Granularity
+
+version: "1.9.0"
+updated: "2025-12-29"
+status: "DRAFT"
+
+# v1.9.0 CHANGES (Granularity):
+#   - NarrativeBase: added `granularity` field (nullable int, values: 1, 2, 3)
+#   - Granularity levels: 1=full doc, 2=per-section, 3=per-item
+#   - Used for doc ingestion to track extraction detail level
+#
+# v1.8.1 CHANGES (Node Subtype):
+#   - NodeBase: added `type` field (nullable string) for subtype within node_type
+#   - Values: actor (player/npc/system), moment (event/decision/action),
+#             narrative (issue/objective/task/belief/pattern/documentation),
+#             space (area/module/directory), thing (file/uri/artifact)
+#
+# v1.8 CHANGES (Query vs Intention):
+#   - SubEntity: query + query_embedding (what to search for)
+#   - SubEntity: intention + intention_embedding + intention_type (why searching)
+#   - Link score: combines query alignment + intention alignment with type-specific weights
+#   - Stopping: intention_type determines when to stop traversal
+#   - Filtering: intention_type determines how to filter/present results
+#
+# v1.7.2 CHANGES (Design Decisions):
+#   - SubEntity: sibling_ids/children_ids are string arrays (lazy refs via ExplorationContext)
+#   - SubEntity: found_narratives is dict[str, float] not list of tuples
+#   - Branch threshold: len(outgoing) >= 2 (simple count, scoring handles selection)
+#   - Link embedding: initialized from embed(synthesis), blends on traverse
+#   - Timeout: error loud, crash exploration, no partial merge
+#   - Embedding consistency: eventual OK (no locks on crystallization_embedding)
+#
+# v1.7.1 CHANGES:
+#   - NodeBase: added last_traversed_at_s (nullable int)
+#   - MomentBase: new section with started_at_s, completed_at_s, duration_s
+#   - LinkBase: added updated_at_s (required), last_traversed_at_s (nullable)
+
+# =============================================================================
+# CORE PRINCIPLES
+# =============================================================================
+#
+# 1. Single link type: `link` — all semantics in properties
+# 2. Everything evolves: Traversals color links (emotions, permanence, polarity, embedding)
+# 3. Intention drives attention: SubEntities navigate, graph holds energy
+# 4. Emotions emerge: From relationships to narratives/moments via alignment formula
+# 5. Synthesis regenerates: From floats, re-embedded on drift
+# 6. No arbitrary constants: All rates derived from graph properties
+# 7. Narratives emerge: From crystallized traversals that find novelty
+# 8. Bidirectional vocabulary: Same grammar for input (agent) and output (synthesis)
+#
+# =============================================================================
+# NODE TYPES
+# =============================================================================
+
+nodes:
+
+  actor:
+    role: "Pump"
+    behavior: "Injects energy via moments, spawns root subentity for queries"
+
+  moment:
+    role: "Router + Branch Point"
+    behavior: "Receives intention, can spawn subentities, only node type where branching occurs"
+    fields:
+      content:
+        type: string
+        default: ""
+        description: "Full prose text of the moment"
+      status:
+        type: enum
+        values: ["possible", "active", "completed"]
+        default: possible
+      tick_created:
+        type: int
+        default: 0
+      tick_resolved:
+        type: int
+        nullable: true
+
+  narrative:
+    role: "Attractor"
+    behavior: "Destination of exploration, source of reflection, created by crystallization"
+    fields:
+      content:
+        type: string
+        default: ""
+
+  space:
+    role: "Context container"
+    behavior: "Bidirectional flow with contents"
+    fields: {}
+
+  thing:
+    role: "Fast passthrough"
+    behavior: "Receives briefly, tends toward 0"
+    fields:
+      content:
+        type: string
+        default: ""
+        description: "Description of the thing"
+      uri:
+        type: string
+        required: false
+
+# =============================================================================
+# NODE SCHEMA
+# =============================================================================
+
+NodeBase:
+  fields:
+    # Identity
+    id:
+      type: string
+      required: true
+    name:
+      type: string
+      required: true
+    node_type:
+      type: enum
+      values: [actor, moment, narrative, space, thing]
+      required: true
+    type:
+      type: string
+      nullable: true
+      description: |
+        Subtype within node_type. Values per node_type:
+        - actor: null (or role-based: "player", "npc", "system")
+        - moment: "event", "decision", "action"
+        - narrative: "issue", "objective", "task", "belief", "pattern", "documentation"
+        - space: "area", "module", "directory"
+        - thing: "file", "uri", "artifact"
+
+    # Physics
+    weight:
+      type: float
+      range: [0, infinity]
+      default: 1.0
+    energy:
+      type: float
+      range: [0, infinity]
+      default: 0.0
+
+    # Semantics (v1.8)
+    synthesis:
+      type: string
+      required: true
+      description: "Natural language summary for embedding (e.g., 'Edmund, intensely present (central)')"
+    embedding:
+      type: vector
+      description: "embed(synthesis), updated on drift"
+    content:
+      type: string
+      default: ""
+      description: "Full prose/description (unified: replaces text/prose/description)"
+
+    # Temporal (auto-managed)
+    created_at_s:
+      type: int
+      required: true
+      auto: true
+      description: "Unix timestamp of node creation (auto-generated)"
+    updated_at_s:
+      type: int
+      required: true
+      auto: true
+      description: "Unix timestamp of last modification (auto-updated)"
+    last_traversed_at_s:
+      type: int
+      nullable: true
+      auto: true
+      description: "Unix timestamp of last traversal by a sub-entity (auto-updated)"
+
+# =============================================================================
+# MOMENT BASE (extends NodeBase)
+# =============================================================================
+
+MomentBase:
+  extends: NodeBase
+  description: "Additional temporal fields for Moment nodes"
+  fields:
+    started_at_s:
+      type: int
+      nullable: true
+      auto: true
+      description: "Unix timestamp when moment became active (auto-set on status->active)"
+    completed_at_s:
+      type: int
+      nullable: true
+      auto: true
+      description: "Unix timestamp when moment was resolved (auto-set on status->completed)"
+    duration_s:
+      type: int
+      nullable: true
+      computed: true
+      description: "Duration in seconds (computed: completed_at_s - started_at_s, or estimated)"
+
+# =============================================================================
+# NARRATIVE BASE (extends NodeBase)
+# =============================================================================
+
+NarrativeBase:
+  extends: NodeBase
+  description: "Additional fields for Narrative nodes (docs, issues, tasks, etc.)"
+  fields:
+    granularity:
+      type: int
+      nullable: true
+      values: [1, 2, 3]
+      description: |
+        Content granularity level for doc ingestion:
+        - 1: full doc (entire file as one node)
+        - 2: per-section (each ## heading becomes a node)
+        - 3: per-item (fine-grained extraction)
+    is_stub:
+      type: bool
+      nullable: true
+      default: false
+      description: "True if this is a placeholder node for missing content"
+    path:
+      type: string
+      nullable: true
+      description: "File path for file-backed narratives"
+
+# =============================================================================
+# LINK SCHEMA
+# =============================================================================
+
+links:
+  link:
+    description: "Universal link — all relationships"
+    valid_from: [actor, space, thing, narrative, moment]
+    valid_to: [actor, space, thing, narrative, moment]
+    energy_carrier: true
+
+LinkBase:
+  fields:
+    # === Identity ===
+    id:
+      type: string
+      required: true
+    node_a:
+      type: string
+      required: true
+    node_b:
+      type: string
+      required: true
+
+    # === Physics State ===
+    weight:
+      type: float
+      range: [0, infinity]
+      default: 1.0
+      description: "Importance + accumulated depth"
+    energy:
+      type: float
+      range: [0, infinity]
+      default: 0.0
+      description: "Current activation"
+
+    # === Semantic Axes ===
+    polarity:
+      type: array
+      items: float
+      length: 2
+      range: each [0, 1]
+      default: [0.5, 0.5]
+      description: "[a->b, b->a] flow strength"
+    hierarchy:
+      type: float
+      range: [-1, +1]
+      default: 0.0
+      description: "-1 = contains, +1 = elaborates"
+    permanence:
+      type: float
+      range: [0, 1]
+      default: 0.5
+      description: "0 = speculative, 1 = definitive"
+
+    # === Emotions (Plutchik 4 bipolar axes) ===
+    joy_sadness:
+      type: float
+      range: [-1, +1]
+      default: 0.0
+    trust_disgust:
+      type: float
+      range: [-1, +1]
+      default: 0.0
+    fear_anger:
+      type: float
+      range: [-1, +1]
+      default: 0.0
+    surprise_anticipation:
+      type: float
+      range: [-1, +1]
+      default: 0.0
+
+    # === Semantics ===
+    synthesis:
+      type: string
+      description: "Human-readable, regenerated on drift"
+    embedding:
+      type: vector
+      description: "Source of truth, accumulates intentions"
+
+    # === Temporal (auto-managed) ===
+    created_at_s:
+      type: int
+      required: true
+      auto: true
+      description: "Unix timestamp of link creation (auto-generated)"
+    updated_at_s:
+      type: int
+      required: true
+      auto: true
+      description: "Unix timestamp of last modification (auto-updated)"
+    last_traversed_at_s:
+      type: int
+      nullable: true
+      auto: true
+      description: "Unix timestamp of last traversal by a sub-entity (auto-updated)"
+
+# =============================================================================
+# SUBENTITY SCHEMA (v1.6.1)
+# =============================================================================
+#
+# A subentity is a temporary consciousness navigating the graph.
+# NOT persistent — exists only during exploration.
+# Creates Narratives when crystallizing on novel patterns.
+
+SubEntity:
+  description: "Temporary traversal consciousness"
+  fields:
+    # === Identity ===
+    id:
+      type: string
+      required: true
+    parent_id:
+      type: string
+      nullable: true
+      description: "null for root subentities"
+    origin_moment:
+      type: string
+      required: true
+      description: "Moment that spawned this exploration"
+    sibling_ids:
+      type: array
+      items: string
+      description: "IDs of other children of same parent (lazy refs, resolved via ExplorationContext)"
+    children_ids:
+      type: array
+      items: string
+      description: "IDs of spawned subentities from branching"
+
+    # === Query vs Intention (fixed at creation) ===
+    #
+    # Query: WHAT we're searching for in the graph
+    #   Example: "Recent events in the Great Hall"
+    #   → Determines MATCH criteria, semantic similarity targets
+    #
+    # Intention: WHY the agent is searching / what to do with results
+    #   Example: "Write scene summary for narrator" or "Find next possible moment"
+    #   → Colors traversal: priority, stopping conditions, return filtering
+    #
+    # Same query, different intentions:
+    #   Query: "Events in Great Hall"
+    #   Intention: "Write summary"     → Privilege rich content, deep exploration
+    #   Intention: "Check coherence"   → Look for tensions, contradictions
+    #   Intention: "Find next moment"  → Stop at first possible moment
+    #
+    query:
+      type: string
+      required: true
+      description: "Text of what we're searching for"
+    query_embedding:
+      type: vector
+      required: true
+      description: "Embedding of query - used for semantic matching"
+    intention:
+      type: string
+      required: true
+      description: "Why searching - colors priority, stopping, and filtering"
+    intention_embedding:
+      type: vector
+      required: true
+      description: "Embedding of intention - used for traversal weighting"
+    intention_type:
+      type: enum
+      values: [summarize, verify, find_next, explore, retrieve]
+      default: explore
+      description: |
+        Predefined intention types with behavior profiles:
+        - summarize: privilege rich content, wide exploration, return full context
+        - verify: look for tensions/contradictions, stop on conflict
+        - find_next: stop at first valid match, return minimal context
+        - explore: balanced exploration, return diverse results
+        - retrieve: exact match, minimal traversal, return specific node
+
+    # === Position ===
+    position:
+      type: string
+      description: "Current node ID"
+    path:
+      type: array
+      items: [link_id, node_id]
+      description: "Traversal history"
+
+    # === Emotional State (evolves) ===
+    joy_sadness:
+      type: float
+      range: [-1, +1]
+      default: 0.0
+    trust_disgust:
+      type: float
+      range: [-1, +1]
+      default: 0.0
+    fear_anger:
+      type: float
+      range: [-1, +1]
+      default: 0.0
+    surprise_anticipation:
+      type: float
+      range: [-1, +1]
+      default: 0.0
+
+    # === Cognitive State ===
+    criticality:
+      type: float
+      range: [0, 1]
+      description: "(1 - satisfaction) x (depth / (depth + 1))"
+
+    # === Awareness ===
+    crystallization_embedding:
+      type: vector
+      description: "What this subentity would become if crystallized now"
+
+    # === Findings ===
+    found_narratives:
+      type: dict
+      key: string
+      value: float
+      description: "{narrative_id: max_alignment} — on merge, take max per narrative"
+    crystallized:
+      type: string
+      nullable: true
+      description: "Narrative ID if this subentity created one"
+
+    # === Status ===
+    status:
+      type: enum
+      values: [seeking, branching, resonating, reflecting, crystallizing, merging]
+      default: seeking
+
+# =============================================================================
+# SUBENTITY STATE MACHINE
+# =============================================================================
+#
+# SEEKING      -> exploring, choosing next link
+# BRANCHING    -> multiple valid paths, spawning children
+# RESONATING   -> arrived at narrative, measuring alignment
+# REFLECTING   -> backpropagating reaction through path
+# CRYSTALLIZING -> creating new narrative from traversal
+# MERGING      -> integrating child results
+#
+# Transitions:
+#   SEEKING:
+#     - position.node_type == 'narrative' -> RESONATING
+#     - no link with score > 0 -> terminate, signal parent
+#     - on Moment AND len(outgoing) >= 2 -> BRANCHING
+#     - else -> advance to best link, stay SEEKING
+#
+#   BRANCHING:
+#     - spawn children, each starts SEEKING
+#     - parent waits for all children
+#     - when all children done -> MERGING
+#
+#   RESONATING:
+#     - always -> REFLECTING
+#
+#   REFLECTING:
+#     - alignment strong -> signal parent done
+#     - alignment weak + criticality > 0.8 -> CRYSTALLIZING
+#     - alignment mid -> SEEKING
+#
+#   CRYSTALLIZING:
+#     - creates narrative, backprops -> triggers parent MERGING
+#
+#   MERGING:
+#     - integrates child results -> signal parent done
+
+# =============================================================================
+# SEEKING: LINK SCORE FORMULA (v1.8 — Query + Intention)
+# =============================================================================
+#
+# Query embedding → determines semantic match (what we're looking for)
+# Intention embedding → colors traversal priority (why we're looking)
+#
+# def compute_link_score(subentity, link):
+#     direction = 0 if subentity.position == link.node_a else 1
+#
+#     # Base: graph properties
+#     base = link.energy * link.weight * link.polarity[direction]
+#
+#     # Query alignment: does this link lead to what we're searching for?
+#     query_alignment = cosine(subentity.query_embedding, link.embedding)
+#
+#     # Intention alignment: does this link serve our purpose?
+#     # Different intentions weight differently:
+#     #   - summarize: boost rich nodes (high weight, many links)
+#     #   - verify: boost contradiction potential (low polarity alignment)
+#     #   - find_next: boost momentum (high polarity, low permanence)
+#     intention_alignment = cosine(subentity.intention_embedding, link.embedding)
+#     intention_weight = INTENTION_WEIGHTS[subentity.intention_type]  # 0.2-0.5
+#
+#     # Combined alignment
+#     alignment = (1 - intention_weight) * query_alignment + intention_weight * intention_alignment
+#
+#     # Self-novelty: avoid what I've already integrated
+#     self_novelty = 1 - cosine(subentity.crystallization_embedding, link.embedding)
+#
+#     # Sibling divergence: avoid what siblings are exploring
+#     sibling_similarities = [
+#         cosine(subentity.crystallization_embedding, sib.crystallization_embedding)
+#         for sib in subentity.siblings
+#         if sib.status not in ['done', 'merging']
+#     ]
+#     sibling_divergence = 1 - max(sibling_similarities) if sibling_similarities else 1
+#
+#     # Emotional resonance
+#     emotional_dot = (
+#         subentity.joy_sadness * link.joy_sadness +
+#         subentity.trust_disgust * link.trust_disgust +
+#         subentity.fear_anger * link.fear_anger +
+#         subentity.surprise_anticipation * link.surprise_anticipation
+#     ) / 4
+#     emotional_factor = 1 + emotional_dot
+#
+#     score = base * alignment * self_novelty * sibling_divergence * emotional_factor
+#
+#     return score
+#
+# INTENTION_WEIGHTS = {
+#     'summarize': 0.3,    # Intent matters for filtering, query for finding
+#     'verify': 0.5,       # Intent matters most — looking for tensions
+#     'find_next': 0.2,    # Query matters most — find then stop
+#     'explore': 0.25,     # Balanced
+#     'retrieve': 0.1,     # Query matters most — exact match
+# }
+
+# =============================================================================
+# INTENTION-BASED STOPPING CONDITIONS
+# =============================================================================
+#
+# Different intentions have different stopping criteria.
+#
+# def should_stop(subentity, current_node, found_nodes):
+#     match subentity.intention_type:
+#         case 'summarize':
+#             # Stop when we have enough diverse content
+#             return (
+#                 len(found_nodes) >= 10 or
+#                 subentity.depth > 5 or
+#                 coverage(found_nodes, subentity.query_embedding) > 0.8
+#             )
+#
+#         case 'verify':
+#             # Stop when we find a contradiction or confirm coherence
+#             for node in found_nodes:
+#                 if has_tension(node, subentity.query_embedding):
+#                     return True  # Found tension - stop and report
+#             return subentity.depth > 3  # No tension found after 3 hops
+#
+#         case 'find_next':
+#             # Stop at first valid match
+#             if current_node.type == 'moment' and current_node.status == 'possible':
+#                 return True
+#             return subentity.depth > 2  # Don't go too deep
+#
+#         case 'explore':
+#             # Balanced stopping
+#             return (
+#                 len(found_nodes) >= 15 or
+#                 subentity.depth > 4 or
+#                 subentity.satisfaction > 0.7
+#             )
+#
+#         case 'retrieve':
+#             # Stop at exact match
+#             if cosine(current_node.embedding, subentity.query_embedding) > 0.9:
+#                 return True
+#             return subentity.depth > 1  # Very shallow
+
+# =============================================================================
+# INTENTION-BASED RETURN FILTERING
+# =============================================================================
+#
+# Different intentions filter/present results differently.
+#
+# def filter_results(subentity, found_nodes):
+#     match subentity.intention_type:
+#         case 'summarize':
+#             # Return full context, sorted by relevance
+#             return sorted(found_nodes, key=lambda n: n.weight, reverse=True)
+#
+#         case 'verify':
+#             # Return tensions first, then supporting nodes
+#             tensions = [n for n in found_nodes if has_tension(n, subentity.query_embedding)]
+#             supports = [n for n in found_nodes if n not in tensions]
+#             return tensions + supports
+#
+#         case 'find_next':
+#             # Return only the matched moment
+#             moments = [n for n in found_nodes if n.type == 'moment' and n.status == 'possible']
+#             return moments[:1]  # Just the first one
+#
+#         case 'explore':
+#             # Return diverse sample
+#             return diversity_sample(found_nodes, k=10)
+#
+#         case 'retrieve':
+#             # Return exact match only
+#             best = max(found_nodes, key=lambda n: cosine(n.embedding, subentity.query_embedding))
+#             return [best]
+
+# =============================================================================
+# CRYSTALLIZATION EMBEDDING (v1.8 — Query + Intention)
+# =============================================================================
+#
+# Computed at each step. Represents what this subentity would become.
+# Uses both query and intention embeddings.
+#
+# def compute_crystallization_embedding(subentity):
+#     components = []
+#     weights = []
+#
+#     # Query (what we searched for) - higher weight
+#     components.append(subentity.query_embedding)
+#     weights.append(1.0)
+#
+#     # Intention (why we searched) - colors the embedding
+#     components.append(subentity.intention_embedding)
+#     weights.append(INTENTION_WEIGHTS[subentity.intention_type])
+#
+#     # Current position
+#     position = get_node(subentity.position)
+#     components.append(position.embedding)
+#     weights.append(position.weight)
+#
+#     # Found narratives (dict: {narrative_id: max_alignment})
+#     for narrative_id, alignment in subentity.found_narratives.items():
+#         narrative = get_node(narrative_id)
+#         components.append(narrative.embedding)
+#         weights.append(abs(alignment) * narrative.weight)
+#
+#     # Path links
+#     prev_node = subentity.origin_moment
+#     for link_id, node_id in subentity.path:
+#         link = get_link(link_id)
+#         direction = 0 if link.node_a == prev_node else 1
+#         components.append(link.embedding)
+#         weights.append(link.weight * link.polarity[direction])
+#         prev_node = node_id
+#
+#     # Weighted sum
+#     total_weight = sum(weights)
+#     result = sum(c * w for c, w in zip(components, weights)) / total_weight
+#
+#     return normalize(result)
+
+# =============================================================================
+# CRITICALITY
+# =============================================================================
+#
+# def compute_criticality(subentity):
+#     # Satisfaction from best finding (dict: {narrative_id: max_alignment})
+#     if subentity.found_narratives:
+#         best_alignment = max(subentity.found_narratives.values())
+#         satisfaction = best_alignment
+#     else:
+#         satisfaction = 0
+#
+#     # Depth factor
+#     depth = len(subentity.path)
+#     depth_factor = depth / (depth + 1)
+#
+#     # Criticality: increases with depth, decreases with satisfaction
+#     criticality = (1 - satisfaction) * depth_factor
+#
+#     return clamp(criticality, 0, 1)
+
+# =============================================================================
+# THE TRAVERSAL FUNCTION
+# =============================================================================
+#
+# def traverse(link, actor, intention_text, direction, flow_energy):
+#     intention_emb = embed(intention_text)
+#
+#     # === 1. ALIGNMENT ===
+#     alignment = cosine(intention_emb, link.embedding)
+#
+#     # === 2. BLEND WEIGHT ===
+#     w = flow_energy / (flow_energy + link.energy + 1)
+#
+#     # === 3. EMOTIONS ===
+#     actor_emotions = compute_emotion(actor, intention_emb)
+#     for axis in PLUTCHIK_AXES:
+#         current = getattr(link, axis)
+#         new = actor_emotions[axis]
+#         setattr(link, axis, blend(current, new, w))
+#
+#     # === 4. PERMANENCE ===
+#     permanence_delta = alignment * (1 - link.permanence)
+#     link.permanence = clamp(link.permanence + permanence_delta * w, 0, 1)
+#
+#     # === 5. POLARITY ===
+#     polarity_blend = w * (1 - link.permanence)
+#     if direction == 'a_to_b':
+#         link.polarity[0] = blend(link.polarity[0], 1.0, polarity_blend)
+#     else:
+#         link.polarity[1] = blend(link.polarity[1], 1.0, polarity_blend)
+#
+#     # === 6. EMBEDDING ===
+#     link.embedding = blend_vectors(link.embedding, intention_emb, w)
+#
+#     # === 7. ENERGY ===
+#     link.energy += flow_energy * (1 - link.permanence)
+#
+#     # === 8. WEIGHT ===
+#     link.weight += flow_energy * link.permanence
+#
+#     # === 9. SYNTHESIS DRIFT CHECK ===
+#     drift_threshold = 1 - link.permanence
+#     if synthesis_drift(link) > drift_threshold:
+#         link.synthesis = generate_link_synthesis(link)
+
+# =============================================================================
+# EMOTION COMPUTATION
+# =============================================================================
+#
+# Emotion emerges from alignment between intention and connected narratives/moments.
+#
+# def compute_emotion(actor_or_subentity, intention_embedding):
+#     emotion = {axis: 0 for axis in PLUTCHIK_AXES}
+#     total_weight = 0
+#
+#     relevant_links = get_links_to_narratives_and_moments(actor_or_subentity)
+#
+#     for link in relevant_links:
+#         target = get_node(link.node_b)
+#         alignment = cosine(intention_embedding, target.embedding)
+#         w = link.weight * link.polarity[0] * abs(alignment)
+#         total_weight += w
+#
+#         sign = 1 if alignment >= 0 else -1
+#
+#         for axis in PLUTCHIK_AXES:
+#             emotion[axis] += getattr(link, axis) * w * sign
+#
+#     if total_weight > 0:
+#         for axis in emotion:
+#             emotion[axis] = clamp(emotion[axis] / total_weight, -1, 1)
+#
+#     return emotion
+
+# =============================================================================
+# LINK EMBEDDING INITIALIZATION (v1.7.2)
+# =============================================================================
+#
+# Link embedding is initialized from synthesis text, not from node embeddings.
+#
+# def create_link(node_a, node_b, properties):
+#     link = Link(node_a=node_a, node_b=node_b, **properties)
+#
+#     # Generate initial synthesis from properties
+#     link.synthesis = generate_link_synthesis(link)
+#
+#     # Embedding from synthesis (source of truth)
+#     link.embedding = embed(link.synthesis)
+#
+#     return link
+#
+# On traversal, embedding blends with intention:
+#
+#     color_weight = 1 - link.permanence  # less permanent = more colorable
+#     link.embedding = blend_vectors(link.embedding, intention_emb, color_weight)
+#
+# This means:
+#   - New links have embedding from their description
+#   - Frequently traversed links absorb intentions
+#   - Permanent links resist change
+#   - Synthesis regenerates when embedding drifts
+
+# =============================================================================
+# LINK SYNTHESIS GRAMMAR (v2.0)
+# =============================================================================
+#
+# Full grammar specification: ./GRAMMAR_Link_Synthesis.md
+#
+# Structure: [PRE-MODIFIERS] + [BASE VERB] + [POST-MODIFIERS]
+#
+# v2.0 Features:
+#   - Bilingual: English (default) + French
+#   - Ownership verbs (Thing <-> Actor)
+#   - Evidential verbs (Thing/Moment -> Narrative)
+#   - Extended spatial verbs (Space -> Actor/Thing)
+#   - Verb intensifiers (attenuated/base/intensified)
+#   - Node synthesis grammar
+#   - Bidirectional synthesis for mutual relations
+#   - Narrative context modifiers
+#
+# Base Verbs (from hierarchy + polarity):
+#   hierarchy < -0.7           -> "encompasses" / "englobe"
+#   hierarchy -0.7 to -0.5     -> "contains" / "contient"
+#   hierarchy +0.5 to +0.7     -> "elaborates" / "détaille"
+#   hierarchy > +0.7           -> "exemplifies" / "exemplifie"
+#   neutral, [>0.7, <0.3]      -> "acts on" / "agit sur"
+#   neutral, [>0.7, >0.7]      -> "interacts with" / "interagit avec"
+#   neutral, [<0.3, >0.7]      -> "undergoes" / "subit"
+#   neutral, [~0.5, ~0.5]      -> "is linked to" / "est lié à"
+
+# =============================================================================
+# LINK NATURE VOCABULARY (v2.0)
+# =============================================================================
+#
+# Full vocabulary moved to: engine/physics/link_vocab.py
+#
+# When creating/updating links, agents provide a "nature" string.
+# The nature is parsed to derive physics floats (polarity, permanence, emotions).
+#
+# Format: [pre_modifier] verb [, post_modifier]
+# Example: "suddenly proves, with admiration"
+#
+# Usage:
+#   from engine.physics.link_vocab import nature_to_floats, get_vocab_reference
+#
+#   floats = nature_to_floats("suddenly proves, with admiration")
+#   # Returns: { permanence: 0.9, trust_disgust: 0.6, surprise_anticipation: 0.8, ... }
+#
+# Vocabulary categories:
+#   - base_verbs: encompasses, contains, elaborates, acts on, influences, ...
+#   - ownership_verbs: belongs to, owns, holds, uses, serves, ...
+#   - evidential_verbs: proves, refutes, suggests, confirms, contradicts, ...
+#   - spatial_verbs: shelters, welcomes, imprisons, occupies, flees, ...
+#   - actor_verbs: expresses, initiates, believes in, doubts, ...
+#   - narrative_verbs: radically contradicts, is in tension with, ...
+#   - pre_modifiers: perhaps, probably, definitely, suddenly, intensely, ...
+#   - post_modifiers: with rage, with admiration, with sadness, ...
+
+# =============================================================================
+# ENERGY FLOW
+# =============================================================================
+#
+# def compute_flow(link, source, target, intention_emb):
+#     if source.id == link.node_a:
+#         base_flow = source.energy * link.polarity[0] * link.weight
+#     else:
+#         base_flow = source.energy * link.polarity[1] * link.weight
+#
+#     if intention_emb is not None:
+#         alignment = cosine(intention_emb, link.embedding)
+#         base_flow *= (1 + alignment)
+#
+#     if link.hierarchy < 0 and target.id == link.node_a:
+#         base_flow *= (1 + abs(link.hierarchy))
+#     elif link.hierarchy > 0 and target.id == link.node_b:
+#         base_flow *= (1 + link.hierarchy)
+#
+#     return base_flow
+#
+# def apply_flow(flow, target, link):
+#     target.energy += flow * (1 - link.permanence)    # ephemeral
+#     target.weight += flow * link.permanence          # solidifies
+
+# =============================================================================
+# CLUSTER DYNAMICS
+# =============================================================================
+#
+# Dynamics to detect:
+#   Path         Sequence of traversals       Narrative flow
+#   Tension      Opposing trust_disgust       Conflict
+#   Convergence  3+ links into one node       Accumulation point
+#   Divergence   3+ links from one node       Distribution point
+
+# =============================================================================
+# DERIVED VALUES
+# =============================================================================
+#
+# Forward coloration weight:     1 - link.permanence
+# Blend weight (traversal):      flow_energy / (flow_energy + link.energy + 1)
+# Polarity blend weight:         w * (1 - link.permanence)
+# Energy accumulation:           flow_energy * (1 - link.permanence)
+# Weight solidification:         flow_energy * link.permanence
+# Backprop blend weight:         attenuation * abs(alignment) * (1 - link.permanence)
+# Backprop attenuation decay:    link.polarity[reverse_direction]
+# Drift threshold:               1 - link.permanence
+# Emotion blend weight:          link.weight / (link.weight + 1)
+# Intention blend weight:        link.weight / (link.weight + 1)
+# Criticality:                   (1 - satisfaction) * (depth / (depth + 1))
+
+# =============================================================================
+# INVARIANTS
+# =============================================================================
+
+invariants:
+  - "Single link type: link"
+  - "All floats in specified ranges"
+  - "Emotions emerge from alignment formula"
+  - "No arbitrary constants - all rates derived"
+  - "Branching only on Moments"
+  - "Crystallization creates new Narratives"
+  - "SubEntities aware of siblings via crystallization_embedding"
+  - "Forward coloration weight = (1 - permanence)"
+  - "Backprop attenuation = polarity[reverse_direction]"
+  - "Vocabulary is bidirectional"
+
+# =============================================================================
+# OPEN QUESTIONS
+# =============================================================================
+#
+# @mind:escalation CONTAINER_REDISTRIBUTION: How do Spaces avoid becoming infinite sinks?
+#   Current thinking: Asymmetric flow rates
+#
+# @mind:escalation BRANCHING_MAX_CHILDREN: Maximum children per branching operation?
+#   Current thinking: Derived from criticality x available_paths
+#
+# @mind:escalation SIBLING_COMMUNICATION: How do siblings share discoveries in real-time?
+#   Current thinking: Via crystallization_embedding comparison only

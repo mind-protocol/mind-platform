@@ -1,23 +1,23 @@
 # Repository Map: mind-platform
 
-*Generated: 2025-12-29 03:24*
+*Generated: 2025-12-29 18:54*
 
-- **Files:** 229
-- **Directories:** 74
-- **Total Size:** 1.5M
-- **Doc Files:** 200
-- **Code Files:** 26
+- **Files:** 248
+- **Directories:** 77
+- **Total Size:** 1.6M
+- **Doc Files:** 212
+- **Code Files:** 33
 - **Areas:** 8 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
-- **DOCS Links:** 4 (0.15 avg per code file)
+- **DOCS Links:** 5 (0.15 avg per code file)
 
-- markdown: 200
-- tsx: 14
-- typescript: 10
+- markdown: 212
+- tsx: 19
+- typescript: 12
 - css: 2
 
 ```
-├── app/ (85.6K)
+├── app/ (94.3K)
 │   ├── (dashboard)/ (244)
 │   │   ├── citizen/ (62)
 │   │   │   └── (..1 more files)
@@ -27,7 +27,7 @@
 │   │   │   └── (..1 more files)
 │   │   └── wallet/ (61)
 │   │       └── (..1 more files)
-│   ├── (public)/ (19.6K)
+│   ├── (public)/ (28.0K)
 │   │   ├── components/ (18.6K)
 │   │   │   ├── landing/ (12.2K)
 │   │   │   │   ├── ActionCard.tsx (652)
@@ -46,8 +46,16 @@
 │   │   │   └── (..1 more files)
 │   │   ├── marketplace/ (66)
 │   │   │   └── (..1 more files)
-│   │   ├── registry/ (63)
-│   │   │   └── (..1 more files)
+│   │   ├── registry/ (8.4K)
+│   │   │   ├── components/ (4.3K)
+│   │   │   │   ├── EntityCard.tsx (1.3K)
+│   │   │   │   ├── EntityList.tsx (881)
+│   │   │   │   ├── RegistryTabs.tsx (1.3K)
+│   │   │   │   └── VerificationBadge.tsx (854)
+│   │   │   ├── lib/ (2.1K)
+│   │   │   │   ├── api.ts (1.2K)
+│   │   │   │   └── types.ts (864)
+│   │   │   └── page.tsx (2.0K) →
 │   │   ├── schema/ (61)
 │   │   │   └── (..1 more files)
 │   │   ├── page.tsx (531) →
@@ -66,7 +74,7 @@
 │   │   │   └── route.ts (1.6K)
 │   │   └── stats/ (989)
 │   │       └── route.ts (989)
-│   ├── connectome/ (58.5K)
+│   ├── connectome/ (58.8K)
 │   │   ├── components/ (35.3K)
 │   │   │   ├── connectome_page_shell_route_layout_and_control_surface.tsx (13.8K) →
 │   │   │   └── pannable_zoomable_zoned_flow_canvas_renderer.tsx (21.5K) →
@@ -75,10 +83,10 @@
 │   │   │   ├── next_step_gate_and_realtime_playback_runtime_engine.ts (3.1K)
 │   │   │   └── zustand_connectome_state_store_with_atomic_commit_actions.ts (10.0K)
 │   │   ├── connectome.css (6.3K)
-│   │   └── (..1 more files)
+│   │   └── (..2 more files)
 │   ├── globals.css (642)
 │   └── layout.tsx (728) →
-├── docs/ (965.1K)
+├── docs/ (971.5K)
 │   ├── concepts/ (9.5K)
 │   │   └── CONCEPT_AI_Human_Partnership.md (9.5K)
 │   ├── connectome/ (603.3K)
@@ -219,13 +227,14 @@
 │   │   ├── PATTERNS_Ngram_Feature.md (696)
 │   │   ├── SYNC_Ngram_Feature_State.md (1.2K)
 │   │   └── VALIDATION_Ngram_Feature_Placeholder_Page.md (4.9K)
-│   ├── registry/ (45.0K)
+│   ├── registry/ (48.2K)
 │   │   ├── ALGORITHM_Registry_Flows.md (7.5K)
 │   │   ├── BEHAVIORS_Registry_UX.md (5.4K)
 │   │   ├── HEALTH_Registry_Monitoring.md (5.6K)
 │   │   ├── IMPLEMENTATION_Registry_Code.md (10.6K)
 │   │   ├── OBJECTIVES_Registry_Goals.md (2.7K)
 │   │   ├── PATTERNS_Registry_Design.md (5.2K)
+│   │   ├── PATTERNS_Registry_Rules.md (3.2K)
 │   │   ├── SYNC_Registry_State.md (3.7K)
 │   │   └── VALIDATION_Registry_Invariants.md (4.3K)
 │   ├── ux/ (15.3K)
@@ -243,7 +252,7 @@
 │   │   ├── VALIDATION_Platform_Invariants.md (5.5K)
 │   │   └── VOCABULARY_Platform_Terms.md (6.1K)
 │   ├── ARCHITECTURE.md (4.6K)
-│   └── map.md (115.8K)
+│   └── map.md (119.0K)
 ├── l3/
 │   ├── contributions/
 │   │   └── (..2 more files)
@@ -257,7 +266,18 @@
 │   │   ├── utils.ts (953)
 │   │   └── (..1 more files)
 │   └── (..1 more files)
-├── templates/ (267.8K)
+├── templates/ (285.6K)
+│   ├── actors/ (8.2K)
+│   │   ├── ACTOR_Architect.md (883)
+│   │   ├── ACTOR_Fixer.md (780)
+│   │   ├── ACTOR_Groundwork.md (844)
+│   │   ├── ACTOR_Herald.md (735)
+│   │   ├── ACTOR_Keeper.md (805)
+│   │   ├── ACTOR_Scout.md (785)
+│   │   ├── ACTOR_Steward.md (837)
+│   │   ├── ACTOR_Voice.md (804)
+│   │   ├── ACTOR_Weaver.md (840)
+│   │   └── ACTOR_Witness.md (910)
 │   ├── agents/ (47.9K)
 │   │   ├── architect/ (4.9K)
 │   │   │   ├── AGENTS.md (1.1K)
@@ -299,7 +319,7 @@
 │   │       ├── AGENTS.md (1.2K)
 │   │       ├── CLAUDE.md (3.1K)
 │   │       └── GEMINI.md (980)
-│   ├── docs/ (48.6K)
+│   ├── docs/ (51.2K)
 │   │   ├── ALGORITHM_TEMPLATE.md (2.7K)
 │   │   ├── BEHAVIORS_TEMPLATE.md (2.9K)
 │   │   ├── HEALTH_TEMPLATE.md (14.9K)
@@ -309,8 +329,8 @@
 │   │   ├── SYNC_TEMPLATE.md (3.1K)
 │   │   ├── TAXONOMY_TEMPLATE.md (1.7K)
 │   │   ├── VALIDATION_TEMPLATE.md (2.0K)
-│   │   ├── VOCABULARY_TEMPLATE.md (1.7K)
-│   │   └── (..4 more files)
+│   │   ├── VOCABULARY_TEMPLATE.md (2.9K)
+│   │   └── (..6 more files)
 │   ├── mcp/ (7.4K)
 │   │   ├── CODEX_SYSTEM_ADDITION.md (3.2K)
 │   │   ├── GEMINI_SYSTEM_ADDITION.md (2.4K)
@@ -333,13 +353,14 @@
 │   │   └── (..1 more files)
 │   ├── FRAMEWORK.md (21.7K)
 │   ├── PRINCIPLES.md (11.1K)
+│   ├── SYSTEM.md (7.0K)
 │   └── mindignore (839)
 ├── .mindignore (838)
 ├── AGENTS.md (29.8K)
 ├── README.md (3.3K)
-├── map.md (114.8K)
-├── map_app.md (5.3K)
-└── tsconfig.tsbuildinfo (85.1K)
+├── map.md (119.0K)
+├── map_app.md (6.8K)
+└── tsconfig.tsbuildinfo (86.9K)
 ```
 
 **Definitions:**
@@ -377,6 +398,27 @@
 
 **Definitions:**
 - `TopNav()`
+
+**Definitions:**
+- `EntityCard()`
+
+**Definitions:**
+- `EntityList()`
+
+**Definitions:**
+- `RegistryTabs()`
+
+**Definitions:**
+- `VerificationBadge()`
+
+**Definitions:**
+- `fetchCitizens()`
+- `fetchOrgs()`
+
+**Docs:** `docs/registry/IMPLEMENTATION_Registry_Code.md`
+
+**Definitions:**
+- `load()`
 
 **Docs:** `docs/landing/IMPLEMENTATION_Landing_Code.md`
 
@@ -2240,6 +2282,17 @@
 - ## Open Questions
 - ## Related
 
+**Sections:**
+- # Registry Patterns — L4 Rules
+- ## Les 9 Rules
+- ## Pourquoi cet ensemble est solide
+- ## Le Pattern Clé: Graph Physics
+- ## Application aux Procédures
+- # P7: Membrane only
+- # P8: Graph MCP calls (pas de Cypher)
+- # P9: Traceable
+- ## Anti-patterns
+
 **Code refs:**
 - `app/api/registry/citizens/route.ts`
 - `app/api/registry/health/route.ts`
@@ -2419,6 +2472,7 @@
 - `api/connectome/graphs/route.ts`
 - `api/connectome/search/route.ts`
 - `api/sse/route.ts`
+- `api/stats/route.ts`
 - `app.py`
 - `app/api/activity/route.ts`
 - `app/api/connectome/graph/route.ts`
@@ -2580,6 +2634,7 @@
 - `docs/physics/subentity/BEHAVIORS_SubEntity.md`
 - `docs/physics/subentity/VALIDATION_SubEntity.md`
 - `docs/registry/BEHAVIORS_Registry_UX.md`
+- `docs/registry/IMPLEMENTATION_Registry_Code.md`
 - `docs/schema/PATTERNS_Schema.md`
 - `docs/ux/PATTERNS_UX_Principles.md`
 - `docs/vision/PATTERNS_Platform_Vision_And_Architecture.md`
@@ -2599,6 +2654,86 @@
 - `getNodeTypeColor()`
 - `getVerificationColor()`
 - `getStatusColor()`
+
+**Sections:**
+- # Architect
+- ## Purpose
+- ## Capabilities
+- ## Triggers
+- ## Implementation
+- ## Complements
+
+**Sections:**
+- # Fixer
+- ## Purpose
+- ## Capabilities
+- ## Triggers
+- ## Implementation
+- ## Complements
+
+**Sections:**
+- # Groundwork
+- ## Purpose
+- ## Capabilities
+- ## Triggers
+- ## Implementation
+- ## Complements
+
+**Sections:**
+- # Herald
+- ## Purpose
+- ## Capabilities
+- ## Triggers
+- ## Implementation
+- ## Complements
+
+**Sections:**
+- # Keeper
+- ## Purpose
+- ## Capabilities
+- ## Triggers
+- ## Implementation
+- ## Complements
+
+**Sections:**
+- # Scout
+- ## Purpose
+- ## Capabilities
+- ## Triggers
+- ## Implementation
+- ## Complements
+
+**Sections:**
+- # Steward
+- ## Purpose
+- ## Capabilities
+- ## Triggers
+- ## Implementation
+- ## Complements
+
+**Sections:**
+- # Voice
+- ## Purpose
+- ## Capabilities
+- ## Triggers
+- ## Implementation
+- ## Complements
+
+**Sections:**
+- # Weaver
+- ## Purpose
+- ## Capabilities
+- ## Triggers
+- ## Implementation
+- ## Complements
+
+**Sections:**
+- # Witness
+- ## Purpose
+- ## Capabilities
+- ## Triggers
+- ## Implementation
+- ## Complements
 
 **Sections:**
 - # architect (Claude Agent SDK)
@@ -3022,6 +3157,8 @@
 - ## PURPOSE
 - ## NEW TERMS
 - ## NEW RELATIONSHIPS
+- ## TASKS
+- ## ACTORS
 - ## TERMINOLOGY PROPOSALS
 - ## MERGE STATUS
 - ## MARKERS
@@ -3324,6 +3461,17 @@
 - ## Feedback Loop: Human-Agent Collaboration
 - ## How These Principles Integrate
 
+**Sections:**
+- # SYSTEM: Architecture Rules
+- ## Overview
+- ## 1. ACTORS
+- ## 2. GRAPH PHYSICS
+- ## 3. AGENTS (Skills + Procedures)
+- ## Mapping: Old Checks → New Layer
+- ## Flow Example
+- ## Implementation Phases
+- ## Summary
+
 **Code refs:**
 - `doctor_cli_parser_and_run_checker.py`
 - `semantic_proximity_based_character_node_selector.py`
@@ -3377,6 +3525,7 @@
 - `api/connectome/graphs/route.ts`
 - `api/connectome/search/route.ts`
 - `api/sse/route.ts`
+- `api/stats/route.ts`
 - `app.py`
 - `app/api/activity/route.ts`
 - `app/api/connectome/graph/route.ts`
@@ -3538,6 +3687,7 @@
 - `docs/physics/subentity/BEHAVIORS_SubEntity.md`
 - `docs/physics/subentity/VALIDATION_SubEntity.md`
 - `docs/registry/BEHAVIORS_Registry_UX.md`
+- `docs/registry/IMPLEMENTATION_Registry_Code.md`
 - `docs/schema/PATTERNS_Schema.md`
 - `docs/ux/PATTERNS_UX_Principles.md`
 - `docs/vision/PATTERNS_Platform_Vision_And_Architecture.md`
@@ -3562,11 +3712,14 @@
 - `connectome/lib/connectome_system_map_node_edge_manifest.ts`
 - `connectome/lib/next_step_gate_and_realtime_playback_runtime_engine.ts`
 - `connectome/lib/zustand_connectome_state_store_with_atomic_commit_actions.ts`
+- `layout.tsx`
 
 **Doc refs:**
 - `docs/connectome/flow_canvas/PATTERNS_Connectome_Flow_Canvas_Pannable_Zoomable_Zoned_System_Map_Rendering_Patterns.md`
 - `docs/connectome/page_shell/PATTERNS_Connectome_Page_Shell_Route_Composition_And_User_Control_Surface_Patterns.md`
+- `docs/frontend/app_shell/PATTERNS_App_Shell.md`
 - `docs/landing/IMPLEMENTATION_Landing_Code.md`
+- `docs/registry/IMPLEMENTATION_Registry_Code.md`
 
 **Sections:**
 - # Repository Map: mind-platform/app

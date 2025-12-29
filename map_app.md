@@ -1,22 +1,22 @@
 # Repository Map: mind-platform/app
 
-*Generated: 2025-12-29 03:24*
+*Generated: 2025-12-29 18:54*
 
 ## Statistics
 
-- **Files:** 24
-- **Directories:** 25
-- **Total Size:** 84.1K
+- **Files:** 31
+- **Directories:** 27
+- **Total Size:** 92.4K
 - **Doc Files:** 0
-- **Code Files:** 24
+- **Code Files:** 31
 - **Areas:** 8 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
-- **DOCS Links:** 4 (0.17 avg per code file)
+- **DOCS Links:** 5 (0.16 avg per code file)
 
 ### By Language
 
-- tsx: 14
-- typescript: 8
+- tsx: 19
+- typescript: 10
 - css: 2
 
 ## File Tree
@@ -31,7 +31,7 @@
 │   │   └── (..1 more files)
 │   └── wallet/ (61)
 │       └── (..1 more files)
-├── (public)/ (19.6K)
+├── (public)/ (28.0K)
 │   ├── components/ (18.6K)
 │   │   ├── landing/ (12.2K)
 │   │   │   ├── ActionCard.tsx (652)
@@ -50,8 +50,16 @@
 │   │   └── (..1 more files)
 │   ├── marketplace/ (66)
 │   │   └── (..1 more files)
-│   ├── registry/ (63)
-│   │   └── (..1 more files)
+│   ├── registry/ (8.4K)
+│   │   ├── components/ (4.3K)
+│   │   │   ├── EntityCard.tsx (1.3K)
+│   │   │   ├── EntityList.tsx (881)
+│   │   │   ├── RegistryTabs.tsx (1.3K)
+│   │   │   └── VerificationBadge.tsx (854)
+│   │   ├── lib/ (2.1K)
+│   │   │   ├── api.ts (1.2K)
+│   │   │   └── types.ts (864)
+│   │   └── page.tsx (2.0K) →
 │   ├── schema/ (61)
 │   │   └── (..1 more files)
 │   ├── page.tsx (531) →
@@ -70,7 +78,7 @@
 │   │   └── route.ts (1.6K)
 │   └── stats/ (989)
 │       └── route.ts (989)
-├── connectome/ (58.5K)
+├── connectome/ (58.8K)
 │   ├── components/ (35.3K)
 │   │   ├── connectome_page_shell_route_layout_and_control_surface.tsx (13.8K) →
 │   │   └── pannable_zoomable_zoned_flow_canvas_renderer.tsx (21.5K) →
@@ -79,7 +87,7 @@
 │   │   ├── next_step_gate_and_realtime_playback_runtime_engine.ts (3.1K)
 │   │   └── zustand_connectome_state_store_with_atomic_commit_actions.ts (10.0K)
 │   ├── connectome.css (6.3K)
-│   └── (..1 more files)
+│   └── (..2 more files)
 ├── globals.css (642)
 └── layout.tsx (728) →
 ```
@@ -141,6 +149,39 @@
 
 **Definitions:**
 - `TopNav()`
+
+### `(public)/registry/components/EntityCard.tsx`
+
+**Definitions:**
+- `EntityCard()`
+
+### `(public)/registry/components/EntityList.tsx`
+
+**Definitions:**
+- `EntityList()`
+
+### `(public)/registry/components/RegistryTabs.tsx`
+
+**Definitions:**
+- `RegistryTabs()`
+
+### `(public)/registry/components/VerificationBadge.tsx`
+
+**Definitions:**
+- `VerificationBadge()`
+
+### `(public)/registry/lib/api.ts`
+
+**Definitions:**
+- `fetchCitizens()`
+- `fetchOrgs()`
+
+### `(public)/registry/page.tsx`
+
+**Docs:** `docs/registry/IMPLEMENTATION_Registry_Code.md`
+
+**Definitions:**
+- `load()`
 
 ### `(public)/page.tsx`
 

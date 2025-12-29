@@ -87,6 +87,61 @@ maps_to:
 
 ---
 
+## TASKS
+
+Tasks define work that can be done in this module.
+
+| Layer | Node | File |
+|-------|------|------|
+| Template | `narrative:task` | `.mind/tasks/TASK_*.md` |
+| Instance | `narrative:task_run` | (created at runtime) |
+
+### {task_name}
+
+```markdown
+**Definition:** {What this task accomplishes}
+
+**Executor:** agent | automated | mechanical
+
+**Skill:** {SKILL_Name.md if executor=agent}
+
+**Procedure:** {procedure_name}
+```
+
+**Instance links:**
+- `[OF]` → template (narrative:task)
+- `[TARGET]` → what it creates/modifies
+- `[CLAIMED_BY]` → actor executing
+- `status`: pending | running | completed | failed
+
+---
+
+## ACTORS
+
+Actors execute tasks. Template describes capabilities, instance does the work.
+
+| Layer | Node | File |
+|-------|------|------|
+| Template | `narrative:actor` | `.mind/actors/{name}/ACTOR.md` |
+| Instance | `actor` (node_type) | (created at init) |
+
+### {actor_name}
+
+```markdown
+**Subtype:** mechanical | agent
+
+**Purpose:** {What this actor does}
+
+**Capabilities:** {list of task types this actor can execute}
+
+**Triggers:** {cron:5min | event:node_created | manual}
+```
+
+**Instance links:**
+- `[OF]` → template (narrative:actor)
+
+---
+
 ## TERMINOLOGY PROPOSALS
 
 | Propose | Instead Of | Reason |
