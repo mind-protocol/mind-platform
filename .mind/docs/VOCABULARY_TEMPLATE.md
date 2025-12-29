@@ -109,9 +109,9 @@ Tasks define work that can be done in this module.
 ```
 
 **Instance links:**
-- `[OF]` → template (narrative:task)
-- `[TARGET]` → what it creates/modifies
-- `[CLAIMED_BY]` → actor executing
+- `serves` → template (narrative:task)
+- `concerns` → what it creates/modifies
+- `claimed by` (actor → task_run)
 - `status`: pending | running | completed | failed
 
 ---
@@ -138,7 +138,7 @@ Actors execute tasks. Template describes capabilities, instance does the work.
 ```
 
 **Instance links:**
-- `[OF]` → template (narrative:actor)
+- `serves` → template (narrative:actor)
 
 ---
 

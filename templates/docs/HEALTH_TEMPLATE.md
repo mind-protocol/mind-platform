@@ -324,21 +324,28 @@ mechanism:
   data_required: {data sources}  # observable via docks
   failure_mode: {what failure means}  # observable outcome
 
-  # When problem detected, create task_run
+  # When problem detected, create task_run (narrative node)
   on_problem:
     problem_id: PROBLEM_{name}  # from VOCABULARY
-    creates: task_run
-    links:
-      - type: OF
-        to: "{problem.resolves_with}"  # TASK template
-      - type: TARGET
-        to: "{affected_node}"  # what needs fixing
-      - type: ABOUT
-        to: "{problem_id}"  # the problem detected
-    properties:
-      status: pending
-      priority: "{problem.severity}"
-      created_by: "{indicator_name}"
+    creates:
+      node:
+        node_type: narrative
+        type: task_run
+        name: "{problem_id}_{timestamp}"
+        content: "{problem.definition}"
+        synthesis: "Task to resolve {problem_id} on {affected_node}"
+      links:
+        - node_a: "{task_run.id}"
+          node_b: "{problem.resolves_with}"
+          nature: "serves"
+        - node_a: "{task_run.id}"
+          node_b: "{affected_node}"
+          nature: "concerns"
+      moment:
+        node_type: moment
+        type: event
+        status: active
+        content: "Detected {problem_id}, created task_run"
 ```
 
 How to fill:
