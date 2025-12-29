@@ -83,14 +83,26 @@ VALIDATION:      ./VALIDATION_{name}.md
 IMPLEMENTATION:  ./IMPLEMENTATION_{name}.md
 THIS:            HEALTH_{name}.md
 SYNC:            ./SYNC_{name}.md
-
-IMPL:            {path/to/health/checker_script.py}
 ```
 
-> **Contract:** HEALTH checks verify input/output against VALIDATION with minimal or no code changes. After changes: update IMPL or add TODO to SYNC. Run HEALTH checks at throttled rates.
+---
+
+## IMPLEMENTS
+
+This HEALTH file is a **spec**. The actual code lives in runtime:
+
+```yaml
+implements:
+  runtime: runtime/checks.py       # Python code implementing these checks
+  decorator: @check                # Decorator-based registration
+```
+
+> **Separation:** HEALTH.md defines WHAT to check and WHEN to trigger. Runtime code defines HOW to check.
+
+> **Contract:** HEALTH checks verify input/output against VALIDATION with minimal or no code changes. After changes: update runtime or add TODO to SYNC. Run HEALTH checks at throttled rates.
 
 What to include:
-- exact IMPL path for the checker runner(s).
+- exact runtime path for the checker code.
 - ensure CHAIN paths resolve relative to this file.
 
 ---
@@ -309,46 +321,34 @@ How to fill:
 
 ### ALGORITHM / CHECK MECHANISM
 
-```yaml
-mechanism:
-  summary: {how verification is computed}  # plain-language comparison
-  steps:
-    - {step 1}  # deterministic, minimal
-    - {step 2}
-  data_required: {data sources}  # observable via docks
-  failure_mode: {what failure means}  # observable outcome
+Checks use decorators — Python is the single source of truth:
 
-  # When problem detected, create task_run (narrative node)
-  on_problem:
-    problem_id: PROBLEM_{name}  # from VOCABULARY
-    creates:
-      node:
-        node_type: narrative
-        type: task_run
-        name: "{problem_id}_{timestamp}"
-        content: |
-          # {problem_id}
-
-          {problem.definition}
-
-          **Target:** {affected_node}
-          **Status:** pending
-        synthesis: "Task to resolve {problem_id} on {affected_node}"
-      links:
-        - node_a: "{task_run.id}"
-          node_b: "{problem.resolves_with}"
-          nature: "serves"
-        - node_a: "{task_run.id}"
-          node_b: "{affected_node}"
-          nature: "concerns"
+```python
+@check(
+    id="{indicator_name}",
+    triggers=[
+        triggers.file.on_delete("{pattern}"),
+        triggers.cron.daily(),
+    ],
+    on_problem="{PROBLEM_ID}",  # from VOCABULARY
+    task="{TASK_name}",         # task template to create
+)
+def {indicator_name}(ctx) -> dict:
+    """Check description."""
+    # ... check logic ...
+    if healthy:
+        return Signal.healthy()
+    if critical_condition:
+        return Signal.critical(details=...)
+    return Signal.degraded(details=...)
 ```
 
 How to fill:
-- summary should describe the comparison plainly.
-- steps must be deterministic and minimal.
-- data_required must be observable via docks.
-- failure_mode must be observable (not speculative).
-- on_problem.problem_id must exist in VOCABULARY.
+- id should be stable and machine-friendly.
+- triggers should match real events or schedules.
+- on_problem must exist in VOCABULARY.
+- task must exist in tasks/ folder.
+- Check returns Signal.healthy/degraded/critical.
 
 ### SIGNALS
 

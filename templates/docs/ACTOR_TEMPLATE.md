@@ -50,4 +50,4 @@ type: {actor_name}
 ```
 
 **Links:**
-- `[OF]` → this template (narrative:actor)
+- `serves` → this template (narrative:actor)

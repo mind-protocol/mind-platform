@@ -55,6 +55,40 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 
 ## RECENT CHANGES
 
+### 2025-12-29: Created capability-runtime Module Doc Chain
+
+- **What:** Full 8-file doc chain in `docs/capability-runtime/` defining the V2 capability plugin architecture.
+- **Why:** Capabilities need executable runtime code alongside specs. MCP should auto-load and trigger handlers.
+- **Impact:**
+  - Specs location: `.mind/capabilities/{name}/` — agent-readable docs
+  - Runtime location: `.mind/runtime/capabilities/{name}/` — MCP-executable code
+  - HANDLERS dict export pattern for trigger registration
+  - Trigger types: init.*, file.*, cron.*, signal.*, graph.*, manual.*
+  - HealthMonitor base class for capability monitors
+  - TaskRun pattern: handlers return TaskRun, MCP creates in graph
+- **Files:** docs/capability-runtime/OBJECTIVES.md through SYNC.md (8 files)
+
+### 2025-12-29: Simplified Capabilities Structure
+
+- **What:** Moved capabilities to `capabilities/` at root. Each capability is self-contained (specs + runtime together).
+- **Why:** Simpler. One folder = one capability. Copy it and it works.
+- **Impact:**
+  - `capabilities/{name}/` — self-contained (docs, tasks, skills, procedures, runtime/)
+  - `docs/capabilities/` — system docs (what capabilities ARE)
+  - After `mind init`: `.mind/capabilities/{name}/` (full copy)
+- **Files:** capabilities/create-doc-chain/*, docs/capabilities/*, docs/capability-runtime/*
+
+### 2025-12-29: Created Capabilities System + Templates Update
+
+- **What:** Created capability system doc chain and first capability (create-doc-chain). Updated HEALTH_TEMPLATE.md and ACTOR_TEMPLATE.md.
+- **Why:** Capability = autonomous functional organ. System needs self-describing, self-activating units.
+- **Impact:**
+  - HEALTH.md = spec, `runtime/monitor.py` = implementation
+  - on_signal only triggers on degraded/critical (not healthy)
+  - Throttler sits between health monitor and agent queue
+  - ACTOR_TEMPLATE.md fixed `[OF]` → `serves`
+- **Files:** templates/docs/HEALTH_TEMPLATE.md, templates/docs/ACTOR_TEMPLATE.md
+
 ### 2025-12-29: Renamed Grammar to Nature, Created nature.yaml
 
 - **What:** Renamed `docs/grammar/` → `docs/nature/`, rewrote entire doc chain to focus on semantics (zero physics), renamed `link_nature_vocab.yaml` → `nature.yaml`.
@@ -135,12 +169,111 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 
 **Likely VIEW for continuing:** groundwork (implementation tasks)
 
-**Current focus:** End-to-end testing with running database
+**Current focus:** Capability runtime implementation
 
-**Key context:**
+---
+
+### CAPABILITY RUNTIME DESIGN (Approved)
+
+**Architecture decided:**
+- Source templates: `templates/capabilities/{name}/` (in mind-platform)
+- After `mind init`: copied to `.mind/capabilities/{name}/` (in target project)
+- Each capability is self-contained: specs + runtime together
+- Runtime code lives in `.mind/capabilities/{name}/runtime/`
+
+**Capability structure (in .mind/capabilities/):**
+```
+.mind/capabilities/{name}/
+├── OBJECTIVES.md          # Specs (agent-readable)
+├── PATTERNS.md
+├── BEHAVIORS.md
+├── ALGORITHM.md
+├── VALIDATION.md
+├── IMPLEMENTATION.md
+├── HEALTH.md              # Documents checks (not config)
+├── SYNC.md
+├── tasks/TASK_*.md
+├── skills/SKILL_*.md
+├── procedures/PROCEDURE_*.yaml
+└── runtime/               # Code (MCP-executable)
+    ├── __init__.py
+    └── health.py          # @check decorated functions
+```
+
+**Health checks use decorator pattern (not YAML):**
+
+```python
+# capabilities/create-doc-chain/runtime/health.py
+
+from mind.health import check, Signal, triggers
+
+@check(
+    id="chain_completeness",
+    triggers=[
+        triggers.file_watch.on_delete("docs/**/*.md"),
+        triggers.init_scan(),
+        triggers.cron.daily(),
+    ],
+    signals={
+        "healthy": "all expected docs exist",
+        "degraded": "some docs missing",
+        "critical": "OBJECTIVES or PATTERNS missing",
+    },
+    on_fail={
+        "problem": "INCOMPLETE_CHAIN",
+        "task": "TASK_create_doc",
+    },
+)
+def chain_completeness(ctx) -> Signal:
+    expected = {"OBJECTIVES", "PATTERNS", "BEHAVIORS", ...}
+    found = {f.stem.split("_")[0].upper()
+             for f in ctx.list_files(f"docs/{ctx.payload['module']}/*.md")}
+    missing = expected - found
+
+    if not missing:
+        return Signal.HEALTHY
+    if {"OBJECTIVES", "PATTERNS"} & missing:
+        return Signal.CRITICAL(missing=list(missing))
+    return Signal.DEGRADED(missing=list(missing))
+```
+
+**Why decorators over YAML:**
+- Single source of truth (no YAML/Python drift)
+- IDE autocomplete on triggers
+- Type-safe
+- HEALTH.md becomes documentation, not config
+
+**MCP responsibilities:**
+1. On boot: scan `.mind/capabilities/*/runtime/`
+2. Load each `health.py`, collect `@check` decorated functions
+3. Register triggers from decorator metadata
+4. On trigger fire: call matching function, get Signal
+5. On degraded/critical: create task_run node in graph
+
+**Capability responsibilities:**
+1. Declare triggers via `@check` decorator
+2. Implement check logic in function
+3. Return Signal (HEALTHY, DEGRADED, CRITICAL)
+4. Define problem/task mapping in decorator
+
+**Next implementation steps:**
+1. Create `runtime/capability/base.py` — Signal enum, check decorator, triggers namespace
+2. Create `runtime/capability/loader.py` — discover and load capabilities
+3. Create `runtime/capability/dispatch.py` — trigger → handler dispatch
+4. Hook into MCP server startup
+
+**Key files:**
+- `docs/capability-runtime/` — Full doc chain (8 files)
+- `capabilities/create-doc-chain/` — First capability implementation
+- `templates/docs/HEALTH_TEMPLATE.md` — Template for module health (not capabilities)
+
+---
+
+### Previous Context
+
+**Browser code:**
 - Browser lib files are INLINED (not imported from mind-mcp) because mind-mcp uses Node.js modules
 - API routes at `/api/connectome/*` proxy to Python backend at `$CONNECTOME_BACKEND_URL` or `http://localhost:8765`
-- Canvas renderer uses D3 force simulation, not ReactFlow
 
 **Watch out for:**
 - Don't try to import from `@mind-protocol/connectome` in browser code — those modules use fs/child_process
@@ -219,6 +352,9 @@ Graph Explorer could benefit from keyboard shortcuts for navigation.
 **Mapped modules:**
 | Module | Code | Docs | Maturity |
 |--------|------|------|----------|
+| capability-runtime | `runtime/capability/` | `docs/capability-runtime/` | DESIGNING |
+| capabilities | - | `docs/capabilities/` | CANONICAL |
+| create-doc-chain | `capabilities/create-doc-chain/runtime/` | `capabilities/create-doc-chain/` | DESIGNING |
 | connectome | `app/connectome/` | `docs/connectome/` | DESIGNING |
 | landing | `app/(public)/` | `docs/landing/` | CANONICAL |
 | registry | `app/(public)/registry/` | `docs/registry/` | DESIGNING |
