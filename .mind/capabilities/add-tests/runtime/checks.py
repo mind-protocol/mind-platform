@@ -16,7 +16,7 @@ try:
 except ImportError:
     # Fallback: when running from .mind/capabilities after init
     # The runtime module should be available via PYTHONPATH
-    from mind.capability import check, Signal, triggers
+    from runtime.capability import check, Signal, triggers
 
 
 # =============================================================================

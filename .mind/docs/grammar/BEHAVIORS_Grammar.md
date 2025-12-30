@@ -171,7 +171,7 @@ Observable behaviors of the grammar system. What happens when.
 
 ## B9: Agent Spawn Behavior
 
-**When:** `agent_spawn` called with task_run or problem
+**When:** `agent_run` called with task_run or problem
 
 **What happens:**
 1. If task_run provided: actor claims that task_run

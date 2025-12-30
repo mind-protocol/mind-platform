@@ -28,9 +28,9 @@ class Signal:
     CRITICAL = "critical"
 
     @classmethod
-    def healthy(cls) -> dict:
-        """All good, no action needed."""
-        return {"signal": cls.HEALTHY}
+    def healthy(cls, **data) -> dict:
+        """All good, no action needed. Optionally include metadata."""
+        return {"signal": cls.HEALTHY, **data}
 
     @classmethod
     def degraded(cls, **data) -> dict:
@@ -101,6 +101,42 @@ class triggers:
         def on_modify(match: str) -> dict:
             """Fires when a file matching pattern is modified."""
             return {"type": "file.on_modify", "match": match}
+
+        @staticmethod
+        def on_move(match: str) -> dict:
+            """Fires when a file matching pattern is moved/renamed."""
+            return {"type": "file.on_move", "match": match}
+
+    class event:
+        """Custom event triggers."""
+
+        @staticmethod
+        def on(name: str) -> dict:
+            """Fires on custom event."""
+            return {"type": f"event.{name}"}
+
+        @staticmethod
+        def after_ingest() -> dict:
+            """Fires after graph ingestion."""
+            return {"type": "event.after_ingest"}
+
+    class hook:
+        """Hook triggers (Mind hooks)."""
+
+        @staticmethod
+        def on(name: str) -> dict:
+            """Fires on named hook."""
+            return {"type": f"hook.{name}"}
+
+        @staticmethod
+        def post_commit() -> dict:
+            """Fires after commit hook."""
+            return {"type": "hook.post_commit"}
+
+        @staticmethod
+        def pre_commit() -> dict:
+            """Fires before commit hook."""
+            return {"type": "hook.pre_commit"}
 
     class init:
         """Initialization triggers."""

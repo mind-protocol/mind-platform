@@ -124,7 +124,7 @@ mind-mcp/
 |------|---------|------|
 | `health_check` | `server.py:health_check()` | `detection.py` |
 | `task_list` | `server.py:task_list()` | `task_query.py` |
-| `agent_spawn` | `server.py:agent_spawn()` | `claim.py`, `execution.py` |
+| `agent_run` | `server.py:agent_run()` | `claim.py`, `execution.py` |
 | `agent_status` | `server.py:agent_status()` | `task_state.py` |
 
 ---
@@ -181,7 +181,7 @@ detection.create_task_run()         │
 [Graph: task_run node created] ◄────┘
   │
   ▼
-agent_spawn() or actor poll
+agent_run() or actor poll
   │
   ▼
 claim.actor_claim()

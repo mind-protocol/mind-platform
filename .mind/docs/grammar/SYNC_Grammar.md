@@ -78,7 +78,7 @@ THIS:            SYNC_Grammar.md (you are here)
 
 4. **Update MCP tools**
    - `task_list` queries graph for task_runs
-   - `agent_spawn` uses grammar claim/execute
+   - `agent_run` uses grammar claim/execute
 
 ---
 

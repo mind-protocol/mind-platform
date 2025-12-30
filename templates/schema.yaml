@@ -456,7 +456,7 @@ SubEntity:
 # =============================================================================
 #
 # SEEKING      -> exploring, choosing next link
-# BRANCHING    -> multiple valid paths, spawning children
+# BRANCHING    -> multiple valid paths, running children
 # RESONATING   -> arrived at narrative, measuring alignment
 # REFLECTING   -> backpropagating reaction through path
 # CRYSTALLIZING -> creating new narrative from traversal

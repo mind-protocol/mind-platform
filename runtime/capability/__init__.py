@@ -23,6 +23,12 @@ from .agents import (
 )
 from .loader import discover_capabilities, load_checks
 from .dispatch import dispatch_trigger, create_task_runs, run_checks
+from .graph_ops import (
+    TaskStatus, create_task_run, claim_task, start_task, complete_task,
+    fail_task, release_task, query_pending_tasks,
+    ActorStatus, update_actor_heartbeat, set_actor_working, set_actor_idle,
+    detect_stuck_agents, cleanup_dead_agent,
+)
 
 __all__ = [
     # Decorators
@@ -55,4 +61,19 @@ __all__ = [
     "dispatch_trigger",
     "create_task_runs",
     "run_checks",
+    # Graph ops
+    "TaskStatus",
+    "create_task_run",
+    "claim_task",
+    "start_task",
+    "complete_task",
+    "fail_task",
+    "release_task",
+    "query_pending_tasks",
+    "ActorStatus",
+    "update_actor_heartbeat",
+    "set_actor_working",
+    "set_actor_idle",
+    "detect_stuck_agents",
+    "cleanup_dead_agent",
 ]

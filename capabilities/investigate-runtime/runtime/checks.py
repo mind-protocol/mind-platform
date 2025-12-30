@@ -15,7 +15,7 @@ try:
     from runtime.capability import check, Signal, triggers
 except ImportError:
     # Fallback: when running from .mind/capabilities after init
-    from mind.capability import check, Signal, triggers
+    from runtime.capability import check, Signal, triggers
 
 
 # =============================================================================

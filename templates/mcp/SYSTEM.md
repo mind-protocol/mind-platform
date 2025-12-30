@@ -57,4 +57,4 @@ Use the Mind MCP server for:
 - `graph_query` — Semantic search across the project graph
 - `procedure_start` / `procedure_continue` — Structured dialogues
 - `doctor_check` — Health checks
-- `task_list` / `agent_spawn` — Task management
+- `task_list` / `agent_run` — Task management

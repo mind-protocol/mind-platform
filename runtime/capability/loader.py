@@ -4,10 +4,15 @@ Capability discovery and loading.
 
 import importlib.util
 import logging
+import sys
 from pathlib import Path
 from typing import Callable
 
 log = logging.getLogger(__name__)
+
+# Find mind-platform root for setting up imports
+_this_file = Path(__file__).resolve()
+_platform_root = _this_file.parent.parent.parent  # runtime/capability/loader.py -> runtime -> mind-platform
 
 
 def load_checks(checks_file: Path) -> list[Callable]:
@@ -23,6 +28,13 @@ def load_checks(checks_file: Path) -> list[Callable]:
     if not checks_file.exists():
         log.warning(f"Checks file not found: {checks_file}")
         return []
+
+    # Ensure mind-platform is in path for imports
+    # We keep it in path permanently since checks may need runtime.capability at any time
+    platform_path = str(_platform_root)
+    if platform_path not in sys.path:
+        sys.path.insert(0, platform_path)
+        log.debug(f"Added {platform_path} to sys.path for capability imports")
 
     try:
         spec = importlib.util.spec_from_file_location(

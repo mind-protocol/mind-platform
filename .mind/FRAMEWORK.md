@@ -564,7 +564,7 @@ graph_query(queries: ["What characters exist?", "How does physics work?"], top_k
 | `doctor_check` | Run health checks, find issues |
 | `task_list` | List pending tasks by module/objective |
 | `agent_list` | Show available work agents |
-| `agent_spawn` | Spawn agent for task/issue |
+| `agent_run` | Run agent for task/issue |
 | `agent_status` | Get/set agent status |
 
 ---

@@ -27,6 +27,11 @@ class CheckContext:
     _target_dir: Path = None
     _graph: Any = None  # GraphOps
 
+    @property
+    def project_root(self) -> Path:
+        """Get the project root directory."""
+        return self._target_dir or Path(".")
+
     def list_files(self, pattern: str) -> list[Path]:
         """List files matching glob pattern relative to project root."""
         if self._target_dir is None:

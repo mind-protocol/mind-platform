@@ -76,7 +76,7 @@ The **API Gateway** pattern is applied here. The `connectome_search_api` acts as
 
 ### Principle 2: Robust Inter-Process Communication
 
-**Description:** The API is designed to robustly manage the execution of the external Python CLI, including handling process spawning, argument passing, capturing stdout/stderr, and managing timeouts.
+**Description:** The API is designed to robustly manage the execution of the external Python CLI, including handling process running, argument passing, capturing stdout/stderr, and managing timeouts.
 **Why this matters:** Directly interacting with external processes can be fragile. This principle ensures that the API is resilient to issues like the CLI not being found, execution errors, or unexpected output, preventing cascading failures and providing clear error feedback.
 
 ### Principle 3: Standardized API Interface
@@ -103,7 +103,7 @@ The **API Gateway** pattern is applied here. The `connectome_search_api` acts as
 |--------|---------------------|
 | `engine.physics.graph.connectome_read_cli` (Python CLI) | This is the core logic provider for connectome graph searches. The API is a wrapper around it. |
 | `next/server` | Provides the framework for creating API routes in a Next.js application. |
-| `child_process` (Node.js) | Essential for spawning and managing the external `connectome_read_cli` Python process. |
+| `child_process` (Node.js) | Essential for running and managing the external `connectome_read_cli` Python process. |
 
 ---
 
@@ -119,7 +119,7 @@ The **API Gateway** pattern is applied here. The `connectome_search_api` acts as
 ### In Scope
 
 - Receiving HTTP GET requests with specified search query parameters.
-- Spawning and executing the `engine.physics.graph.connectome_read_cli` Python process.
+- Running and executing the `engine.physics.graph.connectome_read_cli` Python process.
 - Passing appropriate arguments from the HTTP request to the Python CLI.
 - Capturing, parsing, and formatting the standard output (JSON results) and standard error from the CLI.
 - Returning JSON responses to the client, including search results or detailed error information.
@@ -141,7 +141,7 @@ The **API Gateway** pattern is applied here. The `connectome_search_api` acts as
 title: "Add unit and integration tests for CLI invocation"
 priority: medium
 context: |
-  Currently, there are no explicit tests for the process spawning logic, argument passing, or output parsing. This could lead to regressions if the CLI interface changes or environment issues arise.
+  Currently, there are no explicit tests for the process running logic, argument passing, or output parsing. This could lead to regressions if the CLI interface changes or environment issues arise.
   Note: API is functional in production - tests are for regression prevention, not critical path.
 task: |
   Implement unit tests to mock `spawnSync` and verify correct argument construction, and integration tests to verify the end-to-end flow with a dummy Python script.

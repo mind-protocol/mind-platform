@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 # Placeholder for actual imports from mind.capability
-# from mind.capability import check, Signal, triggers
+# from runtime.capability import check, Signal, triggers
 
 
 class Signal:
