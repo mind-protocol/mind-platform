@@ -64,6 +64,15 @@ def test_coverage(ctx) -> dict:
     module_id = ctx.module_id
     project_root = Path(ctx.project_root) if ctx.project_root else Path(".")
 
+    # If no module_id, check for any test files
+    if not module_id:
+        test_dir = project_root / "tests"
+        if test_dir.exists():
+            test_files = list(test_dir.rglob("test_*.py"))
+            if test_files:
+                return Signal.healthy(test_count=len(test_files))
+        return Signal.degraded(reason="No module_id provided and no test files found")
+
     # Check for test directory
     test_paths = [
         project_root / "tests" / module_id,

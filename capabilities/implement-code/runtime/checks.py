@@ -392,8 +392,9 @@ def stale_impl_detection(ctx) -> dict:
     max_staleness = 0
 
     # Get modified files from context or scan all
-    if ctx.modified_files:
-        code_files = [Path(f) for f in ctx.modified_files if Path(f).suffix in CODE_EXTENSIONS]
+    modified_files = getattr(ctx, 'modified_files', []) or []
+    if modified_files:
+        code_files = [Path(f) for f in modified_files if Path(f).suffix in CODE_EXTENSIONS]
     else:
         code_files = []
         for ext in CODE_EXTENSIONS:
