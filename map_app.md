@@ -1,22 +1,22 @@
 # Repository Map: mind-platform/app
 
-*Generated: 2025-12-30 02:02*
+*Generated: 2025-12-30 04:25*
 
 ## Statistics
 
-- **Files:** 31
-- **Directories:** 27
-- **Total Size:** 92.4K
+- **Files:** 33
+- **Directories:** 30
+- **Total Size:** 96.8K
 - **Doc Files:** 0
-- **Code Files:** 31
-- **Areas:** 11 (docs/ subfolders)
+- **Code Files:** 33
+- **Areas:** 10 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
-- **DOCS Links:** 5 (0.16 avg per code file)
+- **DOCS Links:** 7 (0.21 avg per code file)
 
 ### By Language
 
 - tsx: 19
-- typescript: 10
+- typescript: 12
 - css: 2
 
 ## File Tree
@@ -64,7 +64,7 @@
 │   │   └── (..1 more files)
 │   ├── page.tsx (531) →
 │   └── (..1 more files)
-├── api/ (5.9K)
+├── api/ (10.2K)
 │   ├── connectome/ (3.3K)
 │   │   ├── graph/ (903)
 │   │   │   └── route.ts (903)
@@ -74,6 +74,11 @@
 │   │   │   └── route.ts (1.2K)
 │   │   └── tick/ (429)
 │   │       └── (..1 more files)
+│   ├── registry/ (4.3K)
+│   │   ├── citizens/ (2.2K)
+│   │   │   └── route.ts (2.2K) →
+│   │   └── orgs/ (2.2K)
+│   │       └── route.ts (2.2K) →
 │   ├── sse/ (1.6K)
 │   │   └── route.ts (1.6K)
 │   └── stats/ (989)
@@ -198,6 +203,20 @@
 - `GET()`
 
 ### `api/connectome/search/route.ts`
+
+**Definitions:**
+- `GET()`
+
+### `api/registry/citizens/route.ts`
+
+**Docs:** `docs/registry/IMPLEMENTATION_Registry_Code.md`
+
+**Definitions:**
+- `GET()`
+
+### `api/registry/orgs/route.ts`
+
+**Docs:** `docs/registry/IMPLEMENTATION_Registry_Code.md`
 
 **Definitions:**
 - `GET()`

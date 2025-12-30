@@ -1,24 +1,24 @@
 # Repository Map: mind-platform
 
-*Generated: 2025-12-30 02:02*
+*Generated: 2025-12-30 04:25*
 
-- **Files:** 458
-- **Directories:** 139
-- **Total Size:** 2.5M
-- **Doc Files:** 398
-- **Code Files:** 57
-- **Areas:** 11 (docs/ subfolders)
+- **Files:** 444
+- **Directories:** 140
+- **Total Size:** 2.4M
+- **Doc Files:** 390
+- **Code Files:** 51
+- **Areas:** 10 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
-- **DOCS Links:** 15 (0.26 avg per code file)
+- **DOCS Links:** 18 (0.35 avg per code file)
 
-- markdown: 398
-- python: 24
+- markdown: 390
 - tsx: 19
-- typescript: 12
+- typescript: 15
+- python: 15
 - css: 2
 
 ```
-├── app/ (94.3K)
+├── app/ (98.6K)
 │   ├── (dashboard)/ (244)
 │   │   ├── citizen/ (62)
 │   │   │   └── (..1 more files)
@@ -61,7 +61,7 @@
 │   │   │   └── (..1 more files)
 │   │   ├── page.tsx (531) →
 │   │   └── (..1 more files)
-│   ├── api/ (5.9K)
+│   ├── api/ (10.2K)
 │   │   ├── connectome/ (3.3K)
 │   │   │   ├── graph/ (903)
 │   │   │   │   └── route.ts (903)
@@ -71,6 +71,11 @@
 │   │   │   │   └── route.ts (1.2K)
 │   │   │   └── tick/ (429)
 │   │   │       └── (..1 more files)
+│   │   ├── registry/ (4.3K)
+│   │   │   ├── citizens/ (2.2K)
+│   │   │   │   └── route.ts (2.2K) →
+│   │   │   └── orgs/ (2.2K)
+│   │   │       └── route.ts (2.2K) →
 │   │   ├── sse/ (1.6K)
 │   │   │   └── route.ts (1.6K)
 │   │   └── stats/ (989)
@@ -374,15 +379,6 @@
 │   │   ├── SYNC_Capabilities.md (2.8K)
 │   │   ├── VALIDATION_Capabilities.md (2.9K)
 │   │   └── VOCABULARY_Capabilities.md (2.5K)
-│   ├── capability-runtime/ (42.9K)
-│   │   ├── ALGORITHM_Capability_Runtime.md (8.7K)
-│   │   ├── BEHAVIORS_Capability_Runtime.md (3.2K)
-│   │   ├── HEALTH_Capability_Runtime.md (5.4K)
-│   │   ├── IMPLEMENTATION_Capability_Runtime.md (6.5K)
-│   │   ├── OBJECTIVES_Capability_Runtime.md (2.3K)
-│   │   ├── PATTERNS_Capability_Runtime.md (6.7K)
-│   │   ├── SYNC_Capability_Runtime.md (4.3K)
-│   │   └── VALIDATION_Capability_Runtime.md (5.8K)
 │   ├── concepts/ (9.5K)
 │   │   └── CONCEPT_AI_Human_Partnership.md (9.5K)
 │   ├── connectome/ (603.3K)
@@ -558,31 +554,21 @@
 │   │   ├── VALIDATION_Platform_Invariants.md (5.5K)
 │   │   └── VOCABULARY_Platform_Terms.md (6.1K)
 │   ├── ARCHITECTURE.md (4.6K)
-│   └── map.md (189.3K)
+│   └── map.md (189.8K)
 ├── l3/
 │   ├── contributions/
 │   │   └── (..2 more files)
 │   └── federation/
 │       └── (..2 more files)
-├── lib/ (6.2K)
+├── lib/ (7.5K)
 │   ├── constants/ (252)
 │   │   └── (..1 more files)
+│   ├── db/ (1.4K)
+│   │   └── falkordb.ts (1.4K) →
 │   ├── design/ (5.9K)
 │   │   ├── theme.ts (4.7K)
 │   │   ├── utils.ts (953)
 │   │   └── (..1 more files)
-│   └── (..1 more files)
-├── runtime/ (57.6K)
-│   ├── capability/ (57.5K)
-│   │   ├── __init__.py (2.3K)
-│   │   ├── agents.py (9.8K)
-│   │   ├── context.py (2.1K)
-│   │   ├── decorators.py (7.0K)
-│   │   ├── dispatch.py (12.8K)
-│   │   ├── graph_ops.py (11.0K)
-│   │   ├── loader.py (3.3K)
-│   │   ├── registry.py (3.0K)
-│   │   └── throttler.py (6.3K)
 │   └── (..1 more files)
 ├── templates/ (238.9K)
 │   ├── actors/ (8.2K)
@@ -645,7 +631,7 @@
 ├── .mindignore (838)
 ├── AGENTS.md (29.8K)
 ├── README.md (3.3K)
-├── map.md (189.3K)
+├── map.md (189.8K)
 ├── map_app.md (6.8K)
 └── tsconfig.tsbuildinfo (86.9K)
 ```
@@ -714,6 +700,16 @@
 
 **Definitions:**
 - `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Docs:** `docs/registry/IMPLEMENTATION_Registry_Code.md`
+
+**Definitions:**
+- `GET()`
+
+**Docs:** `docs/registry/IMPLEMENTATION_Registry_Code.md`
 
 **Definitions:**
 - `GET()`
@@ -3413,151 +3409,6 @@
 - ## USAGE
 - # In a capability's HEALTH.md
 
-**Sections:**
-- # Capability Runtime — Algorithm
-- ## CHAIN
-- ## A1: Capability Discovery
-- ## A2: Load Checks from Capability
-- # Dynamic import
-- # Collect @check decorated functions
-- ## A3: Check Registration
-- ## A4: Trigger Dispatch
-- # Build context
-- # ... read-only accessors
-- # Call check with timeout
-- ## A5: Task Creation from Signal
-- # Create task_run node
-- # Link to task template
-- # Link to problem
-- ## A6: MCP Startup Integration
-- # Phase 1: Discovery
-- # Phase 2: Registration
-- # Phase 3: Run init triggers
-- # Phase 4: Setup file watcher
-- # Phase 5: Setup cron
-- ## DATA STRUCTURES
-- # Convenience accessors
-- # Read-only methods
-- ## SEQUENCE: Full Trigger Flow
-- ## DECORATOR IMPLEMENTATION
-- # mind/capability/decorators.py
-- # Register in module's __checks__ list
-
-**Code refs:**
-- `__init__.py`
-
-**Sections:**
-- # Capability Runtime — Behaviors
-- ## CHAIN
-- ## B1: Capability Discovery
-- ## B2: Handler Registration
-- ## B3: Trigger Dispatch
-- ## B4: Task Creation
-- ## B5: Health Check Integration
-- ## B6: Graceful Degradation
-- ## BEHAVIOR MATRIX
-- ## ERROR BEHAVIORS
-
-**Sections:**
-- # Capability Runtime — Health
-- ## CHAIN
-- ## HEALTH SIGNALS
-- ## HEALTH MATRIX
-- ## MONITORING IMPLEMENTATION
-- # H1: Load success
-- # H2: Handlers registered
-- # H3: Latency
-- # H4: Error rate
-- ## DASHBOARD OUTPUT
-
-**Code refs:**
-- `mcp/health.py`
-- `mcp/server.py`
-- `runtime/capability/base.py`
-- `runtime/capability/dispatch.py`
-- `runtime/capability/loader.py`
-- `runtime/capability/registry.py`
-
-**Sections:**
-- # Capability Runtime — Implementation
-- ## CHAIN
-- ## CODE LOCATIONS
-- ## KEY CLASSES
-- # Injected by MCP
-- # Find CHECKS list or scan for decorated functions
-- ## DATA FLOW
-- ## CONFIGURATION
-- ## DEPENDENCIES
-- ## IMPLEMENTATION STATUS
-- ## FILE STRUCTURE (Full)
-
-**Code refs:**
-- `mcp/server.py`
-- `runtime/ingest/docs.py`
-
-**Sections:**
-- # Capability Runtime — Objectives
-- ## PURPOSE
-- ## RANKED OBJECTIVES
-- ## NON-OBJECTIVES
-- ## TRADEOFFS
-- ## DEPENDENCIES
-
-**Sections:**
-- # Capability Runtime — Patterns
-- ## CHAIN
-- ## CORE PATTERN: Self-Contained Capabilities
-- ## PATTERN: Decorator-Based Health Checks
-- # capabilities/create-doc-chain/runtime/checks.py
-- ## PATTERN: Trigger Types
-- ## PATTERN: Signal Return Values
-- # Simple returns
-- # With context data (for task creation)
-- ## PATTERN: Check Context
-- ## PATTERN: Task Creation Flow
-- ## PATTERN: Capability Isolation
-- # MCP loader (runtime/capability/loader.py)
-- # Continue loading other capabilities
-- ## PATTERN: Context Propagation
-- # Trigger info
-- # Payload (varies by trigger type)
-- # Read-only accessors (see Check Context section)
-- ## ANTI-PATTERNS
-- ## DESIGN RATIONALE
-
-**Code refs:**
-- `base.py`
-- `dispatch.py`
-- `loader.py`
-- `mcp/server.py`
-- `registry.py`
-- `runtime/capability/base.py`
-- `runtime/capability/dispatch.py`
-- `runtime/capability/loader.py`
-- `runtime/capability/registry.py`
-
-**Sections:**
-- # Capability Runtime — Sync
-- ## CHAIN
-- ## CURRENT STATE
-- ## WHAT'S DESIGNED
-- ## IMPLEMENTATION PLAN
-- ## OPEN QUESTIONS
-- ## DEPENDENCIES
-- ## HANDOFF: FOR IMPLEMENTER
-- # __init__.py
-- ## RELATED DOCS
-
-**Sections:**
-- # Capability Runtime — Validation
-- ## CHAIN
-- ## INVARIANTS
-- # Load each capability independently
-- # Verify other capabilities still work
-- # Check for imports from sibling capabilities
-- ## VALIDATION MATRIX
-- ## TEST SCENARIOS
-
 **Doc refs:**
 - `docs/ux/PATTERNS_UX_Principles.md`
 - `docs/vision/VOCABULARY_Platform_Terms.md`
@@ -5632,6 +5483,7 @@
 
 **Code refs:**
 - `__init__.py`
+- `agent_task_runner.py`
 - `api/connectome/graph/route.ts`
 - `api/connectome/graphs/route.ts`
 - `api/connectome/search/route.ts`
@@ -5721,6 +5573,7 @@
 - `connectome_system_map_node_edge_manifest.ts`
 - `detection.py`
 - `dispatch.py`
+- `doctor.py`
 - `doctor_cli_parser_and_run_checker.py`
 - `execution.py`
 - `flow_event_schema_and_normalization_contract.ts`
@@ -5729,6 +5582,7 @@
 - `grammar/execution.py`
 - `grammar/resolution.py`
 - `grammar/verification.py`
+- `helpers.py`
 - `layout.tsx`
 - `lib/api.ts`
 - `lib/api/client.ts`
@@ -5745,9 +5599,11 @@
 - `mind/health/connectome_health_service.py`
 - `mind/infrastructure/orchestration/orchestrator.py`
 - `mind/physics/tick.py`
+- `misc.py`
 - `page.tsx`
 - `pannable_zoomable_zoned_flow_canvas_renderer.tsx`
 - `path/to/file.py`
+- `prompt_quality_validator.py`
 - `registry.py`
 - `route.ts`
 - `runtime/capability/base.py`
@@ -5760,6 +5616,7 @@
 - `runtime/grammar/execution.py`
 - `runtime/grammar/resolution.py`
 - `runtime/ingest/docs.py`
+- `selector.py`
 - `semantic_edge_components_with_directional_shine_and_pulses.tsx`
 - `semantic_proximity_based_character_node_selector.py`
 - `snake_case.py`
@@ -5768,6 +5625,7 @@
 - `task_query.py`
 - `task_state.py`
 - `tools/test_health_live.py`
+- `utils.py`
 
 **Doc refs:**
 - `docs/MAPPING.md`
@@ -5847,157 +5705,19 @@
 **Sections:**
 - # Repository Map: mind-platform
 
+**Docs:** `docs/registry/IMPLEMENTATION_Registry_Code.md`
+
+**Definitions:**
+- `getRedis()`
+- `graphQuery()`
+- `disconnect()`
+
 **Definitions:**
 - `alpha()`
 - `getLayerColor()`
 - `getNodeTypeColor()`
 - `getVerificationColor()`
 - `getStatusColor()`
-
-**Definitions:**
-- `class AgentMode`
-- `class AgentStatus`
-- `class AgentState`
-- `def seconds_since_heartbeat()`
-- `def to_dict()`
-- `class AgentConfig`
-- `class AgentRegistry`
-- `def __init__()`
-- `def register()`
-- `def heartbeat()`
-- `def claim_task()`
-- `def complete_task()`
-- `def fail_task()`
-- `def unregister()`
-- `def check_stuck()`
-- `def list_agents()`
-- `def get_agent()`
-- `def count_by_status()`
-- `class AgentController`
-- `def __init__()`
-- `def mode()`
-- `def pause()`
-- `def stop()`
-- `def kill()`
-- `def enable()`
-- `def can_claim()`
-- `def can_continue_step()`
-- `def must_stop_now()`
-- `def get_status()`
-- `def get_registry()`
-- `def get_controller()`
-- `def reset_agents()`
-
-**Definitions:**
-- `class CheckContext`
-- `def project_root()`
-- `def list_files()`
-- `def read_file()`
-- `def file_exists()`
-- `def query_graph()`
-- `def log()`
-
-**Definitions:**
-- `def chain_completeness()`
-- `class Signal`
-- `def healthy()`
-- `def degraded()`
-- `def critical()`
-- `def check()`
-- `def decorator()`
-- `class triggers`
-- `class file`
-- `def on_delete()`
-- `def on_create()`
-- `def on_modify()`
-- `def on_move()`
-- `class event`
-- `def on()`
-- `def after_ingest()`
-- `class hook`
-- `def on()`
-- `def post_commit()`
-- `def pre_commit()`
-- `class init`
-- `def after_scan()`
-- `def startup()`
-- `class cron`
-- `def daily()`
-- `def weekly()`
-- `def hourly()`
-- `def every()`
-- `class git`
-- `def post_commit()`
-- `def pre_commit()`
-- `class ci`
-- `def pull_request()`
-- `def push()`
-- `class manual`
-- `def invoke()`
-- `class graph`
-- `def on_node_create()`
-- `def on_link_create()`
-- `class stream`
-- `def on_error()`
-- `def on_pattern()`
-
-**Definitions:**
-- `def check_circuit_breaker()`
-- `def record_circuit_breaker_failure()`
-- `def is_capability_disabled()`
-- `def enable_capability()`
-- `def get_disabled_capabilities()`
-- `def timeout()`
-- `def handler()`
-- `def dispatch_trigger()`
-- `def handle_atomic_problem()`
-- `def create_task_runs()`
-- `def run_checks()`
-
-**Definitions:**
-- `class TaskStatus`
-- `def create_task_run()`
-- `def claim_task()`
-- `def start_task()`
-- `def complete_task()`
-- `def fail_task()`
-- `def release_task()`
-- `def query_pending_tasks()`
-- `class ActorStatus`
-- `def update_actor_heartbeat()`
-- `def set_actor_working()`
-- `def set_actor_idle()`
-- `def detect_stuck_agents()`
-- `def cleanup_dead_agent()`
-
-**Definitions:**
-- `def load_checks()`
-- `def discover_capabilities()`
-
-**Definitions:**
-- `class TriggerRegistry`
-- `def __init__()`
-- `def register()`
-- `def register_check()`
-- `def get_checks()`
-- `def get_all_triggers()`
-- `def get_stats()`
-
-**Definitions:**
-- `class ThrottlerConfig`
-- `class TaskSlot`
-- `class Throttler`
-- `def __init__()`
-- `def can_create()`
-- `def can_claim()`
-- `def register_create()`
-- `def register_claim()`
-- `def on_complete()`
-- `def on_abandon()`
-- `def _prune_old_timestamps()`
-- `def get_stats()`
-- `def get_throttler()`
-- `def reset_throttler()`
 
 **Sections:**
 - # Architect
@@ -6589,6 +6309,7 @@
 
 **Code refs:**
 - `__init__.py`
+- `agent_task_runner.py`
 - `api/connectome/graph/route.ts`
 - `api/connectome/graphs/route.ts`
 - `api/connectome/search/route.ts`
@@ -6678,6 +6399,7 @@
 - `connectome_system_map_node_edge_manifest.ts`
 - `detection.py`
 - `dispatch.py`
+- `doctor.py`
 - `doctor_cli_parser_and_run_checker.py`
 - `execution.py`
 - `flow_event_schema_and_normalization_contract.ts`
@@ -6686,6 +6408,7 @@
 - `grammar/execution.py`
 - `grammar/resolution.py`
 - `grammar/verification.py`
+- `helpers.py`
 - `layout.tsx`
 - `lib/api.ts`
 - `lib/api/client.ts`
@@ -6702,9 +6425,11 @@
 - `mind/health/connectome_health_service.py`
 - `mind/infrastructure/orchestration/orchestrator.py`
 - `mind/physics/tick.py`
+- `misc.py`
 - `page.tsx`
 - `pannable_zoomable_zoned_flow_canvas_renderer.tsx`
 - `path/to/file.py`
+- `prompt_quality_validator.py`
 - `registry.py`
 - `route.ts`
 - `runtime/capability/base.py`
@@ -6717,6 +6442,7 @@
 - `runtime/grammar/execution.py`
 - `runtime/grammar/resolution.py`
 - `runtime/ingest/docs.py`
+- `selector.py`
 - `semantic_edge_components_with_directional_shine_and_pulses.tsx`
 - `semantic_proximity_based_character_node_selector.py`
 - `snake_case.py`
@@ -6725,6 +6451,7 @@
 - `task_query.py`
 - `task_state.py`
 - `tools/test_health_live.py`
+- `utils.py`
 
 **Doc refs:**
 - `docs/MAPPING.md`

@@ -1,7 +1,7 @@
 # Project — Sync: Current State
 
 ```
-LAST_UPDATED: 2025-12-29
+LAST_UPDATED: 2025-12-30
 UPDATED_BY: Claude (agent)
 ```
 
@@ -54,6 +54,22 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 ---
 
 ## RECENT CHANGES
+
+### 2025-12-30: Node ID Naming Convention Standardized
+
+- **What:** Standardized all graph node IDs to `{TYPE}_{Name}` format (e.g., `AGENT_Witness`, `TASK_Fix_Naming`).
+- **Why:** Consistent, scannable IDs designed for agent readability and embedding search.
+- **Impact:**
+  - Actor nodes: `AGENT_Witness`, `AGENT_Fixer`, `AGENT_Architect`, etc.
+  - Node `type` field: uppercase prefix (e.g., `"AGENT"`)
+  - Deprecated: old `agent_witness` lowercase format
+  - Updated files: actors.py, names.py (renamed from subtypes.py), run.py
+  - Published: mind-mcp v0.2.0 with naming changes
+  - Created: requirements.txt with `mind-mcp>=0.2.0`
+- **Terminology:**
+  - `posture` → `subtype` (cognitive stance field)
+  - `description` → `content` (purpose field)
+  - Node ID: `{TYPE}_{Name}` (not node_type label)
 
 ### 2025-12-29: Capability Runtime Init Integration
 
@@ -137,19 +153,6 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
   - Runtime code: checks.py with @check decorators for H1 (log errors) and H2 (undocumented hooks)
   - HEALTH.md with 2 indicators and on_signal triggers
 - **Files:** capabilities/investigate-runtime/*
-
-### 2025-12-29: Created capability-runtime Module Doc Chain
-
-- **What:** Full 8-file doc chain in `docs/capability-runtime/` defining the V2 capability plugin architecture.
-- **Why:** Capabilities need executable runtime code alongside specs. MCP should auto-load and trigger handlers.
-- **Impact:**
-  - Specs location: `.mind/capabilities/{name}/` — agent-readable docs
-  - Runtime location: `.mind/runtime/capabilities/{name}/` — MCP-executable code
-  - HANDLERS dict export pattern for trigger registration
-  - Trigger types: init.*, file.*, cron.*, signal.*, graph.*, manual.*
-  - HealthMonitor base class for capability monitors
-  - TaskRun pattern: handlers return TaskRun, MCP creates in graph
-- **Files:** docs/capability-runtime/OBJECTIVES.md through SYNC.md (8 files)
 
 ### 2025-12-29: Simplified Capabilities Structure
 
@@ -252,105 +255,10 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 
 **Likely VIEW for continuing:** groundwork (implementation tasks)
 
-**Current focus:** Capability runtime implementation
+**Current focus:** Registry UI / Auth
 
 ---
 
-### CAPABILITY RUNTIME DESIGN (Approved)
-
-**Architecture decided:**
-- Source templates: `templates/capabilities/{name}/` (in mind-platform)
-- After `mind init`: copied to `.mind/capabilities/{name}/` (in target project)
-- Each capability is self-contained: specs + runtime together
-- Runtime code lives in `.mind/capabilities/{name}/runtime/`
-
-**Capability structure (in .mind/capabilities/):**
-```
-.mind/capabilities/{name}/
-├── OBJECTIVES.md          # Specs (agent-readable)
-├── PATTERNS.md
-├── BEHAVIORS.md
-├── ALGORITHM.md
-├── VALIDATION.md
-├── IMPLEMENTATION.md
-├── HEALTH.md              # Documents checks (not config)
-├── SYNC.md
-├── tasks/TASK_*.md
-├── skills/SKILL_*.md
-├── procedures/PROCEDURE_*.yaml
-└── runtime/               # Code (MCP-executable)
-    ├── __init__.py
-    └── health.py          # @check decorated functions
-```
-
-**Health checks use decorator pattern (not YAML):**
-
-```python
-# capabilities/create-doc-chain/runtime/health.py
-
-from mind.health import check, Signal, triggers
-
-@check(
-    id="chain_completeness",
-    triggers=[
-        triggers.file_watch.on_delete("docs/**/*.md"),
-        triggers.init_scan(),
-        triggers.cron.daily(),
-    ],
-    signals={
-        "healthy": "all expected docs exist",
-        "degraded": "some docs missing",
-        "critical": "OBJECTIVES or PATTERNS missing",
-    },
-    on_fail={
-        "problem": "INCOMPLETE_CHAIN",
-        "task": "TASK_create_doc",
-    },
-)
-def chain_completeness(ctx) -> Signal:
-    expected = {"OBJECTIVES", "PATTERNS", "BEHAVIORS", ...}
-    found = {f.stem.split("_")[0].upper()
-             for f in ctx.list_files(f"docs/{ctx.payload['module']}/*.md")}
-    missing = expected - found
-
-    if not missing:
-        return Signal.HEALTHY
-    if {"OBJECTIVES", "PATTERNS"} & missing:
-        return Signal.CRITICAL(missing=list(missing))
-    return Signal.DEGRADED(missing=list(missing))
-```
-
-**Why decorators over YAML:**
-- Single source of truth (no YAML/Python drift)
-- IDE autocomplete on triggers
-- Type-safe
-- HEALTH.md becomes documentation, not config
-
-**MCP responsibilities:**
-1. On boot: scan `.mind/capabilities/*/runtime/`
-2. Load each `health.py`, collect `@check` decorated functions
-3. Register triggers from decorator metadata
-4. On trigger fire: call matching function, get Signal
-5. On degraded/critical: create task_run node in graph
-
-**Capability responsibilities:**
-1. Declare triggers via `@check` decorator
-2. Implement check logic in function
-3. Return Signal (HEALTHY, DEGRADED, CRITICAL)
-4. Define problem/task mapping in decorator
-
-**Next implementation steps:**
-1. Create `runtime/capability/base.py` — Signal enum, check decorator, triggers namespace
-2. Create `runtime/capability/loader.py` — discover and load capabilities
-3. Create `runtime/capability/dispatch.py` — trigger → handler dispatch
-4. Hook into MCP server startup
-
-**Key files:**
-- `docs/capability-runtime/` — Full doc chain (8 files)
-- `capabilities/create-doc-chain/` — First capability implementation
-- `templates/docs/HEALTH_TEMPLATE.md` — Template for module health (not capabilities)
-
----
 
 ### Previous Context
 
@@ -435,7 +343,6 @@ Graph Explorer could benefit from keyboard shortcuts for navigation.
 **Mapped modules:**
 | Module | Code | Docs | Maturity |
 |--------|------|------|----------|
-| capability-runtime | `runtime/capability/` | `docs/capability-runtime/` | DESIGNING |
 | capabilities | - | `docs/capabilities/` | CANONICAL |
 | create-doc-chain | `capabilities/create-doc-chain/runtime/` | `capabilities/create-doc-chain/` | DESIGNING |
 | investigate-runtime | `capabilities/investigate-runtime/runtime/` | `capabilities/investigate-runtime/` | CANONICAL |
@@ -697,6 +604,42 @@ Graph Explorer could benefit from keyboard shortcuts for navigation.
 ---
 
 ## Init: 2025-12-30 02:02
+
+| Setting | Value |
+|---------|-------|
+| Version | v0.0.0 |
+| Database | falkordb |
+| Graph | mind_platform |
+
+**Steps completed:** ecosystem, capabilities, runtime, ai_configs, skills, database_config, database_setup, file_ingest, capabilities_graph, agents, env_example, mcp_config, gitignore, overview, embeddings
+
+---
+
+## Init: 2025-12-30 02:48
+
+| Setting | Value |
+|---------|-------|
+| Version | v0.0.0 |
+| Database | falkordb |
+| Graph | mind_platform |
+
+**Steps completed:** ecosystem, capabilities, runtime, ai_configs, skills, database_config, database_setup, file_ingest, capabilities_graph, agents, env_example, mcp_config, gitignore, overview, embeddings
+
+---
+
+## Init: 2025-12-30 03:40
+
+| Setting | Value |
+|---------|-------|
+| Version | v0.0.0 |
+| Database | falkordb |
+| Graph | mind_platform |
+
+**Steps completed:** ecosystem, capabilities, runtime, ai_configs, skills, database_config, database_setup, file_ingest, capabilities_graph, agents, env_example, mcp_config, gitignore, overview, embeddings
+
+---
+
+## Init: 2025-12-30 04:26
 
 | Setting | Value |
 |---------|-------|
