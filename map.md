@@ -1,20 +1,20 @@
 # Repository Map: mind-platform
 
-*Generated: 2025-12-30 04:25*
+*Generated: 2025-12-30 05:22*
 
-- **Files:** 444
-- **Directories:** 140
-- **Total Size:** 2.4M
-- **Doc Files:** 390
-- **Code Files:** 51
-- **Areas:** 10 (docs/ subfolders)
+- **Files:** 460
+- **Directories:** 144
+- **Total Size:** 2.5M
+- **Doc Files:** 405
+- **Code Files:** 52
+- **Areas:** 11 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
 - **DOCS Links:** 18 (0.35 avg per code file)
 
-- markdown: 390
+- markdown: 405
 - tsx: 19
+- python: 16
 - typescript: 15
-- python: 15
 - css: 2
 
 ```
@@ -92,7 +92,7 @@
 │   │   └── (..2 more files)
 │   ├── globals.css (642)
 │   └── layout.tsx (728) →
-├── capabilities/ (719.0K)
+├── capabilities/ (744.8K)
 │   ├── add-tests/ (57.0K)
 │   │   ├── runtime/ (8.3K)
 │   │   │   ├── checks.py (8.1K)
@@ -340,6 +340,17 @@
 │   │   ├── SYNC.md (1.4K)
 │   │   ├── VALIDATION.md (1.8K)
 │   │   └── VOCABULARY.md (2.2K)
+│   ├── swarm-driver/ (25.9K)
+│   │   ├── runtime/ (13.7K)
+│   │   │   └── driver.py (13.7K)
+│   │   ├── tasks/ (1.5K)
+│   │   │   ├── TASK_scan_for_work.md (755)
+│   │   │   └── TASK_unblock.md (759)
+│   │   ├── ALGORITHM.md (5.0K)
+│   │   ├── HEALTH.md (1.3K)
+│   │   ├── OBJECTIVES.md (1.0K)
+│   │   ├── PATTERNS.md (2.3K)
+│   │   └── SYNC.md (1.1K)
 │   ├── sync-state/ (59.7K)
 │   │   ├── runtime/ (12.6K)
 │   │   │   ├── checks.py (12.2K) →
@@ -369,6 +380,15 @@
 │       ├── HEALTH.md (1.5K)
 │       └── VOCABULARY.md (1.1K)
 ├── docs/ (1.1M)
+│   ├── auth/ (20.6K)
+│   │   ├── ALGORITHM_Auth.md (3.9K)
+│   │   ├── BEHAVIORS_Auth.md (2.1K)
+│   │   ├── HEALTH_Auth.md (2.2K)
+│   │   ├── IMPLEMENTATION_Auth.md (3.0K)
+│   │   ├── OBJECTIVES_Auth.md (1.2K)
+│   │   ├── PATTERNS_Auth.md (4.4K)
+│   │   ├── SYNC_Auth.md (1.9K)
+│   │   └── VALIDATION_Auth.md (1.8K)
 │   ├── capabilities/ (32.5K)
 │   │   ├── ALGORITHM_Capabilities.md (6.8K)
 │   │   ├── BEHAVIORS_Capabilities.md (3.3K)
@@ -554,7 +574,7 @@
 │   │   ├── VALIDATION_Platform_Invariants.md (5.5K)
 │   │   └── VOCABULARY_Platform_Terms.md (6.1K)
 │   ├── ARCHITECTURE.md (4.6K)
-│   └── map.md (189.8K)
+│   └── map.md (183.1K)
 ├── l3/
 │   ├── contributions/
 │   │   └── (..2 more files)
@@ -631,8 +651,8 @@
 ├── .mindignore (838)
 ├── AGENTS.md (29.8K)
 ├── README.md (3.3K)
-├── map.md (189.8K)
-├── map_app.md (6.8K)
+├── map.md (183.1K)
+├── map_app.md (7.2K)
 └── tsconfig.tsbuildinfo (86.9K)
 ```
 
@@ -3066,6 +3086,104 @@
 - ## PROBLEMS
 - ## STATES
 
+**Definitions:**
+- `class Signal`
+- `class DriverState`
+- `class SwarmDriver`
+- `def __init__()`
+- `def graph()`
+- `def load_state()`
+- `def save_state()`
+- `def collect_new_lines()`
+- `def analyze_logs()`
+- `def _extract_target()`
+- `def is_task_active()`
+- `def create_task()`
+- `def update_sync()`
+- `def run_cycle()`
+- `def run_forever()`
+- `def main()`
+
+**Sections:**
+- # Task: scan_for_work
+- ## Purpose
+- ## Resolves
+- ## Inputs
+- ## Outputs
+- ## Executor
+- ## Execution
+
+**Sections:**
+- # Task: unblock
+- ## Purpose
+- ## Resolves
+- ## Inputs
+- ## Outputs
+- ## Executor
+- ## Execution
+
+**Sections:**
+- # Swarm Driver — Algorithm
+- ## A1: Main Loop
+- # 1. Check for new content
+- # 2. Analyze logs
+- # 3. Pick highest priority signal
+- # 4. Singleton: only one driver task active at a time
+- # 5. Create ONE task (reactivates if issue recurs after completion)
+- # 6. Update SYNC
+- # 7. Save state
+- ## A2: Collect New Lines
+- ## A3: Analyze Logs
+- # Error detection
+- # Stuck detection
+- # Completion detection → check SYNC
+- # Idle detection (from tasks.log)
+- ## A4: Create Task
+- # Map signal to task template
+- # Map signal to agent
+- # Create in graph
+- ## A5: Update SYNC
+- ## Driver Action: {datetime.now().isoformat()}
+
+**Sections:**
+- # Swarm Driver — Health
+- ## Indicators
+- ## Triggers
+
+**Sections:**
+- # Swarm Driver — Objectives
+- ## Primary Objective
+- ## Ranked Goals
+- ## Non-Goals
+- ## Success Metrics
+
+**Sections:**
+- # Swarm Driver — Patterns
+- ## Core Pattern: Log-Driven Task Generation
+- ## Log Sources
+- ## Detection Patterns
+- ## Position Tracking
+- # .mind/swarm/driver_state.json
+- ## Priority Calculation
+- # Factors:
+- # - Error severity: critical=10, degraded=5
+- # - Time waiting: +1 per hour unclaimed
+- # - Dependencies: +3 if blocking other work
+- # - SYNC mention: +2 if affects project state
+- ## Anti-Patterns
+
+**Code refs:**
+- `runtime/driver.py`
+
+**Sections:**
+- # Swarm Driver — Sync
+- ## Current State
+- ## Behavior Summary
+- ## State File
+- ## Log Sources
+- ## Implementation Status
+- ## Next Steps
+
 **Docs:** `capabilities/sync-state/HEALTH.md`
 
 **Definitions:**
@@ -3291,6 +3409,74 @@
 - ## Problems
 - ## Thresholds
 - ## Auto-Resolution
+
+**Sections:**
+- # Auth — Algorithm
+- ## A1: Wallet Signature Verification
+- ## A2: JWT Issuance
+- ## A3: JWT Verification
+- ## A4: Registry Lookup
+- ## A5: Hash-Based Authorization
+- ## A6: Nonce Generation
+- # Store in short-term cache (Redis/memory)
+
+**Sections:**
+- # Auth — Behaviors
+- ## User-Facing Behaviors
+- ## System Behaviors
+
+**Sections:**
+- # Auth — Health
+- ## Health Indicators
+- ## Monitoring
+- ## Alerts
+
+**Sections:**
+- # Auth — Implementation
+- ## File Structure
+- ## API Routes
+- ## Components
+- ## State Management
+- ## JWT Configuration
+- ## Membrane Integration
+- ## Dependencies
+
+**Sections:**
+- # Auth — Objectives
+- ## Primary Objective
+- ## Ranked Goals
+- ## Non-Goals
+- ## Success Metrics
+- ## Dependencies
+
+**Sections:**
+- # Auth — Patterns
+- ## Core Pattern: Wallet-First Identity
+- ## The Three Proofs
+- ## JWT Structure
+- ## Hash-Based Routing (P4)
+- ## Auth Flow
+- ## Anti-Patterns
+
+**Code refs:**
+- `lib/auth/jwt.ts`
+- `lib/auth/wallet.ts`
+
+**Sections:**
+- # Auth — Sync
+- ## Current State
+- ## Implementation Status
+- ## Dependencies to Install
+- # Optional for Solana:
+- ## Open Questions
+- ## Next Steps
+- ## Handoff
+
+**Sections:**
+- # Auth — Validation
+- ## Invariants
+- ## Security Invariants
+- ## Test Cases
 
 **Sections:**
 - # Capabilities — Algorithm
@@ -6535,6 +6721,8 @@
 - `api/connectome/graph/route.ts`
 - `api/connectome/graphs/route.ts`
 - `api/connectome/search/route.ts`
+- `api/registry/citizens/route.ts`
+- `api/registry/orgs/route.ts`
 - `api/sse/route.ts`
 - `api/stats/route.ts`
 - `connectome/components/connectome_page_shell_route_layout_and_control_surface.tsx`
