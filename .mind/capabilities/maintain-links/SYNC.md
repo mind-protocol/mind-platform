@@ -94,4 +94,4 @@ Key design decisions:
 
 Next work is implementing runtime/checks.py with the actual Python code.
 
-**Agent posture:** groundwork (implementing runtime) or keeper (testing validation)
+**Agent subtype:** groundwork (implementing runtime) or keeper (testing validation)

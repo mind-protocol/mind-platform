@@ -103,4 +103,4 @@ Key points:
 
 Next work is implementing the Python runtime checks in runtime/checks.py.
 
-**Agent posture:** groundwork (implementing runtime) or fixer (testing detection)
+**Agent subtype:** groundwork (implementing runtime) or fixer (testing detection)

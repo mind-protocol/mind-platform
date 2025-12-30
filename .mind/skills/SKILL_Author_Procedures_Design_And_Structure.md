@@ -153,7 +153,7 @@ moment:
   type: decision
   text: "Selected V1 and V6 because this health indicator queries..."
   about: [health_indicator, V1, V6]
-  expresses: agent_keeper
+  expresses: AGENT_Keeper
 ```
 
 Now the graph remembers **why**, not just **what**.

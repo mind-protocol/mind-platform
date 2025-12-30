@@ -102,4 +102,4 @@ Health indicators detect problems automatically via file watches, git hooks, and
 
 Next work is implementing runtime/checks.py with the actual detection logic.
 
-**Agent posture:** groundwork (building runtime) or keeper (testing detection)
+**Agent subtype:** groundwork (building runtime) or keeper (testing detection)

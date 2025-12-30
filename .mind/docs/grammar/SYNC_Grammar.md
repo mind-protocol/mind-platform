@@ -99,4 +99,4 @@ The grammar doc chain is complete. It defines HOW the protocol works:
 
 Next: Write the actual TASK_*.md templates that implement specific work types (create_doc, fix_template, etc.). These go in `templates/tasks/`.
 
-**Agent posture:** groundwork (building new things)
+**Agent subtype:** groundwork (building new things)

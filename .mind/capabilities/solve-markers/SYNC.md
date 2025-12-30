@@ -98,4 +98,4 @@ Key patterns:
 
 Next work is implementing the runtime checks in Python and testing on a real codebase.
 
-**Agent posture:** groundwork (implementing runtime) or witness (testing detection)
+**Agent subtype:** groundwork (implementing runtime) or witness (testing detection)

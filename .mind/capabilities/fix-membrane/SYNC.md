@@ -94,4 +94,4 @@ Each problem has a corresponding task template and health indicator. The SKILL_f
 
 Next work is implementing the Python runtime in runtime/checks.py.
 
-**Agent posture:** groundwork (implementing runtime) or keeper (testing validation)
+**Agent subtype:** groundwork (implementing runtime) or keeper (testing validation)

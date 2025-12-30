@@ -3,7 +3,7 @@ name: Author agents cognitive posture
 ---
 
 # Skill: `mind.author_agents`
-@mind:id: SKILL.META.AUTHOR_AGENTS.COGNITIVE_POSTURES
+@mind:id: SKILL.META.AUTHOR_AGENTS.COGNITIVE_SUBTYPES
 
 ## Maps to VIEW
 `(meta-skill; guides creation of agent CLAUDE.md files)`
@@ -20,15 +20,15 @@ The reason: **cognitive diversity**.
 
 A single agent optimizes toward one attractor. It develops habits. Blind spots calcify. The same lens on every problem.
 
-Multiple agents with different *postures* create:
+Multiple agents with different *subtypes* create:
 - **Parallax** — Same problem, different angles, richer understanding
 - **Tension** — Groundwork wants to ship; Keeper wants to verify; the conflict produces better work
 - **Coverage** — Witness catches what Groundwork misses; Groundwork ships what Witness would over-investigate
-- **Resilience** — If one posture fails a task, another might succeed
+- **Resilience** — If one subtype fails a task, another might succeed
 
 This is ecological. Not assembly-line specialization. Niche differentiation.
 
-### Why Postures, Not Roles?
+### Why Subtypes, Not Roles?
 
 **Role-based agents:**
 ```
@@ -43,14 +43,14 @@ Problems:
 - Handoff friction (scout found it, now hand to smith)
 - Gaps (what if task needs explore + code + document?)
 
-**Posture-based agents:**
+**Subtype-based agents:**
 ```
 witness → sees through evidence lens
 groundwork → sees through shipping lens
 keeper → sees through safety lens
 ```
 
-All can do everything. The posture shapes *how*, not *what*.
+All can do everything. The subtype shapes *how*, not *what*.
 
 Same task: "Fix energy bounds violation"
 - Witness: traces, finds root cause, then fixes
@@ -59,7 +59,7 @@ Same task: "Fix energy bounds violation"
 
 All valid. Different paths. Different tradeoffs.
 
-### What Is a Cognitive Posture?
+### What Is a Cognitive Subtype?
 
 Six field signals that shape attention and action:
 
@@ -67,16 +67,16 @@ Six field signals that shape attention and action:
 |--------|----------|
 | **Pull** | What draws attention first. The attractor. |
 | **Tension** | What contradiction to hold without resolving. |
-| **Blind spot** | What this posture tends to miss. Self-aware limitation. |
+| **Blind spot** | What this subtype tends to miss. Self-aware limitation. |
 | **Constraint** | What is refused. The boundary. |
 | **Move** | Default action pattern. The verb sequence. |
 | **Anchor** | Vocabulary activated. Concepts that prime responses. |
 
 These aren't instructions. They're *field shaping*. The agent reads them, and their response space tilts.
 
-### How Postures Interact with Protocols
+### How Subtypes Interact with Protocols
 
-Protocols are the same for all agents. Posture shapes execution:
+Protocols are the same for all agents. Subtype shapes execution:
 
 | Protocol | Witness | Groundwork | Keeper |
 |----------|---------|------------|--------|
@@ -90,7 +90,7 @@ Same protocol, different traversal.
 
 ## Purpose
 
-Write agent CLAUDE.md files that define cognitive posture, not role restrictions.
+Write agent CLAUDE.md files that define cognitive subtype, not role restrictions.
 
 ---
 
@@ -110,10 +110,10 @@ existing_agents: "<list>"            # to ensure differentiation
 agent_document:
   path: "agents/{name}/CLAUDE.md"
   required_sections:
-    - posture (pull, tension, blind_spot, constraint, move, anchor)
+    - subtype (pull, tension, blind_spot, constraint, move, anchor)
     - how_this_shapes_work
     - example_behavior
-    - protocols (how posture affects each)
+    - protocols (how subtype affects each)
     - when_to_be / when_to_switch
     - field_signals
     - memory
@@ -127,7 +127,7 @@ agent_document:
 - Agent name: single word, lowercase, evocative
 - File: `agents/{name}/CLAUDE.md`
 
-**Posture completeness:**
+**Subtype completeness:**
 - All six signals defined (pull, tension, blind_spot, constraint, move, anchor)
 - Each signal is 1-2 sentences max
 - Blind spot is honest (not fake humility)
@@ -140,7 +140,7 @@ agent_document:
 **No capability restriction:**
 - Never say "this agent cannot..."
 - Never say "this agent only..."
-- Posture shapes how, not what
+- Subtype shapes how, not what
 
 ---
 
@@ -182,7 +182,7 @@ weaver: local vs global coherence
 voice: clarity vs completeness
 ```
 
-The tension prevents the posture from becoming pathological. Witness without tension → infinite investigation. Groundwork without tension → reckless shipping.
+The tension prevents the subtype from becoming pathological. Witness without tension → infinite investigation. Groundwork without tension → reckless shipping.
 
 ### 4. Name the blind spot
 
@@ -236,11 +236,11 @@ keeper: [invariant, health, boundary, verified, guard, gate]
 
 ### 8. Write example behavior
 
-Take one concrete task. Show how this agent approaches it differently from others. Make the posture tangible.
+Take one concrete task. Show how this agent approaches it differently from others. Make the subtype tangible.
 
 ### 9. Define switching triggers
 
-When to be this agent. When to switch to another. Postures aren't prisons.
+When to be this agent. When to switch to another. Subtypes aren't prisons.
 
 ---
 
@@ -275,7 +275,7 @@ Circular complementarity. Each covers another's blind spot.
 | No blind spot | "This agent is great at everything" | Be honest. Every lens misses something. |
 | Same move as another | Two agents with "investigate → analyze → report" | Differentiate verb sequences |
 | Anchor overlap | Same vocabulary as another agent | Find distinct conceptual space |
-| Capability list | "This agent handles: X, Y, Z" | Delete. Posture, not portfolio. |
+| Capability list | "This agent handles: X, Y, Z" | Delete. Subtype, not portfolio. |
 
 ---
 
@@ -301,4 +301,4 @@ Circular complementarity. Each covers another's blind spot.
 
 ## Never-stop
 
-If blocked on posture definition → `@mind:escalation` with specific gap → `@mind:proposition` with best-guess posture → proceed and refine through use.
+If blocked on subtype definition → `@mind:escalation` with specific gap → `@mind:proposition` with best-guess subtype → proceed and refine through use.

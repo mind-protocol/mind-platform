@@ -107,4 +107,4 @@ Each problem has:
 
 Next work is implementing the runtime checks in Python.
 
-**Agent posture:** groundwork (implementing runtime) or keeper (validating tests)
+**Agent subtype:** groundwork (implementing runtime) or keeper (validating tests)

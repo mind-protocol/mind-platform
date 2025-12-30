@@ -256,7 +256,7 @@ You have a limited context window. You can't load everything. But you need:
 - To not hallucinate structure that doesn't exist
 
 This protocol solves these problems through:
-1. **Agents** — Cognitive postures that shape how you approach work
+1. **Agents** — Cognitive subtypes that shape how you approach work
 2. **Procedures** — Structured dialogues for common tasks
 3. **Skills** — Executable capabilities with gates and processes
 4. **Documentation chains** — Bidirectional links between code and docs
@@ -309,11 +309,11 @@ SYNC files track current state. They're how you understand what's happening and 
 
 Understand what's happening, what changed recently, any handoffs for you.
 
-### 2. Choose Your Agent Posture
+### 2. Choose Your Agent Subtype
 
 Agents are cognitive stances that shape how you approach work. Pick the one matching your task:
 
-| Agent | Posture | When to Use |
+| Agent | Subtype | When to Use |
 |-------|---------|-------------|
 | **witness** | Observe → trace → name | Before fixing, when behavior doesn't match docs, investigating |
 | **groundwork** | Act → ship → iterate | Implementing features, writing code, making things work |
@@ -411,7 +411,7 @@ After changes, update SYNC files:
 
 | Pattern | Purpose | When to Load |
 |---------|---------|--------------|
-| `.mind/agents/{name}/` | Cognitive posture files | When adopting a posture |
+| `.mind/agents/{name}/` | Cognitive subtype files | When adopting a subtype |
 | `.mind/skills/SKILL_*.md` | Executable capabilities | When performing that capability |
 | `procedures/*.yaml` | Structured dialogues | Via membrane tools |
 
@@ -426,7 +426,7 @@ Understand before changing. The docs exist so you don't have to reverse-engineer
 Don't assume the next agent knows what you know. Write it down in SYNC.
 
 **Handoffs Have Recipients**
-Specify who they're for: which agent posture will the next agent use?
+Specify who they're for: which agent subtype will the next agent use?
 
 **Proof Over Assertion**
 Don't claim things work. Show how to verify. Link to tests. Provide evidence.

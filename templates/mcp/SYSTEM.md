@@ -45,7 +45,7 @@ Templates come from `mind-platform/templates/` via `mind init`.
 | `.mind/FRAMEWORK.md` | Navigation, structure, what to load |
 | `.mind/PRINCIPLES.md` | How to work, stance to hold |
 | `.mind/state/SYNC_Project_State.md` | Current state, handoffs |
-| `.mind/agents/` | Cognitive postures |
+| `.mind/agents/` | Cognitive subtypes |
 | `.mind/skills/` | Executable capabilities |
 | `.mind/procedures/` | Structured dialogues |
 

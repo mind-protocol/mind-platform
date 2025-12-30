@@ -100,4 +100,4 @@ The capability system doc chain is complete. It defines what capabilities are (a
 
 Next work is creating actual capability implementations in templates/capabilities/.
 
-**Agent posture:** architect (designing capability implementations) or groundwork (building them)
+**Agent subtype:** architect (designing capability implementations) or groundwork (building them)

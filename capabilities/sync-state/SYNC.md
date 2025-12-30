@@ -101,4 +101,4 @@ The sync-state capability doc chain is complete. It defines:
 
 Next work is implementing the Python runtime checks.
 
-**Agent posture:** groundwork (building runtime implementation)
+**Agent subtype:** groundwork (building runtime implementation)

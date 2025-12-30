@@ -78,4 +78,4 @@ Key docs:
 - `ALGORITHM_Nature.md` - how to choose
 - `VALIDATION_Nature.md` - what's valid
 
-**Agent posture:** keeper (maintaining vocabulary integrity)
+**Agent subtype:** keeper (maintaining vocabulary integrity)

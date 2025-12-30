@@ -1,9 +1,9 @@
 # Repository Map: mind-platform
 
-*Generated: 2025-12-30 00:02*
+*Generated: 2025-12-30 02:02*
 
 - **Files:** 458
-- **Directories:** 129
+- **Directories:** 139
 - **Total Size:** 2.5M
 - **Doc Files:** 398
 - **Code Files:** 57
@@ -87,7 +87,7 @@
 │   │   └── (..2 more files)
 │   ├── globals.css (642)
 │   └── layout.tsx (728) →
-├── capabilities/ (717.2K)
+├── capabilities/ (719.0K)
 │   ├── add-tests/ (57.0K)
 │   │   ├── runtime/ (8.3K)
 │   │   │   ├── checks.py (8.1K)
@@ -222,17 +222,17 @@
 │   │   ├── SYNC.md (2.8K)
 │   │   ├── VALIDATION.md (3.6K)
 │   │   └── VOCABULARY.md (3.6K)
-│   ├── improve-quality/ (72.3K)
+│   ├── improve-quality/ (74.1K)
 │   │   ├── runtime/ (8.9K)
 │   │   │   ├── __init__.py (553) →
 │   │   │   └── checks.py (8.4K) →
 │   │   ├── skills/ (3.8K)
 │   │   │   └── SKILL_refactor.md (3.8K)
-│   │   ├── tasks/ (12.0K)
+│   │   ├── tasks/ (13.8K)
 │   │   │   ├── TASK_compress_prompt.md (2.1K)
 │   │   │   ├── TASK_extract_constants.md (1.7K)
 │   │   │   ├── TASK_extract_secrets.md (2.3K)
-│   │   │   ├── TASK_fix_naming.md (2.1K)
+│   │   │   ├── TASK_fix_naming.md (3.8K)
 │   │   │   ├── TASK_refactor_sql.md (2.1K)
 │   │   │   └── TASK_split_monolith.md (1.8K)
 │   │   ├── ALGORITHM.md (10.6K)
@@ -558,7 +558,7 @@
 │   │   ├── VALIDATION_Platform_Invariants.md (5.5K)
 │   │   └── VOCABULARY_Platform_Terms.md (6.1K)
 │   ├── ARCHITECTURE.md (4.6K)
-│   └── map.md (188.9K)
+│   └── map.md (189.3K)
 ├── l3/
 │   ├── contributions/
 │   │   └── (..2 more files)
@@ -586,16 +586,26 @@
 │   └── (..1 more files)
 ├── templates/ (238.9K)
 │   ├── actors/ (8.2K)
-│   │   ├── ACTOR_Architect.md (883)
-│   │   ├── ACTOR_Fixer.md (780)
-│   │   ├── ACTOR_Groundwork.md (844)
-│   │   ├── ACTOR_Herald.md (735)
-│   │   ├── ACTOR_Keeper.md (805)
-│   │   ├── ACTOR_Scout.md (785)
-│   │   ├── ACTOR_Steward.md (837)
-│   │   ├── ACTOR_Voice.md (804)
-│   │   ├── ACTOR_Weaver.md (840)
-│   │   └── ACTOR_Witness.md (910)
+│   │   ├── architect/ (883)
+│   │   │   └── SYSTEM.md (883)
+│   │   ├── fixer/ (780)
+│   │   │   └── SYSTEM.md (780)
+│   │   ├── groundwork/ (844)
+│   │   │   └── SYSTEM.md (844)
+│   │   ├── herald/ (735)
+│   │   │   └── SYSTEM.md (735)
+│   │   ├── keeper/ (805)
+│   │   │   └── SYSTEM.md (805)
+│   │   ├── scout/ (785)
+│   │   │   └── SYSTEM.md (785)
+│   │   ├── steward/ (837)
+│   │   │   └── SYSTEM.md (837)
+│   │   ├── voice/ (804)
+│   │   │   └── SYSTEM.md (804)
+│   │   ├── weaver/ (840)
+│   │   │   └── SYSTEM.md (840)
+│   │   └── witness/ (910)
+│   │       └── SYSTEM.md (910)
 │   ├── docs/ (52.4K)
 │   │   ├── ALGORITHM_TEMPLATE.md (2.7K)
 │   │   ├── BEHAVIORS_TEMPLATE.md (2.9K)
@@ -635,7 +645,7 @@
 ├── .mindignore (838)
 ├── AGENTS.md (29.8K)
 ├── README.md (3.3K)
-├── map.md (189.0K)
+├── map.md (189.6K)
 ├── map_app.md (6.8K)
 └── tsconfig.tsbuildinfo (86.9K)
 ```
@@ -2097,8 +2107,17 @@
 - ## Instance (task_run)
 
 **Code refs:**
+- `agent_task_runner.py`
 - `camelCase.ts`
+- `doctor.py`
+- `doctor_cli_parser_and_run_checker.py`
+- `helpers.py`
+- `misc.py`
+- `prompt_quality_validator.py`
+- `selector.py`
+- `semantic_proximity_based_character_node_selector.py`
 - `snake_case.py`
+- `utils.py`
 
 **Sections:**
 - # Task: fix_naming
@@ -2109,7 +2128,7 @@
 - ## Executor
 - ## Uses
 - ## Process
-- ## Convention Rules
+- ## Naming Engineering Principles
 - ## Validation
 - ## Instance (task_run)
 
@@ -6570,6 +6589,7 @@
 
 **Code refs:**
 - `__init__.py`
+- `agent_task_runner.py`
 - `api/connectome/graph/route.ts`
 - `api/connectome/graphs/route.ts`
 - `api/connectome/search/route.ts`
@@ -6659,6 +6679,7 @@
 - `connectome_system_map_node_edge_manifest.ts`
 - `detection.py`
 - `dispatch.py`
+- `doctor.py`
 - `doctor_cli_parser_and_run_checker.py`
 - `execution.py`
 - `flow_event_schema_and_normalization_contract.ts`
@@ -6667,6 +6688,7 @@
 - `grammar/execution.py`
 - `grammar/resolution.py`
 - `grammar/verification.py`
+- `helpers.py`
 - `layout.tsx`
 - `lib/api.ts`
 - `lib/api/client.ts`
@@ -6683,9 +6705,11 @@
 - `mind/health/connectome_health_service.py`
 - `mind/infrastructure/orchestration/orchestrator.py`
 - `mind/physics/tick.py`
+- `misc.py`
 - `page.tsx`
 - `pannable_zoomable_zoned_flow_canvas_renderer.tsx`
 - `path/to/file.py`
+- `prompt_quality_validator.py`
 - `registry.py`
 - `route.ts`
 - `runtime/capability/base.py`
@@ -6698,6 +6722,7 @@
 - `runtime/grammar/execution.py`
 - `runtime/grammar/resolution.py`
 - `runtime/ingest/docs.py`
+- `selector.py`
 - `semantic_edge_components_with_directional_shine_and_pulses.tsx`
 - `semantic_proximity_based_character_node_selector.py`
 - `snake_case.py`
@@ -6706,6 +6731,7 @@
 - `task_query.py`
 - `task_state.py`
 - `tools/test_health_live.py`
+- `utils.py`
 
 **Doc refs:**
 - `docs/MAPPING.md`

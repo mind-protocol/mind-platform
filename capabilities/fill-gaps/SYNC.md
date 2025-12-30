@@ -98,4 +98,4 @@ Three distinct workflows:
 
 Next work is implementing runtime/checks.py with the detection logic.
 
-**Agent posture:** groundwork (implementing checks) or voice (filling actual gaps)
+**Agent subtype:** groundwork (implementing checks) or voice (filling actual gaps)

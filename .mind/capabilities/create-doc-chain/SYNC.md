@@ -89,4 +89,4 @@ The create-doc-chain capability doc chain is complete. It defines problems (UNDO
 
 Next work is creating the artifacts: task template, skill, procedure, and Python implementation.
 
-**Agent posture:** groundwork (building artifacts) or architect (reviewing design)
+**Agent subtype:** groundwork (building artifacts) or architect (reviewing design)

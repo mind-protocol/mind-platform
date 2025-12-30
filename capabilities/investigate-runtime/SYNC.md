@@ -92,4 +92,4 @@ Two distinct workflows:
 
 Next work is implementing runtime/checks.py with the actual detection logic.
 
-**Agent posture:** groundwork (implementing runtime code) or witness (testing detection)
+**Agent subtype:** groundwork (implementing runtime code) or witness (testing detection)
