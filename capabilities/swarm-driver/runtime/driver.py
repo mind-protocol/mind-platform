@@ -24,6 +24,7 @@ class Signal:
     type: str
     target: str
     priority: int
+    nature: str = "concerns"  # verb + modifiers from nature.yaml
     context: list[str] = field(default_factory=list)
 
 
@@ -113,26 +114,31 @@ class SwarmDriver:
             text_lower = text.lower()
 
             # Error detection (highest priority)
+            # Nature: "critically concerns" or "urgently concerns"
             if "error" in text_lower or "failed" in text_lower or "exception" in text_lower:
-                # Extract error context
                 error_lines = [l for l in lines if "error" in l.lower() or "failed" in l.lower()]
+                is_critical = "critical" in text_lower or "fatal" in text_lower
                 signals.append(Signal(
                     type="ERROR_DETECTED",
                     target=self._extract_target(text, source),
-                    priority=10,
+                    priority=10 if is_critical else 8,
+                    nature="critically concerns" if is_critical else "urgently concerns",
                     context=error_lines[-3:] if error_lines else lines[-3:],
                 ))
 
             # Stuck/retry detection
+            # Nature: "frustratingly blocks" (agent is blocked)
             if "retry" in text_lower or "timeout" in text_lower or "stuck" in text_lower:
                 signals.append(Signal(
                     type="AGENT_STUCK",
                     target=source.replace(".log", ""),
                     priority=8,
+                    nature="frustratingly blocks",
                     context=lines[-5:],
                 ))
 
             # Completion → SYNC update needed
+            # Nature: "importantly concerns" (keep state fresh)
             if "completed" in text_lower or "✓" in text or "done" in text_lower:
                 completions = [l for l in lines if "completed" in l.lower() or "✓" in l]
                 if completions:
@@ -140,16 +146,19 @@ class SwarmDriver:
                         type="SYNC_UPDATE_NEEDED",
                         target="SYNC_Project_State",
                         priority=5,
+                        nature="importantly concerns",
                         context=completions[-3:],
                     ))
 
             # No tasks available (from tasks.log)
+            # Nature: "urgently concerns" (agents idle = wasted capacity)
             if source == "tasks.log":
                 if "no pending tasks" in text_lower or "queue empty" in text_lower:
                     signals.append(Signal(
                         type="NO_TASKS_AVAILABLE",
                         target="task_scan",
                         priority=7,
+                        nature="urgently concerns",
                         context=["Swarm needs more work"],
                     ))
 
@@ -206,8 +215,8 @@ class SwarmDriver:
 
         template, agent = SIGNAL_MAP.get(signal.type, ("TASK_investigate", "AGENT_Fixer"))
 
-        # Create task in graph
-        synthesis = f"[driver] {signal.type}: {signal.target}"
+        # Create task in graph with nature field
+        synthesis = f"[driver] {signal.nature}: {signal.target} ({signal.type})"
         context_text = "\n".join(signal.context) if signal.context else ""
 
         try:
@@ -218,6 +227,7 @@ class SwarmDriver:
                     type: 'task_run',
                     status: 'pending',
                     source: 'swarm-driver',
+                    nature: $nature,
                     problem: $problem,
                     target: $target,
                     synthesis: $synthesis,
@@ -227,6 +237,7 @@ class SwarmDriver:
                 })
             """, {
                 "id": task_id,
+                "nature": signal.nature,
                 "problem": signal.type,
                 "target": signal.target,
                 "synthesis": synthesis,
@@ -234,7 +245,7 @@ class SwarmDriver:
                 "priority": signal.priority,
             })
 
-            # Link to template (if exists)
+            # Link to template (serves)
             self.graph.query("""
                 MATCH (t:Narrative {id: $task_id})
                 OPTIONAL MATCH (template:Narrative {name: $template})
@@ -243,11 +254,20 @@ class SwarmDriver:
                 )
             """, {"task_id": task_id, "template": template})
 
-            # Assign to agent
+            # Link to target with signal's nature
+            self.graph.query("""
+                MATCH (t:Narrative {id: $task_id})
+                OPTIONAL MATCH (target {id: $target})
+                FOREACH (_ IN CASE WHEN target IS NOT NULL THEN [1] ELSE [] END |
+                    MERGE (t)-[:LINK {nature: $nature}]->(target)
+                )
+            """, {"task_id": task_id, "target": signal.target, "nature": signal.nature})
+
+            # Assign to agent (claims)
             self.graph.query("""
                 MATCH (t:Narrative {id: $task_id})
                 MATCH (a:Actor {id: $agent})
-                MERGE (t)-[:LINK {nature: 'claimed_by'}]->(a)
+                MERGE (a)-[:LINK {nature: 'claims'}]->(t)
                 SET t.status = 'claimed'
             """, {"task_id": task_id, "agent": agent})
 
