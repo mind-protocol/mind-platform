@@ -34,12 +34,12 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 
 ## ACTIVE WORK
 
-### Landing Page (Complete)
+### Landing Page — Manifesto-Aligned (Complete)
 
-- **Area:** `app/(public)/page.tsx`, `app/(public)/components/landing/`
+- **Area:** `app/(public)/page.tsx`, `app/(public)/components/landing/`, `app/(public)/manifesto/`
 - **Status:** implemented
 - **Owner:** agent
-- **Context:** Hero, HowItWorks (4-layer cards), WhatYouCanDo, LiveStats sections. Uses design tokens.
+- **Context:** Redesigned to declare a position, not sell features. Sections: Hero (declaration), TheFork (Narrow Path vs Rich Ecology), TheInsight ($MIND as crystallized alignment), WhoThisIsFor (four audience doors), TheInvitation (declaration). Full manifesto at /manifesto.
 
 ### Design Theme (Complete)
 
@@ -48,16 +48,28 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 - **Owner:** agent
 - **Context:** theme.ts (colors, typography, spacing), utils.ts (color utilities), index.ts (unified export). "Tokens" name reserved for $MIND Solana token.
 
-### Next: Navigation + Footer
+### Footer — Minimal (Complete)
 
-- **Area:** `app/(public)/components/nav/`
-- **Status:** pending
+- **Area:** `app/(public)/components/nav/Footer.tsx`
+- **Status:** implemented
 - **Owner:** agent
-- **Context:** TopNav and Footer components for public layout.
+- **Context:** Minimal footer with Manifesto, Docs, GitHub, Twitter links. "Venice is values." signature.
 
 ---
 
 ## RECENT CHANGES
+
+### 2025-01-06: Landing Page Redesigned — Manifesto-Aligned
+
+- **What:** Complete redesign of landing page from feature-focused to declaration-focused
+- **Why:** "The page was selling a product. Now it declares a position." Aligns with MIND_MANIFESTO.md vision.
+- **Impact:**
+  - New sections: Hero (declaration), TheFork (two futures), TheInsight ($MIND), WhoThisIsFor (4 doors), TheInvitation
+  - New route: `/manifesto` — full manifesto rendered as prose
+  - Removed: HowItWorks, WhatYouCanDo, LiveStats, GraphPreview (technical focus)
+  - Updated Footer: minimal with "Venice is values" signature
+- **Tone:** Prose, not bullets. Conviction, not persuasion. Grave, sincere, determined.
+- **Emotional arc:** Grief → Recognition → Hope → Invitation
 
 ### 2025-01-06: Manifesto Integrated
 

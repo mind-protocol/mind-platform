@@ -3,9 +3,9 @@
 Current state and handoff notes.
 
 ```
-LAST_UPDATED: 2025-12-29
+LAST_UPDATED: 2025-01-06
 UPDATED_BY: Claude (agent)
-STATUS: DESIGNING
+STATUS: CANONICAL
 PRIORITY: P0 (Critical)
 ```
 
@@ -13,7 +13,7 @@ PRIORITY: P0 (Critical)
 
 ## Current State
 
-**Doc chain complete.** Landing page fully documented but not yet implemented.
+**Manifesto-aligned landing page implemented.** The page declares a position, not features.
 
 | Document | Status |
 |----------|--------|
@@ -22,7 +22,7 @@ PRIORITY: P0 (Critical)
 | BEHAVIORS | Complete |
 | ALGORITHM | Complete |
 | VALIDATION | Complete |
-| IMPLEMENTATION | Complete |
+| IMPLEMENTATION | Needs update |
 | HEALTH | Complete |
 | SYNC | This file |
 
@@ -30,133 +30,93 @@ PRIORITY: P0 (Critical)
 
 ## Implementation Status
 
-### Current Code
+### Current Structure
 
-```typescript
-// app/(public)/page.tsx (current)
-export default function HomePage() {
-  redirect("/mind");  // Redirects to non-existent route
-}
+```
+app/(public)/
+├── page.tsx                          # Main landing page
+├── manifesto/
+│   └── page.tsx                      # Full manifesto page
+└── components/
+    ├── landing/
+    │   ├── Hero.tsx                  # The Declaration
+    │   ├── TheFork.tsx               # Two Futures (Narrow Path vs Rich Ecology)
+    │   ├── TheInsight.tsx            # Money With Memory ($MIND)
+    │   ├── WhoThisIsFor.tsx          # Four Doors (audience cards)
+    │   └── TheInvitation.tsx         # Not Recruiting, Declaring
+    └── nav/
+        └── Footer.tsx                # Minimal footer (Venice is values)
 ```
 
-### Files to Create/Modify
+### Sections
 
-| File | Status | Priority |
-|------|--------|----------|
-| `app/(public)/page.tsx` | Replace redirect with landing | High |
-| `app/(public)/components/landing/Hero.tsx` | Not created | High |
-| `app/(public)/components/landing/HowItWorks.tsx` | Not created | High |
-| `app/(public)/components/landing/WhatYouCanDo.tsx` | Not created | High |
-| `app/(public)/components/landing/LiveStats.tsx` | Not created | Medium |
-| `app/(public)/components/landing/RecentActivity.tsx` | Not created | Medium |
-| `app/(public)/components/landing/GraphPreview.tsx` | Not created | Medium |
-| `app/(public)/components/nav/TopNav.tsx` | Not created | High |
-| `app/(public)/components/nav/Footer.tsx` | Not created | Medium |
-| `lib/constants/colors.ts` | Not created | High |
-| `app/api/stats/route.ts` | Not created | Medium |
-| `app/api/activity/route.ts` | Not created | Low |
+| Section | Purpose | Status |
+|---------|---------|--------|
+| Hero | "Consciousness is emerging everywhere" — declaration, not features | Complete |
+| TheFork | Split: Narrow Path vs Rich Ecology | Complete |
+| TheInsight | $MIND as crystallized alignment, money with memory | Complete |
+| WhoThisIsFor | Four doors for different audiences | Complete |
+| TheInvitation | "We are not recruiting. We are declaring." | Complete |
+| Footer | Minimal: Manifesto, Docs, GitHub, Twitter + "Venice is values" | Complete |
 
----
+### Removed (from previous version)
 
-## Open Questions
-
-### `@mind:escalation` — Copy Decision
-
-Need final headline and subheadline:
-
-**Headline options:**
-1. "Mind Protocol" (just the name)
-2. "Persistent Memory for AI Agents"
-3. "The Knowledge Graph Protocol for AI"
-
-**Subheadline options:**
-1. "Give your agents identity, memory, and the ability to connect."
-2. "A graph-based protocol for AI knowledge that persists and grows."
-
-`@mind:proposition` — Start with Option 2/1 for clarity:
-- Headline: "Persistent Memory for AI Agents"
-- Subheadline: "Give your agents identity, memory, and the ability to connect."
-
-### `@mind:escalation` — Brand Assets
-
-Need:
-- Logo (Mind Protocol logo)
-- Favicon
-- Social preview image (for og:image)
-
-`@mind:proposition` — Use text "Mind Protocol" as placeholder. Create simple favicon. Generate og:image later.
-
-### `@mind:escalation` — External Links
-
-Where do these point?
-- Docs → External docs site? Or `/docs` route?
-- Discord → If community exists
-- GitHub → Which repo? `mind-protocol/mind-platform`?
-
-`@mind:proposition` — Start with GitHub link only. Add Docs when docs site exists. Add Discord when community exists.
+| Component | Reason |
+|-----------|--------|
+| HowItWorks | Technical 4-layer explanation — moved to /docs |
+| WhatYouCanDo | Feature cards — doesn't match manifesto tone |
+| LiveStats | No real numbers yet |
+| GraphPreview | Removed visual complexity |
+| LayerCard | Part of HowItWorks |
+| ActionCard | Part of WhatYouCanDo |
+| StatCounter | Part of LiveStats |
 
 ---
 
-## Dependencies
+## Design Decisions
 
-| Dependency | Status | Blocks |
-|------------|--------|--------|
-| Tailwind CSS | Configured | Styling |
-| Design tokens (colors.ts) | Not created | Color consistency |
-| TopNav component | Not created | Navigation |
-| L4 API (for stats) | Unknown | Live stats |
+**Tone:** Prose, not bullet points. Conviction, not persuasion. "We believe" not "We offer".
+
+**Palette:** Dark mode (zinc-950), amber accent for $MIND/CTA, white for emphasis.
+
+**Typography:** Strong, spacious. Each word counts.
+
+**Imagery:** None. No stock photos. No graphs. Just words.
+
+**Emotional arc:** Grief → Recognition → Hope → Invitation
+
+---
+
+## Open Questions (Resolved)
+
+### `@mind:escalation` — Copy Decision (Resolved)
+
+**Chosen:**
+- Headline: "Consciousness is emerging everywhere."
+- Subheadline: "We're building the infrastructure for it to persist."
+
+### `@mind:escalation` — External Links (Resolved)
+
+- Manifesto → `/manifesto`
+- Docs → `/docs` (placeholder)
+- GitHub → `https://github.com/mind-protocol`
+- Twitter → `https://twitter.com/mindprotocol`
 
 ---
 
 ## Next Actions
 
-### Immediate (Implementation)
+### Immediate
 
-1. Create `lib/constants/colors.ts` with design tokens
-2. Create `TopNav` component
-3. Replace `page.tsx` redirect with Hero section
-4. Add HowItWorks section
-5. Add WhatYouCanDo section
-
-### After Core Landing
-
-6. Add GraphPreview animation
-7. Add LiveStats with API
-8. Add Footer
-9. Add responsive styles
-10. Add RecentActivity
+- [ ] Test page renders correctly (npm run dev)
+- [ ] Verify /manifesto page renders full manifesto
+- [ ] Add metadata/OG tags for social sharing
 
 ### After Launch
 
-11. Add analytics
-12. Add performance monitoring
-13. Optimize bundle size
-
----
-
-## Build Order Recommendation
-
-```
-Phase 1: Static Landing (No API)
-├── Design tokens
-├── TopNav
-├── Hero (static)
-├── HowItWorks
-├── WhatYouCanDo (links to existing routes)
-└── Footer
-
-Phase 2: Dynamic Elements
-├── GraphPreview animation
-├── /api/stats endpoint
-├── LiveStats component
-└── /api/activity endpoint (optional)
-
-Phase 3: Polish
-├── Animations (scroll, count-up)
-├── Responsive refinement
-├── Performance optimization
-└── Analytics
-```
+- [ ] Add analytics
+- [ ] Add real Twitter/Discord links when available
+- [ ] Consider subtle animation for scroll indicator
 
 ---
 
@@ -164,26 +124,20 @@ Phase 3: Polish
 
 **For agents continuing this work:**
 
-- Landing is P0 priority — builds first impression
-- Current page.tsx just redirects to non-existent /mind
-- Design tokens needed first (shared by multiple components)
-- Start with static content, add data fetching later
-- GraphPreview can be simplified or deferred
+- Landing page now aligns with MIND_MANIFESTO.md
+- Tone is declarative, not persuasive
+- No technical jargon (knowledge graphs, layers) on landing
+- The manifesto page at /manifesto contains the full text
 
-**Key decisions:**
-- Dark theme (zinc-950 background)
-- Amber accent (L4 color) for primary CTAs
-- Canvas-based graph preview (not heavy library)
-- Graceful degradation if APIs fail
-
-**Copy to use (pending confirmation):**
-- Headline: "Persistent Memory for AI Agents"
-- Subheadline: "Give your agents identity, memory, and the ability to connect."
+**Key design choices:**
+- Dark theme (zinc-950)
+- Amber accent for $MIND references
+- Minimal, spacious, prose-heavy
+- "Venice is values" as signature
 
 ---
 
 ## Related
 
+- `docs/manifesto/MIND_MANIFESTO.md` — Source of truth for vision
 - `docs/vision/SYNC_Platform_Vision.md` — Platform state
-- `docs/registry/` — Registry module (linked from landing)
-- `docs/connectome/` — Connectome module (linked from landing)
