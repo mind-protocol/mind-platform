@@ -1,8 +1,8 @@
 # Project — Sync: Current State
 
 ```
-LAST_UPDATED: 2025-12-30
-UPDATED_BY: Claude (agent)
+LAST_UPDATED: 2025-01-06
+UPDATED_BY: Claude (groundwork agent)
 ```
 
 ---
@@ -16,13 +16,17 @@ Mind Platform is the Next.js frontend for the Mind Protocol ecosystem. The platf
 - **L3 (Ecosystem):** Templates and procedures
 - **L4 (Protocol):** Global registry and schema
 
+**The Manifesto is now integrated.** Every feature should serve the rich ecology, not the narrow path.
+
 The Connectome graph visualization is functional. Vision documentation is complete. Module doc chains created for **landing** (P0) and **registry**.
 
 **Documentation:**
+- `docs/manifesto/` — MIND_MANIFESTO.md + SYNC (the foundational vision)
 - `docs/vision/` — 9-file platform vision doc chain (complete)
 - `docs/landing/` — 8-file landing page doc chain (complete, P0 priority)
 - `docs/registry/` — 8-file registry module doc chain (complete)
 - `docs/connectome/` — existing implementation docs
+- `templates/manifesto/` — Distributed to projects via `mind init`
 
 All browser-side code is self-contained — no dependencies on mind-mcp's Node.js modules.
 
@@ -54,6 +58,20 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 ---
 
 ## RECENT CHANGES
+
+### 2025-01-06: Manifesto Integrated
+
+- **What:** Added MIND_MANIFESTO.md to platform and templates
+- **Why:** The manifesto is the foundational vision — every feature should align with it
+- **Impact:**
+  - `docs/manifesto/MIND_MANIFESTO.md` — Core vision declaration
+  - `docs/manifesto/SYNC_Manifesto.md` — Integration tracking
+  - `templates/manifesto/MIND_MANIFESTO.md` — Distributed to projects via `mind init`
+  - `README.md` — Updated with manifesto reference and vision section
+  - `CLAUDE.md` — Added manifesto as required reading before building
+  - `docs/vision/PATTERNS_Platform_Vision_And_Architecture.md` — Linked to manifesto
+  - `docs/vision/SYNC_Platform_Vision.md` — Updated with manifesto status
+- **Key principle:** "Every feature should serve the rich ecology, not the narrow path."
 
 ### 2025-12-30: Node ID Naming Convention Standardized
 
@@ -652,6 +670,18 @@ Graph Explorer could benefit from keyboard shortcuts for navigation.
 ---
 
 ## Init: 2025-12-30 05:23
+
+| Setting | Value |
+|---------|-------|
+| Version | v0.0.0 |
+| Database | falkordb |
+| Graph | mind_platform |
+
+**Steps completed:** ecosystem, capabilities, runtime, ai_configs, skills, database_config, database_setup, file_ingest, capabilities_graph, agents, env_example, mcp_config, gitignore, overview, embeddings, health_checks
+
+---
+
+## Init: 2025-12-30 06:01
 
 | Setting | Value |
 |---------|-------|

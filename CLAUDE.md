@@ -8,6 +8,15 @@
 
 ---
 
+## The Vision
+
+Before building anything, understand WHY:
+```
+docs/manifesto/MIND_MANIFESTO.md
+```
+
+Every feature should serve the rich ecology, not the narrow path.
+
 ## Before Any Task
 
 Check project state:

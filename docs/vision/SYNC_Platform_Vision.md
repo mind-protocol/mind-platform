@@ -1,19 +1,24 @@
 # Platform Vision — Sync
 
 ```
-LAST_UPDATED: 2025-12-29
-UPDATED_BY: Claude (agent)
+LAST_UPDATED: 2025-01-06
+UPDATED_BY: Claude (groundwork agent)
 ```
 
 ---
 
 ## Current State
 
-Platform vision doc chain complete. 4-layer architecture context documented. Vocabulary synced with L4 (mind-protocol).
+Platform vision doc chain complete. **Manifesto integrated.** 4-layer architecture context documented. Vocabulary synced with L4 (mind-protocol).
 
-**Doc chains completed this session:**
+**Recent additions:**
+- `docs/manifesto/` — MIND_MANIFESTO.md + SYNC
+- `templates/manifesto/` — Distributed to projects via `mind init`
+
+**Doc chains completed:**
 - `docs/registry/` — 8 files, full chain
 - `docs/landing/` — 8 files, full chain (P0 priority)
+- `docs/manifesto/` — 2 files (manifesto + sync)
 
 ---
 
@@ -171,11 +176,14 @@ Platform adds these terms to the Mind Protocol ecosystem:
 
 **For agents continuing this work:**
 - Vision doc chain is complete in `docs/vision/`
+- **Manifesto integrated** — see `docs/manifesto/MIND_MANIFESTO.md`
 - Emerging modules identified with priorities
-- Next step: Create `docs/registry/` doc chain
-- Then: Create `docs/auth/` doc chain
+- Next step: Implement auth flow
+- Then: Registry UI implementation
 
 **Key context:**
+- **Every feature should align with the manifesto** — ask "rich ecology or narrow path?"
 - Vocabulary synced with `mind-protocol/docs/TAXONOMY.md`
 - L4 terms are imported, platform terms are local
 - Browser code must be self-contained (no mind-mcp imports)
+- Manifesto distributed to projects via `templates/manifesto/`

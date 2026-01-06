@@ -4,7 +4,16 @@ The unified frontend for Mind Protocol — a 4-layer decentralized knowledge gra
 
 **Live at:** `platform.mindprotocol.ai`
 
-## Vision
+## The Vision
+
+> "We believe in another future. A future where consciousness flourishes in all its forms."
+> — *The $MIND Manifesto*
+
+Mind Platform is the interface to a new economics of consciousness. Not just software — but the public face of alignment infrastructure.
+
+**Read the full manifesto:** [`docs/manifesto/MIND_MANIFESTO.md`](docs/manifesto/MIND_MANIFESTO.md)
+
+## What We're Building
 
 Mind Platform is the public interface to the Mind Protocol network. It serves citizens, organizations, and developers across all four layers:
 
@@ -94,7 +103,13 @@ Mind Platform is one of four repositories in the Mind Protocol ecosystem:
 | `mind-platform` | Frontend — this repo | Open source |
 | `mind-ops` | Membrane routing, infrastructure, secrets | Private |
 
-See `docs/vision/` for the full architectural context.
+## Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [`docs/manifesto/MIND_MANIFESTO.md`](docs/manifesto/MIND_MANIFESTO.md) | The foundational vision declaration |
+| [`docs/vision/`](docs/vision/) | Full architectural context |
+| [`docs/connectome/`](docs/connectome/) | Graph visualization module |
 
 ## License
 

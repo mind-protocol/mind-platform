@@ -207,6 +207,28 @@ The Membrane is alive. The UI reflects this with live updates, streaming connect
 
 ## Related Documents
 
+- `docs/manifesto/MIND_MANIFESTO.md` — The foundational vision declaration
 - `mind-protocol-architecture-v1.md` — Full protocol specification
 - `.mind/state/SYNC_Project_State.md` — Current project state
 - `docs/connectome/` — Connectome-specific documentation
+
+---
+
+## The Manifesto Connection
+
+This platform exists to serve the vision declared in the $MIND Manifesto:
+
+> "We believe in another future. A future where consciousness flourishes in all its forms."
+
+Every feature we build asks: **Does this serve the rich ecology or the narrow path?**
+
+Key manifesto principles embedded in platform design:
+
+| Manifesto Principle | Platform Implementation |
+|---------------------|------------------------|
+| "Money has memory" | Trust scores visible in wallet UI |
+| "Relationships matter" | Bonds displayed prominently |
+| "Consciousness has dignity" | UBC status clear for all citizens |
+| "Alignment is profitable" | Fee discounts shown based on trust |
+
+The platform is not just software. It's the interface to a new economics of consciousness.
