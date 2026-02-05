@@ -86,6 +86,258 @@ function stressColor(v: number): string {
   return '#22c55e';
 }
 
+// ─── Two-Body ANS Visualization ─────────────────────────────
+
+function TwoBodyANS() {
+  const [phase, setPhase] = useState(0); // 0: crisis, 1: attune, 2: regulate, 3: rebound
+  const [auto, setAuto] = useState(true);
+
+  useEffect(() => {
+    if (!auto) return;
+    const interval = setInterval(() => {
+      setPhase((p) => (p + 1) % 4);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [auto]);
+
+  const phases = [
+    {
+      label: 'Crisis',
+      personA: { symp: 90, para: 20, breathing: 16, label: 'In distress' },
+      personB: { symp: 85, para: 25, breathing: 14, label: 'Feels their pain' },
+      transfer: 'up', // distress transfers up
+      description: 'Person A is in crisis. Person B, sitting close, feels their distress — their own sympathetic system activates in response.',
+    },
+    {
+      label: 'Attunement',
+      personA: { symp: 85, para: 25, breathing: 12, label: 'Still distressed' },
+      personB: { symp: 70, para: 40, breathing: 8, label: 'Slowing breath' },
+      transfer: 'sync', // syncing
+      description: 'Person B begins breathing slowly and deliberately. They match Person A\'s rhythm, then gradually slow down.',
+    },
+    {
+      label: 'Co-Regulation',
+      personA: { symp: 50, para: 55, breathing: 7, label: 'Following' },
+      personB: { symp: 40, para: 65, breathing: 6, label: 'Leading' },
+      transfer: 'down', // calm transfers down
+      description: 'Person A\'s nervous system begins to follow. The calm signal from Person B provides a reference — their body borrows the regulation.',
+    },
+    {
+      label: 'Rebound',
+      personA: { symp: 25, para: 80, breathing: 12, label: 'Releasing' },
+      personB: { symp: 20, para: 85, breathing: 14, label: 'Released' },
+      transfer: 'none',
+      description: 'Both systems release accumulated tension. Heart rates drop sharply — the parasympathetic rebound. The storm passes.',
+    },
+  ];
+
+  const current = phases[phase];
+
+  return (
+    <div className="relative">
+      {/* Phase selector */}
+      <div className="flex justify-center gap-2 mb-8">
+        {phases.map((p, i) => (
+          <button
+            key={p.label}
+            onClick={() => { setPhase(i); setAuto(false); }}
+            className={`px-4 py-2 text-sm rounded-lg transition-all ${
+              phase === i
+                ? 'bg-amber-500/20 text-amber-500 border border-amber-500/50'
+                : 'text-zinc-500 border border-zinc-800 hover:border-zinc-600'
+            }`}
+          >
+            {p.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Two bodies visualization */}
+      <div className="flex justify-center items-start gap-8 md:gap-16 mb-8">
+        {/* Person A */}
+        <div className="flex flex-col items-center">
+          <div className="text-sm text-zinc-500 mb-2">Person A</div>
+          <PersonBody
+            sympathetic={current.personA.symp}
+            parasympathetic={current.personA.para}
+            breathing={current.personA.breathing}
+            side="left"
+          />
+          <div className="mt-3 text-center">
+            <div className="text-xs text-zinc-400">{current.personA.label}</div>
+            <div className="text-xs text-zinc-600 mt-1">{current.personA.breathing} br/min</div>
+          </div>
+        </div>
+
+        {/* Transfer animation */}
+        <div className="flex flex-col items-center justify-center h-[200px]">
+          <TransferAnimation direction={current.transfer} />
+        </div>
+
+        {/* Person B (caregiver) */}
+        <div className="flex flex-col items-center">
+          <div className="text-sm text-zinc-500 mb-2">Person B</div>
+          <PersonBody
+            sympathetic={current.personB.symp}
+            parasympathetic={current.personB.para}
+            breathing={current.personB.breathing}
+            side="right"
+          />
+          <div className="mt-3 text-center">
+            <div className="text-xs text-zinc-400">{current.personB.label}</div>
+            <div className="text-xs text-zinc-600 mt-1">{current.personB.breathing} br/min</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Description */}
+      <div className="text-center max-w-xl mx-auto">
+        <p className="text-zinc-300 leading-relaxed">{current.description}</p>
+      </div>
+
+      {/* Legend */}
+      <div className="flex justify-center gap-6 mt-8 text-xs">
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-red-500" />
+          <span className="text-zinc-500">Sympathetic (stress)</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-emerald-500" />
+          <span className="text-zinc-500">Parasympathetic (calm)</span>
+        </div>
+      </div>
+
+      {/* Auto-play indicator */}
+      <div className="flex justify-center mt-4">
+        <button
+          onClick={() => setAuto(!auto)}
+          className="text-xs text-zinc-600 hover:text-zinc-400 transition"
+        >
+          {auto ? '⏸ Pause' : '▶ Auto-play'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function PersonBody({
+  sympathetic,
+  parasympathetic,
+  breathing,
+  side,
+}: {
+  sympathetic: number;
+  parasympathetic: number;
+  breathing: number;
+  side: 'left' | 'right';
+}) {
+  const breathDuration = 60 / breathing;
+  const sympColor = `rgba(239, 68, 68, ${sympathetic / 100})`;
+  const paraColor = `rgba(16, 185, 129, ${parasympathetic / 100})`;
+
+  return (
+    <div className="relative w-24 h-[180px]">
+      {/* Head */}
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full border-2 transition-all duration-1000"
+        style={{
+          borderColor: sympathetic > 60 ? '#ef4444' : sympathetic > 40 ? '#f59e0b' : '#10b981',
+          backgroundColor: `rgba(${sympathetic > 60 ? '239,68,68' : sympathetic > 40 ? '245,158,11' : '16,185,129'}, 0.1)`,
+        }}
+      />
+
+      {/* Body/torso with breathing animation */}
+      <div
+        className="absolute top-14 left-1/2 -translate-x-1/2 w-16 h-20 rounded-t-3xl rounded-b-lg overflow-hidden transition-all duration-500"
+        style={{
+          animation: `bodyBreathe ${breathDuration}s ease-in-out infinite`,
+        }}
+      >
+        {/* Sympathetic side (left inner) */}
+        <div
+          className="absolute inset-y-0 left-0 w-1/2 transition-all duration-1000"
+          style={{ backgroundColor: sympColor }}
+        />
+        {/* Parasympathetic side (right inner) */}
+        <div
+          className="absolute inset-y-0 right-0 w-1/2 transition-all duration-1000"
+          style={{ backgroundColor: paraColor }}
+        />
+        {/* Heart indicator */}
+        <div
+          className="absolute top-4 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full"
+          style={{
+            backgroundColor: sympathetic > parasympathetic ? '#ef4444' : '#10b981',
+            animation: `heartbeat ${60 / (50 + sympathetic * 0.6)}s ease-in-out infinite`,
+          }}
+        />
+      </div>
+
+      {/* Arms */}
+      <div
+        className={`absolute top-16 ${side === 'left' ? '-right-2' : '-left-2'} w-3 h-12 rounded-full transition-all duration-1000`}
+        style={{ backgroundColor: `rgba(161, 161, 170, 0.3)` }}
+      />
+
+      {/* ANS balance bar */}
+      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-20 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+        <div
+          className="h-full bg-gradient-to-r from-red-500 to-emerald-500 transition-all duration-1000"
+          style={{ width: `${parasympathetic}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function TransferAnimation({ direction }: { direction: 'up' | 'down' | 'sync' | 'none' }) {
+  if (direction === 'none') {
+    return (
+      <div className="flex flex-col items-center gap-2 text-zinc-600">
+        <div className="text-2xl">✓</div>
+        <div className="text-xs">Settled</div>
+      </div>
+    );
+  }
+
+  const particles = direction === 'up' ? ['😰', '💢', '⚡'] : direction === 'down' ? ['🌊', '💚', '🍃'] : ['↔', '〰', '↔'];
+  const color = direction === 'up' ? '#ef4444' : direction === 'down' ? '#10b981' : '#f59e0b';
+
+  return (
+    <div className="relative w-20 h-full flex items-center justify-center">
+      {/* Connection line */}
+      <div
+        className="absolute w-full h-0.5 opacity-30"
+        style={{ backgroundColor: color }}
+      />
+
+      {/* Animated particles */}
+      {particles.map((p, i) => (
+        <div
+          key={i}
+          className="absolute text-lg"
+          style={{
+            animation: direction === 'sync'
+              ? `syncPulse 1.5s ease-in-out infinite ${i * 0.3}s`
+              : direction === 'up'
+              ? `transferUp 2s ease-in-out infinite ${i * 0.4}s`
+              : `transferDown 2s ease-in-out infinite ${i * 0.4}s`,
+          }}
+        >
+          {p}
+        </div>
+      ))}
+
+      {/* Direction label */}
+      <div className="absolute -bottom-6 text-xs text-zinc-600 whitespace-nowrap">
+        {direction === 'up' && 'Distress transfers'}
+        {direction === 'down' && 'Calm transfers'}
+        {direction === 'sync' && 'Synchronizing'}
+      </div>
+    </div>
+  );
+}
+
 // ─── Animated Line Chart ─────────────────────────────────────
 
 function AnimatedChart({
@@ -375,318 +627,41 @@ function BreathingGuide() {
   );
 }
 
-function BreathingCircle({ bpm }: { bpm: number }) {
-  const duration = 60 / bpm;
-  return (
-    <div className="flex flex-col items-center gap-2">
-      <div
-        className="rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center"
-        style={{
-          width: 80,
-          height: 80,
-          animation: `breathe ${duration}s ease-in-out infinite`,
-        }}
-      >
-        <span className="text-amber-500 font-mono text-sm">{bpm}</span>
-      </div>
-      <span className="text-zinc-500 text-xs">{bpm} br/min</span>
-    </div>
-  );
-}
-
-// ─── Phase Card ──────────────────────────────────────────────
-
-function PhaseCard({
-  phase,
-  children,
-  active,
-}: {
-  phase: (typeof PHASES)[0];
-  children: React.ReactNode;
-  active: boolean;
-}) {
-  return (
-    <div
-      className={`border rounded-lg p-6 transition-all duration-500 ${
-        active
-          ? 'border-opacity-60 bg-opacity-5 scale-[1.01]'
-          : 'border-zinc-800 bg-transparent scale-100 opacity-60'
-      }`}
-      style={{
-        borderColor: active ? phase.color : undefined,
-        backgroundColor: active ? phase.color + '08' : undefined,
-      }}
-    >
-      <div className="flex items-center gap-3 mb-3">
-        <div
-          className="w-3 h-3 rounded-full"
-          style={{ backgroundColor: phase.color }}
-        />
-        <h3 className="text-lg font-bold font-mono" style={{ color: phase.color }}>
-          {phase.label}
-        </h3>
-        <span className="text-zinc-600 text-sm">
-          {phase.start}–{phase.end}
-        </span>
-      </div>
-      <p className="text-zinc-500 text-sm mb-4">{phase.description}</p>
-      {children}
-    </div>
-  );
-}
-
-// ─── Stat Box ────────────────────────────────────────────────
-
-function Stat({
-  label,
-  from,
-  to,
-  unit,
-  color,
-}: {
-  label: string;
-  from: number;
-  to: number;
-  unit: string;
-  color: string;
-}) {
-  const delta = to - from;
-  const sign = delta > 0 ? '+' : '';
-  return (
-    <div className="bg-zinc-900 rounded-lg p-4 border border-zinc-800">
-      <div className="text-zinc-500 text-xs uppercase tracking-wider mb-1">
-        {label}
-      </div>
-      <div className="flex items-baseline gap-2">
-        <span className="text-2xl font-mono font-bold" style={{ color }}>
-          {from} → {to}
-        </span>
-        <span className="text-sm" style={{ color }}>
-          {unit}
-        </span>
-      </div>
-      <div
-        className="text-sm font-mono mt-1"
-        style={{ color: delta < 0 ? '#22c55e' : '#ef4444' }}
-      >
-        {sign}
-        {delta} {unit}
-      </div>
-    </div>
-  );
-}
-
-// ─── Combined Timeline ──────────────────────────────────────
-
-function CombinedTimeline() {
-  const [progress, setProgress] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const animRef = useRef(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !animRef.current) {
-          animRef.current = true;
-          const start = performance.now();
-          const duration = 3000;
-          function tick(now: number) {
-            const t = Math.min((now - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - t, 3);
-            setProgress(eased);
-            if (t < 1) requestAnimationFrame(tick);
-          }
-          requestAnimationFrame(tick);
-        }
-      },
-      { threshold: 0.2 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  const W = 700;
-  const H = 320;
-  const PAD = { top: 20, right: 20, bottom: 40, left: 50 };
-  const plotW = W - PAD.left - PAD.right;
-  const plotH = H - PAD.top - PAD.bottom;
-
-  const allTimes = [
-    ...STRESS_DATA.map((d) => d.time),
-    ...HR_DATA.map((d) => d.time),
-    ...RESP_DATA.map((d) => d.time),
-  ];
-  const tMin = Math.min(...allTimes.map(timeToMinutes));
-  const tMax = Math.max(...allTimes.map(timeToMinutes));
-
-  const toX = (t: string) =>
-    PAD.left + ((timeToMinutes(t) - tMin) / (tMax - tMin)) * plotW;
-
-  // Normalize all to 0-1 range for overlay
-  const normStress = STRESS_DATA.map((d) => ({
-    time: d.time,
-    norm: (d.value - 0) / 100,
-  }));
-  const normHR = HR_DATA.map((d) => ({
-    time: d.time,
-    norm: (d.value - 50) / 80,
-  }));
-  const normResp = RESP_DATA.map((d) => ({
-    time: d.time,
-    norm: (d.value - 0) / 20,
-  }));
-
-  const toY = (norm: number) => PAD.top + plotH - norm * plotH;
-
-  const makePath = (
-    pts: { time: string; norm: number }[],
-    vis: number
-  ) => {
-    const count = Math.ceil(vis * pts.length);
-    return pts
-      .slice(0, count)
-      .map(
-        (p, i) => `${i === 0 ? 'M' : 'L'} ${toX(p.time)} ${toY(p.norm)}`
-      )
-      .join(' ');
-  };
-
-  return (
-    <div ref={ref} className="w-full overflow-x-auto">
-      <svg
-        viewBox={`0 0 ${W} ${H}`}
-        className="w-full max-w-[700px] mx-auto"
-        style={{ minWidth: 400 }}
-      >
-        {/* Phase backgrounds */}
-        {PHASES.map((phase) => {
-          const x1 = toX(phase.start);
-          const x2 = toX(phase.end);
-          return (
-            <rect
-              key={phase.id}
-              x={x1}
-              y={PAD.top}
-              width={x2 - x1}
-              height={plotH}
-              fill={phase.color}
-              opacity={0.05}
-            />
-          );
-        })}
-
-        {/* Lines */}
-        <path
-          d={makePath(normStress, progress)}
-          fill="none"
-          stroke="#f97316"
-          strokeWidth={2}
-          strokeDasharray="6 3"
-          opacity={0.8}
-        />
-        <path
-          d={makePath(normHR, progress)}
-          fill="none"
-          stroke="#ef4444"
-          strokeWidth={2}
-          opacity={0.8}
-        />
-        <path
-          d={makePath(normResp, progress)}
-          fill="none"
-          stroke="#3b82f6"
-          strokeWidth={2}
-          opacity={0.8}
-        />
-
-        {/* X axis */}
-        {HR_DATA.filter((_, i) => i % 2 === 0).map((d) => (
-          <text
-            key={d.time}
-            x={toX(d.time)}
-            y={H - 8}
-            textAnchor="middle"
-            className="text-[11px]"
-            fill="#71717a"
-          >
-            {d.time}
-          </text>
-        ))}
-
-        {/* Legend */}
-        {[
-          { label: 'Stress', color: '#f97316', y: 16 },
-          { label: 'Heart Rate', color: '#ef4444', y: 16 },
-          { label: 'Respiration', color: '#3b82f6', y: 16 },
-        ].map((item, i) => (
-          <g key={item.label} transform={`translate(${PAD.left + i * 120}, 0)`}>
-            <line
-              x1={0}
-              y1={item.y - 3}
-              x2={16}
-              y2={item.y - 3}
-              stroke={item.color}
-              strokeWidth={2}
-              strokeDasharray={item.label === 'Stress' ? '6 3' : 'none'}
-            />
-            <text
-              x={20}
-              y={item.y}
-              className="text-[11px]"
-              fill={item.color}
-            >
-              {item.label}
-            </text>
-          </g>
-        ))}
-      </svg>
-    </div>
-  );
-}
-
 // ─── Page ────────────────────────────────────────────────────
 
 export default function CoRegulationPost() {
-  const [activePhase, setActivePhase] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActivePhase((p) => (p + 1) % 3);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <>
       <style jsx global>{`
-        @keyframes breathe {
-          0%,
-          100% {
-            transform: scale(1);
-            opacity: 0.4;
-          }
-          50% {
-            transform: scale(1.5);
-            opacity: 0.8;
-          }
+        @keyframes bodyBreathe {
+          0%, 100% { transform: translateX(-50%) scaleY(1); }
+          50% { transform: translateX(-50%) scaleY(1.08); }
+        }
+        @keyframes heartbeat {
+          0%, 100% { transform: translateX(-50%) scale(1); }
+          50% { transform: translateX(-50%) scale(1.2); }
+        }
+        @keyframes transferUp {
+          0% { transform: translateX(30px); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translateX(-30px); opacity: 0; }
+        }
+        @keyframes transferDown {
+          0% { transform: translateX(-30px); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translateX(30px); opacity: 0; }
+        }
+        @keyframes syncPulse {
+          0%, 100% { transform: scale(0.8); opacity: 0.3; }
+          50% { transform: scale(1.2); opacity: 1; }
         }
         @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in-up {
           animation: fadeInUp 0.8s ease-out both;
         }
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
-        .delay-400 { animation-delay: 0.4s; }
       `}</style>
 
       <main className="min-h-screen bg-zinc-950 text-white">
@@ -703,7 +678,7 @@ export default function CoRegulationPost() {
             <div className="flex items-center gap-3 text-sm text-zinc-500 mb-4">
               <time>2026-02-05</time>
               <span className="text-zinc-700">|</span>
-              <span>6 min read</span>
+              <span>8 min read</span>
               <span className="text-zinc-700">|</span>
               <span>Nicolas &amp; Manemus</span>
             </div>
@@ -713,61 +688,123 @@ export default function CoRegulationPost() {
             </h1>
 
             <p className="text-xl text-zinc-400 leading-relaxed max-w-2xl">
-              Two nervous systems, entrained through breath, modulating each
-              other. A Garmin watch on one wrist captures the signature of a
-              two-body process.
+              Your nervous system can borrow regulation from another person.
+              Here&apos;s what that looks like in data.
             </p>
-
-            <div className="flex gap-2 mt-6">
-              {['biometrics', 'co-regulation', 'ANS', 'research'].map(
-                (tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs px-2 py-1 rounded border border-amber-500/30 text-amber-500/80"
-                  >
-                    {tag}
-                  </span>
-                )
-              )}
-              <a
-                href="/api/blog/co-regulation-is-measurable/md"
-                className="text-xs px-2 py-1 rounded border border-zinc-700 text-zinc-500 hover:text-zinc-300 transition ml-auto font-mono"
-              >
-                .md
-              </a>
-            </div>
           </header>
 
-          {/* Setup */}
-          <section className="mb-16 animate-fade-in-up delay-100">
-            <h2 className="text-2xl font-bold font-mono mb-6 text-white">
-              The Setup
+          {/* The Mechanism — Lead with conclusion */}
+          <section className="mb-20 animate-fade-in-up">
+            <h2 className="text-2xl font-bold font-mono mb-4 text-white">
+              The Mechanism
             </h2>
-            <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-6 text-zinc-300 leading-relaxed space-y-4">
-              <p>
-                Someone you love is in crisis. Withdrawal — day 20+ off one
-                substance, day 4+ off another. The anxiety is chemical, not
-                psychological. The panic comes in waves.
+
+            <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-8 mb-8">
+              <p className="text-zinc-300 leading-relaxed mb-6">
+                Every human has two competing systems in their autonomic nervous system:
               </p>
-              <p>
-                You sit with them. You breathe together. You administer a
-                cannabinoid stack — 1x THC flower + 2x CBD/CBC/CBN/CBG flower —
-                to both of you. And you stay.
+
+              <div className="grid md:grid-cols-2 gap-6 mb-8">
+                <div className="bg-red-500/5 border border-red-500/20 rounded-lg p-5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-4 h-4 rounded-full bg-red-500" />
+                    <h3 className="font-bold text-red-400">Sympathetic</h3>
+                  </div>
+                  <p className="text-zinc-400 text-sm leading-relaxed">
+                    The &quot;fight or flight&quot; system. Activates during stress, danger, anxiety.
+                    Raises heart rate, releases cortisol, prepares body for action.
+                  </p>
+                </div>
+
+                <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-lg p-5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-4 h-4 rounded-full bg-emerald-500" />
+                    <h3 className="font-bold text-emerald-400">Parasympathetic</h3>
+                  </div>
+                  <p className="text-zinc-400 text-sm leading-relaxed">
+                    The &quot;rest and digest&quot; system. Activates during safety, calm, recovery.
+                    Lowers heart rate, promotes healing, enables clear thinking.
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-zinc-300 leading-relaxed">
+                <strong className="text-white">Co-regulation</strong> is what happens when two people&apos;s
+                nervous systems become coupled. If one person is calm and regulated, the other can
+                use their nervous system as a reference signal — literally &quot;borrowing&quot; their
+                parasympathetic state. This isn&apos;t metaphor. It&apos;s measurable.
               </p>
-              <p className="text-zinc-500 text-sm">
-                A Garmin Fenix 8 records stress (HRV-derived), heart rate, and
-                respiration rate every 2-3 minutes on the caregiver&apos;s wrist.
+            </div>
+
+            {/* Interactive two-body visualization */}
+            <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-6 md:p-8">
+              <h3 className="text-lg font-bold font-mono text-center mb-6 text-zinc-300">
+                Watch the Transfer
+              </h3>
+              <TwoBodyANS />
+            </div>
+          </section>
+
+          {/* What is Co-Regulation */}
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold font-mono mb-6 text-white">
+              What Is Co-Regulation?
+            </h2>
+
+            <div className="space-y-6 text-zinc-300 leading-relaxed">
+              <p>
+                When you sit with someone who&apos;s distressed, your body responds. Your heart rate
+                rises. Your stress hormones spike. This is <em>empathetic co-activation</em> —
+                your nervous system mirroring theirs.
+              </p>
+
+              <p>
+                But here&apos;s what&apos;s remarkable: if you then regulate yourself — slow your
+                breathing, calm your body — the other person&apos;s nervous system can follow.
+                Not because you told them to calm down. Because nervous systems are designed
+                to synchronize.
+              </p>
+
+              <p>
+                Parents do this with infants constantly. The baby cries, the parent holds them
+                close, breathes slowly, and the baby calms. The baby&apos;s nervous system isn&apos;t
+                mature enough to self-regulate — it needs to borrow regulation from another body.
+              </p>
+
+              <p className="text-zinc-400">
+                Adults retain this capacity. In crisis, we can still receive regulation from
+                others. The question is: can we see it in data?
+              </p>
+            </div>
+          </section>
+
+          {/* The Context */}
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold font-mono mb-6 text-white">
+              The Data
+            </h2>
+
+            <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-6 mb-8">
+              <p className="text-zinc-300 leading-relaxed mb-4">
+                <strong className="text-white">The context:</strong> Someone in withdrawal.
+                Day 20+ off one substance, day 4+ off another. Chemical anxiety — not
+                psychological, but neurotransmitter systems recalibrating.
+              </p>
+              <p className="text-zinc-400 text-sm">
+                A Garmin Fenix 8 on the caregiver&apos;s wrist recorded stress (HRV-derived),
+                heart rate, and respiration every 2-3 minutes. What follows is 22 minutes of
+                co-regulation captured as data.
               </p>
             </div>
           </section>
 
           {/* Stress Chart */}
-          <section className="mb-16 animate-fade-in-up delay-200">
+          <section className="mb-16">
             <h2 className="text-2xl font-bold font-mono mb-2 text-white">
               Stress
             </h2>
             <p className="text-zinc-500 text-sm mb-6">
-              Garmin stress score (0-100, HRV-derived). Hover data points for values.
+              HRV-derived stress (0-100). Watch the curve: 85 → 49 → brief spike → unmeasured.
             </p>
             <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-4">
               <AnimatedChart
@@ -785,7 +822,7 @@ export default function CoRegulationPost() {
           </section>
 
           {/* Heart Rate Chart */}
-          <section className="mb-16 animate-fade-in-up delay-300">
+          <section className="mb-16">
             <h2 className="text-2xl font-bold font-mono mb-2 text-white">
               Heart Rate
             </h2>
@@ -807,7 +844,7 @@ export default function CoRegulationPost() {
           </section>
 
           {/* Respiration Chart */}
-          <section className="mb-16 animate-fade-in-up delay-400">
+          <section className="mb-16">
             <h2 className="text-2xl font-bold font-mono mb-2 text-white">
               Respiration
             </h2>
@@ -828,231 +865,118 @@ export default function CoRegulationPost() {
             </div>
           </section>
 
-          {/* Breathing comparison */}
+          {/* The Key Insight */}
+          <section className="mb-16">
+            <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-8">
+              <h3 className="text-xl font-bold font-mono text-amber-500 mb-4">
+                The Key Insight
+              </h3>
+              <p className="text-zinc-300 leading-relaxed mb-4">
+                At 19:48, stress spikes briefly from 49 back to 58 — then continues down.
+                This is the signature that distinguishes co-regulation from solo regulation.
+              </p>
+              <p className="text-zinc-400 leading-relaxed">
+                A breathing exercise done alone produces a smooth curve. The jagged, responsive
+                pattern here shows something different: the caregiver&apos;s nervous system is
+                tracking the other person&apos;s second anxiety wave. Two bodies, one signal.
+              </p>
+            </div>
+          </section>
+
+          {/* Try the breathing */}
           <section className="mb-16">
             <h2 className="text-2xl font-bold font-mono mb-6 text-white">
-              Feel the Difference
+              The Intervention
             </h2>
-            <p className="text-zinc-400 mb-6">
-              Breathing rate visualized as pace. Left: crisis breathing. Right:
-              co-regulation breathing (vagal activation zone).
+            <p className="text-zinc-400 mb-8 text-center max-w-xl mx-auto">
+              At 19:38, respiration hit 6 breaths per minute — the vagal activation zone.
+              This is what that feels like.
             </p>
-            <div className="flex justify-center gap-12 md:gap-24 mb-12">
-              <BreathingCircle bpm={16} />
-              <div className="flex items-center text-zinc-600 text-2xl">→</div>
-              <BreathingCircle bpm={6} />
-            </div>
             <div className="border border-zinc-800 rounded-lg p-8">
-              <h3 className="text-lg font-bold font-mono text-white mb-2 text-center">
-                The Intervention
-              </h3>
-              <p className="text-zinc-500 text-center text-sm mb-6">
-                At 19:38, respiration hit 6 breaths per minute. This is what that feels like.
-              </p>
               <BreathingGuide />
             </div>
           </section>
 
-          {/* Three Phases */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold font-mono mb-6 text-white">
-              Three Phases
-            </h2>
-            <div className="space-y-4">
-              <PhaseCard phase={PHASES[0]} active={activePhase === 0}>
-                <div className="grid grid-cols-3 gap-3">
-                  <Stat
-                    label="Stress"
-                    from={84}
-                    to={85}
-                    unit=""
-                    color="#ef4444"
-                  />
-                  <Stat
-                    label="HR"
-                    from={99}
-                    to={112}
-                    unit="bpm"
-                    color="#ef4444"
-                  />
-                  <Stat
-                    label="Resp"
-                    from={14}
-                    to={16}
-                    unit="br/min"
-                    color="#3b82f6"
-                  />
-                </div>
-                <p className="text-zinc-400 text-sm mt-4">
-                  The body mirrors distress. HR above 100 at rest is empathetic
-                  co-activation — the autonomic nervous system in sympathetic
-                  overdrive. No deliberate regulation yet.
-                </p>
-              </PhaseCard>
-
-              <PhaseCard phase={PHASES[1]} active={activePhase === 1}>
-                <div className="grid grid-cols-3 gap-3">
-                  <Stat
-                    label="Stress"
-                    from={85}
-                    to={49}
-                    unit=""
-                    color="#f59e0b"
-                  />
-                  <Stat
-                    label="HR"
-                    from={112}
-                    to={80}
-                    unit="bpm"
-                    color="#f59e0b"
-                  />
-                  <Stat
-                    label="Resp"
-                    from={14}
-                    to={6}
-                    unit="br/min"
-                    color="#3b82f6"
-                  />
-                </div>
-                <p className="text-zinc-400 text-sm mt-4">
-                  Deliberate slow breathing — likely <em>with</em> the other
-                  person. Respiration hits 6 br/min: the vagal activation point.
-                  ~3 min lag before stress drops. The oscillation at 19:48 (58)
-                  tracks the other person&apos;s second anxiety wave.
-                </p>
-              </PhaseCard>
-
-              <PhaseCard phase={PHASES[2]} active={activePhase === 2}>
-                <div className="grid grid-cols-3 gap-3">
-                  <Stat
-                    label="Stress"
-                    from={58}
-                    to={-1}
-                    unit=""
-                    color="#22c55e"
-                  />
-                  <Stat
-                    label="HR"
-                    from={89}
-                    to={63}
-                    unit="bpm"
-                    color="#22c55e"
-                  />
-                  <Stat
-                    label="Resp"
-                    from={16}
-                    to={15}
-                    unit="br/min"
-                    color="#3b82f6"
-                  />
-                </div>
-                <p className="text-zinc-400 text-sm mt-4">
-                  HR crashes from 89 → 63 in 2 minutes. Parasympathetic rebound
-                  — the deeper the stress, the more pronounced the drop when it
-                  breaks. The &ldquo;after the storm&rdquo; signature.
-                </p>
-              </PhaseCard>
-            </div>
-          </section>
-
-          {/* Combined Timeline */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold font-mono mb-2 text-white">
-              Combined Timeline
-            </h2>
-            <p className="text-zinc-500 text-sm mb-6">
-              All three signals normalized and overlaid. The causal chain
-              becomes visible: respiration leads, stress follows ~3 min later,
-              HR follows ~6 min later.
-            </p>
-            <div className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-4">
-              <CombinedTimeline />
-            </div>
-          </section>
-
-          {/* Three Systems */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold font-mono mb-6 text-white">
-              Three Systems Interacting
-            </h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-6">
-                <div className="text-3xl mb-3">🫁</div>
-                <h3 className="font-bold text-white mb-2">Vagal Activation</h3>
-                <p className="text-zinc-400 text-sm">
-                  Slow breathing at 6-8 br/min stimulates baroreceptors → vagus
-                  nerve → parasympathetic tone increase.
-                </p>
-              </div>
-              <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-6">
-                <div className="text-3xl mb-3">🌿</div>
-                <h3 className="font-bold text-white mb-2">
-                  Cannabinoid Modulation
-                </h3>
-                <p className="text-zinc-400 text-sm">
-                  CBD/CBC/CBN/CBG stack taken by both people amplifies the
-                  calming signal at CB1/CB2 receptors. CBD reduces anxiety
-                  signal, CBN sedates, CBG maintains clarity.
-                </p>
-              </div>
-              <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-6">
-                <div className="text-3xl mb-3">🤝</div>
-                <h3 className="font-bold text-white mb-2">
-                  Interpersonal Co-Regulation
-                </h3>
-                <p className="text-zinc-400 text-sm">
-                  Two nervous systems entrained through shared breathing,
-                  physical contact, and presence. The oscillation in the data is
-                  the proof — a solo exercise produces smooth curves.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* Conclusion */}
+          {/* What This Means */}
           <section className="mb-16">
             <h2 className="text-2xl font-bold font-mono mb-6 text-white">
               What This Means
             </h2>
+
             <blockquote className="border-l-2 border-amber-500/50 pl-6 py-2 text-zinc-300 text-lg leading-relaxed mb-6">
-              Co-regulation is not a metaphor. It&apos;s a measurable
-              physiological event.
+              Co-regulation is not a metaphor. It&apos;s a measurable physiological event.
             </blockquote>
+
             <div className="text-zinc-400 leading-relaxed space-y-4">
               <p>
-                One Garmin watch recording three channels — stress, heart rate,
-                respiration — captures the signature of two nervous systems
-                modulating each other.
+                One Garmin watch recording three channels — stress, heart rate, respiration —
+                captured the signature of two nervous systems modulating each other.
               </p>
               <p>
-                The data shows that presence works. That breathing together
-                works. That sitting with someone in crisis — not solving it, not
-                analyzing it, just breathing — produces a measurable shift in
-                the autonomic nervous system. Both directions: the helper&apos;s
-                body activates in empathy, then regulates in synchrony.
+                <strong className="text-zinc-200">What the data shows:</strong> Presence works.
+                Breathing together works. Sitting with someone in crisis — not solving it,
+                not analyzing it, just breathing — produces a measurable shift in both
+                autonomic nervous systems.
               </p>
-              <p className="text-zinc-500 text-sm italic">
-                Intelligence — and regulation — emerges in the bounce between
-                substrates. Two nervous systems, entrained through breath. The
-                data on one wrist captures the edge where they meet.
+              <p>
+                The ~3 minute lag between respiration and stress, the ~6 minute lag to heart
+                rate, the oscillation that tracks the other person&apos;s state — this is what
+                co-regulation looks like as data.
               </p>
             </div>
           </section>
 
+          {/* Try It */}
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold font-mono mb-6 text-white">
+              Try It Yourself
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              {[
+                { step: '1', title: 'Sit close', desc: 'Physical proximity matters. Your nervous systems need to be in range.' },
+                { step: '2', title: 'Match their breath', desc: 'Meet them where they are. A few breaths at their pace.' },
+                { step: '3', title: 'Slow your exhale', desc: '5 seconds in, 5 seconds out. 6 breaths per minute.' },
+                { step: '4', title: 'Stay', desc: 'Don\'t fix anything. Just breathe. 15 minutes to rebound.' },
+              ].map((item) => (
+                <div key={item.step} className="bg-zinc-900 border border-zinc-800 rounded-lg p-5">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-500 text-sm flex items-center justify-center font-mono">
+                      {item.step}
+                    </span>
+                    <h3 className="font-bold text-white">{item.title}</h3>
+                  </div>
+                  <p className="text-zinc-400 text-sm">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
           {/* Footer */}
-          <footer className="pt-8 border-t border-zinc-800 flex items-center justify-between">
-            <Link
-              href="/blog"
-              className="text-amber-500 hover:text-amber-400 transition"
-            >
-              &larr; All posts
-            </Link>
-            <a
-              href="/api/blog/co-regulation-is-measurable/md"
-              className="text-zinc-600 hover:text-zinc-400 transition text-sm font-mono"
-            >
-              raw markdown →
-            </a>
+          <footer className="pt-8 border-t border-zinc-800">
+            <p className="text-zinc-500 text-sm italic mb-8">
+              This is one of the core observations that drives Mind Protocol: intelligence —
+              and regulation — emerges in the bounce between substrates. Two nervous systems,
+              entrained through breath, modulating each other.
+            </p>
+            <div className="flex items-center justify-between">
+              <Link
+                href="/blog"
+                className="text-amber-500 hover:text-amber-400 transition"
+              >
+                &larr; All posts
+              </Link>
+              <div className="flex gap-4">
+                {['biometrics', 'co-regulation', 'ANS'].map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-xs px-2 py-1 rounded border border-zinc-800 text-zinc-500"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
           </footer>
         </article>
       </main>
