@@ -7,8 +7,13 @@ interface Props {
   params: { slug: string };
 }
 
+// Routes with custom JSX pages — exclude from dynamic generation
+const CUSTOM_ROUTES = ['co-regulation-is-measurable'];
+
 export async function generateStaticParams() {
-  return getAllSlugs().map((slug) => ({ slug }));
+  return getAllSlugs()
+    .filter((slug) => !CUSTOM_ROUTES.includes(slug))
+    .map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
