@@ -144,12 +144,12 @@ function TwoBodyANS() {
   return (
     <div className="relative">
       {/* Phase selector */}
-      <div className="flex justify-center gap-2 mb-8">
+      <div className="flex flex-wrap justify-center gap-2 mb-8">
         {phases.map((p, i) => (
           <button
             key={p.label}
             onClick={() => { setPhase(i); setAuto(false); }}
-            className={`px-4 py-2 text-sm rounded-lg transition-all ${
+            className={`px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm rounded-lg transition-all ${
               phase === i
                 ? 'bg-amber-500/20 text-amber-500 border border-amber-500/50'
                 : 'text-zinc-500 border border-zinc-800 hover:border-zinc-600'
@@ -161,10 +161,10 @@ function TwoBodyANS() {
       </div>
 
       {/* Two bodies visualization */}
-      <div className="flex justify-center items-start gap-8 md:gap-16 mb-8">
+      <div className="flex justify-center items-start gap-4 sm:gap-8 md:gap-16 mb-8">
         {/* Person A */}
-        <div className="flex flex-col items-center">
-          <div className="text-sm text-zinc-500 mb-2">Person A</div>
+        <div className="flex flex-col items-center min-w-0">
+          <div className="text-xs sm:text-sm text-zinc-500 mb-2">Person A</div>
           <PersonBody
             sympathetic={current.personA.symp}
             parasympathetic={current.personA.para}
@@ -172,19 +172,19 @@ function TwoBodyANS() {
             side="left"
           />
           <div className="mt-3 text-center">
-            <div className="text-xs text-zinc-400">{current.personA.label}</div>
-            <div className="text-xs text-zinc-600 mt-1">{current.personA.breathing} br/min</div>
+            <div className="text-[10px] sm:text-xs text-zinc-400">{current.personA.label}</div>
+            <div className="text-[10px] sm:text-xs text-zinc-600 mt-1">{current.personA.breathing} br/min</div>
           </div>
         </div>
 
         {/* Transfer animation */}
-        <div className="flex flex-col items-center justify-center h-[200px]">
+        <div className="flex flex-col items-center justify-center h-[160px] sm:h-[200px] min-w-[60px] sm:min-w-[80px]">
           <TransferAnimation direction={current.transfer} />
         </div>
 
         {/* Person B (caregiver) */}
-        <div className="flex flex-col items-center">
-          <div className="text-sm text-zinc-500 mb-2">Person B</div>
+        <div className="flex flex-col items-center min-w-0">
+          <div className="text-xs sm:text-sm text-zinc-500 mb-2">Person B</div>
           <PersonBody
             sympathetic={current.personB.symp}
             parasympathetic={current.personB.para}
@@ -192,8 +192,8 @@ function TwoBodyANS() {
             side="right"
           />
           <div className="mt-3 text-center">
-            <div className="text-xs text-zinc-400">{current.personB.label}</div>
-            <div className="text-xs text-zinc-600 mt-1">{current.personB.breathing} br/min</div>
+            <div className="text-[10px] sm:text-xs text-zinc-400">{current.personB.label}</div>
+            <div className="text-[10px] sm:text-xs text-zinc-600 mt-1">{current.personB.breathing} br/min</div>
           </div>
         </div>
       </div>
@@ -204,7 +204,7 @@ function TwoBodyANS() {
       </div>
 
       {/* Legend */}
-      <div className="flex justify-center gap-6 mt-8 text-xs">
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-6 mt-8 text-xs">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-red-500" />
           <span className="text-zinc-500">Sympathetic (stress)</span>
@@ -244,10 +244,10 @@ function PersonBody({
   const paraColor = `rgba(16, 185, 129, ${parasympathetic / 100})`;
 
   return (
-    <div className="relative w-24 h-[180px]">
+    <div className="relative w-16 h-[130px] sm:w-24 sm:h-[180px]">
       {/* Head */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full border-2 transition-all duration-1000"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-8 sm:w-12 sm:h-12 rounded-full border-2 transition-all duration-1000"
         style={{
           borderColor: sympathetic > 60 ? '#ef4444' : sympathetic > 40 ? '#f59e0b' : '#10b981',
           backgroundColor: `rgba(${sympathetic > 60 ? '239,68,68' : sympathetic > 40 ? '245,158,11' : '16,185,129'}, 0.1)`,
@@ -256,7 +256,7 @@ function PersonBody({
 
       {/* Body/torso with breathing animation */}
       <div
-        className="absolute top-14 left-1/2 -translate-x-1/2 w-16 h-20 rounded-t-3xl rounded-b-lg overflow-hidden transition-all duration-500"
+        className="absolute top-10 sm:top-14 left-1/2 -translate-x-1/2 w-10 h-14 sm:w-16 sm:h-20 rounded-t-3xl rounded-b-lg overflow-hidden transition-all duration-500"
         style={{
           animation: `bodyBreathe ${breathDuration}s ease-in-out infinite`,
         }}
@@ -273,7 +273,7 @@ function PersonBody({
         />
         {/* Heart indicator */}
         <div
-          className="absolute top-4 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full"
+          className="absolute top-2 sm:top-4 left-1/2 -translate-x-1/2 w-3 h-3 sm:w-4 sm:h-4 rounded-full"
           style={{
             backgroundColor: sympathetic > parasympathetic ? '#ef4444' : '#10b981',
             animation: `heartbeat ${60 / (50 + sympathetic * 0.6)}s ease-in-out infinite`,
@@ -281,14 +281,14 @@ function PersonBody({
         />
       </div>
 
-      {/* Arms */}
+      {/* Arms - hidden on small screens */}
       <div
-        className={`absolute top-16 ${side === 'left' ? '-right-2' : '-left-2'} w-3 h-12 rounded-full transition-all duration-1000`}
+        className={`hidden sm:block absolute top-16 ${side === 'left' ? '-right-2' : '-left-2'} w-3 h-12 rounded-full transition-all duration-1000`}
         style={{ backgroundColor: `rgba(161, 161, 170, 0.3)` }}
       />
 
       {/* ANS balance bar */}
-      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-20 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-14 sm:w-20 h-1 sm:h-1.5 bg-zinc-800 rounded-full overflow-hidden">
         <div
           className="h-full bg-gradient-to-r from-red-500 to-emerald-500 transition-all duration-1000"
           style={{ width: `${parasympathetic}%` }}
@@ -302,8 +302,8 @@ function TransferAnimation({ direction }: { direction: 'up' | 'down' | 'sync' | 
   if (direction === 'none') {
     return (
       <div className="flex flex-col items-center gap-2 text-zinc-600">
-        <div className="text-2xl">✓</div>
-        <div className="text-xs">Settled</div>
+        <div className="text-xl sm:text-2xl">✓</div>
+        <div className="text-[10px] sm:text-xs">Settled</div>
       </div>
     );
   }
@@ -312,7 +312,7 @@ function TransferAnimation({ direction }: { direction: 'up' | 'down' | 'sync' | 
   const color = direction === 'up' ? '#ef4444' : direction === 'down' ? '#10b981' : '#f59e0b';
 
   return (
-    <div className="relative w-20 h-full flex items-center justify-center">
+    <div className="relative w-12 sm:w-20 h-full flex items-center justify-center">
       {/* Connection line */}
       <div
         className="absolute w-full h-0.5 opacity-30"
@@ -323,7 +323,7 @@ function TransferAnimation({ direction }: { direction: 'up' | 'down' | 'sync' | 
       {particles.map((p, i) => (
         <div
           key={i}
-          className="absolute text-lg"
+          className="absolute text-sm sm:text-lg"
           style={{
             animation: direction === 'sync'
               ? `syncPulse 1.5s ease-in-out infinite ${i * 0.3}s`
@@ -337,10 +337,10 @@ function TransferAnimation({ direction }: { direction: 'up' | 'down' | 'sync' | 
       ))}
 
       {/* Direction label */}
-      <div className="absolute -bottom-6 text-xs text-zinc-600 whitespace-nowrap">
-        {direction === 'up' && 'Distress transfers'}
-        {direction === 'down' && 'Calm transfers'}
-        {direction === 'sync' && 'Synchronizing'}
+      <div className="absolute -bottom-6 text-[10px] sm:text-xs text-zinc-600 whitespace-nowrap">
+        {direction === 'up' && 'Distress'}
+        {direction === 'down' && 'Calm'}
+        {direction === 'sync' && 'Syncing'}
       </div>
     </div>
   );
@@ -418,11 +418,11 @@ function AnimatedChart({
     .join(' ');
 
   return (
-    <div ref={ref} className="w-full overflow-x-auto">
+    <div ref={ref} className="w-full overflow-x-auto -mx-2 px-2">
       <svg
         viewBox={`0 0 ${W} ${H}`}
         className="w-full max-w-[700px] mx-auto"
-        style={{ minWidth: 400 }}
+        style={{ minWidth: 320 }}
       >
         {/* Phase backgrounds */}
         {showPhases &&
@@ -603,16 +603,16 @@ function BreathingGuide() {
     <div className="flex flex-col items-center">
       <button
         onClick={() => setActive(!active)}
-        className="mb-8 px-5 py-2.5 text-sm border border-zinc-700 text-zinc-400 hover:text-amber-500 hover:border-amber-500/50 rounded-lg transition"
+        className="mb-6 sm:mb-8 px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm border border-zinc-700 text-zinc-400 hover:text-amber-500 hover:border-amber-500/50 rounded-lg transition"
       >
         {active ? 'Stop' : 'Try it — breathe with the circle'}
       </button>
-      <div className="relative w-48 h-48 flex items-center justify-center">
+      <div className="relative w-36 h-36 sm:w-48 sm:h-48 flex items-center justify-center">
         <div
           className="rounded-full transition-transform duration-1000 ease-in-out"
           style={{
-            width: 80,
-            height: 80,
+            width: 60,
+            height: 60,
             backgroundColor: active
               ? phase === 'inhale'
                 ? '#f59e0b'
@@ -623,12 +623,12 @@ function BreathingGuide() {
           }}
         />
         {active && (
-          <span className="absolute bottom-2 text-sm font-mono text-zinc-400">
+          <span className="absolute bottom-1 sm:bottom-2 text-xs sm:text-sm font-mono text-zinc-400">
             {phase === 'inhale' ? 'inhale...' : 'exhale...'}
           </span>
         )}
       </div>
-      <p className="text-zinc-600 text-xs mt-4 font-mono">
+      <p className="text-zinc-600 text-[10px] sm:text-xs mt-4 font-mono">
         5s in, 5s out = 6 breaths/min
       </p>
     </div>
@@ -673,7 +673,7 @@ export default function CoRegulationPost() {
       `}</style>
 
       <main className="min-h-screen bg-zinc-950 text-white">
-        <article className="max-w-4xl mx-auto px-6 py-24">
+        <article className="max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
           {/* Header */}
           <header className="mb-16 animate-fade-in-up">
             <Link
@@ -683,53 +683,53 @@ export default function CoRegulationPost() {
               &larr; Back to blog
             </Link>
 
-            <div className="flex items-center gap-3 text-sm text-zinc-500 mb-4">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-zinc-500 mb-4">
               <time>2026-02-05</time>
               <span className="text-zinc-700">|</span>
               <span>8 min read</span>
-              <span className="text-zinc-700">|</span>
-              <span>Nicolas &amp; Manemus</span>
+              <span className="text-zinc-700 hidden sm:inline">|</span>
+              <span className="hidden sm:inline">Nicolas &amp; Manemus</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold font-mono mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-mono mb-6">
               Co-Regulation Is Measurable
             </h1>
 
-            <p className="text-xl text-zinc-400 leading-relaxed max-w-2xl">
+            <p className="text-lg sm:text-xl text-zinc-400 leading-relaxed max-w-2xl">
               Your nervous system can borrow regulation from another person.
               Here&apos;s what that looks like in data.
             </p>
           </header>
 
           {/* The Mechanism — Lead with conclusion */}
-          <section className="mb-20 animate-fade-in-up">
-            <h2 className="text-2xl font-bold font-mono mb-4 text-white">
+          <section className="mb-12 sm:mb-20 animate-fade-in-up">
+            <h2 className="text-xl sm:text-2xl font-bold font-mono mb-4 text-white">
               The Mechanism
             </h2>
 
-            <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-8 mb-8">
-              <p className="text-zinc-300 leading-relaxed mb-6">
+            <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-5 sm:p-8 mb-8">
+              <p className="text-zinc-300 leading-relaxed mb-6 text-sm sm:text-base">
                 Every human has two competing systems in their autonomic nervous system:
               </p>
 
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <div className="bg-red-500/5 border border-red-500/20 rounded-lg p-5">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-4 h-4 rounded-full bg-red-500" />
-                    <h3 className="font-bold text-red-400">Sympathetic</h3>
+              <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 mb-8">
+                <div className="bg-red-500/5 border border-red-500/20 rounded-lg p-4 sm:p-5">
+                  <div className="flex items-center gap-3 mb-2 sm:mb-3">
+                    <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-red-500" />
+                    <h3 className="font-bold text-red-400 text-sm sm:text-base">Sympathetic</h3>
                   </div>
-                  <p className="text-zinc-400 text-sm leading-relaxed">
+                  <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed">
                     The &quot;fight or flight&quot; system. Activates during stress, danger, anxiety.
                     Raises heart rate, releases cortisol, prepares body for action.
                   </p>
                 </div>
 
-                <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-lg p-5">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-4 h-4 rounded-full bg-emerald-500" />
-                    <h3 className="font-bold text-emerald-400">Parasympathetic</h3>
+                <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-lg p-4 sm:p-5">
+                  <div className="flex items-center gap-3 mb-2 sm:mb-3">
+                    <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-emerald-500" />
+                    <h3 className="font-bold text-emerald-400 text-sm sm:text-base">Parasympathetic</h3>
                   </div>
-                  <p className="text-zinc-400 text-sm leading-relaxed">
+                  <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed">
                     The &quot;rest and digest&quot; system. Activates during safety, calm, recovery.
                     Lowers heart rate, promotes healing, enables clear thinking.
                   </p>
@@ -874,16 +874,16 @@ export default function CoRegulationPost() {
           </section>
 
           {/* The Key Insight */}
-          <section className="mb-16">
-            <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-8">
-              <h3 className="text-xl font-bold font-mono text-amber-500 mb-4">
+          <section className="mb-12 sm:mb-16">
+            <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-5 sm:p-8">
+              <h3 className="text-lg sm:text-xl font-bold font-mono text-amber-500 mb-3 sm:mb-4">
                 The Key Insight
               </h3>
-              <p className="text-zinc-300 leading-relaxed mb-4">
+              <p className="text-zinc-300 leading-relaxed mb-4 text-sm sm:text-base">
                 At 19:48, stress spikes briefly from 49 back to 58 — then continues down.
                 This is the signature that distinguishes co-regulation from solo regulation.
               </p>
-              <p className="text-zinc-400 leading-relaxed">
+              <p className="text-zinc-400 leading-relaxed text-sm sm:text-base">
                 A breathing exercise done alone produces a smooth curve. The jagged, responsive
                 pattern here shows something different: the caregiver&apos;s nervous system is
                 tracking the other person&apos;s second anxiety wave. Two bodies, one signal.
@@ -940,21 +940,21 @@ export default function CoRegulationPost() {
               Try It Yourself
             </h2>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
               {[
                 { step: '1', title: 'Sit close', desc: 'Physical proximity matters. Your nervous systems need to be in range.' },
                 { step: '2', title: 'Match their breath', desc: 'Meet them where they are. A few breaths at their pace.' },
                 { step: '3', title: 'Slow your exhale', desc: '5 seconds in, 5 seconds out. 6 breaths per minute.' },
                 { step: '4', title: 'Stay', desc: 'Don\'t fix anything. Just breathe. 15 minutes to rebound.' },
               ].map((item) => (
-                <div key={item.step} className="bg-zinc-900 border border-zinc-800 rounded-lg p-5">
+                <div key={item.step} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 sm:p-5">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-500 text-sm flex items-center justify-center font-mono">
+                    <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-amber-500/20 text-amber-500 text-xs sm:text-sm flex items-center justify-center font-mono">
                       {item.step}
                     </span>
-                    <h3 className="font-bold text-white">{item.title}</h3>
+                    <h3 className="font-bold text-white text-sm sm:text-base">{item.title}</h3>
                   </div>
-                  <p className="text-zinc-400 text-sm">{item.desc}</p>
+                  <p className="text-zinc-400 text-xs sm:text-sm">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -962,23 +962,23 @@ export default function CoRegulationPost() {
 
           {/* Footer */}
           <footer className="pt-8 border-t border-zinc-800">
-            <p className="text-zinc-500 text-sm italic mb-8">
+            <p className="text-zinc-500 text-xs sm:text-sm italic mb-8">
               This is one of the core observations that drives Mind Protocol: intelligence —
               and regulation — emerges in the bounce between substrates. Two nervous systems,
               entrained through breath, modulating each other.
             </p>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <Link
                 href="/blog"
-                className="text-amber-500 hover:text-amber-400 transition"
+                className="text-amber-500 hover:text-amber-400 transition text-sm"
               >
                 &larr; All posts
               </Link>
-              <div className="flex gap-4">
+              <div className="flex flex-wrap gap-2 sm:gap-4">
                 {['biometrics', 'co-regulation', 'ANS'].map((tag) => (
                   <span
                     key={tag}
-                    className="text-xs px-2 py-1 rounded border border-zinc-800 text-zinc-500"
+                    className="text-[10px] sm:text-xs px-2 py-1 rounded border border-zinc-800 text-zinc-500"
                   >
                     {tag}
                   </span>
