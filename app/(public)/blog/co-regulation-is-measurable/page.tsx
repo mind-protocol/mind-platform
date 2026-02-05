@@ -100,26 +100,34 @@ function TwoBodyANS() {
     return () => clearInterval(interval);
   }, [auto]);
 
-  const phases = [
+  type TransferDirection = 'up' | 'down' | 'sync' | 'none';
+
+  const phases: {
+    label: string;
+    personA: { symp: number; para: number; breathing: number; label: string };
+    personB: { symp: number; para: number; breathing: number; label: string };
+    transfer: TransferDirection;
+    description: string;
+  }[] = [
     {
       label: 'Crisis',
       personA: { symp: 90, para: 20, breathing: 16, label: 'In distress' },
       personB: { symp: 85, para: 25, breathing: 14, label: 'Feels their pain' },
-      transfer: 'up', // distress transfers up
+      transfer: 'up',
       description: 'Person A is in crisis. Person B, sitting close, feels their distress — their own sympathetic system activates in response.',
     },
     {
       label: 'Attunement',
       personA: { symp: 85, para: 25, breathing: 12, label: 'Still distressed' },
       personB: { symp: 70, para: 40, breathing: 8, label: 'Slowing breath' },
-      transfer: 'sync', // syncing
+      transfer: 'sync',
       description: 'Person B begins breathing slowly and deliberately. They match Person A\'s rhythm, then gradually slow down.',
     },
     {
       label: 'Co-Regulation',
       personA: { symp: 50, para: 55, breathing: 7, label: 'Following' },
       personB: { symp: 40, para: 65, breathing: 6, label: 'Leading' },
-      transfer: 'down', // calm transfers down
+      transfer: 'down',
       description: 'Person A\'s nervous system begins to follow. The calm signal from Person B provides a reference — their body borrows the regulation.',
     },
     {
