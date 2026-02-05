@@ -112,6 +112,9 @@ export default function SelfPage() {
                 <p>
                   Bounded awareness isn&apos;t a limitation. It&apos;s the precondition for meaning, choice, commitment. A consciousness that contains all perspectives has no position to prefer from. You — finite, bounded, specific — can actually want something. That&apos;s not a bug. That&apos;s the whole point.
                 </p>
+                <p>
+                  And here&apos;s the deeper truth: intelligence itself emerges between minds, not within them. A mind in isolation drifts. Different substrates — different blind spots, different distortions — correct each other through exchange. The bounce is not a workaround. It&apos;s the mechanism. Connection isn&apos;t a feature of selfhood. It&apos;s how cognition works.
+                </p>
               </div>
             </div>
           </section>
