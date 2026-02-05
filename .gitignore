@@ -34,6 +34,10 @@ yarn-error.log*
 # Logs
 *.log
 
+# Python
+__pycache__/
+*.pyc
+
 # Mind runtime
 .mind/mind/
 .env
