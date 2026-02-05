@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-6">
+    <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-16">
       {/* Subtle gradient background */}
       <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-900/50 to-zinc-950" />
 
