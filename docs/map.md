@@ -1,6 +1,6 @@
 # Repository Map: mind-platform
 
-*Generated: 2025-12-30 05:22*
+*Generated: 2025-12-30 06:01*
 
 - **Files:** 460
 - **Directories:** 144
@@ -92,10 +92,10 @@
 │   │   └── (..2 more files)
 │   ├── globals.css (642)
 │   └── layout.tsx (728) →
-├── capabilities/ (744.8K)
-│   ├── add-tests/ (57.0K)
-│   │   ├── runtime/ (8.3K)
-│   │   │   ├── checks.py (8.1K)
+├── capabilities/ (745.3K)
+│   ├── add-tests/ (57.4K)
+│   │   ├── runtime/ (8.7K)
+│   │   │   ├── checks.py (8.5K)
 │   │   │   └── (..1 more files)
 │   │   ├── skills/ (3.1K)
 │   │   │   └── SKILL_write_tests.md (3.1K)
@@ -209,7 +209,7 @@
 │   │   └── VOCABULARY.md (2.4K)
 │   ├── implement-code/ (66.5K)
 │   │   ├── runtime/ (13.3K)
-│   │   │   ├── checks.py (13.1K)
+│   │   │   ├── checks.py (13.2K)
 │   │   │   └── (..1 more files)
 │   │   ├── skills/ (3.4K)
 │   │   │   └── SKILL_implement.md (3.4K)
@@ -574,7 +574,7 @@
 │   │   ├── VALIDATION_Platform_Invariants.md (5.5K)
 │   │   └── VOCABULARY_Platform_Terms.md (6.1K)
 │   ├── ARCHITECTURE.md (4.6K)
-│   └── map.md (183.1K)
+│   └── map.md (187.5K)
 ├── l3/
 │   ├── contributions/
 │   │   └── (..2 more files)
@@ -651,7 +651,7 @@
 ├── .mindignore (838)
 ├── AGENTS.md (29.8K)
 ├── README.md (3.3K)
-├── map.md (187.3K)
+├── map.md (187.6K)
 ├── map_app.md (7.2K)
 └── tsconfig.tsbuildinfo (86.9K)
 ```
@@ -5673,6 +5673,8 @@
 - `api/connectome/graph/route.ts`
 - `api/connectome/graphs/route.ts`
 - `api/connectome/search/route.ts`
+- `api/registry/citizens/route.ts`
+- `api/registry/orgs/route.ts`
 - `api/sse/route.ts`
 - `api/stats/route.ts`
 - `app.py`
@@ -5772,6 +5774,8 @@
 - `layout.tsx`
 - `lib/api.ts`
 - `lib/api/client.ts`
+- `lib/auth/jwt.ts`
+- `lib/auth/wallet.ts`
 - `lib/constants/colors.ts`
 - `lib/design/index.ts`
 - `lib/design/tokens.ts`
@@ -5797,6 +5801,7 @@
 - `runtime/capability/loader.py`
 - `runtime/capability/registry.py`
 - `runtime/checks.py`
+- `runtime/driver.py`
 - `runtime/grammar/claim.py`
 - `runtime/grammar/detection.py`
 - `runtime/grammar/execution.py`
