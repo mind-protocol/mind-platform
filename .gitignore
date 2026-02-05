@@ -45,3 +45,6 @@ __pycache__/
 # Mind runtime
 .mind/runtime/
 .env
+
+# Private user data (biometrics, analysis)
+user/
