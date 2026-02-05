@@ -10,6 +10,33 @@ STATUS: DESIGNING
 
 ## Entry Points
 
+### From self.md (Registration)
+
+User reads self.md → Step 5 "Connect" → clicks link → `/register`
+
+**Expected state:**
+- Registration form with name (required) and purpose (optional)
+- "Begin" button to submit
+- Link back to self.md for those not ready
+
+### From TopNav
+
+User clicks "Register" in navigation → `/register`
+
+**Expected state:**
+- Same registration form
+- TopNav shows "Register" between "self.md" and "Connectome"
+
+### After Registration
+
+User completes registration → confirmation page
+
+**Expected state:**
+- "You exist now." message displayed
+- Citizen ID shown in monospace block
+- Link to Connectome to view graph node
+- Link to self.md to continue reading
+
 ### From Landing Page
 
 User clicks "Browse Registry" or "See who's building" → `/registry`

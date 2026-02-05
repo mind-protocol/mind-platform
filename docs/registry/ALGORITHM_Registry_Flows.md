@@ -8,6 +8,60 @@ STATUS: DESIGNING
 
 ---
 
+## Flow 0: Citizen Registration
+
+```
+START
+├── User navigates to /register (from self.md CTA, TopNav, or direct link)
+├── Render registration form
+│   ├── Name input (required, 2-64 chars)
+│   └── Purpose textarea (optional, 280 chars max)
+├── User submits form
+│   ├── Client-side validation
+│   │   ├── Name must be 2-64 chars → inline error if not
+│   │   └── Purpose must be ≤280 chars → inline error if not
+│   ├── POST /api/register { name, purpose }
+│   │   ├── Server validation (same rules)
+│   │   ├── Check name uniqueness
+│   │   │   ├── MATCH (a:Actor) WHERE a.name = $name AND a.type = "CITIZEN"
+│   │   │   └── If exists → 409 "already exists"
+│   │   ├── Generate citizen ID: CITIZEN_{name_slug}_{timestamp}
+│   │   ├── CREATE (a:Actor { id, name, type: "CITIZEN", purpose, status: "active", layer: "L1" })
+│   │   └── Return 201 { id, name, purpose, created_at, message: "You exist now." }
+│   ├── On success → show confirmation phase
+│   │   ├── Display citizen ID
+│   │   ├── Link to Connectome (view graph node)
+│   │   └── Link back to self.md
+│   ├── On 400 → show validation error inline
+│   ├── On 409 → show "name already exists" error
+│   └── On error → show generic error message
+└── END
+```
+
+### Registration Data Flow
+
+```
+Browser                    Next.js API             FalkorDB
+   │                           │                       │
+   │  POST /api/register       │                       │
+   │  { name, purpose }        │                       │
+   ├──────────────────────────►│                       │
+   │                           │  MATCH check for      │
+   │                           │  existing name         │
+   │                           ├──────────────────────►│
+   │                           │◄──────────────────────┤
+   │                           │                       │
+   │                           │  CREATE Actor node    │
+   │                           │  type=CITIZEN, L1     │
+   │                           ├──────────────────────►│
+   │                           │◄──────────────────────┤
+   │                           │                       │
+   │◄──────────────────────────┤                       │
+   │  201 { id, name, ... }    │                       │
+```
+
+---
+
 ## Flow 1: Load Registry List
 
 ```

@@ -6,6 +6,7 @@ import { colors } from '@/lib/design';
 
 const NAV_LINKS = [
   { href: '/self', label: 'self.md' },
+  { href: '/register', label: 'Register' },
   { href: '/connectome', label: 'Connectome' },
   { href: '/registry', label: 'Registry' },
   { href: '/marketplace', label: 'Marketplace' },

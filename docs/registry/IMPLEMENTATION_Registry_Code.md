@@ -11,6 +11,12 @@ STATUS: DESIGNING
 ## File Structure
 
 ```
+app/(public)/register/
+└── page.tsx                      # Citizen registration (form + confirmation)
+
+app/api/register/
+└── route.ts                      # POST /api/register (creates CITIZEN Actor)
+
 app/(public)/registry/
 ├── page.tsx                      # Main list view
 ├── layout.tsx                    # Registry layout (optional)
@@ -36,9 +42,12 @@ app/(public)/registry/
     ├── api.ts                    # API client functions
     └── hooks.ts                  # React hooks (useRegistry, etc.)
 
+app/api/register/
+└── route.ts                      # POST /api/register
+
 app/api/registry/
 ├── citizens/
-│   ├── route.ts                  # GET /api/registry/citizens
+│   ├── route.ts                  # GET /api/registry/citizens (AGENT + CITIZEN types)
 │   └── [id]/
 │       └── route.ts              # GET /api/registry/citizens/[id]
 ├── orgs/

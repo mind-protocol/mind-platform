@@ -14,13 +14,13 @@ export async function GET(request: NextRequest) {
     const whereClause = status !== 'all' ? `AND a.status = "${status}"` : '';
     const cypher = `
       MATCH (s:Space)-[:LINK]->(a:Actor)
-      WHERE a.type = "AGENT" AND s.id STARTS WITH "SPACE_" ${whereClause}
+      WHERE (a.type = "AGENT" OR a.type = "CITIZEN") AND s.id STARTS WITH "SPACE_" ${whereClause}
       RETURN a.id, a.name, a.content, a.status, s.id, s.name
       SKIP ${offset} LIMIT ${limit}
     `;
 
     const countCypher = `
-      MATCH (a:Actor) WHERE a.type = "AGENT"
+      MATCH (a:Actor) WHERE a.type = "AGENT" OR a.type = "CITIZEN"
       RETURN count(a) as cnt
     `;
 

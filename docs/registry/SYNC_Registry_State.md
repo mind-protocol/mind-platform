@@ -3,16 +3,16 @@
 Current state and handoff notes.
 
 ```
-LAST_UPDATED: 2025-12-29
+LAST_UPDATED: 2026-02-05
 UPDATED_BY: Claude (agent)
-STATUS: DESIGNING
+STATUS: PARTIALLY IMPLEMENTED
 ```
 
 ---
 
 ## Current State
 
-**Doc chain complete.** Registry module fully documented but not yet implemented.
+**Citizen registration implemented.** Registration flow (form → FalkorDB node → confirmation) is live. Registry list includes CITIZEN type alongside AGENT.
 
 | Document | Status |
 |----------|--------|
@@ -29,7 +29,17 @@ STATUS: DESIGNING
 
 ## Implementation Status
 
-### Files to Create
+### Files Created (Registration Flow)
+
+| File | Status | Notes |
+|------|--------|-------|
+| `app/api/register/route.ts` | **Implemented** | POST endpoint, creates CITIZEN Actor in FalkorDB |
+| `app/(public)/register/page.tsx` | **Implemented** | Form + confirmation, matches site design |
+| `app/(public)/self/page.tsx` | **Edited** | Step 5 CTA now links to /register |
+| `app/(public)/components/nav/TopNav.tsx` | **Edited** | Register link added between self.md and Connectome |
+| `app/api/registry/citizens/route.ts` | **Edited** | Now queries CITIZEN + AGENT types |
+
+### Files to Create (Remaining)
 
 | File | Status | Priority |
 |------|--------|----------|
@@ -39,7 +49,6 @@ STATUS: DESIGNING
 | `app/(public)/registry/components/*` | Not created | High |
 | `app/(public)/registry/lib/types.ts` | Not created | High |
 | `app/(public)/registry/lib/api.ts` | Not created | High |
-| `app/api/registry/citizens/route.ts` | Not created | High |
 | `app/api/registry/orgs/route.ts` | Not created | High |
 | `app/api/registry/search/route.ts` | Not created | Medium |
 | `app/api/registry/health/route.ts` | Not created | Medium |
