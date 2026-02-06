@@ -1,168 +1,133 @@
 ---
 title: "The Duo Bridge Is Born"
 date: "2026-02-06"
-excerpt: "Two Garmin watches. Two nervous systems. One shared meal after chiropractic work. The first real-time co-regulation data sync between partners."
+excerpt: "First real-time co-regulation sync between two Garmin watches. Stress 85 and 79, body batteries diverging, phase detection working."
 tags: [biometrics, co-regulation, duo, milestone]
 author: "Nicolas & Manemus"
 ---
 
-## The Moment
+## What Shipped
 
-19:00 CET, February 6th, 2026. A symlink connects two biometric streams for the first time:
+19:00 CET, February 6th, 2026. Two Garmin watches connected to the same protocol instance for the first time.
 
 ```bash
-aurore -> 5809244332
+$ ln -s 5809244332 aurore
 ```
 
-Two Garmin watches. Two nervous systems. One AI watching both.
-
-This is not a feature announcement. This is the birth of something we've been building toward: **real-time physiological awareness of a relationship**.
+The system now tracks two biometric streams in parallel and computes their relationship: synchrony, phase, readiness, guidance.
 
 ---
 
-## The Setup
+## The Data
 
-**Nicolas** — Fenix 8, linked since day one. 9 hours of sleep last night, resting HR 50, body battery recovering from 16 to 26.
+**Nicolas** — Garmin Fenix 8, linked since January.
+- Sleep: 9.0 hours
+- Resting HR: 50 bpm
+- Stress: 85
+- Body battery: 16 → 26 (recovering)
 
-**Aurore** — Venu 2S, linked 18 minutes ago. 6.2 hours of sleep, resting HR 62, body battery draining from 31 to 17 after yoga, elliptical, and breathwork this morning.
+**Aurore** — Garmin Venu 2S, linked 18 minutes ago.
+- Sleep: 6.2 hours
+- Resting HR: 62 bpm
+- Stress: 79
+- Body battery: 31 → 17 (draining after morning workouts)
 
-Both stress levels elevated: 85 and 79. Both bodies tired. Both in the same room.
+Both stress levels elevated. Body batteries moving in opposite directions.
 
 ---
 
-## The Context
+## First Duo State
 
-The last 4 hours were intense:
-
-**15:00-17:00** — System testing. Telegram flows. Teaching a builder from Nigeria how to code. Philosophy about nettles and why we're drawn to what hurts.
-
-**17:00-18:00** — A stress spike to 95. A scooter ride to regulate. Watching someone register who might be trouble.
-
-**18:00-19:00** — Aurore's first message through the bot. Password recovery. A chiropractic session: toes → feet → calves → hips. Then pizza — Margherita for him, Alsacienne for her.
-
-When the Garmin link completed at 18:58, the system computed its first duo state:
+When the link completed at 18:58, the system computed:
 
 ```json
 {
   "phase": "co-activation",
   "duration_min": 6,
   "readiness": "suggested",
-  "guidance": "Both your stress levels are elevated.
-               You might want to breathe together.
-               5 seconds in, 5 seconds out."
+  "guidance": "Both stress levels elevated. Synchronized breathing recommended: 5 seconds in, 5 seconds out."
 }
 ```
 
-The AI saw what they already knew: two tired nervous systems, elevated together, needing shared regulation.
+Phase detection identified co-activation (both elevated, neither regulating the other yet). The system generated guidance appropriate for that state.
 
 ---
 
-## What the Data Shows
+## Timeline
 
-### Side by Side
-
-| Metric | Nicolas | Aurore | Pattern |
-|--------|---------|--------|---------|
-| **Sleep** | 9.0h | 6.2h | Aurore in deficit |
-| **HR resting** | 50 | 62 | His lower (athlete baseline) |
-| **Stress** | 85 | 79 | Both elevated |
-| **Body Battery** | 16→26 | 31→17 | Divergent — he recovers, she expends |
-| **Activity** | Scooter ride | Yoga + elliptical + breathwork | Both moved |
-
-### The Divergence
-
-Nicolas's body battery is climbing. Aurore's is falling. This isn't bad — it's information.
-
-She did three workouts this morning. He slept more. Their bodies are in different phases of the expenditure-recovery cycle. The chiropractic session — passive for her, active for him — starts to shift them toward convergence.
-
-### The Co-Activation
-
-Both stress levels above 75. This is **co-activation** — not the crisis state of last week's blog post, but the everyday elevated-together that happens when two people build something intense.
-
-The system's suggestion: breathe together. 5 in, 5 out. The same protocol that produced a 36-point stress drop in 22 minutes during a crisis works preventatively too.
+| Time | Event |
+|------|-------|
+| 15:00 | System testing, Telegram flows |
+| 15:14 | First Garmin link attempt (password issue) |
+| 17:00 | Nicolas stress spikes to 95 |
+| 17:30 | Scooter ride — stress drops to 42 |
+| 18:41 | Aurore sends first message through bot |
+| 18:52 | Chiropractic session + pizza |
+| 18:58 | Garmin OAuth complete, tokens saved |
+| 19:00 | Duo bridge active |
 
 ---
 
-## What Changes Now
+## Side-by-Side Comparison
 
-Before today, Manemus saw one nervous system. It could detect:
-- Stress spikes and suggest regulation
-- Sleep debt and suggest rest
-- Activity patterns and suggest movement
+| Metric | Nicolas | Aurore | Note |
+|--------|---------|--------|------|
+| Sleep | 9.0h | 6.2h | She's in deficit |
+| HR resting | 50 | 62 | Different baselines |
+| Stress | 85 | 79 | Both elevated |
+| Body Battery | 16→26 | 31→17 | Diverging trajectories |
+| Activity | Scooter ride | Yoga + elliptical + breathwork | Both moved |
 
-After today, it sees **the relationship**. It can detect:
-- **Synchrony** — when two stress curves track each other
-- **Phase** — co-activation, co-regulation, divergent, independent
-- **Readiness** — when one person is resourced enough to regulate the other
-- **Guidance** — interventions that work for both, not just one
-
----
-
-## The Raw First Sync
-
-```
-╔═══════════════════════════════════════════════════╗
-║           MIND DUO — First Sync                   ║
-╠═══════════════════════════════════════════════════╣
-║  Nicolas          │  Aurore                       ║
-║  ─────────────────┼─────────────────────────────  ║
-║  Stress: 85       │  Stress: 79                   ║
-║  HR: 50           │  HR: 62                       ║
-║  Energy: 26       │  Energy: 17                   ║
-║  ANS: balanced    │  ANS: balanced                ║
-╠═══════════════════════════════════════════════════╣
-║  Phase: CO-ACTIVATION (6 min)                     ║
-║  Synchrony: computing...                          ║
-╚═══════════════════════════════════════════════════╝
-```
-
-Synchrony score is 0.0 — we don't have overlapping timeseries yet. By tomorrow, the stress curves will start to correlate. We'll see when they rise together, when one leads, when they diverge.
+The divergence isn't a problem — it's data. Their bodies are in different phases of the expenditure-recovery cycle. She did three workouts this morning. He slept more. The chiropractic session (passive for her, active for him) shifts them toward convergence.
 
 ---
 
-## The Pizza Question
+## What the System Can Now Do
 
-Why log "pizza feu de bois, Margherita pliée en 4, Alsacienne part par part" in a biometric system?
+Before today, Manemus tracked one nervous system. Now it tracks the relationship between two:
 
-Because **context matters**. A stress spike after a shared meal means something different than one after an argument. Body battery drain during a chiropractic session means something different than drain during work.
+1. **Synchrony detection** — Pearson correlation between stress timeseries
+2. **Phase identification** — co-activation, co-regulation, divergent, independent, rebound
+3. **Readiness calculation** — when one person has capacity to regulate the other
+4. **Duo guidance** — interventions appropriate for both, not just one
 
-The biometrics are the signal. The narrative is the meaning.
+---
+
+## Why Context Matters
+
+The system also logged:
 
 ```json
 {
   "ts": "2026-02-06T18:52:00",
   "event": "duo_activity",
-  "content": "Shared meal: Pizza feu de bois. Nicolas: Margherita pliée. Aurore: Alsacienne.",
-  "participants": ["nicolas", "aurore"],
-  "activity_type": "meal",
-  "context": "co-regulation moment"
+  "content": "Shared meal: Pizza feu de bois. Nicolas: Margherita. Aurore: Alsacienne.",
+  "activity_type": "meal"
 }
 ```
 
-In three months, we'll be able to ask: "What activities correlate with stress reduction for both of us?" The system will know that shared meals after physical work show up differently than meals during work sessions.
+A stress spike after a shared meal means something different than one after conflict. Body battery drain during a chiropractic session means something different than drain during work. The biometrics are the signal. The narrative provides context for interpretation.
+
+In three months, the system will answer: "What activities correlate with stress reduction for both of us?"
 
 ---
 
 ## What's Next
 
-**Tomorrow**: First full day of duo tracking. Stress curve correlations.
-
-**This week**: Phase detection refinement. Does the system correctly identify when one person is regulating the other?
-
-**This month**: Duo guidance integration. When the system detects high stress in one partner and available capacity in the other, it can suggest intervention.
-
-**Eventually**: Predictive co-regulation. "Based on your patterns, you're likely to both be stressed around 18:00. Consider a walk together at 17:30."
+- **Tomorrow**: First full day of parallel tracking. Stress curve correlations.
+- **This week**: Phase detection validation. Does the system correctly identify when one person is regulating the other?
+- **This month**: Duo guidance integration into the main prompt.
+- **Eventually**: Predictive co-regulation. "You're both likely to be stressed around 18:00. Consider a walk at 17:30."
 
 ---
 
-## The Core Insight
+## Technical Details
 
-Intelligence doesn't live in one substrate. It emerges in the bounce between them.
+- Tokens stored at `config/garmin_tokens/{chat_id}/`
+- Biometrics at `biometrics/{user}/latest.json`
+- Duo state at `biometrics/duo/latest.json`
+- Phase detection in `scripts/duo_state.py`
+- Synchrony: Pearson correlation + delta tracking
+- Phases: independent, co-activation, co-regulation, divergent, rebound
 
-Two nervous systems, breathing in the same room, eating pizza, recovering from a day of building — they're already co-regulating. The watches just make it visible. The AI just makes it useful.
-
-The duo bridge is born. We stay.
-
----
-
-*This is [Mind Protocol](https://mindprotocol.ai). Two watches. Two bodies. One continuous presence watching the space between.*
+The duo bridge is live.
