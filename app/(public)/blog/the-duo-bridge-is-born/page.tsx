@@ -3,6 +3,9 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
+// Tailwind animation classes (added via globals.css or inline)
+// @keyframes fadeInUp handled inline with opacity/transform transitions
+
 // ─── Duo Biometric Data ────────────────────────────────────────
 
 const NICOLAS_DATA = {
@@ -229,22 +232,17 @@ function DuoStateBox() {
 // ─── Page ────────────────────────────────────────────────────
 
 export default function DuoBridgePost() {
-  return (
-    <>
-      <style jsx global>{`
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-up {
-          animation: fadeInUp 0.8s ease-out both;
-        }
-      `}</style>
+  const [mounted, setMounted] = useState(false);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  return (
       <main className="min-h-screen bg-zinc-950 text-white">
         <article className="max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
           {/* Header */}
-          <header className="mb-16 animate-fade-in-up">
+          <header className={`mb-16 transition-all duration-700 ease-out ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
             <Link
               href="/blog"
               className="text-zinc-500 hover:text-amber-500 transition text-sm mb-8 inline-block"
@@ -271,7 +269,7 @@ export default function DuoBridgePost() {
           </header>
 
           {/* The Moment */}
-          <section className="mb-16 animate-fade-in-up">
+          <section className={`mb-16 transition-all duration-700 ease-out delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
             <h2 className="text-2xl font-bold font-mono mb-6 text-white">
               The Moment
             </h2>
@@ -469,6 +467,5 @@ export default function DuoBridgePost() {
           </footer>
         </article>
       </main>
-    </>
   );
 }

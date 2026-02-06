@@ -8,7 +8,7 @@ interface Props {
 }
 
 // Routes with custom JSX pages — exclude from dynamic generation
-const CUSTOM_ROUTES = ['co-regulation-is-measurable'];
+const CUSTOM_ROUTES = ['co-regulation-is-measurable', 'the-duo-bridge-is-born'];
 
 export async function generateStaticParams() {
   return getAllSlugs()
