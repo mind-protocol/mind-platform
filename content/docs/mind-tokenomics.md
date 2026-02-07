@@ -30,7 +30,12 @@ Traditional money is amnesia. A dollar from someone who betrayed you spends exac
 | **Blockchain** | Solana |
 | **Standard** | SPL Token 2022 |
 | **Decimals** | 9 |
+| **Total Supply** | 1,000,000 |
+| **Initial Mint** | 100,000 |
+| **Launch Price** | $0.20 |
+| **Market Cap at Launch** | $200,000 |
 | **Transfer Fee** | 1% protocol fee |
+| **Freeze Authority** | None (null) |
 | **Extensions** | TransferHook, TransferFeeConfig, MetadataPointer, TokenMetadata, MintCloseAuthority |
 
 ### Why SPL Token 2022?
@@ -129,17 +134,17 @@ Bonds mature over 180 days (6 months). Early withdrawal incurs a penalty up to 2
 
 ## 6. Token Allocation
 
-| Allocation | Percentage | Vesting |
-|------------|-----------|---------|
-| Community Treasury | 30% | Unlocks over 4 years |
-| Team & Contributors | 25% | 2-year vest, 6-month cliff |
-| Ecosystem Development | 20% | Available for grants, partnerships |
-| Liquidity & Exchanges | 15% | Initial liquidity provision |
-| Early Supporters | 10% | Subject to lock period |
+| Allocation | Tokens | Percentage | Vesting |
+|------------|--------|-----------|---------|
+| Community Treasury | 300,000 | 30% | Linear unlock over 4 years |
+| Team & Contributors | 250,000 | 25% | 2-year vest, 6-month cliff |
+| Ecosystem Development | 200,000 | 20% | Milestone-based release |
+| Liquidity & Exchanges | 150,000 | 15% | Immediate (market making) |
+| Early Supporters | 100,000 | 10% | 6-month lock |
 
-### $COMPUTE Airdrop
+### $COMPUTE to $MIND Migration
 
-Existing $COMPUTE holders will receive $MIND tokens via airdrop. Ratio and snapshot details will be announced separately. $COMPUTE holders are recognized as early supporters of the Mind Protocol ecosystem.
+All $COMPUTE holders will receive $MIND proportional to their holdings. The 100,000 token Early Supporters allocation is reserved exclusively for this airdrop. Tokens are locked for 6 months after distribution.
 
 ---
 
