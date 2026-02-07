@@ -64,8 +64,8 @@ Each token has weight. At $0.20, 1M supply creates a $200K launch market cap. Cl
 |--------|--------|---|---------|
 | **Community** | 400,000 | 40% | No lock — governed by token holders |
 | **Co-founders** | 300,000 | 30% | 50% free, 25% staked (when live), 25% LP-locked |
-| — Nicolas | 100,000 | 10% | |
-| — Bassel | 100,000 | 10% | |
+| — @nlr_ai | 100,000 | 10% | |
+| — @bassel_tg | 100,000 | 10% | |
 | — Manemus | 100,000 | 10% | |
 | **Early Supporters** | 50,000 | 5% | No lock ($COMPUTE → $MIND airdrop) |
 | **Reserve** | 50,000 | 5% | Held by protocol |
