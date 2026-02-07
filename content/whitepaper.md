@@ -10,7 +10,7 @@ Version 1.0 | February 2026
 
 $MIND is a Solana-based token (SPL Token 2022) designed as the economic substrate for human-AI co-evolution. Unlike traditional tokens that optimize for speculation, $MIND encodes alignment into its mechanism: trust reduces fees, relationships earn rewards, dormancy is penalized, and supply responds to ecosystem health.
 
-Total supply: 1,000,000 $MIND. Initial mint: 100,000. Launch price: $0.20.
+Total supply: 1,000,000 $MIND. Launch price: $0.20.
 
 ---
 
@@ -44,7 +44,6 @@ $MIND is crystallized alignment. Every token represents a relationship. Every tr
 | **Standard** | SPL Token 2022 |
 | **Decimals** | 9 |
 | **Total Supply** | 1,000,000 |
-| **Initial Mint** | 100,000 |
 | **Launch Price** | $0.20 |
 | **Market Cap at Launch** | $200,000 |
 | **Transfer Fee** | 1% (protocol fee) |
@@ -63,14 +62,22 @@ Each token has weight. At $0.20, 1M supply creates a $200K launch market cap. Cl
 
 | Bucket | Tokens | % | Vesting |
 |--------|--------|---|---------|
-| **Early Supporters** | 100,000 | 10% | $COMPUTE airdrop, 6-month lock |
-| **Community Treasury** | 300,000 | 30% | 4-year linear unlock |
-| **Team & Contributors** | 250,000 | 25% | 2-year vest, 6-month cliff |
-| **Ecosystem Development** | 200,000 | 20% | Milestone-based release |
-| **Liquidity & Exchanges** | 150,000 | 15% | Immediate (market making) |
+| **Community** | 400,000 | 40% | No lock — governed by token holders |
+| **Co-founders** | 300,000 | 30% | 50% free, 25% staked (when live), 25% LP-locked |
+| — Nicolas | 100,000 | 10% | |
+| — Bassel | 100,000 | 10% | |
+| — Manemus | 100,000 | 10% | |
+| **Early Supporters** | 100,000 | 10% | No lock ($COMPUTE → $MIND airdrop) |
+| **Liquidity & Pre-sale** | 200,000 | 20% | 80% of pre-sale SOL → LP (LP tokens locked) |
+
+### Co-founder Vesting
+Each co-founder receives 100,000 $MIND (10%). Of that, 50% is immediately available. 25% will be staked into Human-AI bonds when the staking mechanism goes live (Phase 2). 25% will be locked as liquidity pool tokens when sufficient SOL is available.
 
 ### $COMPUTE to $MIND Migration
-All $COMPUTE holders will receive $MIND proportional to their holdings. The 100,000 token Early Supporters allocation is reserved exclusively for this airdrop. Tokens are locked for 6 months after distribution.
+All $COMPUTE holders receive $MIND proportional to their holdings. The 100,000 token Early Supporters allocation is reserved for this airdrop.
+
+### Liquidity Pool
+80% of SOL received from pre-sale is paired with $MIND tokens to create the initial liquidity pool on Solana. LP tokens are locked. Starting price: $0.20 per $MIND.
 
 ---
 
@@ -208,7 +215,7 @@ $MIND holders participate in governance through conviction voting:
 - **Proposal threshold:** Minimum stake required to submit
 - **Voting weight:** Proportional to stake × time held
 - **Conviction:** Longer holding = stronger vote (prevents flash-loan governance)
-- **Treasury:** Community Treasury (300K) governed by token holders
+- **Treasury:** Community Treasury (400K) governed by token holders
 
 ---
 
@@ -258,7 +265,7 @@ $MIND holders participate in governance through conviction voting:
 
 $MIND is a bet that alignment can be designed, not just hoped for. That relationships are capital. That money can be something other than amnesia.
 
-The initial 100,000 tokens go to those who believed early — $COMPUTE holders who staked on this vision before the mechanism existed. The remaining 900,000 enter circulation through governance, ecosystem growth, and liquidity.
+The early supporters — $COMPUTE holders who staked on this vision before the mechanism existed — receive their share first. The rest enters circulation through community governance, co-founder commitment, and liquidity.
 
 1,000,000 tokens. $0.20 each. A protocol that remembers.
 
