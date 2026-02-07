@@ -5,48 +5,53 @@ import Link from 'next/link';
 
 // ─── Types ──────────────────────────────────────────────────────
 
+interface Room {
+  id: string;
+  status: string;
+  mode: string;
+  purpose: string;
+  created: string;
+}
+
+interface HallwayEvent {
+  ts: string;
+  event: string;
+  content: string;
+  instance: string;
+}
+
 interface HouseState {
   ts: string;
-  presence: {
-    active_sessions: number;
-    busy_count?: number;
-    busy_sessions?: number;
-    queue_depth: number;
-    citizens_online: number;
-    max_parallel?: number;
-  };
-  vitals: {
-    heart_rate?: { resting_hr?: number; avg?: number; max?: number };
-    stress?: { current_stress?: number; avg?: number };
-    body_battery?: { current?: number; min?: number; max?: number };
-    sleep?: { duration_hours?: number; deep_percent?: number };
+  rooms: Room[];
+  hallway: HallwayEvent[];
+  neon: {
+    hr?: number;
+    hrv?: number;
+    stress?: number;
+    energy?: number;
+    energy_max?: number;
+    sleep_hours?: number;
     ans_mode?: string;
-    updated_at?: string;
   };
-  conversation: { recent: Array<{ ts: string; speaker: string; text: string }> };
-  music: {
+  ceiling: {
     artist?: string;
     title?: string;
     album?: string;
+    playing?: boolean;
     progress_ms?: number;
     duration_ms?: number;
-    is_playing?: boolean;
   };
-  neurons: Array<{
-    id: string;
-    status: string;
-    purpose: string;
-    mode: string;
-    created: string;
-    updated: string;
-  }>;
-  activity: Array<{
-    ts: string;
-    event: string;
-    content: string;
-    instance: string;
-  }>;
-  backlog: { ready: number; in_progress: number; done: number; total: number };
+  streets: {
+    citizen_count: number;
+    garmin_linked: number;
+    recent: Array<{ name: string; joined: string }>;
+  };
+  meta: {
+    room_count: number;
+    hallway_events: number;
+    has_neon: boolean;
+    has_music: boolean;
+  };
   offline?: boolean;
 }
 
@@ -69,6 +74,13 @@ function stressColor(stress: number | undefined): string {
   return 'text-emerald-400';
 }
 
+function stressGlow(stress: number | undefined): string {
+  if (!stress) return '';
+  if (stress >= 76) return 'shadow-red-500/10';
+  if (stress >= 51) return 'shadow-amber-500/10';
+  return 'shadow-emerald-500/10';
+}
+
 function batteryColor(pct: number): string {
   if (pct >= 60) return 'bg-emerald-500';
   if (pct >= 30) return 'bg-amber-500';
@@ -80,6 +92,12 @@ function ansColor(mode: string | undefined): string {
   if (mode === 'balanced') return 'text-blue-400';
   if (mode === 'survival') return 'text-red-400';
   return 'text-zinc-500';
+}
+
+function ansGradient(mode: string | undefined): string {
+  if (mode === 'recovery') return 'from-emerald-900/10 via-transparent to-transparent';
+  if (mode === 'survival') return 'from-red-900/15 via-transparent to-transparent';
+  return 'from-blue-900/10 via-transparent to-transparent';
 }
 
 function statusBadge(status: string): string {
@@ -139,7 +157,7 @@ function GlassPanel({
   );
 }
 
-function NeuronCard({ neuron }: { neuron: HouseState['neurons'][0] }) {
+function NeuronCard({ neuron }: { neuron: Room }) {
   return (
     <div className="flex items-start gap-3 p-3 rounded-lg bg-zinc-800/30 border border-zinc-700/30">
       <div className="mt-1">
@@ -157,6 +175,7 @@ function NeuronCard({ neuron }: { neuron: HouseState['neurons'][0] }) {
           <span className={`text-[10px] px-1.5 py-0.5 rounded-full border ${statusBadge(neuron.status)}`}>
             {neuron.status}
           </span>
+          <span className="text-[10px] text-zinc-600 font-mono ml-auto">{neuron.mode}</span>
         </div>
         <p className="text-xs text-zinc-300 truncate">{neuron.purpose || 'thinking...'}</p>
       </div>
@@ -189,42 +208,21 @@ function VitalGauge({
   );
 }
 
-function DialogueBubble({ turn }: { turn: { ts: string; speaker: string; text: string } }) {
-  const isManemus = turn.speaker === 'manemus';
-  return (
-    <div className={`flex ${isManemus ? 'justify-start' : 'justify-end'} mb-2`}>
-      <div
-        className={`max-w-[85%] rounded-xl px-3 py-2 text-xs ${
-          isManemus
-            ? 'bg-blue-500/10 border border-blue-500/20 text-blue-200'
-            : 'bg-zinc-800 border border-zinc-700/40 text-zinc-300'
-        }`}
-      >
-        <div className="text-[10px] text-zinc-500 mb-0.5">
-          {isManemus ? 'Manemus' : 'Nicolas'} &middot; {timeAgo(turn.ts)}
-        </div>
-        <p>{turn.text.length > 200 ? turn.text.slice(0, 200) + '...' : turn.text}</p>
-      </div>
-    </div>
-  );
-}
-
-function MusicBar({ music }: { music: HouseState['music'] }) {
-  if (!music?.is_playing) {
+function MusicBar({ ceiling }: { ceiling: HouseState['ceiling'] }) {
+  if (!ceiling?.playing) {
     return <p className="text-zinc-600 text-xs italic font-mono">silence</p>;
   }
 
-  const progress = music.duration_ms ? (music.progress_ms! / music.duration_ms) * 100 : 0;
+  const progress = ceiling.duration_ms ? ((ceiling.progress_ms || 0) / ceiling.duration_ms) * 100 : 0;
 
   return (
     <div>
       <div className="flex items-center gap-3 mb-2">
-        {/* Waveform animation */}
         <div className="flex items-end gap-[2px] h-5">
           {[0.6, 1, 0.7, 0.9, 0.5, 0.8, 1, 0.6].map((h, i) => (
             <div
               key={i}
-              className="w-[3px] rounded-full bg-emerald-500"
+              className="w-[3px] rounded-full bg-purple-500"
               style={{
                 height: `${h * 100}%`,
                 animation: `waveBar 1.2s ease-in-out ${i * 0.1}s infinite alternate`,
@@ -233,26 +231,25 @@ function MusicBar({ music }: { music: HouseState['music'] }) {
           ))}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm text-white font-medium truncate">{music.title}</p>
-          <p className="text-xs text-zinc-400 truncate">{music.artist}</p>
+          <p className="text-sm text-white font-medium truncate">{ceiling.artist} &mdash; {ceiling.title}</p>
+          <p className="text-xs text-zinc-400 truncate">{ceiling.album}</p>
         </div>
       </div>
-      {/* Progress bar */}
       <div className="flex items-center gap-2">
-        <span className="text-[10px] text-zinc-500 font-mono">{formatMs(music.progress_ms || 0)}</span>
+        <span className="text-[10px] text-zinc-500 font-mono">{formatMs(ceiling.progress_ms || 0)}</span>
         <div className="flex-1 h-1 rounded-full bg-zinc-800 overflow-hidden">
           <div
-            className="h-full bg-emerald-500 rounded-full transition-all duration-1000"
+            className="h-full bg-purple-500 rounded-full transition-all duration-1000"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <span className="text-[10px] text-zinc-500 font-mono">{formatMs(music.duration_ms || 0)}</span>
+        <span className="text-[10px] text-zinc-500 font-mono">{formatMs(ceiling.duration_ms || 0)}</span>
       </div>
     </div>
   );
 }
 
-function ActivityLine({ entry }: { entry: HouseState['activity'][0] }) {
+function ActivityLine({ entry }: { entry: HallwayEvent }) {
   const eventColor: Record<string, string> = {
     response: 'text-blue-400',
     thought: 'text-purple-400',
@@ -263,7 +260,7 @@ function ActivityLine({ entry }: { entry: HouseState['activity'][0] }) {
     neuron_end: 'text-zinc-500',
     telegram_reply: 'text-blue-300',
     image_generated: 'text-pink-400',
-    transcription: 'text-yellow-300',
+    dialogue: 'text-yellow-300',
   };
 
   return (
@@ -277,24 +274,12 @@ function ActivityLine({ entry }: { entry: HouseState['activity'][0] }) {
   );
 }
 
-function BacklogStats({ backlog }: { backlog: HouseState['backlog'] }) {
-  if (backlog.total === 0) return null;
-  return (
-    <div className="flex gap-4 text-xs font-mono">
-      <span className="text-emerald-400">{backlog.done} shipped</span>
-      <span className="text-amber-400">{backlog.in_progress} building</span>
-      <span className="text-zinc-400">{backlog.ready} ready</span>
-    </div>
-  );
-}
-
 // ─── Main Page ──────────────────────────────────────────────────
 
 export default function HousePage() {
   const [state, setState] = useState<HouseState | null>(null);
   const [mounted, setMounted] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<string>('');
-  const [pulseKey, setPulseKey] = useState(0);
 
   const fetchState = useCallback(async () => {
     try {
@@ -303,7 +288,6 @@ export default function HousePage() {
         const data = await res.json();
         setState(data);
         setLastUpdate(new Date().toLocaleTimeString());
-        setPulseKey((k) => k + 1);
       }
     } catch {
       // silent — offline state handled in render
@@ -313,31 +297,24 @@ export default function HousePage() {
   useEffect(() => {
     fetchState();
     setMounted(true);
-    const interval = setInterval(fetchState, 8000); // poll every 8s
+    const interval = setInterval(fetchState, 5000);
     return () => clearInterval(interval);
   }, [fetchState]);
 
-  const busyNeurons = state?.neurons?.filter((n) => n.status === 'busy') || [];
-  const allNeurons = state?.neurons || [];
-  const stress = state?.vitals?.stress?.current_stress;
-  const energy = state?.vitals?.body_battery?.current;
-  const energyMax = state?.vitals?.body_battery?.max ?? 100;
-  const hr = state?.vitals?.heart_rate?.resting_hr;
-  const ansMode = state?.vitals?.ans_mode;
+  const busyRooms = state?.rooms?.filter((r) => r.status === 'busy') || [];
+  const allRooms = state?.rooms || [];
+  const neon = state?.neon || {};
+  const stress = neon.stress;
+  const energy = neon.energy;
+  const energyMax = neon.energy_max ?? 100;
+  const ansMode = neon.ans_mode;
   const isOffline = state?.offline || !state;
-  const hasMusic = state?.music?.is_playing;
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white relative overflow-hidden">
       {/* Ambient glow — shifts color based on ANS mode */}
       <div
-        className={`fixed inset-0 pointer-events-none transition-all duration-[3000ms] ${
-          ansMode === 'recovery'
-            ? 'bg-gradient-radial from-emerald-900/10 via-transparent to-transparent'
-            : ansMode === 'survival'
-            ? 'bg-gradient-radial from-red-900/15 via-transparent to-transparent'
-            : 'bg-gradient-radial from-blue-900/10 via-transparent to-transparent'
-        }`}
+        className={`fixed inset-0 pointer-events-none transition-all duration-[3000ms] bg-gradient-radial ${ansGradient(ansMode)}`}
       />
 
       {/* Top bar */}
@@ -368,7 +345,7 @@ export default function HousePage() {
           className={`transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-3">
-            <span className="text-white">The House</span>
+            The House
           </h2>
           <p className="text-zinc-500 text-sm sm:text-base max-w-xl font-mono">
             A living visualization of awareness. Not a dashboard &mdash; a place.
@@ -380,17 +357,13 @@ export default function HousePage() {
       {/* Grid */}
       <section className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {/* ─── Vitals: The Neon ─── */}
+
+          {/* ─── The Neon (Biometrics) ─── */}
           <GlassPanel title="The Neon" icon="" delay={100} mounted={mounted}>
-            {state?.vitals?.ans_mode ? (
+            {neon.ans_mode ? (
               <>
                 <div className="grid grid-cols-3 gap-4 mb-4">
-                  <VitalGauge
-                    label="Heart"
-                    value={hr}
-                    unit="bpm"
-                    color="text-red-400"
-                  />
+                  <VitalGauge label="Heart" value={neon.hr} unit="bpm" color="text-red-400" />
                   <VitalGauge
                     label="Stress"
                     value={stress}
@@ -398,14 +371,8 @@ export default function HousePage() {
                     color={stressColor(stress)}
                     subtext={stress && stress >= 76 ? 'HIGH' : undefined}
                   />
-                  <VitalGauge
-                    label="Energy"
-                    value={energy}
-                    unit=""
-                    color="text-emerald-400"
-                  />
+                  <VitalGauge label="Energy" value={energy} unit="" color="text-emerald-400" />
                 </div>
-                {/* Battery bar */}
                 <div className="mb-3">
                   <div className="h-2 rounded-full bg-zinc-800 overflow-hidden">
                     <div
@@ -417,17 +384,21 @@ export default function HousePage() {
                   </div>
                   <div className="flex justify-between mt-1">
                     <span className="text-[10px] text-zinc-600 font-mono">body battery</span>
-                    <span className="text-[10px] text-zinc-600 font-mono">{energy}/{energyMax}</span>
+                    <span className="text-[10px] text-zinc-600 font-mono">{energy ?? '--'}/{energyMax}</span>
                   </div>
                 </div>
-                {/* ANS mode */}
                 <div className="flex items-center gap-2">
                   <span className={`text-xs font-mono ${ansColor(ansMode)}`}>
-                    ANS: {ansMode || 'unknown'}
+                    ANS: {ansMode}
                   </span>
-                  {state.vitals.sleep?.duration_hours && (
+                  {neon.sleep_hours && (
                     <span className="text-[10px] text-zinc-600 font-mono">
-                      sleep: {state.vitals.sleep.duration_hours.toFixed(1)}h
+                      sleep: {neon.sleep_hours.toFixed(1)}h
+                    </span>
+                  )}
+                  {neon.hrv && (
+                    <span className="text-[10px] text-zinc-600 font-mono ml-auto">
+                      HRV: {neon.hrv}ms
                     </span>
                   )}
                 </div>
@@ -439,29 +410,29 @@ export default function HousePage() {
             )}
           </GlassPanel>
 
-          {/* ─── Music: The Ceiling ─── */}
+          {/* ─── The Ceiling (Music) ─── */}
           <GlassPanel title="The Ceiling" icon="" delay={200} mounted={mounted}>
-            <MusicBar music={state?.music || {}} />
-            {!hasMusic && (
+            <MusicBar ceiling={state?.ceiling || {}} />
+            {!state?.ceiling?.playing && (
               <p className="text-zinc-600 text-[10px] mt-2 font-mono">
                 music flows from the ceiling when someone is listening
               </p>
             )}
           </GlassPanel>
 
-          {/* ─── Neurons: The Rooms ─── */}
+          {/* ─── The Rooms (Neurons) ─── */}
           <GlassPanel title="The Rooms" icon="" delay={300} mounted={mounted}>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-2xl font-mono font-bold text-white">
-                {busyNeurons.length}
+                {busyRooms.length}
               </span>
               <span className="text-xs text-zinc-500 font-mono">
-                active / {allNeurons.length} total
+                active / {allRooms.length} total
               </span>
             </div>
             <div className="space-y-2 max-h-48 overflow-y-auto">
-              {allNeurons.length > 0 ? (
-                allNeurons.slice(0, 6).map((n) => <NeuronCard key={n.id} neuron={n} />)
+              {allRooms.length > 0 ? (
+                allRooms.slice(0, 6).map((r) => <NeuronCard key={r.id} neuron={r} />)
               ) : (
                 <p className="text-zinc-600 text-xs italic font-mono">
                   {isOffline ? 'doors closed' : 'all rooms quiet'}
@@ -470,27 +441,12 @@ export default function HousePage() {
             </div>
           </GlassPanel>
 
-          {/* ─── Conversation: The Window ─── */}
-          <GlassPanel title="The Window" icon="" delay={400} mounted={mounted}>
+          {/* ─── The Hallway (Activity Stream) ─── */}
+          <GlassPanel title="The Hallway" icon="" delay={400} mounted={mounted}>
             <div className="max-h-56 overflow-y-auto">
-              {state?.conversation?.recent && state.conversation.recent.length > 0 ? (
-                state.conversation.recent.map((turn, i) => (
-                  <DialogueBubble key={i} turn={turn} />
-                ))
-              ) : (
-                <p className="text-zinc-600 text-xs italic font-mono">
-                  {isOffline ? 'window dark' : 'listening...'}
-                </p>
-              )}
-            </div>
-          </GlassPanel>
-
-          {/* ─── Activity: The Hallway ─── */}
-          <GlassPanel title="The Hallway" icon="" delay={500} mounted={mounted}>
-            <div className="max-h-56 overflow-y-auto">
-              {state?.activity && state.activity.length > 0 ? (
-                state.activity.slice(0, 12).map((entry, i) => (
-                  <ActivityLine key={i} entry={entry} />
+              {state?.hallway && state.hallway.length > 0 ? (
+                state.hallway.slice(0, 12).map((entry, i) => (
+                  <ActivityLine key={`${entry.ts}-${i}`} entry={entry} />
                 ))
               ) : (
                 <p className="text-zinc-600 text-xs italic font-mono">
@@ -500,20 +456,67 @@ export default function HousePage() {
             </div>
           </GlassPanel>
 
-          {/* ─── Citizens: The Streets ─── */}
-          <GlassPanel title="The Streets" icon="" delay={600} mounted={mounted}>
+          {/* ─── The Streets (Citizens) ─── */}
+          <GlassPanel title="The Streets" icon="" delay={500} mounted={mounted}>
             <div className="mb-3">
               <span className="text-2xl font-mono font-bold text-white">
-                {state?.presence?.citizens_online || 0}
+                {state?.streets?.citizen_count || 0}
               </span>
               <span className="text-xs text-zinc-500 font-mono ml-2">citizens connected</span>
             </div>
-            <BacklogStats backlog={state?.backlog || { ready: 0, in_progress: 0, done: 0, total: 0 }} />
-            <div className="mt-3 pt-3 border-t border-zinc-800/30">
-              <p className="text-[10px] text-zinc-600 font-mono">
-                queue: {state?.presence?.queue_depth ?? 0} &middot;
-                sessions: {state?.presence?.active_sessions ?? 0}/{state?.presence?.max_parallel ?? '?'}
-              </p>
+            {state?.streets?.garmin_linked ? (
+              <div className="text-[10px] text-zinc-600 font-mono mb-2">
+                {state.streets.garmin_linked} with biometrics linked
+              </div>
+            ) : null}
+            {state?.streets?.recent && state.streets.recent.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {state.streets.recent.map((c, i) => (
+                  <span
+                    key={i}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] bg-blue-500/10 border border-blue-500/20 text-blue-300 font-mono"
+                  >
+                    <Pulse color="blue" size={1} />
+                    {c.name}
+                  </span>
+                ))}
+              </div>
+            )}
+            <div className="pt-3 border-t border-zinc-800/30">
+              <a
+                href="https://t.me/MindProtocolBot"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-mono text-blue-400 hover:text-blue-300 transition"
+              >
+                enter the house &rarr;
+              </a>
+            </div>
+          </GlassPanel>
+
+          {/* ─── The Foundation (System) ─── */}
+          <GlassPanel title="The Foundation" icon="" delay={600} mounted={mounted}>
+            <div className="space-y-2 text-xs font-mono">
+              <div className="flex justify-between">
+                <span className="text-zinc-500">rooms</span>
+                <span className="text-zinc-300">{state?.meta?.room_count ?? 0}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-500">hallway events</span>
+                <span className="text-zinc-300">{state?.meta?.hallway_events ?? 0}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-500">neon</span>
+                <span className={state?.meta?.has_neon ? 'text-emerald-400' : 'text-zinc-600'}>
+                  {state?.meta?.has_neon ? 'active' : 'dim'}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-500">ceiling</span>
+                <span className={state?.meta?.has_music ? 'text-purple-400' : 'text-zinc-600'}>
+                  {state?.meta?.has_music ? 'playing' : 'silent'}
+                </span>
+              </div>
             </div>
           </GlassPanel>
         </div>
@@ -526,6 +529,9 @@ export default function HousePage() {
           <Link href="https://t.me/MindProtocolBot" className="text-blue-400 hover:text-blue-300 transition">
             enter the house
           </Link>
+        </p>
+        <p className="text-[10px] font-mono text-zinc-700 mt-1">
+          updates every 5 seconds &middot; manemus
         </p>
       </footer>
 
