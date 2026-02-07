@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { href: '/self', label: 'self.md' },
   { href: '/blog', label: 'Blog' },
   { href: '/tokenomics', label: 'Tokenomics' },
+  { href: '/whitepaper', label: 'Whitepaper' },
   { href: '/register', label: 'Register' },
   { href: '/connectome', label: 'Connectome' },
   { href: '/registry', label: 'Registry' },
