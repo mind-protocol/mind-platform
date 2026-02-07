@@ -13,7 +13,7 @@ export function Nav() {
             href="/blog"
             className="text-zinc-500 hover:text-white transition"
           >
-            Research
+            Blog
           </Link>
           <Link
             href="/manifesto"
