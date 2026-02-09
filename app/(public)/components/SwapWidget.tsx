@@ -143,33 +143,51 @@ export function SwapWidget() {
       }
 
       // Deserialize the transaction from FluxBeam (base64)
-      // FluxBeam returns a ready-to-sign VersionedTransaction with valid blockhash
       const txBuf = new Uint8Array(Uint8Array.from(atob(swapData.transaction), c => c.charCodeAt(0)));
-      const vTx = web3.VersionedTransaction.deserialize(txBuf);
 
-      // Patch compute unit limit — Token-2022 with transfer fee needs ~400k CUs
-      // Properly inspect instructions instead of raw byte scanning
       const CB_PROGRAM = 'ComputeBudget111111111111111111111111111112';
-      const keys = vTx.message.staticAccountKeys;
-      const cbIndex = keys.findIndex((k: any) => k.toBase58() === CB_PROGRAM);
-      if (cbIndex >= 0) {
-        for (const ix of (vTx.message as any).compiledInstructions) {
-          if (ix.programIdIndex === cbIndex && ix.data[0] === 0x02 && ix.data.length === 5) {
-            // SetComputeUnitLimit: discriminator 0x02 + 4-byte LE limit
-            const limit = 400_000;
-            ix.data[1] = limit & 0xff;
-            ix.data[2] = (limit >> 8) & 0xff;
-            ix.data[3] = (limit >> 16) & 0xff;
-            ix.data[4] = (limit >> 24) & 0xff;
-            console.log('CU limit patched to 400k');
+      const CU_LIMIT = 400_000;
+      let signedTx: any;
+      setState('signing');
+
+      try {
+        // Try VersionedTransaction first
+        const vTx = web3.VersionedTransaction.deserialize(txBuf);
+        // Patch CU limit via proper instruction inspection
+        const keys = vTx.message.staticAccountKeys;
+        const cbIdx = keys.findIndex((k: any) => k.toBase58() === CB_PROGRAM);
+        if (cbIdx >= 0) {
+          for (const ix of (vTx.message as any).compiledInstructions) {
+            if (ix.programIdIndex === cbIdx && ix.data[0] === 0x02 && ix.data.length === 5) {
+              ix.data[1] = CU_LIMIT & 0xff;
+              ix.data[2] = (CU_LIMIT >> 8) & 0xff;
+              ix.data[3] = (CU_LIMIT >> 16) & 0xff;
+              ix.data[4] = (CU_LIMIT >> 24) & 0xff;
+              console.log('CU limit patched to 400k (versioned)');
+              break;
+            }
+          }
+        }
+        signedTx = await provider.signTransaction(vTx);
+      } catch (vErr: any) {
+        if (vErr?.message?.includes('reject') || vErr?.code === 4001) throw vErr;
+        // Fallback to legacy Transaction
+        console.log('Versioned tx failed, trying legacy:', vErr.message);
+        const legacyTx = web3.Transaction.from(txBuf);
+        legacyTx.feePayer = publicKey;
+        // Patch CU limit in legacy tx
+        for (const ix of legacyTx.instructions) {
+          if (ix.programId.toBase58() === CB_PROGRAM && ix.data[0] === 0x02 && ix.data.length === 5) {
+            ix.data[1] = CU_LIMIT & 0xff;
+            ix.data[2] = (CU_LIMIT >> 8) & 0xff;
+            ix.data[3] = (CU_LIMIT >> 16) & 0xff;
+            ix.data[4] = (CU_LIMIT >> 24) & 0xff;
+            console.log('CU limit patched to 400k (legacy)');
             break;
           }
         }
+        signedTx = await provider.signTransaction(legacyTx);
       }
-
-      let signedTx: any;
-      setState('signing');
-      signedTx = await provider.signTransaction(vTx);
 
       setState('confirming');
       const sig = await connection.sendRawTransaction(signedTx.serialize(), {
