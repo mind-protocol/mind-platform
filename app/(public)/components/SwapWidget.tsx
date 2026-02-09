@@ -17,6 +17,7 @@ const PRESETS = [0.1, 0.5, 1, 5];
 type SwapState = 'idle' | 'connecting' | 'quoting' | 'preparing' | 'signing' | 'confirming' | 'success' | 'error';
 
 export function SwapWidget() {
+  const [mounted, setMounted] = useState(false);
   const [wallet, setWallet] = useState<string | null>(null);
   const [solAmount, setSolAmount] = useState('0.1');
   const [quote, setQuote] = useState<any>(null);
@@ -24,6 +25,8 @@ export function SwapWidget() {
   const [error, setError] = useState('');
   const [txSig, setTxSig] = useState('');
   const [solBalance, setSolBalance] = useState<number | null>(null);
+
+  useEffect(() => { setMounted(true); }, []);
 
   const getProvider = () => {
     if (typeof window !== 'undefined') {
@@ -140,32 +143,33 @@ export function SwapWidget() {
       }
 
       // Deserialize the transaction from FluxBeam (base64)
+      // FluxBeam returns a ready-to-sign tx with valid blockhash — do NOT overwrite it
       const txBuf = Uint8Array.from(atob(swapData.transaction), c => c.charCodeAt(0));
 
-      // Try VersionedTransaction first, fall back to legacy Transaction
       let signedTx: any;
+      let isVersioned = false;
       setState('signing');
 
+      // Detect transaction type by first byte (0x80 = versioned)
       try {
         const vTx = web3.VersionedTransaction.deserialize(txBuf);
-        const { blockhash } = await connection.getLatestBlockhash('confirmed');
-        vTx.message.recentBlockhash = blockhash;
+        isVersioned = true;
         signedTx = await provider.signTransaction(vTx);
-      } catch {
-        // Legacy transaction fallback
+      } catch (deserializeErr: any) {
+        // Only fall back to legacy if deserialization failed, not if user rejected
+        if (deserializeErr?.message?.includes('reject')) throw deserializeErr;
         const legacyTx = web3.Transaction.from(txBuf);
-        const { blockhash } = await connection.getLatestBlockhash('confirmed');
-        legacyTx.recentBlockhash = blockhash;
         legacyTx.feePayer = publicKey;
         signedTx = await provider.signTransaction(legacyTx);
       }
 
       setState('confirming');
       const sig = await connection.sendRawTransaction(signedTx.serialize(), {
-        skipPreflight: true,
+        skipPreflight: false,
         maxRetries: 5,
       });
 
+      // Use the blockhash from the transaction for confirmation
       const { blockhash: bh, lastValidBlockHeight: lv } = await connection.getLatestBlockhash('confirmed');
       const confirmation = await connection.confirmTransaction(
         { signature: sig, blockhash: bh, lastValidBlockHeight: lv },
@@ -173,7 +177,7 @@ export function SwapWidget() {
       );
 
       if (confirmation.value.err) {
-        throw new Error('Transaction failed on-chain');
+        throw new Error(`Transaction failed on-chain. View: https://solscan.io/tx/${sig}`);
       }
 
       setTxSig(sig);
@@ -235,7 +239,7 @@ export function SwapWidget() {
               marginBottom: '20px',
             }}
           >
-            {state === 'connecting' ? 'Connecting...' : getProvider() ? 'Connect Phantom' : 'Install Phantom'}
+            {state === 'connecting' ? 'Connecting...' : !mounted ? 'Connect Wallet' : getProvider() ? 'Connect Phantom' : 'Install Phantom'}
           </button>
         ) : (
           <div style={{
