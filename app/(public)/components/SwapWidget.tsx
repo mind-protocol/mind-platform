@@ -71,7 +71,7 @@ export function SwapWidget() {
     try {
       const lamports = Math.floor(parseFloat(solAmount) * 1e9);
       const resp = await fetch(
-        `${FLUXBEAM_API}/quote?inputMint=${SOL_MINT}&outputMint=${MIND_MINT}&amount=${lamports}`
+        `${FLUXBEAM_API}/quote?inputMint=${SOL_MINT}&outputMint=${MIND_MINT}&amount=${lamports}&slippageBps=500`
       );
       const data = await resp.json();
       if (data.quote) {
@@ -113,7 +113,7 @@ export function SwapWidget() {
       // Get fresh quote
       const lamports = Math.floor(parseFloat(solAmount) * 1e9);
       const freshQuoteResp = await fetch(
-        `${FLUXBEAM_API}/quote?inputMint=${SOL_MINT}&outputMint=${MIND_MINT}&amount=${lamports}`
+        `${FLUXBEAM_API}/quote?inputMint=${SOL_MINT}&outputMint=${MIND_MINT}&amount=${lamports}&slippageBps=500`
       );
       const freshQuoteData = await freshQuoteResp.json();
       const freshQuote = freshQuoteData.quote || freshQuoteData;
@@ -373,6 +373,10 @@ export function SwapWidget() {
               <span style={{ color: '#888' }}>Transfer fee</span>
               <span style={{ color: '#ccc' }}>1% (Token-2022)</span>
             </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+              <span style={{ color: '#888' }}>Slippage</span>
+              <span style={{ color: '#ccc' }}>5%</span>
+            </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ color: '#888' }}>Route</span>
               <span style={{ color: '#ccc' }}>FluxBeam</span>
@@ -471,9 +475,8 @@ export function SwapWidget() {
           borderRadius: '10px',
         }}>
           <p style={{ fontSize: '12px', color: '#888', margin: 0, lineHeight: 1.5 }}>
-            <strong style={{ color: '#f59e0b' }}>Note:</strong> You will be asked to sign 2 transactions.
-            The first prepares your SOL for the swap (wraps to WSOL). The second executes the swap.
-            This is required for Token-2022 tokens.
+            <strong style={{ color: '#f59e0b' }}>Note:</strong> Token-2022 with 1% transfer fee.
+            5% slippage tolerance for low-liquidity protection.
           </p>
         </div>
       )}
