@@ -102,6 +102,15 @@ export function SwapWidget() {
     if (!provider || !wallet || !quote) return;
 
     setError('');
+
+    // Check balance before submitting
+    const needed = parseFloat(solAmount);
+    if (solBalance !== null && needed > solBalance - 0.005) {
+      setError(`Insufficient SOL. You need ~${(needed + 0.005).toFixed(4)} SOL (${needed} + fees). Balance: ${solBalance.toFixed(4)}`);
+      setState('error');
+      return;
+    }
+
     setState('preparing');
 
     try {
