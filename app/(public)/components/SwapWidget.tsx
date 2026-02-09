@@ -175,16 +175,29 @@ export function SwapWidget() {
         console.log('Versioned tx failed, trying legacy:', vErr.message);
         const legacyTx = web3.Transaction.from(txBuf);
         legacyTx.feePayer = publicKey;
-        // Patch CU limit in legacy tx
-        for (const ix of legacyTx.instructions) {
-          if (ix.programId.toBase58() === CB_PROGRAM && ix.data[0] === 0x02 && ix.data.length === 5) {
-            ix.data[1] = CU_LIMIT & 0xff;
-            ix.data[2] = (CU_LIMIT >> 8) & 0xff;
-            ix.data[3] = (CU_LIMIT >> 16) & 0xff;
-            ix.data[4] = (CU_LIMIT >> 24) & 0xff;
-            console.log('CU limit patched to 400k (legacy)');
-            break;
+        // Replace CU limit instruction with proper 400k version
+        const cbProgramId = new web3.PublicKey(CB_PROGRAM);
+        const cuLimitIx = web3.ComputeBudgetProgram.setComputeUnitLimit({ units: CU_LIMIT });
+        let cuPatched = false;
+        console.log('Legacy tx has', legacyTx.instructions.length, 'instructions');
+        for (let i = 0; i < legacyTx.instructions.length; i++) {
+          const ix = legacyTx.instructions[i];
+          if (ix.programId.equals(cbProgramId)) {
+            const d = ix.data;
+            console.log(`  CB instruction[${i}]: data.length=${d.length}, data[0]=${d[0]}`);
+            if (d.length >= 5 && d[0] === 2) {
+              const oldLimit = d[1] | (d[2] << 8) | (d[3] << 16) | (d[4] << 24);
+              console.log('  Found SetComputeUnitLimit, current:', oldLimit);
+              legacyTx.instructions[i] = cuLimitIx;
+              cuPatched = true;
+              console.log('  Replaced with', CU_LIMIT);
+              break;
+            }
           }
+        }
+        if (!cuPatched) {
+          console.log('No CU limit instruction found, prepending one');
+          legacyTx.instructions.unshift(cuLimitIx);
         }
         signedTx = await provider.signTransaction(legacyTx);
       }
