@@ -162,17 +162,19 @@ export function SwapWidget() {
       newTx.add(web3.ComputeBudgetProgram.setComputeUnitLimit({ units: CU_LIMIT }));
 
       // Copy all instructions EXCEPT old SetComputeUnitLimit
-      // Identify by data pattern: exactly 5 bytes, first byte = 0x02
       for (const ix of fluxTx.instructions) {
-        if (ix.data.length === 5 && ix.data[0] === 2) {
-          const old = ix.data[1] | (ix.data[2] << 8) | (ix.data[3] << 16) | (ix.data[4] << 24);
-          console.log('Skipping old CU limit:', old, '→ replaced with', CU_LIMIT);
+        // Convert to Uint8Array to handle Buffer/ArrayBuffer/etc uniformly
+        const d = new Uint8Array(ix.data);
+        console.log(`ix: ${ix.programId.toBase58().slice(0,15)}... len=${d.length} d[0]=${d[0]}`);
+        if (d.length === 5 && d[0] === 2) {
+          const old = d[1] | (d[2] << 8) | (d[3] << 16) | (d[4] << 24);
+          console.log('  → Skipping old CU limit:', old);
           continue;
         }
         newTx.add(ix);
       }
 
-      console.log('Tx instructions:', newTx.instructions.length, '(with 400k CU limit)');
+      console.log('Tx:', newTx.instructions.length, 'instructions (400k CU)');
       signedTx = await provider.signTransaction(newTx);
 
       setState('confirming');
