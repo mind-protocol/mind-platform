@@ -181,7 +181,8 @@ export default function SwapPage() {
       }
 
       // Fix FluxBeam transaction: CU increase + signature buffer
-      const txBuf = Buffer.from(swapData.transaction, 'base64');
+      const raw = Uint8Array.from(atob(swapData.transaction), c => c.charCodeAt(0));
+      const txBuf = new Uint8Array(raw);
 
       // Increase compute budget from 50k to 400k
       for (let i = 0; i < txBuf.length - 5; i++) {
@@ -198,9 +199,9 @@ export default function SwapPage() {
       // Rebuild buffer with correct signature count
       const msgStart = 1;
       const numRequired = txBuf[msgStart];
-      const newBuf = Buffer.alloc(1 + numRequired * 64 + txBuf.length - msgStart);
+      const newBuf = new Uint8Array(1 + numRequired * 64 + txBuf.length - msgStart);
       newBuf[0] = numRequired;
-      txBuf.copy(newBuf, 1 + numRequired * 64, msgStart);
+      newBuf.set(txBuf.slice(msgStart), 1 + numRequired * 64);
 
       const swapTx = web3.VersionedTransaction.deserialize(newBuf);
       const { blockhash: bh2, lastValidBlockHeight: lv2 } = await connection.getLatestBlockhash('confirmed');
