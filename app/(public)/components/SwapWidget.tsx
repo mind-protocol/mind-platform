@@ -161,14 +161,11 @@ export function SwapWidget() {
       // Add our 400k CU limit first
       newTx.add(web3.ComputeBudgetProgram.setComputeUnitLimit({ units: CU_LIMIT }));
 
-      // Copy all instructions EXCEPT old SetComputeUnitLimit
+      // Copy non-ComputeBudget instructions from FluxBeam tx
+      // Skip ALL ComputeBudget instructions (CU limit + price) — we set our own
       for (const ix of fluxTx.instructions) {
-        // Convert to Uint8Array to handle Buffer/ArrayBuffer/etc uniformly
-        const d = new Uint8Array(ix.data);
-        console.log(`ix: ${ix.programId.toBase58().slice(0,15)}... len=${d.length} d[0]=${d[0]}`);
-        if (d.length === 5 && d[0] === 2) {
-          const old = d[1] | (d[2] << 8) | (d[3] << 16) | (d[4] << 24);
-          console.log('  → Skipping old CU limit:', old);
+        if (ix.programId.toBase58().startsWith('ComputeBudget')) {
+          console.log('Skipping ComputeBudget instruction');
           continue;
         }
         newTx.add(ix);
