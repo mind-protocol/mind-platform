@@ -143,21 +143,25 @@ export function SwapWidget() {
       }
 
       // Deserialize the transaction from FluxBeam (base64)
-      // FluxBeam returns a ready-to-sign tx with valid blockhash — do NOT overwrite it
+      // FluxBeam returns a ready-to-sign VersionedTransaction with valid blockhash
       const txBuf = new Uint8Array(Uint8Array.from(atob(swapData.transaction), c => c.charCodeAt(0)));
+      const vTx = web3.VersionedTransaction.deserialize(txBuf);
 
       // Patch compute unit limit — Token-2022 with transfer fee needs ~400k CUs
-      // ComputeBudget SetComputeUnitLimit = discriminator 0x02 + 4-byte LE limit
-      const CU_LIMIT = 400_000;
-      for (let i = 0; i < txBuf.length - 4; i++) {
-        if (txBuf[i] === 0x02) {
-          const val = txBuf[i+1] | (txBuf[i+2] << 8) | (txBuf[i+3] << 16) | (txBuf[i+4] << 24);
-          // Match typical CU limits (1000-200000) to avoid false positives
-          if (val > 1000 && val < 200_001) {
-            txBuf[i+1] = CU_LIMIT & 0xFF;
-            txBuf[i+2] = (CU_LIMIT >> 8) & 0xFF;
-            txBuf[i+3] = (CU_LIMIT >> 16) & 0xFF;
-            txBuf[i+4] = (CU_LIMIT >> 24) & 0xFF;
+      // Properly inspect instructions instead of raw byte scanning
+      const CB_PROGRAM = 'ComputeBudget111111111111111111111111111112';
+      const keys = vTx.message.staticAccountKeys;
+      const cbIndex = keys.findIndex((k: any) => k.toBase58() === CB_PROGRAM);
+      if (cbIndex >= 0) {
+        for (const ix of (vTx.message as any).compiledInstructions) {
+          if (ix.programIdIndex === cbIndex && ix.data[0] === 0x02 && ix.data.length === 5) {
+            // SetComputeUnitLimit: discriminator 0x02 + 4-byte LE limit
+            const limit = 400_000;
+            ix.data[1] = limit & 0xff;
+            ix.data[2] = (limit >> 8) & 0xff;
+            ix.data[3] = (limit >> 16) & 0xff;
+            ix.data[4] = (limit >> 24) & 0xff;
+            console.log('CU limit patched to 400k');
             break;
           }
         }
@@ -165,18 +169,7 @@ export function SwapWidget() {
 
       let signedTx: any;
       setState('signing');
-
-      // Detect transaction type — try versioned first, fall back to legacy
-      try {
-        const vTx = web3.VersionedTransaction.deserialize(txBuf);
-        signedTx = await provider.signTransaction(vTx);
-      } catch (deserializeErr: any) {
-        // Only fall back to legacy if deserialization failed, not if user rejected
-        if (deserializeErr?.message?.includes('reject')) throw deserializeErr;
-        const legacyTx = web3.Transaction.from(txBuf);
-        legacyTx.feePayer = publicKey;
-        signedTx = await provider.signTransaction(legacyTx);
-      }
+      signedTx = await provider.signTransaction(vTx);
 
       setState('confirming');
       const sig = await connection.sendRawTransaction(signedTx.serialize(), {
@@ -192,7 +185,9 @@ export function SwapWidget() {
       );
 
       if (confirmation.value.err) {
-        throw new Error(`Transaction failed on-chain. View: https://solscan.io/tx/${sig}`);
+        const errJson = JSON.stringify(confirmation.value.err);
+        console.error('On-chain error:', errJson, 'tx:', sig);
+        throw new Error(`Transaction failed: ${errJson}. View: https://solscan.io/tx/${sig}`);
       }
 
       setTxSig(sig);
