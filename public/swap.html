@@ -325,7 +325,7 @@
 
         async function fetchPrice() {
             try {
-                const r = await fetch(`${FLUXBEAM_API}/quote?inputMint=${SOL_MINT}&outputMint=${MIND_MINT}&amount=1000000000`);
+                const r = await fetch(`${FLUXBEAM_API}/quote?inputMint=${SOL_MINT}&outputMint=${MIND_MINT}&amount=1000000000&slippageBps=500`);
                 const d = await r.json();
                 if (d.quote) {
                     const mindPerSol = d.quote.outAmount / 1e9;
@@ -362,7 +362,7 @@
             document.getElementById('mind-output').textContent = '...';
             try {
                 const lamports = Math.floor(solAmount * 1e9);
-                const r = await fetch(`${FLUXBEAM_API}/quote?inputMint=${SOL_MINT}&outputMint=${MIND_MINT}&amount=${lamports}`);
+                const r = await fetch(`${FLUXBEAM_API}/quote?inputMint=${SOL_MINT}&outputMint=${MIND_MINT}&amount=${lamports}&slippageBps=500`);
                 const d = await r.json();
                 if (d.quote) {
                     currentQuote = d.quote;
@@ -522,7 +522,7 @@
                 btn.innerHTML = '<span class="spinner"></span> Getting quote...';
                 setStatus('info', '<span class="spinner"></span> Step 2/3: Getting swap transaction...');
 
-                const qr = await fetch(`${FLUXBEAM_API}/quote?inputMint=${SOL_MINT}&outputMint=${MIND_MINT}&amount=${lamports}`);
+                const qr = await fetch(`${FLUXBEAM_API}/quote?inputMint=${SOL_MINT}&outputMint=${MIND_MINT}&amount=${lamports}&slippageBps=500`);
                 const qd = await qr.json();
                 if (!qd.quote) throw new Error('No quote available. Try again.');
 
@@ -532,6 +532,7 @@
                     body: JSON.stringify({
                         quote: qd.quote,
                         userPublicKey: pubkey.toString(),
+                        wrapUnwrapSOL: true,
                     })
                 });
                 const sd = await sr.json();
