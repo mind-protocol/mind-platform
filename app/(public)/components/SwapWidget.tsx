@@ -161,26 +161,66 @@ export function SwapWidget() {
       let signedTx: any;
       setState('signing');
 
-      // FluxBeam returns legacy tx — rebuild with our CU limit and fresh blockhash
+      // FluxBeam returns legacy tx — rebuild with wrap/unwrap + our CU limit
+      // FluxBeam does NOT include SOL wrapping instructions, so we add them manually
       const fluxTx = web3.Transaction.from(txBuf);
+      const TOKEN_PROGRAM = new web3.PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+      const ATA_PROGRAM = new web3.PublicKey('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL');
+      const SOL_MINT_KEY = new web3.PublicKey(SOL_MINT);
+
+      // Derive wSOL ATA for this wallet
+      const [wsolATA] = web3.PublicKey.findProgramAddressSync(
+        [publicKey.toBuffer(), TOKEN_PROGRAM.toBuffer(), SOL_MINT_KEY.toBuffer()],
+        ATA_PROGRAM
+      );
+
       const newTx = new web3.Transaction();
       newTx.recentBlockhash = blockhash;
       newTx.feePayer = publicKey;
 
-      // Add our 400k CU limit first
+      // 1. CU limit
       newTx.add(web3.ComputeBudgetProgram.setComputeUnitLimit({ units: CU_LIMIT }));
 
-      // Copy non-ComputeBudget instructions from FluxBeam tx
-      // Skip ALL ComputeBudget instructions (CU limit + price) — we set our own
+      // 2-3. Copy createIdempotent instructions (ATA setup)
       for (const ix of fluxTx.instructions) {
-        if (ix.programId.toBase58().startsWith('ComputeBudget')) {
-          console.log('Skipping ComputeBudget instruction');
-          continue;
-        }
+        if (ix.programId.toBase58().startsWith('ComputeBudget')) continue;
+        if (ix.programId.toBase58() === 'FLUXubRmkEi2q6K3Y9kBPg9248ggaZVsoSFhtJHSrm1X') continue;
         newTx.add(ix);
       }
 
-      console.log('Tx:', newTx.instructions.length, 'instructions (400k CU)');
+      // 4. Transfer SOL to wSOL ATA (fund it for the swap)
+      newTx.add(web3.SystemProgram.transfer({
+        fromPubkey: publicKey,
+        toPubkey: wsolATA,
+        lamports: lamports,
+      }));
+
+      // 5. SyncNative — marks transferred lamports as wSOL token balance
+      newTx.add(new web3.TransactionInstruction({
+        programId: TOKEN_PROGRAM,
+        keys: [{ pubkey: wsolATA, isSigner: false, isWritable: true }],
+        data: Buffer.from([17]),
+      }));
+
+      // 6. FluxBeam swap instruction
+      for (const ix of fluxTx.instructions) {
+        if (ix.programId.toBase58() === 'FLUXubRmkEi2q6K3Y9kBPg9248ggaZVsoSFhtJHSrm1X') {
+          newTx.add(ix);
+        }
+      }
+
+      // 7. Close wSOL ATA — unwrap remaining wSOL back to SOL
+      newTx.add(new web3.TransactionInstruction({
+        programId: TOKEN_PROGRAM,
+        keys: [
+          { pubkey: wsolATA, isSigner: false, isWritable: true },
+          { pubkey: publicKey, isSigner: false, isWritable: true },
+          { pubkey: publicKey, isSigner: true, isWritable: false },
+        ],
+        data: Buffer.from([9]),
+      }));
+
+      console.log('Tx:', newTx.instructions.length, 'instructions (400k CU, with wrap/unwrap)');
       signedTx = await provider.signTransaction(newTx);
 
       setState('confirming');
