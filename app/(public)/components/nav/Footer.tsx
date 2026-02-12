@@ -11,7 +11,7 @@ const EXTERNAL_LINKS = [
   { href: 'https://dexscreener.com/solana/gnpb7yzgckf4efz6satqphm8q3juum3dna7cj8ti8mra', label: 'DexScreener' },
   { href: 'https://t.me/mindprotocol_ai', label: 'Telegram' },
   { href: 'https://github.com/mind-protocol', label: 'GitHub' },
-  { href: 'https://x.com/mindprotocol_ai', label: 'X' },
+  { href: 'https://x.com/Mind_Protocol', label: 'X' },
 ];
 
 const LEGAL_LINKS = [
