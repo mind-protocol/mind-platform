@@ -45,6 +45,15 @@ export function SwapSection() {
             </a>
 
             <a
+              href="https://dexscreener.com/solana/gnpb7yzgckf4efz6satqphm8q3juum3dna7cj8ti8mra"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2.5 text-sm border border-amber-500/50 text-amber-500 rounded-lg hover:bg-amber-500/10 transition"
+            >
+              DexScreener
+            </a>
+
+            <a
               href="/tokenomics"
               className="px-4 py-2.5 text-sm border border-zinc-700 text-zinc-300 rounded-lg hover:bg-zinc-800 transition"
             >

@@ -41,7 +41,26 @@ export default function SwapPage() {
         <p style={{ fontSize: '12px', color: '#555', marginTop: '8px' }}>
           LP locked until Feb 2027 &middot; 1M supply &middot; 1% transfer fee
         </p>
-        <p style={{ fontSize: '11px', color: '#444', marginTop: '12px' }}>
+        <p style={{ fontSize: '12px', marginTop: '12px' }}>
+          <a
+            href="https://dexscreener.com/solana/gnpb7yzgckf4efz6satqphm8q3juum3dna7cj8ti8mra"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#f59e0b', textDecoration: 'none' }}
+          >
+            DexScreener
+          </a>
+          <span style={{ color: '#444' }}> &middot; </span>
+          <a
+            href={`https://solscan.io/token/${MIND_MINT}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#888', textDecoration: 'none' }}
+          >
+            Solscan
+          </a>
+        </p>
+        <p style={{ fontSize: '11px', color: '#444', marginTop: '8px' }}>
           Powered by FluxBeam &middot; mindprotocol.ai
         </p>
       </div>
