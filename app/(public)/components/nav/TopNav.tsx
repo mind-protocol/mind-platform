@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: '/whitepaper', label: 'Whitepaper' },
   { href: '/register', label: 'Register' },
   { href: '/connectome', label: 'Connectome' },
+  { href: '/house', label: 'The House' },
   { href: '/registry', label: 'Registry' },
   { href: '/marketplace', label: 'Marketplace' },
   { href: '/schema', label: 'Schema' },

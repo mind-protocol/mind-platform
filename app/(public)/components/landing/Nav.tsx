@@ -27,6 +27,12 @@ export function Nav() {
           >
             Connectome
           </Link>
+          <Link
+            href="/house"
+            className="text-zinc-500 hover:text-white transition"
+          >
+            The House
+          </Link>
         </div>
       </div>
     </nav>
