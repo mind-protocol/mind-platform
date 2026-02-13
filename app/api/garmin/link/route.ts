@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const MANEMUS_URL = process.env.MANEMUS_URL || 'https://unterse-jayden-nonverminously.ngrok-free.dev';
+const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
 
 export async function POST(req: Request) {
   try {
