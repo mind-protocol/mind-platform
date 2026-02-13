@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
+const MANEMUS_URL = process.env.MANEMUS_URL || 'https://unterse-jayden-nonverminously.ngrok-free.dev';
 
 let cache: { data: unknown; timestamp: number } | null = null;
 const CACHE_TTL = 5_000; // 5s cache for near-real-time
