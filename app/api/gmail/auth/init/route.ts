@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const MANEMUS_URL = process.env.MANEMUS_URL || 'http://localhost:8765';
+const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
 
 export async function GET(req: Request) {
   try {
