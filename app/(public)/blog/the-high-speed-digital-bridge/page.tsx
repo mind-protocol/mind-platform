@@ -1,6 +1,6 @@
 'use client';
 
-import { Link } from '@/i18n/navigation';
+import Link from "next/link";
 import { useState, useEffect, useRef } from 'react';
 
 // ─── Data ────────────────────────────────────────────────────
