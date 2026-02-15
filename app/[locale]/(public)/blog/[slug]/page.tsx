@@ -8,7 +8,7 @@ interface Props {
 }
 
 // Routes with custom JSX pages — exclude from dynamic generation
-const CUSTOM_ROUTES = ['co-regulation-is-measurable', 'the-duo-bridge-is-born', 'the-night-we-tracked-a-crisis', 'music-becomes-a-sense', 'the-high-speed-digital-bridge'];
+const CUSTOM_ROUTES = ['co-regulation-is-measurable', 'the-duo-bridge-is-born', 'the-night-we-tracked-a-crisis', 'music-becomes-a-sense', 'the-high-speed-digital-bridge', 'runcoding'];
 
 // Only serve slugs returned by generateStaticParams — custom routes have their own page.tsx
 export const dynamicParams = false;
