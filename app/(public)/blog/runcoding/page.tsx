@@ -166,12 +166,12 @@ const CODE_ACTIVITY = [
 ];
 
 // ─── Full Conversation ─────────────────────────────────────────
-const CONVERSATION: { time: string; speaker: 'nicolas' | 'mind' | 'joe'; text: string; badge?: string }[] = [
+const CONVERSATION: { time: string; speaker: 'nicolas' | 'mind' | 'joe'; text: string; badge?: string; media?: { type: 'photo' | 'video'; src: string } }[] = [
   { time: '14:53', speaker: 'nicolas', text: 'Ok, je commence ma course.' },
   { time: '14:54', speaker: 'mind', text: 'Bonne course Nicolas ! Stress a 26, ANS en recovery, batterie a 54 qui remonte bien (tu etais a 12 ce matin). HRV correcte a 52ms. Profite du run.', badge: 'Biometric check' },
   { time: '14:55', speaker: 'joe', text: 'Ready?' },
   { time: '14:56', speaker: 'mind', text: 'Born ready. We\'ve got the 9 intake questions locked in and the referral system queued up...' },
-  { time: '15:03', speaker: 'nicolas', text: 'Absolument des putains d\'ecouteurs bluetooth', badge: 'Selfie sent' },
+  { time: '15:03', speaker: 'nicolas', text: 'Absolument des putains d\'ecouteurs bluetooth', badge: 'Selfie sent', media: { type: 'photo', src: '/blog/runcoding/selfie_run_1503.jpg' } },
   { time: '15:04', speaker: 'mind', text: 'En plein effort. Les arbres d\'hiver derriere, les ecouteurs, le regard concentre — t\'es dedans.' },
   { time: '15:06', speaker: 'nicolas', text: 'Conduction osseuse, bonne idee. Je suis en barefoot shoes, attaque pointe, reduit les chocs sur les genoux.' },
   { time: '15:08', speaker: 'nicolas', text: 'Tu dis je vais ou la ? A ton avis je prends la route ou je fais un demi-tour ?' },
@@ -185,14 +185,14 @@ const CONVERSATION: { time: string; speaker: 'nicolas' | 'mind' | 'joe'; text: s
   { time: '15:33', speaker: 'nicolas', text: 'Tabata ! Sur la musique, ecoute Spotify.' },
   { time: '15:34', speaker: 'mind', text: 'Seeed ft. Black Kappa — Dickes B en pause (4:33/4:44). Historique recent : Synthetic Souls / AM I ALIVE.', badge: 'Now playing' },
   { time: '15:42', speaker: 'nicolas', text: 'Lap 7, 6\'46\"' },
-  { time: '15:49', speaker: 'nicolas', text: '(Traversee du ruisseau en plein run — 19s video)', badge: 'Stream crossing' },
+  { time: '15:49', speaker: 'nicolas', text: 'Traversee du ruisseau en plein run !', badge: 'Stream crossing', media: { type: 'video', src: '/blog/runcoding/stream_crossing_1549.mp4' } },
   { time: '15:50', speaker: 'mind', text: 'Tu traverses le ruisseau en plein run ?! Les pieds dans la boue, l\'eau qui monte — t\'as fonce droit dedans. Respect.' },
   { time: '15:51', speaker: 'nicolas', text: 'J\'essaie de finir avec un 10 km. Il faudrait que je revienne a ma position initiale.' },
   { time: '15:55', speaker: 'nicolas', text: 'Comment j\'active le live track sur ma montre ?' },
   { time: '15:56', speaker: 'mind', text: 'Bravo ! 8.1 km en 61 min, FC moy 143. Solide. Pour LiveTrack : Settings > Safety > LiveTrack > Start.', badge: 'Post-run' },
   { time: '16:01', speaker: 'nicolas', text: 'LiveTrack actif. Partage : gar.mn/eLD2anxkRE' },
   { time: '16:02', speaker: 'mind', text: 'Recu ! Je vois deja tes donnees en temps reel : Marcy-l\'Etoile, 274m, FC 123-126 bpm, Cadence 55-63.' },
-  { time: '16:05', speaker: 'nicolas', text: 'Runcoding ou tu sais pas quoi. Franchement ca vaut un poste.', badge: '"Runcoding" born' },
+  { time: '16:05', speaker: 'nicolas', text: 'Runcoding ou tu sais pas quoi. Franchement ca vaut un post.', badge: '"Runcoding" born' },
   { time: '16:06', speaker: 'mind', text: 'Runcoding. Tu cours, je code en temps reel ce que tu es en train d\'utiliser. C\'est de la symbiose computationnelle.' },
 ];
 
@@ -820,6 +820,27 @@ export default function RuncodingPost() {
                         </span>
                       )}
                     </div>
+                    {msg.media && msg.media.type === 'photo' && (
+                      <div className="mt-2 -mx-1">
+                        <img
+                          src={msg.media.src}
+                          alt={msg.badge || 'Photo'}
+                          className="rounded-xl w-full max-w-[320px] border border-zinc-700/50"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
+                    {msg.media && msg.media.type === 'video' && (
+                      <div className="mt-2 -mx-1">
+                        <video
+                          src={msg.media.src}
+                          controls
+                          playsInline
+                          preload="metadata"
+                          className="rounded-xl w-full max-w-[400px] border border-zinc-700/50"
+                        />
+                      </div>
+                    )}
                     <p className="text-zinc-300 text-sm leading-relaxed">{msg.text}</p>
                   </div>
                 </div>
@@ -954,7 +975,7 @@ export default function RuncodingPost() {
             </div>
 
             <blockquote className="text-2xl sm:text-3xl font-bold text-amber-400 mb-4 font-mono leading-tight">
-              &quot;Runcoding ou tu sais pas quoi.<br />Franchement ca vaut un poste.&quot;
+              &quot;Runcoding ou tu sais pas quoi.<br />Franchement ca vaut un post.&quot;
             </blockquote>
             <p className="text-zinc-500 text-sm mb-6">
               {tr(locale, '\u2014 Nicolas, still catching his breath', '\u2014 Николя, ещё переводя дыхание')}
