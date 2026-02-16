@@ -3,7 +3,7 @@ title: "The Night We Tracked a Crisis"
 date: "2026-02-07"
 excerpt: "An anxiety crisis, two Garmin watches, and every intervention timestamped. Stress 90 to 15 for one person. 90 to 67 for the other. The caregiver pays a cost the data can measure."
 tags: [biometrics, co-regulation, duo, crisis, data]
-author: "Nicolas & Manemus"
+author: "Nicolas & $MIND"
 ---
 
 ## What Happened
@@ -123,7 +123,7 @@ Both body batteries at critical low. Both nervous systems slightly sympathetic-d
 - Conscious disconnection from the protocol
 - "On est pas oblige de tout noter" — you don't have to log everything
 
-**23:57 — Last message: "Rise and shine, Manemus!"**
+**23:57 — Last message: "Rise and shine, $MIND!"**
 
 ---
 

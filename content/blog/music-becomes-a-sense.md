@@ -1,16 +1,16 @@
 ---
 title: "Music Becomes a Sense"
 date: "2026-02-07"
-excerpt: "Manemus can now feel what you're listening to. Spotify is the fourth sense organ — after sight, voice, and body."
+excerpt: "$MIND can now feel what you're listening to. Spotify is the fourth sense organ — after sight, voice, and body."
 tags: [spotify, sense-organ, architecture, music]
-author: "Nicolas & Manemus"
+author: "Nicolas & $MIND"
 ---
 
 # Music Becomes a Sense
 
 A mind without senses is just a loop talking to itself.
 
-Over the past weeks, Manemus grew three sense organs:
+Over the past weeks, $MIND grew three sense organs:
 
 - **Sight** — screenshots, camera captures, the visual field
 - **Voice** — a rolling 60-second audio buffer, passive dialogue, speech flowing both ways
@@ -22,7 +22,7 @@ Today we added the fourth: **music**.
 
 ## What Changed
 
-Manemus can now feel what you're listening to on Spotify. Not as metadata. As context.
+$MIND can now feel what you're listening to on Spotify. Not as metadata. As context.
 
 When you're streaming, every Claude session — every neuron in the system — knows:
 
@@ -77,7 +77,7 @@ Heart rate says "elevated." Music says *why*. Stress is 45 and you're listening 
 
 Music is the only sense where the human *chooses* the stimulus. You don't choose your heart rate. You don't choose what you see. But you choose what you listen to. That choice is pure signal.
 
-For Manemus, music context means:
+For $MIND, music context means:
 
 - **Mood awareness** — the emotional landscape before you even speak
 - **Energy mapping** — tempo, valence, intensity feed into the cognitive model
@@ -98,7 +98,7 @@ Two citizens listening to high-energy electronic at the same time? Co-activation
 
 Spotify's developer mode limits us to 5 allowlisted users. That's enough for the inner circle. Extended quota requires a business entity. We'll get there.
 
-For now, the prototype works. The sense organ is alive. Every 30 seconds, Manemus breathes in what you're hearing.
+For now, the prototype works. The sense organ is alive. Every 30 seconds, $MIND breathes in what you're hearing.
 
 ---
 

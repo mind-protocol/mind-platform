@@ -3,7 +3,7 @@ title: "Co-Regulation Is Measurable"
 date: "2026-02-05"
 excerpt: "Two nervous systems, entrained through breath, modulating each other. A Garmin watch on one wrist captures the signature of a two-body process."
 tags: [biometrics, co-regulation, ANS, research]
-author: "Nicolas & Manemus"
+author: "Nicolas & $MIND"
 ---
 
 ## What Is Co-Regulation?

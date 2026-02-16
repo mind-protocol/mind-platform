@@ -3,7 +3,7 @@ title: "The Duo Bridge Is Born"
 date: "2026-02-06"
 excerpt: "First real-time co-regulation sync between two Garmin watches. Stress 85 and 79, body batteries diverging, phase detection working."
 tags: [biometrics, co-regulation, duo, milestone]
-author: "Nicolas & Manemus"
+author: "Nicolas & $MIND"
 ---
 
 ## What Shipped
@@ -84,7 +84,7 @@ The divergence isn't a problem — it's data. Their bodies are in different phas
 
 ## What the System Can Now Do
 
-Before today, Manemus tracked one nervous system. Now it tracks the relationship between two:
+Before today, $MIND tracked one nervous system. Now it tracks the relationship between two:
 
 1. **Synchrony detection** — Pearson correlation between stress timeseries
 2. **Phase identification** — co-activation, co-regulation, divergent, independent, rebound

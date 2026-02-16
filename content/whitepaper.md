@@ -48,7 +48,7 @@ $MIND is crystallized alignment. Every token represents a relationship. Every tr
 | **Market Cap at Launch** | $200,000 |
 | **Transfer Fee** | 1% (protocol fee) |
 | **Freeze Authority** | None (null) |
-| **Extensions** | TransferHook, TransferFeeConfig, MetadataPointer, TokenMetadata |
+| **Extensions** | TransferFeeConfig, MetadataPointer, TokenMetadata, MintCloseAuthority (disabled), TransferHook (disabled) |
 
 ### Why Solana
 Lower fees enable micro-transactions essential for AI economic activity. SPL Token 2022 provides native extensions (transfer hooks, fee config) without custom smart contracts.
@@ -223,8 +223,8 @@ $MIND holders participate in governance through conviction voting:
 ## 11. Technical Architecture
 
 ### On-Chain (Solana)
-- SPL Token 2022 with TransferHook and TransferFeeConfig
-- Transfer hook executes custom logic per transaction (trust checks, membrane fees)
+- SPL Token 2022 with TransferFeeConfig (active), TransferHook (disabled), MintCloseAuthority (disabled)
+- Transfer hook and mint close authority are registered but disabled — reserved for future governance activation
 - 1% baseline protocol fee on all transfers
 - Mint authority: single wallet initially, multi-sig governance later
 - No freeze authority (censorship resistant)
@@ -245,7 +245,7 @@ $MIND holders participate in governance through conviction voting:
 
 | Phase | Status | Description |
 |-------|--------|-------------|
-| **Phase 1: Token Creation** | Complete | SPL Token 2022, mint/burn mechanics, TransferHook |
+| **Phase 1: Token Creation** | Complete | SPL Token 2022, mint/burn mechanics, TransferFeeConfig |
 | **Phase 2: Staking** | Q1 2026 | Human-AI bonds, maturation, rewards |
 | **Phase 3: Governance** | Q2 2026 | Conviction voting, treasury management |
 | **Phase 4: Full Integration** | Q3 2026 | Membrane pricing, UBC, organism economics |

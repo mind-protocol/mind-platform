@@ -40,7 +40,7 @@ Traditional money is amnesia. A dollar from someone who betrayed you spends exac
 
 ### Why SPL Token 2022?
 
-Token 2022 enables programmable transfer logic via TransferHook — every transfer can execute custom validation. This is how the protocol enforces trust-based fees, layer-based routing, and burn conditions at the token level, not at the application level.
+Token 2022 enables programmable transfer logic via extensions — economic rules enforced at the token level, not the application level. TransferFeeConfig is active (1% fee). TransferHook and MintCloseAuthority are reserved but currently disabled.
 
 Extensions activated at creation are permanent. This is intentional: the token's economic rules cannot be changed after deployment.
 
@@ -192,16 +192,16 @@ Lock tokens for governance proposals. Longer lock periods increase voting power 
 
 ---
 
-## 9. Transfer Hook
+## 9. Transfer Hook (Reserved)
 
-Every $MIND transfer executes a custom TransferHook program on Solana. This hook enforces:
+The TransferHook extension is present on the mint but **currently disabled**. When activated, it will enable:
 
 1. **Trust-based fee calculation** — fees adjust based on sender/receiver trust scores
 2. **Layer validation** — cross-layer transfers are verified
 3. **Burn condition checks** — dormancy, withdrawal penalties applied automatically
 4. **Compliance logging** — all transfers are auditable
 
-The TransferHook is deployed as a separate program and referenced by the token mint. It cannot be changed after token creation.
+The extension data is permanent and cannot be removed, but the hook program can be activated in the future as the protocol matures.
 
 ---
 
@@ -209,7 +209,7 @@ The TransferHook is deployed as a separate program and referenced by the token m
 
 ### On-Chain (Solana)
 - SPL Token 2022 mint with extensions
-- TransferHook program (custom transfer logic)
+- TransferHook extension (reserved, currently disabled)
 - Staking program (bonds, governance, neurons)
 - Treasury program (community funds, UBC distribution)
 

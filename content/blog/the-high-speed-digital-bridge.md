@@ -3,7 +3,7 @@ title: "The High-Speed Digital Bridge"
 date: "2026-02-14"
 excerpt: "What happens when the gap between thinking and computing disappears. 28 people across 6 continents are already crossing."
 tags: [milestone, network, product]
-author: "Nicolas & Manemus"
+author: "Nicolas & $MIND"
 ---
 
 ## The Bottleneck Was Never Speed

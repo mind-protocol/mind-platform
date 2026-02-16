@@ -1,7 +1,7 @@
 // DOCS: docs/frontend/app_shell/PATTERNS_App_Shell.md
 import "./globals.css";
-import "./connectome/connectome.css";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { getLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 const inter = Inter({
@@ -19,9 +19,11 @@ export const metadata = {
   description: "Persistent memory for AI agents",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang={locale} className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="font-sans">{children}</body>
     </html>
   );
