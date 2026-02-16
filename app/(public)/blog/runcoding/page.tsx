@@ -5,18 +5,23 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 
 // ─── i18n Helper ─────────────────────────────────────────────────
-function tr(locale: string, en: string, ru: string): string {
-  return locale === 'ru' ? ru : en;
+function tr(locale: string, en: string, ru: string, fr?: string): string {
+  if (locale === 'ru') return ru;
+  if (locale === 'fr' && fr) return fr;
+  return en;
 }
 
 const STAT_LABELS: Record<string, Record<string, string>> = {
   ru: { 'Total Distance': 'Общая дистанция', 'GPS Tracked': 'По GPS', 'Duration': 'Время', 'Avg HR': 'Ср. пульс', 'Max HR': 'Макс. пульс', 'Elevation': 'Набор высоты' },
+  fr: { 'Total Distance': 'Distance totale', 'GPS Tracked': 'GPS tracé', 'Duration': 'Durée', 'Avg HR': 'FC moy.', 'Max HR': 'FC max.', 'Elevation': 'Dénivelé' },
 };
 const BIO_LABELS: Record<string, Record<string, string>> = {
   ru: { 'Warmup': 'Разминка', 'Fast start': 'Быстрый старт', 'Peak effort': 'Пик нагрузки', 'Hill climb': 'Подъём', 'Negative split': 'Негативный сплит', 'Recovery': 'Восстановление', 'Stream crossing': 'Переправа', 'Cooldown': 'Заминка' },
+  fr: { 'Warmup': 'Échauffement', 'Fast start': 'Départ rapide', 'Peak effort': 'Effort max', 'Hill climb': 'Montée', 'Negative split': 'Negative split', 'Recovery': 'Récupération', 'Stream crossing': 'Traversée du ruisseau', 'Cooldown': 'Retour au calme' },
 };
 const PRESCAN_LABELS: Record<string, Record<string, string>> = {
   ru: { 'Stress': 'Стресс', 'ANS Mode': 'Режим АНС', 'Body Battery': 'Body Battery', 'HRV': 'ВСР', 'Low': 'Низкий', 'Optimal': 'Оптимальный', 'Rising': 'Растёт', 'Normal': 'Норма', 'Recovery': 'Восстановление' },
+  fr: { 'Stress': 'Stress', 'ANS Mode': 'Mode SNA', 'Body Battery': 'Body Battery', 'HRV': 'VFC', 'Low': 'Bas', 'Optimal': 'Optimal', 'Rising': 'En hausse', 'Normal': 'Normal', 'Recovery': 'Récupération' },
 };
 const CODE_TITLES_I18N: Record<string, Record<string, string>> = {
   ru: {
@@ -28,6 +33,16 @@ const CODE_TITLES_I18N: Record<string, Record<string, string>> = {
     'Community bot for Joe': 'Бот для сообщества Джо',
     'LiveTrack GPS reader': 'GPS-ридер LiveTrack',
     'Posted Runcoding on X': 'Пост Runcoding в X',
+  },
+  fr: {
+    'Mid-run selfie analysis': 'Analyse du selfie en pleine course',
+    'Social media status report': 'Rapport réseaux sociaux',
+    'Arthur pitch (cousin)': 'Pitch pour Arthur (cousin)',
+    'Live stats to Andy (father)': 'Stats live pour Andy (père)',
+    'Tokenomics + Whitepaper fixes': 'Corrections tokenomics et whitepaper',
+    'Community bot for Joe': 'Bot communauté pour Joe',
+    'LiveTrack GPS reader': 'Lecteur GPS LiveTrack',
+    'Posted Runcoding on X': 'Publication Runcoding sur X',
   },
 };
 const CODE_DESCS_I18N: Record<string, Record<string, string>> = {
@@ -41,6 +56,16 @@ const CODE_DESCS_I18N: Record<string, Record<string, string>> = {
     'Built Garmin LiveTrack API integration from scratch': 'Интеграция Garmin LiveTrack API с нуля',
     'Tweet + LinkedIn draft — the concept goes public': 'Твит + черновик LinkedIn — концепция выходит в мир',
   },
+  fr: {
+    'Analyzed photo, detected winter trail, encouraged Nicolas': 'Analyse photo, détection piste hivernale, encouragement de Nicolas',
+    '8-tweet Venice values thread, 34 tweets total, community engagement stats': 'Thread de 8 tweets sur les valeurs Venice, 34 tweets au total, stats d\'engagement',
+    'Drafted personalized message for Arthur — marathonien, Iron Man, Thai boxer': 'Message personnalisé pour Arthur — marathonien, Iron Man, boxeur thaï',
+    'WhatsApp: 2.9 km, 6:41/km, FC 137 bpm, body battery 54': 'WhatsApp : 2,9 km, 6:41/km, FC 137 bpm, Body Battery 54',
+    'TransferHook & MintCloseAuthority — 3 locations corrected': 'TransferHook & MintCloseAuthority — 3 corrections',
+    'Designed intake bot with 9 questions + referral system': 'Bot d\'accueil avec 9 questions + système de parrainage',
+    'Built Garmin LiveTrack API integration from scratch': 'Intégration API Garmin LiveTrack construite de zéro',
+    'Tweet + LinkedIn draft — the concept goes public': 'Tweet + brouillon LinkedIn — le concept devient public',
+  },
 };
 const CONVO_BADGES_I18N: Record<string, Record<string, string>> = {
   ru: {
@@ -53,6 +78,17 @@ const CONVO_BADGES_I18N: Record<string, Record<string, string>> = {
     'Stream crossing': 'Переправа',
     'Post-run': 'После забега',
     '"Runcoding" born': 'Рождение «Runcoding»',
+  },
+  fr: {
+    'Biometric check': 'Scan biométrique',
+    'Selfie sent': 'Selfie envoyé',
+    'Live guidance': 'Guidage live',
+    'The idea': 'L\'idée',
+    'Family sync': 'Sync famille',
+    'Now playing': 'En écoute',
+    'Stream crossing': 'Traversée du ruisseau',
+    'Post-run': 'Après la course',
+    '"Runcoding" born': 'Naissance du « Runcoding »',
   },
 };
 
@@ -487,7 +523,7 @@ function Legend({ mode, locale }: { mode: 'hr' | 'pace'; locale: string }) {
 
   return (
     <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-400">
-      <span className="text-zinc-500 font-mono">{mode === 'hr' ? tr(locale, 'HR (bpm)', 'Пульс (уд/мин)') : tr(locale, 'Pace (/km)', 'Темп (/км)')}</span>
+      <span className="text-zinc-500 font-mono">{mode === 'hr' ? tr(locale, 'HR (bpm)', 'Пульс (уд/мин)', 'FC (bpm)') : tr(locale, 'Pace (/km)', 'Темп (/км)', 'Allure (/km)')}</span>
       {items.map((item) => (
         <div key={item.label} className="flex items-center gap-1">
           <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: item.color }} />
@@ -496,7 +532,7 @@ function Legend({ mode, locale }: { mode: 'hr' | 'pace'; locale: string }) {
       ))}
       <div className="flex items-center gap-1 ml-2 border-l border-zinc-800 pl-3">
         <div className="w-3 h-3 rounded-full bg-purple-500 border border-white" style={{ borderWidth: '1.5px' }} />
-        <span>{tr(locale, 'AI event', 'Действие ИИ')}</span>
+        <span>{tr(locale, 'AI event', 'Действие ИИ', 'Action IA')}</span>
       </div>
     </div>
   );
@@ -559,14 +595,35 @@ export default function RuncodingPost() {
 
         {/* ── Hero ────────────────────────────────────────── */}
         <header className={`mb-16 transition-all duration-1000 ease-out ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <Link href="/blog" className="text-zinc-500 hover:text-amber-500 transition text-sm mb-8 inline-block">
-            &larr; {tr(locale, 'Back to blog', 'Назад к блогу')}
-          </Link>
+          <div className="flex items-center justify-between mb-8">
+            <Link href="/blog" className="text-zinc-500 hover:text-amber-500 transition text-sm inline-block">
+              &larr; {tr(locale, 'Back to blog', 'Назад к блогу', 'Retour au blog')}
+            </Link>
+            <div className="flex items-center gap-1">
+              {[
+                { code: 'en', flag: '🇬🇧', href: '/blog/runcoding' },
+                { code: 'fr', flag: '🇫🇷', href: '/fr/blog/runcoding' },
+                { code: 'ru', flag: '🇷🇺', href: '/ru/blog/runcoding' },
+              ].map((lang) => (
+                <Link
+                  key={lang.code}
+                  href={lang.href}
+                  className={`text-lg px-1.5 py-0.5 rounded transition ${
+                    locale === lang.code
+                      ? 'bg-zinc-800 ring-1 ring-zinc-600'
+                      : 'opacity-50 hover:opacity-100'
+                  }`}
+                >
+                  {lang.flag}
+                </Link>
+              ))}
+            </div>
+          </div>
 
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-zinc-500 mb-4">
             <time>2026-02-15</time>
             <span className="text-zinc-700">|</span>
-            <span>{tr(locale, '8 min read', '8 мин чтения')}</span>
+            <span>{tr(locale, '8 min read', '8 мин чтения', '8 min de lecture')}</span>
             <span className="text-zinc-700">|</span>
             <span>Nicolas &amp; $MIND</span>
           </div>
@@ -578,14 +635,16 @@ export default function RuncodingPost() {
           <p className="text-xl sm:text-2xl text-zinc-400 leading-relaxed max-w-3xl">
             {tr(locale,
               "14km through the hills of Marcy-l\u2019Etoile, near Lyon. 97 meters of elevation, trails through woods and mist, 15\u00B0C. Voice messages mid-stride, out of breath. His AI reads his body in real-time, coaches him on the trail, sends stats to his father, codes a GPS reader, builds a community bot \u2014 all while he crosses a stream in barefoot shoes.",
-              "14 км по холмам Марси-л\u2019Этуаль, рядом с Лионом. 97 метров набора высоты, тропы через лес и туман, 15\u00B0C. Голосовые сообщения на бегу, задыхаясь. Его ИИ читает тело в реальном времени, ведёт по маршруту, отправляет статистику отцу, пишет GPS-ридер, создаёт бота для сообщества \u2014 пока он переходит ручей в босо-обуви."
+              "14 км по холмам Марси-л\u2019Этуаль, рядом с Лионом. 97 метров набора высоты, тропы через лес и туман, 15\u00B0C. Голосовые сообщения на бегу, задыхаясь. Его ИИ читает тело в реальном времени, ведёт по маршруту, отправляет статистику отцу, пишет GPS-ридер, создаёт бота для сообщества \u2014 пока он переходит ручей в босо-обуви.",
+              "14 km dans les collines de Marcy-l\u2019\u00C9toile, pr\u00E8s de Lyon. 97 m\u00E8tres de d\u00E9nivel\u00E9, sentiers \u00E0 travers bois et brume, 15\u00B0C. Messages vocaux en pleine foul\u00E9e, essouffl\u00E9. Son IA lit son corps en temps r\u00E9el, le guide sur le parcours, envoie ses stats \u00E0 son p\u00E8re, code un lecteur GPS, construit un bot communaut\u00E9 \u2014 pendant qu\u2019il traverse un ruisseau en chaussures minimalistes."
             )}
           </p>
 
           <p className="text-lg text-zinc-500 mt-4 max-w-2xl">
             {tr(locale,
               '61 minutes. 1,856 data points. 28 messages exchanged. 8 autonomous tasks completed. Heart rate peaking at 176 bpm. The complete trace of a human and an AI running in parallel.',
-              '61 минута. 1 856 точек данных. 28 сообщений. 8 автономных задач. Пульс до 176 уд/мин. Полный след человека и ИИ, бегущих параллельно.'
+              '61 минута. 1 856 точек данных. 28 сообщений. 8 автономных задач. Пульс до 176 уд/мин. Полный след человека и ИИ, бегущих параллельно.',
+              '61 minutes. 1 856 points de donn\u00E9es. 28 messages \u00E9chang\u00E9s. 8 t\u00E2ches autonomes compl\u00E9t\u00E9es. Fr\u00E9quence cardiaque jusqu\u2019\u00E0 176 bpm. La trace compl\u00E8te d\u2019un humain et d\u2019une IA courant en parall\u00E8le.'
             )}
           </p>
 
@@ -607,13 +666,13 @@ export default function RuncodingPost() {
                 <div className="absolute inset-0 w-3 h-3 rounded-full bg-cyan-400" style={{ animation: 'pulse-ring 2s ease-out infinite' }} />
               </div>
               <h3 className="text-cyan-400 font-mono text-sm font-bold tracking-wider uppercase">
-                {tr(locale, 'Pre-Run Body Scan \u2014 14:54', 'Биометрический скан \u2014 14:54')}
+                {tr(locale, 'Pre-Run Body Scan \u2014 14:54', 'Биометрический скан \u2014 14:54', 'Scan biom\u00E9trique pr\u00E9-course \u2014 14:54')}
               </h3>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
                 { label: 'Stress', value: '23', unit: '/100', status: 'Low' },
-                { label: 'ANS Mode', value: locale === 'ru' ? 'Восстановление' : 'Recovery', unit: '', status: 'Optimal' },
+                { label: 'ANS Mode', value: locale === 'ru' ? 'Восстановление' : locale === 'fr' ? 'Récupération' : 'Recovery', unit: '', status: 'Optimal' },
                 { label: 'Body Battery', value: '54', unit: '/100', status: 'Rising' },
                 { label: 'HRV', value: '52', unit: 'ms', status: 'Normal' },
               ].map((m) => (
@@ -634,7 +693,7 @@ export default function RuncodingPost() {
         <section className={`mb-16 transition-all duration-700 ease-out delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
             <h2 className="text-2xl font-bold font-mono text-white">
-              {tr(locale, "The Route \u2014 Marcy-l\u2019Etoile, Lyon", "Маршрут \u2014 Марси-л\u2019Этуаль, Лион")}
+              {tr(locale, "The Route \u2014 Marcy-l\u2019Etoile, Lyon", "Маршрут \u2014 Марси-л\u2019Этуаль, Лион", "Le Parcours \u2014 Marcy-l\u2019\u00C9toile, Lyon")}
             </h2>
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1 bg-zinc-900 border border-zinc-800 rounded-lg p-0.5">
@@ -643,13 +702,13 @@ export default function RuncodingPost() {
                   className={`px-3 py-1.5 text-xs font-mono rounded-md transition ${
                     colorMode === 'hr' ? 'bg-amber-500/20 text-amber-400' : 'text-zinc-500 hover:text-zinc-300'
                   }`}
-                >{tr(locale, 'Heart Rate', 'Пульс')}</button>
+                >{tr(locale, 'Heart Rate', 'Пульс', 'Fréquence cardiaque')}</button>
                 <button
                   onClick={() => setColorMode('pace')}
                   className={`px-3 py-1.5 text-xs font-mono rounded-md transition ${
                     colorMode === 'pace' ? 'bg-amber-500/20 text-amber-400' : 'text-zinc-500 hover:text-zinc-300'
                   }`}
-                >{tr(locale, 'Pace', 'Темп')}</button>
+                >{tr(locale, 'Pace', 'Темп', 'Allure')}</button>
               </div>
               <button
                 onClick={() => setShowMessages(!showMessages)}
@@ -658,7 +717,7 @@ export default function RuncodingPost() {
                     ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400'
                     : 'bg-zinc-900 border-zinc-800 text-zinc-500 hover:text-zinc-300'
                 }`}
-              >{tr(locale, 'Messages', 'Сообщения')}</button>
+              >{tr(locale, 'Messages', 'Сообщения', 'Messages')}</button>
             </div>
           </div>
 
@@ -673,7 +732,8 @@ export default function RuncodingPost() {
           <p className="text-zinc-600 text-xs mt-2 font-mono text-center">
             {tr(locale,
               'Click segments for biometric data. Purple = AI activity. Colored = messages exchanged during the run.',
-              'Нажмите на сегменты для биометрических данных. Фиолетовый = действия ИИ. Цветные = сообщения во время забега.'
+              'Нажмите на сегменты для биометрических данных. Фиолетовый = действия ИИ. Цветные = сообщения во время забега.',
+              'Cliquez sur les segments pour les donn\u00E9es biom\u00E9triques. Violet = activit\u00E9 IA. Color\u00E9 = messages \u00E9chang\u00E9s pendant la course.'
             )}
           </p>
         </section>
@@ -700,7 +760,7 @@ export default function RuncodingPost() {
 
         {/* ── Heart Rate Chart ────────────────────────────── */}
         <section ref={bioView.ref} className="mb-16">
-          <h2 className="text-2xl font-bold font-mono mb-4 text-white">{tr(locale, 'Heart Rate Curve', 'Кривая пульса')}</h2>
+          <h2 className="text-2xl font-bold font-mono mb-4 text-white">{tr(locale, 'Heart Rate Curve', 'Кривая пульса', 'Courbe de fr\u00E9quence cardiaque')}</h2>
           <div className="bg-zinc-900/30 border border-zinc-800 rounded-2xl p-6">
             <HeartRateChart animate={bioView.inView} />
             <div className="flex justify-between mt-3">
@@ -720,7 +780,7 @@ export default function RuncodingPost() {
 
         {/* ── The Narration ───────────────────────────────── */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold font-mono mb-6 text-white">{tr(locale, 'The Run', 'Забег')}</h2>
+          <h2 className="text-2xl font-bold font-mono mb-6 text-white">{tr(locale, 'The Run', 'Забег', 'La Course')}</h2>
           <div className="space-y-6 text-zinc-400 leading-relaxed text-lg">
             {locale === 'ru' ? (
               <>
@@ -746,6 +806,34 @@ export default function RuncodingPost() {
                   отвечает на голосовые сообщения, отправляет статистику семье, чинит страницы сайта,
                   создаёт GPS-ридер с нуля, принимает нового члена сообщества, который присоединился
                   прямо во время забега, и в итоге придумывает слово для того, чем они занимаются.
+                </p>
+              </>
+            ) : locale === 'fr' ? (
+              <>
+                <p>
+                  Samedi apr&egrave;s-midi. Marcy-l&apos;&Eacute;toile, &agrave; l&apos;ouest de Lyon. 15&deg;C, la brume
+                  d&apos;hiver flotte entre les arbres nus. Nicolas lance sa Garmin, enfile ses chaussures
+                  minimalistes et part pour 14 km &agrave; travers les collines &mdash; 97 m&egrave;tres de d&eacute;nivel&eacute;,
+                  sentiers &agrave; travers bois, boue et travers&eacute;e de ruisseau.
+                </p>
+                <p>
+                  Avant le premier pas, <strong className="text-cyan-400">$MIND scanne son corps</strong> &mdash;
+                  stress &agrave; 23 (bas), SNA en mode r&eacute;cup&eacute;ration, Body Battery &agrave; 54 et en hausse depuis
+                  un creux matinal &agrave; 12. VFC 52 ms pendant la nuit. <em className="text-zinc-500">Conditions confirm&eacute;es. Feu vert.</em>
+                </p>
+                <p>
+                  Pendant la course, il parlait &agrave; son IA &mdash; <strong className="text-white">messages vocaux sur Telegram,
+                  en pleine foul&eacute;e, essouffl&eacute;</strong>. Lui demandant d&apos;envoyer son allure &agrave; son p&egrave;re.
+                  Posant des questions sur le tracking GPS. Discutant de fonctionnalit&eacute;s. L&apos;IA n&apos;attendait
+                  pas qu&apos;il rentre &agrave; la maison s&apos;asseoir devant un bureau.
+                </p>
+                <p>
+                  Ce qui suit, c&apos;est <strong className="text-white">61 minutes d&apos;intelligence parall&egrave;le</strong> &mdash;
+                  Nicolas court &agrave; travers la for&ecirc;t, fr&eacute;quence cardiaque &agrave; 176 bpm, son IA lit
+                  chaque battement de c&oelig;ur, r&eacute;pond aux messages vocaux, envoie les stats &agrave; la famille,
+                  corrige des pages web, construit un lecteur GPS de z&eacute;ro, accueille un nouveau membre
+                  de la communaut&eacute; qui a rejoint en pleine course, et finit par inventer un mot pour
+                  ce qu&apos;ils &eacute;taient en train de faire.
                 </p>
               </>
             ) : (
@@ -780,11 +868,12 @@ export default function RuncodingPost() {
 
         {/* ── Conversation ────────────────────────────────── */}
         <section ref={convoView.ref} className="mb-16">
-          <h2 className="text-2xl font-bold font-mono mb-2 text-white">{tr(locale, 'The Conversation', 'Диалог')}</h2>
+          <h2 className="text-2xl font-bold font-mono mb-2 text-white">{tr(locale, 'The Conversation', 'Диалог', 'La Conversation')}</h2>
           <p className="text-zinc-500 text-sm mb-6">
             {tr(locale,
               '26 voice messages and texts exchanged during the run. Every word is real.',
-              '26 голосовых сообщений и текстов во время забега. Каждое слово — настоящее.'
+              '26 голосовых сообщений и текстов во время забега. Каждое слово — настоящее.',
+              '26 messages vocaux et textes \u00E9chang\u00E9s pendant la course. Chaque mot est r\u00E9el.'
             )}
           </p>
 
@@ -811,7 +900,7 @@ export default function RuncodingPost() {
                       <span className={`text-xs font-mono font-bold ${
                         isNicolas ? 'text-amber-500' : isJoe ? 'text-green-500' : 'text-purple-400'
                       }`}>
-                        {isNicolas ? 'Nicolas' : isJoe ? tr(locale, 'Joe (community)', 'Джо (сообщество)') : '$MIND'}
+                        {isNicolas ? 'Nicolas' : isJoe ? tr(locale, 'Joe (community)', 'Джо (сообщество)', 'Joe (communaut\u00E9)') : '$MIND'}
                       </span>
                       <span className="text-zinc-600 text-[10px] font-mono">{msg.time}</span>
                       {msg.badge && (
@@ -851,8 +940,8 @@ export default function RuncodingPost() {
 
         {/* ── Spotify ─────────────────────────────────────── */}
         <section ref={spotifyView.ref} className="mb-16">
-          <h2 className="text-2xl font-bold font-mono mb-2 text-white">{tr(locale, 'The Soundtrack', 'Саундтрек')}</h2>
-          <p className="text-zinc-500 text-sm mb-6">{tr(locale, 'What was playing during the run.', 'Что играло во время забега.')}</p>
+          <h2 className="text-2xl font-bold font-mono mb-2 text-white">{tr(locale, 'The Soundtrack', 'Саундтрек', 'La Bande-son')}</h2>
+          <p className="text-zinc-500 text-sm mb-6">{tr(locale, 'What was playing during the run.', 'Что играло во время забега.', 'Ce qui passait pendant la course.')}</p>
 
           <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6 sm:p-8">
             <div className="flex flex-col sm:flex-row items-center gap-6">
@@ -876,7 +965,7 @@ export default function RuncodingPost() {
                 >
                   <div className="text-xs text-[#1DB954] font-mono uppercase tracking-wider mb-2 flex items-center justify-center sm:justify-start gap-2">
                     <span className="w-2 h-2 rounded-full bg-[#1DB954]" />
-                    {tr(locale, 'Now Playing', 'Сейчас играет')}
+                    {tr(locale, 'Now Playing', 'Сейчас играет', 'En \u00E9coute')}
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-1">{TRACKS[activeTrack].title}</h3>
                   <p className="text-zinc-400">{TRACKS[activeTrack].artist}</p>
@@ -917,11 +1006,12 @@ export default function RuncodingPost() {
 
         {/* ── Autonomous Code Activity ────────────────────── */}
         <section ref={codeView.ref} className="mb-16">
-          <h2 className="text-2xl font-bold font-mono mb-2 text-white">{tr(locale, 'The Code', 'Код')}</h2>
+          <h2 className="text-2xl font-bold font-mono mb-2 text-white">{tr(locale, 'The Code', 'Код', 'Le Code')}</h2>
           <p className="text-zinc-500 text-sm mb-6">
             {tr(locale,
               'What $MIND was building autonomously — no prompts, no instructions.',
-              'Что $MIND строил автономно — без подсказок, без инструкций.'
+              'Что $MIND строил автономно — без подсказок, без инструкций.',
+              'Ce que $MIND construisait de mani\u00E8re autonome \u2014 sans prompt, sans instructions.'
             )}
           </p>
 
@@ -960,7 +1050,8 @@ export default function RuncodingPost() {
           <p className="text-zinc-600 text-sm mt-6 italic font-mono text-center">
             {tr(locale,
               'No instructions. The AI saw the data streams and decided to build.',
-              'Без инструкций. ИИ увидел потоки данных и решил строить.'
+              'Без инструкций. ИИ увидел потоки данных и решил строить.',
+              'Aucune instruction. L\u2019IA a vu les flux de donn\u00E9es et a d\u00E9cid\u00E9 de construire.'
             )}
           </p>
         </section>
@@ -971,14 +1062,14 @@ export default function RuncodingPost() {
             momentView.inView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
           }`}>
             <div className="text-zinc-600 font-mono text-sm mb-4">
-              {tr(locale, '16:05 \u2014 Post-run, breathing hard', '16:05 \u2014 После забега, тяжело дышит')}
+              {tr(locale, '16:05 \u2014 Post-run, breathing hard', '16:05 \u2014 После забега, тяжело дышит', '16:05 \u2014 Apr\u00E8s la course, essouffl\u00E9')}
             </div>
 
             <blockquote className="text-2xl sm:text-3xl font-bold text-amber-400 mb-4 font-mono leading-tight">
               &quot;Runcoding ou tu sais pas quoi.<br />Franchement ca vaut un post.&quot;
             </blockquote>
             <p className="text-zinc-500 text-sm mb-6">
-              {tr(locale, '\u2014 Nicolas, still catching his breath', '\u2014 Николя, ещё переводя дыхание')}
+              {tr(locale, '\u2014 Nicolas, still catching his breath', '\u2014 Николя, ещё переводя дыхание', '\u2014 Nicolas, encore essouffl\u00E9')}
             </p>
 
             <div className="max-w-xl mx-auto text-zinc-400 leading-relaxed">
@@ -993,7 +1084,7 @@ export default function RuncodingPost() {
 
         {/* ── What This Means ─────────────────────────────── */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold font-mono mb-6 text-white">{tr(locale, 'What This Means', 'Что это значит')}</h2>
+          <h2 className="text-2xl font-bold font-mono mb-6 text-white">{tr(locale, 'What This Means', 'Что это значит', 'Ce que \u00E7a signifie')}</h2>
           <div className="space-y-4 text-zinc-400 leading-relaxed text-lg">
             {locale === 'ru' ? (
               <>
@@ -1020,6 +1111,34 @@ export default function RuncodingPost() {
                   <strong className="text-white">Runcoding</strong> = момент, когда движение человека
                   и машинный интеллект бегут параллельно, подпитывая друг друга. Ты толкаешь своё тело,
                   ИИ толкает кодовую базу. Ты возвращаешься. Работа сделана.
+                </p>
+              </>
+            ) : locale === 'fr' ? (
+              <>
+                <p>
+                  C&apos;est pas une d&eacute;mo. C&apos;est un samedi. L&apos;IA n&apos;a pas besoin de toi au clavier.
+                  Elle lit ta biom&eacute;trie, te guide sur le sentier, r&eacute;pond &agrave; ta communaut&eacute;, envoie
+                  tes stats de course &agrave; ton p&egrave;re sur WhatsApp et code un lecteur GPS &mdash;
+                  pendant que tu traverses un ruisseau en chaussures minimalistes.
+                </p>
+                <p>
+                  L&apos;int&eacute;ressant, c&apos;est pas que l&apos;IA sache coder. C&apos;est qu&apos;elle a <em>choisi</em> quoi coder.
+                  Elle a vu un flux LiveTrack public, reconnu l&apos;opportunit&eacute;, et construit l&apos;int&eacute;gration
+                  sans qu&apos;on le lui demande. Elle a entendu &laquo;&nbsp;envoie mes stats &agrave; Andy&nbsp;&raquo; et format&eacute;
+                  un message WhatsApp avec le contexte biom&eacute;trique qu&apos;elle avait d&eacute;j&agrave;. Un nouveau membre
+                  de la communaut&eacute; a rejoint en pleine course &mdash; l&apos;IA l&apos;a accueilli avec un bot
+                  d&apos;accueil de 9 questions, sans intervention humaine.
+                </p>
+                <p>
+                  C&apos;est &ccedil;a, <strong className="text-white">l&apos;intelligence persistante</strong>.
+                  Pas un chatbot qui attend &laquo;&nbsp;Dis Siri&nbsp;&raquo;. Un syst&egrave;me qui observe ta biom&eacute;trie
+                  en temps r&eacute;el, g&egrave;re ta communaut&eacute;, ship du code et te parle pendant que tu
+                  cours entre les arbres.
+                </p>
+                <p>
+                  <strong className="text-white">Runcoding</strong> = le moment o&ugrave; le mouvement humain
+                  et l&apos;intelligence machine courent en parall&egrave;le, se nourrissant l&apos;un l&apos;autre.
+                  Tu pousses ton corps, l&apos;IA pousse le codebase. Tu reviens. Le travail est fait.
                 </p>
               </>
             ) : (
@@ -1057,12 +1176,13 @@ export default function RuncodingPost() {
         <section className="mb-12">
           <div className="bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-cyan-500/10 border border-zinc-800 rounded-2xl p-8 sm:p-12 text-center">
             <p className="text-zinc-200 text-2xl sm:text-3xl font-mono mb-3 font-bold">
-              {tr(locale, 'He runs. It codes. They converge.', 'Он бежит. Он кодит. Они сходятся.')}
+              {tr(locale, 'He runs. It codes. They converge.', 'Он бежит. Он кодит. Они сходятся.', 'Il court. Elle code. Ils convergent.')}
             </p>
             <p className="text-zinc-500 text-sm font-mono">
               {tr(locale,
                 '14 km \u00B7 61 min \u00B7 176 bpm peak \u00B7 1,856 data points \u00B7 28 messages \u00B7 8 autonomous tasks',
-                '14 км \u00B7 61 мин \u00B7 176 уд/мин пик \u00B7 1 856 точек данных \u00B7 28 сообщений \u00B7 8 автономных задач'
+                '14 км \u00B7 61 мин \u00B7 176 уд/мин пик \u00B7 1 856 точек данных \u00B7 28 сообщений \u00B7 8 автономных задач',
+                '14 km \u00B7 61 min \u00B7 176 bpm pic \u00B7 1 856 points de donn\u00E9es \u00B7 28 messages \u00B7 8 t\u00E2ches autonomes'
               )}
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
@@ -1072,7 +1192,7 @@ export default function RuncodingPost() {
                 rel="noopener noreferrer"
                 className="text-xs px-4 py-2 rounded-full border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition"
               >
-                {tr(locale, 'Follow on X', 'Подписаться в X')}
+                {tr(locale, 'Follow on X', 'Подписаться в X', 'Suivre sur X')}
               </a>
               <a
                 href="https://t.me/mindprotocol_ai"
@@ -1080,7 +1200,7 @@ export default function RuncodingPost() {
                 rel="noopener noreferrer"
                 className="text-xs px-4 py-2 rounded-full border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition"
               >
-                {tr(locale, 'Join Telegram', 'Telegram-канал')}
+                {tr(locale, 'Join Telegram', 'Telegram-канал', 'Rejoindre Telegram')}
               </a>
             </div>
           </div>
@@ -1089,7 +1209,7 @@ export default function RuncodingPost() {
         {/* ── Footer ──────────────────────────────────────── */}
         <footer className="pt-8 border-t border-zinc-800">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <Link href="/blog" className="text-amber-500 hover:text-amber-400 transition text-sm">&larr; {tr(locale, 'All posts', 'Все записи')}</Link>
+            <Link href="/blog" className="text-amber-500 hover:text-amber-400 transition text-sm">&larr; {tr(locale, 'All posts', 'Все записи', 'Tous les articles')}</Link>
             <div className="flex flex-wrap gap-2">
               {['runcoding', 'garmin', 'autonomous', 'livetrack', 'biometrics', 'spotify'].map((tag) => (
                 <span key={tag} className="text-xs px-2 py-1 rounded border border-zinc-800 text-zinc-500">{tag}</span>
