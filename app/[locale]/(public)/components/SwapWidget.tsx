@@ -2,6 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 import { useState, useEffect, useCallback } from 'react';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Buffer } from 'buffer';
 
 if (typeof window !== 'undefined' && !(window as any).Buffer) {
@@ -11,16 +13,15 @@ if (typeof window !== 'undefined' && !(window as any).Buffer) {
 const MIND_MINT = 'EgLGfRrjX3du7Pwbj8dzyubSk8ic1WdDfq1ysLqhBm6p';
 const SOL_MINT = 'So11111111111111111111111111111111111111112';
 const FLUXBEAM_API = 'https://api.fluxbeam.xyz/v1';
-const RPC = 'https://mainnet.helius-rpc.com/?api-key=4c3a5fc2-ea3f-45eb-85d5-2f282a6b4401';
 
 const PRESETS = [0.1, 0.5, 1, 5];
 
-type SwapState = 'idle' | 'connecting' | 'quoting' | 'preparing' | 'signing' | 'confirming' | 'success' | 'error';
+type SwapState = 'idle' | 'quoting' | 'preparing' | 'signing' | 'confirming' | 'success' | 'error';
 
 export function SwapWidget() {
   const t = useTranslations('Swap');
-  const [mounted, setMounted] = useState(false);
-  const [wallet, setWallet] = useState<string | null>(null);
+  const { publicKey, signTransaction, connected } = useWallet();
+  const { connection } = useConnection();
   const [solAmount, setSolAmount] = useState('0.1');
   const [quote, setQuote] = useState<any>(null);
   const [state, setState] = useState<SwapState>('idle');
@@ -28,44 +29,16 @@ export function SwapWidget() {
   const [txSig, setTxSig] = useState('');
   const [solBalance, setSolBalance] = useState<number | null>(null);
 
-  useEffect(() => { setMounted(true); }, []);
-
-  const getProvider = () => {
-    if (typeof window !== 'undefined') {
-      const phantom = (window as any).phantom?.solana || (window as any).solana;
-      if (phantom?.isPhantom) return phantom;
-    }
-    return null;
-  };
-
-  const connectWallet = async () => {
-    const provider = getProvider();
-    if (!provider) {
-      window.open('https://phantom.app/', '_blank');
+  // Fetch SOL balance when wallet connects
+  useEffect(() => {
+    if (!publicKey) {
+      setSolBalance(null);
       return;
     }
-    setState('connecting');
-    try {
-      const resp = await provider.connect();
-      const pubkey = resp.publicKey.toString();
-      setWallet(pubkey);
-      const balResp = await fetch(RPC, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          jsonrpc: '2.0', id: 1,
-          method: 'getBalance',
-          params: [pubkey],
-        }),
-      });
-      const balData = await balResp.json();
-      setSolBalance((balData.result?.value || 0) / 1e9);
-      setState('idle');
-    } catch (e: any) {
-      setError(e.message || t('failedToConnect'));
-      setState('error');
-    }
-  };
+    connection.getBalance(publicKey).then(bal => {
+      setSolBalance(bal / 1e9);
+    }).catch(() => {});
+  }, [publicKey, connection]);
 
   const fetchQuote = useCallback(async () => {
     if (!solAmount || parseFloat(solAmount) <= 0) return;
@@ -100,8 +73,7 @@ export function SwapWidget() {
   }, [solAmount, fetchQuote]);
 
   const executeSwap = async () => {
-    const provider = getProvider();
-    if (!provider || !wallet || !quote) return;
+    if (!publicKey || !signTransaction || !quote) return;
 
     setError('');
 
@@ -121,9 +93,6 @@ export function SwapWidget() {
     try {
       const web3 = await import('@solana/web3.js');
 
-      const connection = new web3.Connection(RPC, 'confirmed');
-      const publicKey = new web3.PublicKey(wallet);
-
       const lamports = Math.floor(parseFloat(solAmount) * 1e9);
       const freshQuoteResp = await fetch(
         `${FLUXBEAM_API}/quote?inputMint=${SOL_MINT}&outputMint=${MIND_MINT}&amount=${lamports}&slippageBps=500`
@@ -135,6 +104,7 @@ export function SwapWidget() {
         throw new Error(t('failedToGetQuote'));
       }
 
+      const wallet = publicKey.toBase58();
       const swapResp = await fetch(`${FLUXBEAM_API}/swap`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -158,9 +128,6 @@ export function SwapWidget() {
       const CU_LIMIT = 400_000;
 
       const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
-
-      let signedTx: any;
-      setState('signing');
 
       const fluxTx = web3.Transaction.from(txBuf);
       const TOKEN_PROGRAM = new web3.PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
@@ -212,8 +179,8 @@ export function SwapWidget() {
         data: Buffer.from([9]),
       }));
 
-      console.log('Tx:', newTx.instructions.length, 'instructions (400k CU, with wrap/unwrap)');
-      signedTx = await provider.signTransaction(newTx);
+      setState('signing');
+      const signedTx = await signTransaction(newTx);
 
       setState('confirming');
       const sig = await connection.sendRawTransaction(signedTx.serialize(), {
@@ -254,7 +221,6 @@ export function SwapWidget() {
 
   const stateLabel: Record<SwapState, string> = {
     idle: '',
-    connecting: t('connecting'),
     quoting: t('gettingPrice'),
     preparing: t('preparingTx'),
     signing: t('pleaseSign'),
@@ -274,12 +240,11 @@ export function SwapWidget() {
         backdropFilter: 'blur(10px)',
       }}>
         {/* Wallet */}
-        {!wallet ? (
-          <button
-            onClick={connectWallet}
-            disabled={state === 'connecting'}
-            style={{
+        {!connected ? (
+          <div style={{ marginBottom: '20px' }}>
+            <WalletMultiButton style={{
               width: '100%',
+              justifyContent: 'center',
               padding: '14px',
               background: 'linear-gradient(135deg, #f59e0b, #d97706)',
               border: 'none',
@@ -287,12 +252,9 @@ export function SwapWidget() {
               color: '#000',
               fontSize: '16px',
               fontWeight: 600,
-              cursor: 'pointer',
-              marginBottom: '20px',
-            }}
-          >
-            {state === 'connecting' ? t('connecting') : !mounted ? t('connectWallet') : getProvider() ? t('connectPhantom') : t('installPhantom')}
-          </button>
+              height: 'auto',
+            }} />
+          </div>
         ) : (
           <div style={{
             display: 'flex',
@@ -305,7 +267,7 @@ export function SwapWidget() {
             border: '1px solid rgba(245,158,11,0.2)',
           }}>
             <span style={{ fontSize: '13px', color: '#f59e0b' }}>
-              {wallet.slice(0, 4)}...{wallet.slice(-4)}
+              {publicKey ? `${publicKey.toBase58().slice(0, 4)}...${publicKey.toBase58().slice(-4)}` : ''}
             </span>
             <span style={{ fontSize: '13px', color: '#888' }}>
               {solBalance !== null ? `${solBalance.toFixed(4)} SOL` : '...'}
@@ -424,23 +386,23 @@ export function SwapWidget() {
         {/* Swap Button */}
         <button
           onClick={executeSwap}
-          disabled={!wallet || !quote || state !== 'idle' && state !== 'error'}
+          disabled={!connected || !quote || (state !== 'idle' && state !== 'error')}
           style={{
             width: '100%',
             padding: '16px',
-            background: !wallet || !quote
+            background: !connected || !quote
               ? 'rgba(255,255,255,0.1)'
               : 'linear-gradient(135deg, #f59e0b, #d97706)',
             border: 'none',
             borderRadius: '12px',
-            color: !wallet || !quote ? '#555' : '#000',
+            color: !connected || !quote ? '#555' : '#000',
             fontSize: '16px',
             fontWeight: 700,
-            cursor: !wallet || !quote ? 'not-allowed' : 'pointer',
+            cursor: !connected || !quote ? 'not-allowed' : 'pointer',
             transition: 'all 0.2s',
           }}
         >
-          {!wallet
+          {!connected
             ? t('connectFirst')
             : !quote
             ? t('enterAmount')
@@ -503,7 +465,7 @@ export function SwapWidget() {
       </div>
 
       {/* Note about 2 signatures */}
-      {wallet && (
+      {connected && (
         <div style={{
           marginTop: '16px',
           padding: '12px 16px',

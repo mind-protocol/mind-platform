@@ -1,6 +1,7 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
+import { SolanaProvider } from '@/components/SolanaProvider';
 import type { ReactNode } from 'react';
 
 export function generateStaticParams() {
@@ -20,7 +21,9 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
-      {children}
+      <SolanaProvider>
+        {children}
+      </SolanaProvider>
     </NextIntlClientProvider>
   );
 }

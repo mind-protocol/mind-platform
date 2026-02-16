@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 const MIND_CA = 'EgLGfRrjX3du7Pwbj8dzyubSk8ic1WdDfq1ysLqhBm6p';
 
@@ -43,11 +45,26 @@ function shortenAddress(addr: string): string {
 }
 
 function BalanceSection() {
+  const { publicKey } = useWallet();
   const [address, setAddress] = useState('');
   const [balance, setBalance] = useState<BalanceData | null>(null);
   const [price, setPrice] = useState<PriceData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Auto-fill address when wallet connects
+  useEffect(() => {
+    if (publicKey) {
+      setAddress(publicKey.toBase58());
+    }
+  }, [publicKey]);
+
+  // Auto-lookup when wallet connects
+  useEffect(() => {
+    if (publicKey && address === publicKey.toBase58()) {
+      lookupBalance();
+    }
+  }, [address]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function lookupBalance() {
     if (!address.trim()) return;
@@ -175,12 +192,20 @@ function BalanceSection() {
 }
 
 function TransferSection() {
+  const { publicKey } = useWallet();
   const [sender, setSender] = useState('');
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
   const [result, setResult] = useState<PrepareData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Auto-fill sender when wallet connects
+  useEffect(() => {
+    if (publicKey) {
+      setSender(publicKey.toBase58());
+    }
+  }, [publicKey]);
 
   async function prepareTransfer() {
     if (!sender.trim() || !recipient.trim() || !amount.trim()) return;
@@ -339,9 +364,21 @@ export default function WalletPage() {
             Dashboard
           </p>
           <h1 className="text-4xl font-bold mb-2">$MIND Wallet</h1>
-          <p className="text-zinc-400">
+          <p className="text-zinc-400 mb-6">
             Check balances and prepare transfers on Solana.
           </p>
+
+          {/* Wallet Connect Button */}
+          <div className="flex justify-center mb-4">
+            <WalletMultiButton style={{
+              background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+              color: '#000',
+              fontWeight: 600,
+              borderRadius: '12px',
+              fontSize: '14px',
+              height: '44px',
+            }} />
+          </div>
         </header>
 
         {/* Token quick info */}

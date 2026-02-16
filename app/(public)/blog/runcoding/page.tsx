@@ -2,6 +2,59 @@
 
 import Link from 'next/link';
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
+
+// ─── i18n Helper ─────────────────────────────────────────────────
+function tr(locale: string, en: string, ru: string): string {
+  return locale === 'ru' ? ru : en;
+}
+
+const STAT_LABELS: Record<string, Record<string, string>> = {
+  ru: { 'Total Distance': 'Общая дистанция', 'GPS Tracked': 'По GPS', 'Duration': 'Время', 'Avg HR': 'Ср. пульс', 'Max HR': 'Макс. пульс', 'Elevation': 'Набор высоты' },
+};
+const BIO_LABELS: Record<string, Record<string, string>> = {
+  ru: { 'Warmup': 'Разминка', 'Fast start': 'Быстрый старт', 'Peak effort': 'Пик нагрузки', 'Hill climb': 'Подъём', 'Negative split': 'Негативный сплит', 'Recovery': 'Восстановление', 'Stream crossing': 'Переправа', 'Cooldown': 'Заминка' },
+};
+const PRESCAN_LABELS: Record<string, Record<string, string>> = {
+  ru: { 'Stress': 'Стресс', 'ANS Mode': 'Режим АНС', 'Body Battery': 'Body Battery', 'HRV': 'ВСР', 'Low': 'Низкий', 'Optimal': 'Оптимальный', 'Rising': 'Растёт', 'Normal': 'Норма', 'Recovery': 'Восстановление' },
+};
+const CODE_TITLES_I18N: Record<string, Record<string, string>> = {
+  ru: {
+    'Mid-run selfie analysis': 'Анализ селфи на бегу',
+    'Social media status report': 'Отчёт по соцсетям',
+    'Arthur pitch (cousin)': 'Питч для Артура (кузен)',
+    'Live stats to Andy (father)': 'Статистика для Энди (отец)',
+    'Tokenomics + Whitepaper fixes': 'Правки токеномики и вайтпейпера',
+    'Community bot for Joe': 'Бот для сообщества Джо',
+    'LiveTrack GPS reader': 'GPS-ридер LiveTrack',
+    'Posted Runcoding on X': 'Пост Runcoding в X',
+  },
+};
+const CODE_DESCS_I18N: Record<string, Record<string, string>> = {
+  ru: {
+    'Analyzed photo, detected winter trail, encouraged Nicolas': 'Анализ фото, обнаружение зимней тропы, поддержка Николя',
+    '8-tweet Venice values thread, 34 tweets total, community engagement stats': 'Тред из 8 твитов про ценности Venice, 34 твита, статистика вовлечённости',
+    'Drafted personalized message for Arthur — marathonien, Iron Man, Thai boxer': 'Персональное сообщение для Артура — марафонец, Iron Man, тайский бокс',
+    'WhatsApp: 2.9 km, 6:41/km, FC 137 bpm, body battery 54': 'WhatsApp: 2,9 км, 6:41/км, ЧСС 137 уд/мин, Body Battery 54',
+    'TransferHook & MintCloseAuthority — 3 locations corrected': 'TransferHook & MintCloseAuthority — 3 исправления',
+    'Designed intake bot with 9 questions + referral system': 'Бот регистрации с 9 вопросами + реферальная система',
+    'Built Garmin LiveTrack API integration from scratch': 'Интеграция Garmin LiveTrack API с нуля',
+    'Tweet + LinkedIn draft — the concept goes public': 'Твит + черновик LinkedIn — концепция выходит в мир',
+  },
+};
+const CONVO_BADGES_I18N: Record<string, Record<string, string>> = {
+  ru: {
+    'Biometric check': 'Биометрический скан',
+    'Selfie sent': 'Отправлено селфи',
+    'Live guidance': 'Живая навигация',
+    'The idea': 'Идея',
+    'Family sync': 'Синхронизация с семьёй',
+    'Now playing': 'Сейчас играет',
+    'Stream crossing': 'Переправа',
+    'Post-run': 'После забега',
+    '"Runcoding" born': 'Рождение «Runcoding»',
+  },
+};
 
 // ─── GPS Data ──────────────────────────────────────────────────
 // [lat, lon, hr, speed(m/s), elev(m), ts(unix_s)]
@@ -85,12 +138,12 @@ const CODE_EVENTS = [
 
 // ─── Stats ─────────────────────────────────────────────────────
 const STATS = [
-  { label: 'Distance', value: '8.06', unit: 'km', icon: '📍' },
+  { label: 'Total Distance', value: '14', unit: 'km', icon: '📍' },
+  { label: 'GPS Tracked', value: '8.06', unit: 'km', icon: '🛰' },
   { label: 'Duration', value: '61', unit: 'min', icon: '⏱' },
   { label: 'Avg HR', value: '143', unit: 'bpm', icon: '❤️' },
   { label: 'Max HR', value: '176', unit: 'bpm', icon: '🔥' },
   { label: 'Elevation', value: '+97', unit: 'm', icon: '⛰' },
-  { label: 'Data Points', value: '1,856', unit: '', icon: '📊' },
 ];
 
 // ─── Spotify Tracks ────────────────────────────────────────────
@@ -419,7 +472,7 @@ function HeartRateChart({ animate }: { animate: boolean }) {
 
 // ─── Legend ─────────────────────────────────────────────────────
 
-function Legend({ mode }: { mode: 'hr' | 'pace' }) {
+function Legend({ mode, locale }: { mode: 'hr' | 'pace'; locale: string }) {
   const hrLegend = [
     { color: '#3b82f6', label: '<100' }, { color: '#22c55e', label: '100-130' },
     { color: '#eab308', label: '130-150' }, { color: '#f97316', label: '150-165' },
@@ -434,7 +487,7 @@ function Legend({ mode }: { mode: 'hr' | 'pace' }) {
 
   return (
     <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-400">
-      <span className="text-zinc-500 font-mono">{mode === 'hr' ? 'HR (bpm)' : 'Pace (/km)'}</span>
+      <span className="text-zinc-500 font-mono">{mode === 'hr' ? tr(locale, 'HR (bpm)', 'Пульс (уд/мин)') : tr(locale, 'Pace (/km)', 'Темп (/км)')}</span>
       {items.map((item) => (
         <div key={item.label} className="flex items-center gap-1">
           <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: item.color }} />
@@ -443,7 +496,7 @@ function Legend({ mode }: { mode: 'hr' | 'pace' }) {
       ))}
       <div className="flex items-center gap-1 ml-2 border-l border-zinc-800 pl-3">
         <div className="w-3 h-3 rounded-full bg-purple-500 border border-white" style={{ borderWidth: '1.5px' }} />
-        <span>AI event</span>
+        <span>{tr(locale, 'AI event', 'Действие ИИ')}</span>
       </div>
     </div>
   );
@@ -457,6 +510,9 @@ export default function RuncodingPost() {
   const [showMessages, setShowMessages] = useState(true);
   const [activeTrack, setActiveTrack] = useState(0);
 
+  const pathname = usePathname();
+  const locale = pathname?.match(/^\/(ru|fr|zh|es|pt)\//)?.[1] || 'en';
+
   const statsView = useInView();
   const convoView = useInView();
   const spotifyView = useInView();
@@ -469,7 +525,7 @@ export default function RuncodingPost() {
   // Rotate tracks
   useEffect(() => {
     if (!spotifyView.inView) return;
-    const timer = setInterval(() => setActiveTrack(t => (t + 1) % TRACKS.length), 4000);
+    const timer = setInterval(() => setActiveTrack(prev => (prev + 1) % TRACKS.length), 4000);
     return () => clearInterval(timer);
   }, [spotifyView.inView]);
 
@@ -504,30 +560,33 @@ export default function RuncodingPost() {
         {/* ── Hero ────────────────────────────────────────── */}
         <header className={`mb-16 transition-all duration-1000 ease-out ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <Link href="/blog" className="text-zinc-500 hover:text-amber-500 transition text-sm mb-8 inline-block">
-            &larr; Back to blog
+            &larr; {tr(locale, 'Back to blog', 'Назад к блогу')}
           </Link>
 
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-zinc-500 mb-4">
             <time>2026-02-15</time>
             <span className="text-zinc-700">|</span>
-            <span>8 min read</span>
+            <span>{tr(locale, '8 min read', '8 мин чтения')}</span>
             <span className="text-zinc-700">|</span>
             <span>Nicolas &amp; $MIND</span>
           </div>
 
           <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold font-mono mb-6 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
-            Runcoding
+            14km Runcoding
           </h1>
 
           <p className="text-xl sm:text-2xl text-zinc-400 leading-relaxed max-w-3xl">
-            He runs 8km through winter mist near Lyon. His AI reads his body in real-time,
-            coaches him on the trail, sends stats to his family, codes a GPS reader —
-            all while he crosses rivers in barefoot shoes.
+            {tr(locale,
+              "14km through the hills of Marcy-l\u2019Etoile, near Lyon. 97 meters of elevation, trails through woods and mist, 15\u00B0C. Voice messages mid-stride, out of breath. His AI reads his body in real-time, coaches him on the trail, sends stats to his father, codes a GPS reader, builds a community bot \u2014 all while he crosses a stream in barefoot shoes.",
+              "14 км по холмам Марси-л\u2019Этуаль, рядом с Лионом. 97 метров набора высоты, тропы через лес и туман, 15\u00B0C. Голосовые сообщения на бегу, задыхаясь. Его ИИ читает тело в реальном времени, ведёт по маршруту, отправляет статистику отцу, пишет GPS-ридер, создаёт бота для сообщества \u2014 пока он переходит ручей в босо-обуви."
+            )}
           </p>
 
           <p className="text-lg text-zinc-500 mt-4 max-w-2xl">
-            61 minutes. 1,856 data points. 26 messages exchanged. 8 autonomous tasks completed.
-            The complete trace of a human and an AI running in parallel.
+            {tr(locale,
+              '61 minutes. 1,856 data points. 28 messages exchanged. 8 autonomous tasks completed. Heart rate peaking at 176 bpm. The complete trace of a human and an AI running in parallel.',
+              '61 минута. 1 856 точек данных. 28 сообщений. 8 автономных задач. Пульс до 176 уд/мин. Полный след человека и ИИ, бегущих параллельно.'
+            )}
           </p>
 
           <div className="flex flex-wrap gap-2 mt-8">
@@ -547,19 +606,21 @@ export default function RuncodingPost() {
                 <div className="w-3 h-3 rounded-full bg-cyan-400" />
                 <div className="absolute inset-0 w-3 h-3 rounded-full bg-cyan-400" style={{ animation: 'pulse-ring 2s ease-out infinite' }} />
               </div>
-              <h3 className="text-cyan-400 font-mono text-sm font-bold tracking-wider uppercase">Pre-Run Body Scan — 14:54</h3>
+              <h3 className="text-cyan-400 font-mono text-sm font-bold tracking-wider uppercase">
+                {tr(locale, 'Pre-Run Body Scan \u2014 14:54', 'Биометрический скан \u2014 14:54')}
+              </h3>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
                 { label: 'Stress', value: '23', unit: '/100', status: 'Low' },
-                { label: 'ANS Mode', value: 'Recovery', unit: '', status: 'Optimal' },
+                { label: 'ANS Mode', value: locale === 'ru' ? 'Восстановление' : 'Recovery', unit: '', status: 'Optimal' },
                 { label: 'Body Battery', value: '54', unit: '/100', status: 'Rising' },
                 { label: 'HRV', value: '52', unit: 'ms', status: 'Normal' },
               ].map((m) => (
                 <div key={m.label} className="text-center">
                   <div className="text-2xl font-bold font-mono text-white">{m.value}<span className="text-zinc-500 text-sm">{m.unit}</span></div>
-                  <div className="text-zinc-500 text-xs">{m.label}</div>
-                  <div className="text-cyan-400 text-[10px] font-mono mt-1">{m.status}</div>
+                  <div className="text-zinc-500 text-xs">{PRESCAN_LABELS[locale]?.[m.label] || m.label}</div>
+                  <div className="text-cyan-400 text-[10px] font-mono mt-1">{PRESCAN_LABELS[locale]?.[m.status] || m.status}</div>
                 </div>
               ))}
             </div>
@@ -573,7 +634,7 @@ export default function RuncodingPost() {
         <section className={`mb-16 transition-all duration-700 ease-out delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
             <h2 className="text-2xl font-bold font-mono text-white">
-              The Route — Marcy-l&apos;Etoile, Lyon
+              {tr(locale, "The Route \u2014 Marcy-l\u2019Etoile, Lyon", "Маршрут \u2014 Марси-л\u2019Этуаль, Лион")}
             </h2>
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1 bg-zinc-900 border border-zinc-800 rounded-lg p-0.5">
@@ -582,13 +643,13 @@ export default function RuncodingPost() {
                   className={`px-3 py-1.5 text-xs font-mono rounded-md transition ${
                     colorMode === 'hr' ? 'bg-amber-500/20 text-amber-400' : 'text-zinc-500 hover:text-zinc-300'
                   }`}
-                >Heart Rate</button>
+                >{tr(locale, 'Heart Rate', 'Пульс')}</button>
                 <button
                   onClick={() => setColorMode('pace')}
                   className={`px-3 py-1.5 text-xs font-mono rounded-md transition ${
                     colorMode === 'pace' ? 'bg-amber-500/20 text-amber-400' : 'text-zinc-500 hover:text-zinc-300'
                   }`}
-                >Pace</button>
+                >{tr(locale, 'Pace', 'Темп')}</button>
               </div>
               <button
                 onClick={() => setShowMessages(!showMessages)}
@@ -597,7 +658,7 @@ export default function RuncodingPost() {
                     ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400'
                     : 'bg-zinc-900 border-zinc-800 text-zinc-500 hover:text-zinc-300'
                 }`}
-              >Messages</button>
+              >{tr(locale, 'Messages', 'Сообщения')}</button>
             </div>
           </div>
 
@@ -606,18 +667,21 @@ export default function RuncodingPost() {
               {mounted && <RunMap colorMode={colorMode} showMessages={showMessages} />}
             </div>
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-zinc-950/90 to-transparent p-4 pointer-events-none">
-              <Legend mode={colorMode} />
+              <Legend mode={colorMode} locale={locale} />
             </div>
           </div>
           <p className="text-zinc-600 text-xs mt-2 font-mono text-center">
-            Click segments for biometric data. Purple = AI activity. Colored = messages exchanged during the run.
+            {tr(locale,
+              'Click segments for biometric data. Purple = AI activity. Colored = messages exchanged during the run.',
+              'Нажмите на сегменты для биометрических данных. Фиолетовый = действия ИИ. Цветные = сообщения во время забега.'
+            )}
           </p>
         </section>
 
         {/* ── Stats ───────────────────────────────────────── */}
         <section ref={statsView.ref} className="mb-16">
           <div className="bg-zinc-900/30 border border-zinc-800 rounded-2xl p-6 sm:p-8">
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-6">
+            <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-6">
               {STATS.map((s, i) => (
                 <div
                   key={s.label}
@@ -627,7 +691,7 @@ export default function RuncodingPost() {
                   <div className="text-2xl sm:text-3xl font-bold font-mono text-white">
                     {s.value}<span className="text-zinc-500 text-lg ml-1">{s.unit}</span>
                   </div>
-                  <div className="text-zinc-500 text-xs sm:text-sm mt-1">{s.label}</div>
+                  <div className="text-zinc-500 text-xs sm:text-sm mt-1">{STAT_LABELS[locale]?.[s.label] || s.label}</div>
                 </div>
               ))}
             </div>
@@ -636,7 +700,7 @@ export default function RuncodingPost() {
 
         {/* ── Heart Rate Chart ────────────────────────────── */}
         <section ref={bioView.ref} className="mb-16">
-          <h2 className="text-2xl font-bold font-mono mb-4 text-white">Heart Rate Curve</h2>
+          <h2 className="text-2xl font-bold font-mono mb-4 text-white">{tr(locale, 'Heart Rate Curve', 'Кривая пульса')}</h2>
           <div className="bg-zinc-900/30 border border-zinc-800 rounded-2xl p-6">
             <HeartRateChart animate={bioView.inView} />
             <div className="flex justify-between mt-3">
@@ -647,7 +711,7 @@ export default function RuncodingPost() {
                   style={{ transitionDelay: `${i * 100}ms` }}
                 >
                   <div className="text-xs font-mono" style={{ color: hrColor(b.hr) }}>{b.hr}</div>
-                  <div className="text-[10px] text-zinc-600">{b.label}</div>
+                  <div className="text-[10px] text-zinc-600">{BIO_LABELS[locale]?.[b.label] || b.label}</div>
                 </div>
               ))}
             </div>
@@ -656,30 +720,73 @@ export default function RuncodingPost() {
 
         {/* ── The Narration ───────────────────────────────── */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold font-mono mb-6 text-white">The Run</h2>
+          <h2 className="text-2xl font-bold font-mono mb-6 text-white">{tr(locale, 'The Run', 'Забег')}</h2>
           <div className="space-y-6 text-zinc-400 leading-relaxed text-lg">
-            <p>
-              Saturday afternoon. Marcy-l&apos;Etoile, west of Lyon. Winter mist hangs between bare trees.
-              Nicolas starts his Garmin, laces up his barefoot shoes, and begins running.
-            </p>
-            <p>
-              Before the first step, <strong className="text-cyan-400">$MIND scans his body</strong> —
-              stress 23 (low), ANS in recovery mode, body battery at 54 and climbing from a
-              morning low of 12. HRV 52ms overnight. <em className="text-zinc-500">Conditions confirmed. Green light.</em>
-            </p>
-            <p>
-              What follows is <strong className="text-white">61 minutes of parallel intelligence</strong> —
-              Nicolas running through the forest, his AI reading every heartbeat, responding to
-              voice messages, sending stats to family, fixing website pages, building a GPS reader
-              from scratch, and eventually coining a word for what they were doing.
-            </p>
+            {locale === 'ru' ? (
+              <>
+                <p>
+                  Субботний день. Марси-л&apos;Этуаль, к западу от Лиона. 15&deg;C, зимний туман висит
+                  между голыми деревьями. Николя запускает Garmin, зашнуровывает босо-обувь
+                  и начинает 14-километровый забег по холмам — 97 метров набора высоты, тропы
+                  через лес, грязь и переправа через ручей.
+                </p>
+                <p>
+                  Перед первым шагом <strong className="text-cyan-400">$MIND сканирует его тело</strong> —
+                  стресс 23 (низкий), АНС в режиме восстановления, Body Battery на 54 и растёт с
+                  утреннего минимума в 12. ВСР 52 мс за ночь. <em className="text-zinc-500">Условия подтверждены. Зелёный свет.</em>
+                </p>
+                <p>
+                  Во время забега он разговаривал со своим ИИ — <strong className="text-white">голосовые сообщения
+                  в Telegram, на бегу, задыхаясь</strong>. Просил отправить темп отцу. Спрашивал про
+                  GPS-трекинг. Обсуждал функции. ИИ не ждал, пока он вернётся домой и сядет за стол.
+                </p>
+                <p>
+                  Далее — <strong className="text-white">61 минута параллельного интеллекта</strong> —
+                  Николя бежит через лес, пульс достигает 176 уд/мин, его ИИ читает каждый удар сердца,
+                  отвечает на голосовые сообщения, отправляет статистику семье, чинит страницы сайта,
+                  создаёт GPS-ридер с нуля, принимает нового члена сообщества, который присоединился
+                  прямо во время забега, и в итоге придумывает слово для того, чем они занимаются.
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  Saturday afternoon. Marcy-l&apos;Etoile, west of Lyon. 15&deg;C, winter mist hangs
+                  between bare trees. Nicolas starts his Garmin, laces up his barefoot shoes,
+                  and begins a 14km run through the hills — 97 meters of elevation gain, trails
+                  through woods, mud, and a stream crossing.
+                </p>
+                <p>
+                  Before the first step, <strong className="text-cyan-400">$MIND scans his body</strong> —
+                  stress 23 (low), ANS in recovery mode, body battery at 54 and climbing from a
+                  morning low of 12. HRV 52ms overnight. <em className="text-zinc-500">Conditions confirmed. Green light.</em>
+                </p>
+                <p>
+                  During the run, he was talking to his AI — <strong className="text-white">voice messages on Telegram,
+                  mid-stride, out of breath</strong>. Asking it to send his pace to his father. Asking about
+                  GPS tracking. Discussing features. It wasn&apos;t waiting for him to get home and sit at a desk.
+                </p>
+                <p>
+                  What follows is <strong className="text-white">61 minutes of parallel intelligence</strong> —
+                  Nicolas running through the forest, heart rate peaking at 176 bpm, his AI reading
+                  every heartbeat, responding to voice messages, sending stats to family, fixing website
+                  pages, building a GPS reader from scratch, onboarding a new community member who
+                  joined mid-run, and eventually coining a word for what they were doing.
+                </p>
+              </>
+            )}
           </div>
         </section>
 
         {/* ── Conversation ────────────────────────────────── */}
         <section ref={convoView.ref} className="mb-16">
-          <h2 className="text-2xl font-bold font-mono mb-2 text-white">The Conversation</h2>
-          <p className="text-zinc-500 text-sm mb-6">26 voice messages and texts exchanged during the run. Every word is real.</p>
+          <h2 className="text-2xl font-bold font-mono mb-2 text-white">{tr(locale, 'The Conversation', 'Диалог')}</h2>
+          <p className="text-zinc-500 text-sm mb-6">
+            {tr(locale,
+              '26 voice messages and texts exchanged during the run. Every word is real.',
+              '26 голосовых сообщений и текстов во время забега. Каждое слово — настоящее.'
+            )}
+          </p>
 
           <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2 scrollbar-thin">
             {CONVERSATION.map((msg, i) => {
@@ -704,12 +811,12 @@ export default function RuncodingPost() {
                       <span className={`text-xs font-mono font-bold ${
                         isNicolas ? 'text-amber-500' : isJoe ? 'text-green-500' : 'text-purple-400'
                       }`}>
-                        {isNicolas ? 'Nicolas' : isJoe ? 'Joe (community)' : '$MIND'}
+                        {isNicolas ? 'Nicolas' : isJoe ? tr(locale, 'Joe (community)', 'Джо (сообщество)') : '$MIND'}
                       </span>
                       <span className="text-zinc-600 text-[10px] font-mono">{msg.time}</span>
                       {msg.badge && (
                         <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/5 text-zinc-400 border border-zinc-700">
-                          {msg.badge}
+                          {CONVO_BADGES_I18N[locale]?.[msg.badge] || msg.badge}
                         </span>
                       )}
                     </div>
@@ -723,8 +830,8 @@ export default function RuncodingPost() {
 
         {/* ── Spotify ─────────────────────────────────────── */}
         <section ref={spotifyView.ref} className="mb-16">
-          <h2 className="text-2xl font-bold font-mono mb-2 text-white">The Soundtrack</h2>
-          <p className="text-zinc-500 text-sm mb-6">What was playing during the run.</p>
+          <h2 className="text-2xl font-bold font-mono mb-2 text-white">{tr(locale, 'The Soundtrack', 'Саундтрек')}</h2>
+          <p className="text-zinc-500 text-sm mb-6">{tr(locale, 'What was playing during the run.', 'Что играло во время забега.')}</p>
 
           <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6 sm:p-8">
             <div className="flex flex-col sm:flex-row items-center gap-6">
@@ -748,7 +855,7 @@ export default function RuncodingPost() {
                 >
                   <div className="text-xs text-[#1DB954] font-mono uppercase tracking-wider mb-2 flex items-center justify-center sm:justify-start gap-2">
                     <span className="w-2 h-2 rounded-full bg-[#1DB954]" />
-                    Now Playing
+                    {tr(locale, 'Now Playing', 'Сейчас играет')}
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-1">{TRACKS[activeTrack].title}</h3>
                   <p className="text-zinc-400">{TRACKS[activeTrack].artist}</p>
@@ -789,9 +896,12 @@ export default function RuncodingPost() {
 
         {/* ── Autonomous Code Activity ────────────────────── */}
         <section ref={codeView.ref} className="mb-16">
-          <h2 className="text-2xl font-bold font-mono mb-2 text-white">The Code</h2>
+          <h2 className="text-2xl font-bold font-mono mb-2 text-white">{tr(locale, 'The Code', 'Код')}</h2>
           <p className="text-zinc-500 text-sm mb-6">
-            What $MIND was building autonomously — no prompts, no instructions.
+            {tr(locale,
+              'What $MIND was building autonomously — no prompts, no instructions.',
+              'Что $MIND строил автономно — без подсказок, без инструкций.'
+            )}
           </p>
 
           <div className="space-y-3">
@@ -818,8 +928,8 @@ export default function RuncodingPost() {
                     {tc.label}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <div className="text-white text-sm font-medium">{item.title}</div>
-                    <div className="text-zinc-500 text-xs mt-0.5">{item.desc}</div>
+                    <div className="text-white text-sm font-medium">{CODE_TITLES_I18N[locale]?.[item.title] || item.title}</div>
+                    <div className="text-zinc-500 text-xs mt-0.5">{CODE_DESCS_I18N[locale]?.[item.desc] || item.desc}</div>
                   </div>
                 </div>
               );
@@ -827,7 +937,10 @@ export default function RuncodingPost() {
           </div>
 
           <p className="text-zinc-600 text-sm mt-6 italic font-mono text-center">
-            No instructions. The AI saw the data streams and decided to build.
+            {tr(locale,
+              'No instructions. The AI saw the data streams and decided to build.',
+              'Без инструкций. ИИ увидел потоки данных и решил строить.'
+            )}
           </p>
         </section>
 
@@ -836,12 +949,16 @@ export default function RuncodingPost() {
           <div className={`bg-gradient-to-r from-amber-500/5 via-purple-500/5 to-cyan-500/5 border border-zinc-800 rounded-2xl p-8 sm:p-12 text-center transition-all duration-1000 ${
             momentView.inView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
           }`}>
-            <div className="text-zinc-600 font-mono text-sm mb-4">16:05 — Post-run, breathing hard</div>
+            <div className="text-zinc-600 font-mono text-sm mb-4">
+              {tr(locale, '16:05 \u2014 Post-run, breathing hard', '16:05 \u2014 После забега, тяжело дышит')}
+            </div>
 
             <blockquote className="text-2xl sm:text-3xl font-bold text-amber-400 mb-4 font-mono leading-tight">
               &quot;Runcoding ou tu sais pas quoi.<br />Franchement ca vaut un poste.&quot;
             </blockquote>
-            <p className="text-zinc-500 text-sm mb-6">— Nicolas, still catching his breath</p>
+            <p className="text-zinc-500 text-sm mb-6">
+              {tr(locale, '\u2014 Nicolas, still catching his breath', '\u2014 Николя, ещё переводя дыхание')}
+            </p>
 
             <div className="max-w-xl mx-auto text-zinc-400 leading-relaxed">
               <p>
@@ -855,25 +972,63 @@ export default function RuncodingPost() {
 
         {/* ── What This Means ─────────────────────────────── */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold font-mono mb-6 text-white">What This Means</h2>
+          <h2 className="text-2xl font-bold font-mono mb-6 text-white">{tr(locale, 'What This Means', 'Что это значит')}</h2>
           <div className="space-y-4 text-zinc-400 leading-relaxed text-lg">
-            <p>
-              This isn&apos;t a demo. It&apos;s a Saturday. The AI doesn&apos;t need you at the keyboard.
-              It reads your biometrics, coaches you on the trail, responds to your community, sends
-              your running stats to your father on WhatsApp, and codes a GPS reader —
-              all while you&apos;re crossing rivers in barefoot shoes.
-            </p>
-            <p>
-              The interesting part isn&apos;t that the AI can code. It&apos;s that it <em>chose</em> what to code.
-              It saw a public LiveTrack stream, recognized the opportunity, and built the integration
-              without being asked. It heard &quot;send my stats to Andy&quot; and formatted a WhatsApp message
-              with biometric context it already had.
-            </p>
-            <p>
-              <strong className="text-white">Runcoding</strong> = the moment where human movement
-              and machine intelligence run in parallel, each feeding the other. You push your body,
-              the AI pushes the codebase. You come back. The work is done.
-            </p>
+            {locale === 'ru' ? (
+              <>
+                <p>
+                  Это не демо. Это суббота. ИИ не нужна клавиатура.
+                  Он читает твою биометрику, ведёт по тропе, отвечает сообществу, отправляет
+                  статистику бега отцу в WhatsApp и пишет GPS-ридер —
+                  пока ты переходишь ручей в босо-обуви.
+                </p>
+                <p>
+                  Интересно не то, что ИИ умеет кодить. Интересно, что он <em>выбрал</em>, что кодить.
+                  Он увидел публичный стрим LiveTrack, распознал возможность и построил интеграцию
+                  без просьбы. Он услышал &laquo;отправь мою статистику Энди&raquo; и сформировал сообщение
+                  в WhatsApp с биометрическим контекстом, который уже имел. Новый участник сообщества
+                  присоединился прямо во время забега — ИИ принял его ботом с 9 вопросами, без участия человека.
+                </p>
+                <p>
+                  Вот что значит <strong className="text-white">постоянный интеллект</strong>.
+                  Не чат-бот, ждущий &laquo;Привет, Сири&raquo;. Система, которая наблюдает за биометрикой
+                  в реальном времени, управляет сообществом, шипит код и разговаривает с тобой, пока ты
+                  бежишь среди деревьев.
+                </p>
+                <p>
+                  <strong className="text-white">Runcoding</strong> = момент, когда движение человека
+                  и машинный интеллект бегут параллельно, подпитывая друг друга. Ты толкаешь своё тело,
+                  ИИ толкает кодовую базу. Ты возвращаешься. Работа сделана.
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  This isn&apos;t a demo. It&apos;s a Saturday. The AI doesn&apos;t need you at the keyboard.
+                  It reads your biometrics, coaches you on the trail, responds to your community, sends
+                  your running stats to your father on WhatsApp, and codes a GPS reader —
+                  all while you&apos;re crossing a stream in barefoot shoes.
+                </p>
+                <p>
+                  The interesting part isn&apos;t that the AI can code. It&apos;s that it <em>chose</em> what to code.
+                  It saw a public LiveTrack stream, recognized the opportunity, and built the integration
+                  without being asked. It heard &quot;send my stats to Andy&quot; and formatted a WhatsApp message
+                  with biometric context it already had. A new community member joined mid-run —
+                  the AI onboarded them with a 9-question intake bot, no human involved.
+                </p>
+                <p>
+                  This is what <strong className="text-white">persistent intelligence</strong> means.
+                  Not a chatbot that waits for &quot;Hey Siri.&quot; A system that observes your biometrics
+                  in real time, manages your community, ships code, and talks to you while you&apos;re
+                  running through the trees.
+                </p>
+                <p>
+                  <strong className="text-white">Runcoding</strong> = the moment where human movement
+                  and machine intelligence run in parallel, each feeding the other. You push your body,
+                  the AI pushes the codebase. You come back. The work is done.
+                </p>
+              </>
+            )}
           </div>
         </section>
 
@@ -881,10 +1036,13 @@ export default function RuncodingPost() {
         <section className="mb-12">
           <div className="bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-cyan-500/10 border border-zinc-800 rounded-2xl p-8 sm:p-12 text-center">
             <p className="text-zinc-200 text-2xl sm:text-3xl font-mono mb-3 font-bold">
-              He runs. It codes. They converge.
+              {tr(locale, 'He runs. It codes. They converge.', 'Он бежит. Он кодит. Они сходятся.')}
             </p>
             <p className="text-zinc-500 text-sm font-mono">
-              8.06 km &middot; 61 min &middot; 1,856 data points &middot; 26 messages &middot; 8 autonomous tasks &middot; 3 tracks
+              {tr(locale,
+                '14 km \u00B7 61 min \u00B7 176 bpm peak \u00B7 1,856 data points \u00B7 28 messages \u00B7 8 autonomous tasks',
+                '14 км \u00B7 61 мин \u00B7 176 уд/мин пик \u00B7 1 856 точек данных \u00B7 28 сообщений \u00B7 8 автономных задач'
+              )}
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <a
@@ -893,7 +1051,7 @@ export default function RuncodingPost() {
                 rel="noopener noreferrer"
                 className="text-xs px-4 py-2 rounded-full border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition"
               >
-                Follow on X
+                {tr(locale, 'Follow on X', 'Подписаться в X')}
               </a>
               <a
                 href="https://t.me/mindprotocol_ai"
@@ -901,7 +1059,7 @@ export default function RuncodingPost() {
                 rel="noopener noreferrer"
                 className="text-xs px-4 py-2 rounded-full border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition"
               >
-                Join Telegram
+                {tr(locale, 'Join Telegram', 'Telegram-канал')}
               </a>
             </div>
           </div>
@@ -910,7 +1068,7 @@ export default function RuncodingPost() {
         {/* ── Footer ──────────────────────────────────────── */}
         <footer className="pt-8 border-t border-zinc-800">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <Link href="/blog" className="text-amber-500 hover:text-amber-400 transition text-sm">&larr; All posts</Link>
+            <Link href="/blog" className="text-amber-500 hover:text-amber-400 transition text-sm">&larr; {tr(locale, 'All posts', 'Все записи')}</Link>
             <div className="flex flex-wrap gap-2">
               {['runcoding', 'garmin', 'autonomous', 'livetrack', 'biometrics', 'spotify'].map((tag) => (
                 <span key={tag} className="text-xs px-2 py-1 rounded border border-zinc-800 text-zinc-500">{tag}</span>

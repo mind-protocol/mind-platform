@@ -2,13 +2,13 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Runcoding | Mind Protocol',
+  title: '14km Runcoding | Mind Protocol',
   description:
-    'He runs 8km through winter mist near Lyon. Meanwhile, his AI builds a GPS reader from his live biometric stream. He runs. It codes. They converge.',
+    '14km through the hills of Marcy-l\'Etoile. Voice messages mid-stride. 8 autonomous tasks completed. His AI reads his body, codes a GPS reader, onboards a community member — all while he runs. He runs. It codes. They converge.',
   openGraph: {
-    title: 'Runcoding',
+    title: '14km Runcoding',
     description:
-      'When your AI codes while you run. 8km through Lyon, 1,856 data points, and a codebase that grew itself.',
+      'When your AI codes while you run. 14km through Lyon, 176 bpm peak, 28 messages, 8 autonomous tasks. Persistent intelligence in action.',
     type: 'article',
     siteName: 'Mind Protocol',
     locale: 'en_US',
@@ -16,9 +16,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Runcoding — Mind Protocol',
+    title: '14km Runcoding — Mind Protocol',
     description:
-      'When your AI codes while you run. He runs. It codes. They converge.',
+      'When your AI codes while you run. 14km, 176 bpm peak, 28 messages, 8 autonomous tasks. He runs. It codes. They converge.',
     creator: '@Mind_Protocol',
   },
 };
