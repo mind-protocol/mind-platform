@@ -6,6 +6,8 @@
 
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 const BACKEND_URL = process.env.CONNECTOME_BACKEND_URL || 'http://localhost:8765';
 
 export async function GET() {

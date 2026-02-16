@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 const L4_API_URL = process.env.L4_API_URL || 'http://localhost:8766';
 
 let statsCache: { data: unknown; timestamp: number } | null = null;
