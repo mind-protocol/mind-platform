@@ -360,12 +360,12 @@ export default function WalletPage() {
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
       <div className="max-w-3xl mx-auto px-6 py-24">
-        <header className="text-center mb-12">
+        <header className="text-center mb-16">
           <p className="text-amber-500/80 text-sm tracking-widest uppercase mb-4">
             Dashboard
           </p>
-          <h1 className="text-4xl font-bold mb-2">$MIND Wallet</h1>
-          <p className="text-zinc-400 mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold font-mono mb-4">$MIND Wallet</h1>
+          <p className="text-zinc-500 text-lg mb-6">
             Check balances and prepare transfers on Solana.
           </p>
 

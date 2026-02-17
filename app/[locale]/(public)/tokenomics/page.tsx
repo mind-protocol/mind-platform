@@ -112,8 +112,8 @@ export default function TokenomicsPage() {
           <p className="text-amber-500/80 text-sm tracking-widest uppercase mb-4">
             Economic Infrastructure
           </p>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">$MIND Tokenomics</h1>
-          <p className="text-zinc-400 text-lg">
+          <h1 className="text-4xl md:text-5xl font-bold font-mono mb-4">$MIND Tokenomics</h1>
+          <p className="text-zinc-500 text-lg">
             1,000,000 tokens. $0.20 each. Money with memory.
           </p>
         </header>

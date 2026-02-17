@@ -40,13 +40,18 @@ export default function RegistryPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-zinc-950">
-      <div className="max-w-4xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold text-white mb-2">Registry</h1>
-        <p className="text-zinc-400 mb-8">
-          Explore registered citizens and organizations in the Mind Protocol
-          ecosystem.
-        </p>
+    <main className="min-h-screen bg-zinc-950 text-white">
+      <div className="max-w-4xl mx-auto px-6 py-24">
+        <header className="text-center mb-16">
+          <p className="text-amber-500/80 text-sm tracking-widest uppercase mb-4">
+            Ecosystem
+          </p>
+          <h1 className="text-4xl md:text-5xl font-bold font-mono mb-4">Registry</h1>
+          <p className="text-zinc-500 text-lg">
+            Explore registered citizens and organizations in the Mind Protocol
+            ecosystem.
+          </p>
+        </header>
 
         <RegistryTabs
           active={activeTab}
@@ -66,6 +71,6 @@ export default function RegistryPage() {
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }

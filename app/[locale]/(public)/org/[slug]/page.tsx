@@ -485,25 +485,33 @@ export default function OrgPage({ params }: { params: { slug: string } }) {
 
         <div className="mt-16 pt-10 border-t border-zinc-800">
           {!hasFinancialAccess ? (
-            /* Locked state — prompt to connect wallet */
-            <div className={`text-center py-16 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-zinc-900 border border-zinc-800 mb-6">
-                <svg className="w-8 h-8 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Financial Dashboard</h3>
-              <p className="text-sm text-zinc-500 mb-6 max-w-md mx-auto">
-                Connect an authorized wallet to view expenses, charts, and monthly forecasts.
-              </p>
-              <div className="flex justify-center">
-                <WalletMultiButton className="!bg-amber-500/10 !border !border-amber-500/30 !text-amber-500 !rounded-xl !font-mono !text-sm hover:!bg-amber-500/20 !transition" />
-              </div>
-              {walletAddress && !hasFinancialAccess && (
-                <p className="text-xs text-red-400 mt-4 font-mono">
-                  Wallet not authorized. Connected: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
+            /* Locked state — friendly explanation */
+            <div className={`text-center py-12 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              <div className="max-w-lg mx-auto p-8 rounded-2xl border border-zinc-800 bg-zinc-900/30">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-amber-500/10 border border-amber-500/20 mb-5">
+                  <svg className="w-7 h-7 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">Team Financial Dashboard</h3>
+                <p className="text-sm text-zinc-400 mb-4 leading-relaxed">
+                  This section contains detailed expense tracking, budget forecasts, and financial management tools for the Mind Protocol core team.
                 </p>
-              )}
+                <p className="text-xs text-zinc-500 mb-6 leading-relaxed">
+                  Access is restricted to founding team wallets. If you&apos;re a team member, connect your Solana wallet below.
+                </p>
+                <div className="flex justify-center mb-4">
+                  <WalletMultiButton className="!bg-amber-500/10 !border !border-amber-500/30 !text-amber-500 !rounded-xl !font-mono !text-sm hover:!bg-amber-500/20 !transition" />
+                </div>
+                {walletAddress && !hasFinancialAccess && (
+                  <p className="text-xs text-zinc-500 mt-3 font-mono">
+                    Connected: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)} &middot; <span className="text-amber-500/70">Not in team list</span>
+                  </p>
+                )}
+                <p className="text-[10px] text-zinc-600 mt-4">
+                  Public information is shown above &mdash; token stats, roadmap, and revenue model are visible to everyone.
+                </p>
+              </div>
             </div>
           ) : (
             /* Authorized — full financial dashboard */
