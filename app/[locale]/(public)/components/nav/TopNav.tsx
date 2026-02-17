@@ -2,23 +2,150 @@
 
 import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { colors } from '@/lib/design';
 import { LanguageSwitcher } from './LanguageSwitcher';
 
-const NAV_KEYS = [
-  { href: '/self', key: 'self' },
-  { href: '/blog', key: 'blog' },
-  { href: '/tokenomics', key: 'tokenomics' },
-  { href: '/whitepaper', key: 'whitepaper' },
-  { href: '/register', key: 'register' },
-  { href: '/connectome', key: 'connectome' },
-  { href: '/house', key: 'house' },
-  { href: '/registry', key: 'registry' },
-  { href: '/wallet', key: 'wallet' },
-  { href: '/org', key: 'org' },
-  { href: '/actif', key: 'actif' },
-] as const;
+// ─── Grouped nav structure ─────────────────────────────────
+
+interface NavItem {
+  href: string;
+  key: string;
+}
+
+interface NavGroup {
+  labelKey: string;
+  items: NavItem[];
+}
+
+const NAV_GROUPS: NavGroup[] = [
+  {
+    labelKey: 'groupProtocol',
+    items: [
+      { href: '/self', key: 'self' },
+      { href: '/manifesto', key: 'manifesto' },
+      { href: '/whitepaper', key: 'whitepaper' },
+    ],
+  },
+  {
+    labelKey: 'groupMind',
+    items: [
+      { href: '/tokenomics', key: 'tokenomics' },
+      { href: '/swap', key: 'swap' },
+      { href: '/wallet', key: 'wallet' },
+    ],
+  },
+  {
+    labelKey: 'groupExplore',
+    items: [
+      { href: '/blog', key: 'blog' },
+      { href: '/registry', key: 'registry' },
+    ],
+  },
+];
+
+// ─── Desktop dropdown ──────────────────────────────────────
+
+function NavDropdown({ group, t }: { group: NavGroup; t: (key: string) => string }) {
+  const [open, setOpen] = useState(false);
+  const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleEnter = () => {
+    if (timeout.current) clearTimeout(timeout.current);
+    setOpen(true);
+  };
+
+  const handleLeave = () => {
+    timeout.current = setTimeout(() => setOpen(false), 150);
+  };
+
+  useEffect(() => {
+    return () => { if (timeout.current) clearTimeout(timeout.current); };
+  }, []);
+
+  return (
+    <div className="relative" onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
+      <button
+        className={`flex items-center gap-1 text-sm transition ${open ? 'text-white' : 'text-zinc-400 hover:text-white'}`}
+        onClick={() => setOpen(!open)}
+      >
+        {t(group.labelKey)}
+        <svg
+          className={`w-3.5 h-3.5 transition-transform ${open ? 'rotate-180' : ''}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {open && (
+        <div className="absolute top-full left-0 mt-2 min-w-[160px] py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 shadow-lg shadow-black/30">
+          {group.items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="block px-4 py-2 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition"
+              onClick={() => setOpen(false)}
+            >
+              {t(item.key)}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Mobile accordion group ────────────────────────────────
+
+function MobileNavGroup({
+  group,
+  t,
+  onNavigate,
+}: {
+  group: NavGroup;
+  t: (key: string) => string;
+  onNavigate: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div>
+      <button
+        className="flex items-center justify-between w-full py-2 text-zinc-400 hover:text-white transition"
+        onClick={() => setOpen(!open)}
+      >
+        <span className="text-sm font-medium">{t(group.labelKey)}</span>
+        <svg
+          className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {open && (
+        <div className="pl-4 pb-1 space-y-0.5">
+          {group.items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="block py-1.5 text-sm text-zinc-500 hover:text-white transition"
+              onClick={onNavigate}
+            >
+              {t(item.key)}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── TopNav ────────────────────────────────────────────────
 
 export function TopNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -40,16 +167,19 @@ export function TopNav() {
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-8">
-            {NAV_KEYS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-zinc-400 hover:text-white transition"
-              >
-                {t(link.key)}
-              </Link>
+          <div className="hidden md:flex items-center gap-6">
+            {NAV_GROUPS.map((group) => (
+              <NavDropdown key={group.labelKey} group={group} t={t} />
             ))}
+
+            {/* Register CTA */}
+            <Link
+              href="/register"
+              className="px-4 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-500 text-sm font-medium hover:bg-amber-500/20 transition"
+            >
+              {t('register')}
+            </Link>
+
             <LanguageSwitcher />
           </div>
 
@@ -86,18 +216,26 @@ export function TopNav() {
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="md:hidden py-4 border-t border-zinc-800">
-            {NAV_KEYS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block py-2 text-zinc-400 hover:text-white transition"
-                onClick={() => setMobileOpen(false)}
-              >
-                {t(link.key)}
-              </Link>
+          <div className="md:hidden py-4 border-t border-zinc-800 space-y-1">
+            {NAV_GROUPS.map((group) => (
+              <MobileNavGroup
+                key={group.labelKey}
+                group={group}
+                t={t}
+                onNavigate={() => setMobileOpen(false)}
+              />
             ))}
-            <div className="pt-4 border-t border-zinc-800 mt-2">
+
+            {/* Register CTA */}
+            <Link
+              href="/register"
+              className="block mt-3 text-center px-4 py-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-500 text-sm font-medium hover:bg-amber-500/20 transition"
+              onClick={() => setMobileOpen(false)}
+            >
+              {t('register')}
+            </Link>
+
+            <div className="pt-4 border-t border-zinc-800 mt-3">
               <LanguageSwitcher />
             </div>
           </div>
