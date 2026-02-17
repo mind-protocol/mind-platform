@@ -98,6 +98,79 @@ const REVENUE_TIERS = [
   { name: 'Guardian', price: 29.99, features: 'Priority, API, custom' },
 ];
 
+// ─── Tokenomics Data ────────────────────────────────────────
+
+type TokenomicsTab = 'overview' | 'airdrops' | 'holders' | 'vesting' | 'captable';
+
+const MIND_OVERVIEW = {
+  mint: 'EgLGfRrjX3du7Pwbj8dzyubSk8ic1WdDfq1ysLqhBm6p',
+  supply: 1_000_000,
+  decimals: 9,
+  standard: 'Token-2022',
+  transferFee: '1%',
+  extensions: ['TransferFeeConfig', 'MintCloseAuthority (disabled)', 'TransferHook (disabled)', 'MetadataPointer', 'TokenMetadata'],
+  lpPool: 'GNpB7YZgCkf4Efz6SATqphM8Q3jUum3dNA7Cj8Ti8MRa',
+  lpLockUnlock: '2027-02-09',
+  lpLocked: '100%',
+  lpPlatform: 'FluxBeam',
+  preSalePrice: 0.20,
+  initialLiquidity: { sol: 16.21, mind: 7047 },
+  deployer: 'CCsJLZR8b19iDgS9hXUYs9q2c928ihzZdfSgZLPYffWg',
+  manemusWallet: '8ZmFaf69469Qd7bWNCw4PP9KCRXNPg2yRbzdbruDdSXD',
+  origin: 'Airdrop to $COMPUTE holders (snapshot of on-chain balances)',
+};
+
+const AIRDROP_DATA = {
+  totalRecipients: 546,
+  grossSent: 67_437,
+  duplicateExtra: 18_265,
+  failedWallets: 132,
+  holdersRemaining: 15,
+  holdRate: 2.8,
+  mindStillHeld: 36_682,
+  sellRate: 97,
+};
+
+const TOP_HOLDERS = [
+  { wallet: '6CiQJ5ab5Qb9c7MPn3BMJDTYsMtBVV3GAizYww7hKgBz', mind: 15_345, identity: 'Smithii Staking PDA ($UBC pool)', isTeam: true },
+  { wallet: '8pkCEtFZaRfbyK7nAyBX2hAppEJxuPt1vXT9me3RKCUh', mind: 11_526, identity: 'Smithii Staking PDA ($UBC pool)', isTeam: true },
+  { wallet: 'AwvmKM8zsMSRNmvJC4HQ4cQguRMDe9jZYeoYuAE43T1e', mind: 4_200, identity: 'External holder (Coinbase Prime)', isTeam: false },
+  { wallet: '9jejKXshrwF2qnLPpR1CNYWfnQnZqS7jk54n1ewqtzez', mind: 4_072, identity: 'Smithii Staking PDA (Paul dev)', isTeam: true },
+  { wallet: '2g2PLyFBbCU6eG2kRNyXuMdmtS6kZ5EJibpAF9aNZ9mG', mind: 769, identity: 'Smithii Staking PDA', isTeam: true },
+  { wallet: 'FP6jnN3vcmUhNekR7XMjoDU4jRcKo1ZzBFbehGYzy7FN', mind: 769, identity: 'Smithii Staking PDA', isTeam: true },
+];
+
+const VESTING_SCHEDULES = [
+  { name: 'Crypto Colombus', panel: 'ubcadvisor1', amount: '100M $COMPUTE', duration: '1yr linear', unlocks: 5 },
+  { name: 'Mel', panel: 'ubc-advisor6', amount: '10M initial + 100M over 1yr', duration: '1yr linear', unlocks: null },
+];
+
+const CAP_TABLE = [
+  { name: 'Lester Reynolds (Nicolas)', role: 'CTO / Founder', wallet: 'GcWA4L...', notes: 'Creator of $UBC & $COMPUTE' },
+  { name: 'Bassel Tablet', role: 'Advisor', wallet: 'BmXdHy...', notes: '111,414 MIND (settled)' },
+  { name: 'Thomas Silloway', role: 'Investor', wallet: null, notes: 'Early investor' },
+  { name: 'Sébastien Deshaux', role: 'Advisor', wallet: null, notes: '' },
+  { name: 'Emmanuel Théry', role: 'Advisor', wallet: null, notes: '' },
+  { name: 'Paul', role: 'Developer', wallet: '4xYR2q...', notes: 'Dev access in UBC Airtable' },
+  { name: 'Etienne', role: 'Developer', wallet: '2kzarq...', notes: 'Dev access in UBC Airtable' },
+];
+
+const UBC_ECOSYSTEM = {
+  ubcMint: '9psiRdn9cXYVps4F1kFuoNjd2EtmqNJXrCPmRppJpump',
+  computeMint: 'B1N1HcMm4RysYz4smsXwmk2UnS8NziqKCM6Ho8i62vXo',
+  stakingProgram: 'stsJYTwxUiCYVRTf2TA6RhDXFEKYQ1BSVf2BdNhstxC',
+  stakingPools: ['/ubc', '/ubc2', '/ubc3', '/ubc5', '/compute2'],
+  stakingPlatform: 'stake.smithii.io',
+  ubcStakingRates: [
+    { lock: '90 days', rate: '0.3 $COMPUTE / 1000 $UBC / day' },
+    { lock: '165 days', rate: '0.5 $COMPUTE / 1000 $UBC / day' },
+    { lock: '365 days', rate: '1.0 $COMPUTE / 1000 $UBC / day' },
+  ],
+  totalSwarms: 25,
+  notableSwarms: ['KinKong', 'SwarmVentures', 'Synthetic Souls', 'Terminal Velocity'],
+  revenueModel: '35% infra, 25% community, 20% dev, 15% security, 5% ecosystem',
+};
+
 // ─── Helpers ─────────────────────────────────────────────────
 
 function fmt(n: number, currency: 'USD' | 'EUR' = 'USD'): string {
@@ -236,6 +309,371 @@ function ProgressBar({ label, pct, color }: { label: string; pct: number; color:
   );
 }
 
+// ─── Tokenomics Components ───────────────────────────────────
+
+function TokenomicsTabs({ active, onChange }: { active: TokenomicsTab; onChange: (t: TokenomicsTab) => void }) {
+  const tabs: { id: TokenomicsTab; label: string }[] = [
+    { id: 'overview', label: '$MIND Overview' },
+    { id: 'airdrops', label: 'Airdrops' },
+    { id: 'holders', label: 'Holders' },
+    { id: 'vesting', label: 'Vesting' },
+    { id: 'captable', label: 'Cap Table' },
+  ];
+  return (
+    <div className="flex gap-1 border-b border-zinc-800 overflow-x-auto">
+      {tabs.map((tab) => (
+        <button
+          key={tab.id}
+          onClick={() => onChange(tab.id)}
+          className={`px-4 py-2 text-sm font-medium transition relative whitespace-nowrap ${
+            active === tab.id ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
+          }`}
+        >
+          {tab.label}
+          {active === tab.id && (
+            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-violet-500" />
+          )}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function truncAddr(addr: string, n = 6) {
+  return addr.length > n * 2 ? `${addr.slice(0, n)}...${addr.slice(-4)}` : addr;
+}
+
+function OverviewTab() {
+  const [price, setPrice] = useState<{ mind_price_usd: number | null; mind_per_sol: number | null } | null>(null);
+  useEffect(() => {
+    fetch('/api/wallet/price').then(r => r.json()).then(setPrice).catch(() => {});
+  }, []);
+
+  return (
+    <div className="space-y-6">
+      {/* Live price */}
+      {price?.mind_price_usd != null && (
+        <div className="p-4 rounded-xl border border-violet-500/30 bg-violet-500/5">
+          <p className="text-[10px] font-mono text-zinc-500 uppercase mb-1">Live Price</p>
+          <p className="text-3xl font-mono font-bold text-violet-400">${price.mind_price_usd.toFixed(4)}</p>
+          {price.mind_per_sol != null && (
+            <p className="text-xs font-mono text-zinc-500 mt-1">{price.mind_per_sol.toFixed(2)} $MIND / SOL</p>
+          )}
+        </div>
+      )}
+
+      {/* Token details grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { label: 'Mint', value: truncAddr(MIND_OVERVIEW.mint), mono: true },
+          { label: 'Supply', value: '1,000,000', mono: true },
+          { label: 'Decimals', value: String(MIND_OVERVIEW.decimals), mono: true },
+          { label: 'Standard', value: MIND_OVERVIEW.standard },
+          { label: 'Transfer Fee', value: MIND_OVERVIEW.transferFee, highlight: true },
+          { label: 'Pre-sale Price', value: `$${MIND_OVERVIEW.preSalePrice}`, mono: true },
+          { label: 'Deployer', value: truncAddr(MIND_OVERVIEW.deployer), mono: true },
+          { label: 'Protocol Wallet', value: truncAddr(MIND_OVERVIEW.manemusWallet), mono: true },
+        ].map((item) => (
+          <div key={item.label} className="p-3 rounded-lg border border-zinc-800 bg-zinc-900/30">
+            <p className="text-[10px] font-mono text-zinc-600 uppercase">{item.label}</p>
+            <p className={`text-sm font-bold ${item.highlight ? 'text-amber-500' : 'text-white'} ${item.mono ? 'font-mono' : ''}`}>{item.value}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Extensions */}
+      <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/30">
+        <p className="text-[10px] font-mono text-zinc-600 uppercase mb-2">Token Extensions</p>
+        <div className="flex flex-wrap gap-1.5">
+          {MIND_OVERVIEW.extensions.map((ext) => (
+            <span key={ext} className={`px-2.5 py-1 rounded-full text-[10px] font-mono ${ext.includes('disabled') ? 'bg-zinc-800/50 text-zinc-600 border border-zinc-700/30' : 'bg-violet-500/10 text-violet-400 border border-violet-500/30'}`}>{ext}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* Liquidity Pool */}
+      <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/30">
+        <p className="text-[10px] font-mono text-zinc-600 uppercase mb-3">Liquidity Pool</p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div>
+            <p className="text-[10px] text-zinc-600">Platform</p>
+            <p className="text-sm font-bold text-white">{MIND_OVERVIEW.lpPlatform}</p>
+          </div>
+          <div>
+            <p className="text-[10px] text-zinc-600">LP Locked</p>
+            <p className="text-sm font-bold text-emerald-400">{MIND_OVERVIEW.lpLocked}</p>
+          </div>
+          <div>
+            <p className="text-[10px] text-zinc-600">Unlock Date</p>
+            <p className="text-sm font-bold text-white font-mono">{MIND_OVERVIEW.lpLockUnlock}</p>
+          </div>
+          <div>
+            <p className="text-[10px] text-zinc-600">Initial LP</p>
+            <p className="text-sm font-bold text-white font-mono">{MIND_OVERVIEW.initialLiquidity.sol} SOL + {MIND_OVERVIEW.initialLiquidity.mind.toLocaleString()} MIND</p>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-2 mt-3">
+          <a href={`https://solscan.io/token/${MIND_OVERVIEW.mint}`} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-zinc-800/50 border border-zinc-700/50 text-zinc-400 text-xs font-mono hover:bg-zinc-800 transition">Solscan (MIND)</a>
+          <a href={`https://dexscreener.com/solana/${MIND_OVERVIEW.lpPool}`} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-zinc-800/50 border border-zinc-700/50 text-zinc-400 text-xs font-mono hover:bg-zinc-800 transition">DEXScreener</a>
+          <a href={`https://jup.ag/swap/SOL-${MIND_OVERVIEW.mint}`} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-zinc-800/50 border border-zinc-700/50 text-zinc-400 text-xs font-mono hover:bg-zinc-800 transition">Jupiter</a>
+        </div>
+      </div>
+
+      {/* UBC Ecosystem */}
+      <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/30">
+        <p className="text-[10px] font-mono text-zinc-600 uppercase mb-3">UBC / $COMPUTE Ecosystem</p>
+        <p className="text-xs text-zinc-500 mb-3">{MIND_OVERVIEW.origin}</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
+          <div>
+            <p className="text-[10px] text-zinc-600">$UBC Mint</p>
+            <p className="text-xs font-mono text-zinc-400">{truncAddr(UBC_ECOSYSTEM.ubcMint)}</p>
+          </div>
+          <div>
+            <p className="text-[10px] text-zinc-600">$COMPUTE Mint</p>
+            <p className="text-xs font-mono text-zinc-400">{truncAddr(UBC_ECOSYSTEM.computeMint)}</p>
+          </div>
+          <div>
+            <p className="text-[10px] text-zinc-600">Staking Program</p>
+            <p className="text-xs font-mono text-zinc-400">{truncAddr(UBC_ECOSYSTEM.stakingProgram)}</p>
+          </div>
+          <div>
+            <p className="text-[10px] text-zinc-600">Staking Platform</p>
+            <p className="text-xs font-bold text-white">{UBC_ECOSYSTEM.stakingPlatform}</p>
+          </div>
+          <div>
+            <p className="text-[10px] text-zinc-600">Total Swarms</p>
+            <p className="text-xs font-bold text-white">{UBC_ECOSYSTEM.totalSwarms}</p>
+          </div>
+          <div>
+            <p className="text-[10px] text-zinc-600">Revenue Split</p>
+            <p className="text-xs text-zinc-400">{UBC_ECOSYSTEM.revenueModel}</p>
+          </div>
+        </div>
+        <p className="text-[10px] font-mono text-zinc-600 uppercase mb-2">Staking Rates</p>
+        <div className="space-y-1">
+          {UBC_ECOSYSTEM.ubcStakingRates.map((r) => (
+            <div key={r.lock} className="flex items-center justify-between text-xs">
+              <span className="text-zinc-400 font-mono">{r.lock}</span>
+              <span className="text-white font-mono">{r.rate}</span>
+            </div>
+          ))}
+        </div>
+        <p className="text-[10px] font-mono text-zinc-600 uppercase mt-3 mb-2">Notable Swarms</p>
+        <div className="flex flex-wrap gap-1.5">
+          {UBC_ECOSYSTEM.notableSwarms.map((s) => (
+            <span key={s} className="px-2.5 py-1 rounded-full bg-zinc-800/50 border border-zinc-700/30 text-zinc-400 text-[10px] font-mono">{s}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AirdropsTab() {
+  const d = AIRDROP_DATA;
+  const holdPct = d.holdRate;
+  const soldPct = 100 - holdPct;
+
+  // Donut chart for hold vs sold
+  const size = 180;
+  const cx = size / 2;
+  const cy = size / 2;
+  const outerR = size / 2 - 4;
+  const innerR = outerR * 0.6;
+  const holdAngle = (holdPct / 100) * 360;
+  const toRad = (deg: number) => ((deg - 90) * Math.PI) / 180;
+
+  const holdStartRad = toRad(0);
+  const holdEndRad = toRad(holdAngle);
+  const soldStartRad = toRad(holdAngle);
+  const soldEndRad = toRad(360);
+
+  const holdPath = `M ${cx + outerR * Math.cos(holdStartRad)} ${cy + outerR * Math.sin(holdStartRad)} A ${outerR} ${outerR} 0 0 1 ${cx + outerR * Math.cos(holdEndRad)} ${cy + outerR * Math.sin(holdEndRad)} L ${cx + innerR * Math.cos(holdEndRad)} ${cy + innerR * Math.sin(holdEndRad)} A ${innerR} ${innerR} 0 0 0 ${cx + innerR * Math.cos(holdStartRad)} ${cy + innerR * Math.sin(holdStartRad)} Z`;
+  const soldPath = `M ${cx + outerR * Math.cos(soldStartRad)} ${cy + outerR * Math.sin(soldStartRad)} A ${outerR} ${outerR} 0 1 1 ${cx + outerR * Math.cos(soldEndRad)} ${cy + outerR * Math.sin(soldEndRad)} L ${cx + innerR * Math.cos(soldEndRad)} ${cy + innerR * Math.sin(soldEndRad)} A ${innerR} ${innerR} 0 1 0 ${cx + innerR * Math.cos(soldStartRad)} ${cy + innerR * Math.sin(soldStartRad)} Z`;
+
+  return (
+    <div className="space-y-6">
+      {/* Summary stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { label: 'Recipients', value: d.totalRecipients.toLocaleString(), color: 'text-white' },
+          { label: 'Gross Sent', value: `${d.grossSent.toLocaleString()} MIND`, color: 'text-white' },
+          { label: 'Hold Rate', value: `${d.holdRate}%`, color: 'text-amber-500' },
+          { label: 'Still Held', value: `${d.mindStillHeld.toLocaleString()} MIND`, color: 'text-emerald-400' },
+        ].map((s) => (
+          <div key={s.label} className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/30 text-center">
+            <p className="text-[10px] font-mono text-zinc-600 uppercase mb-1">{s.label}</p>
+            <p className={`text-lg font-mono font-bold ${s.color}`}>{s.value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Donut */}
+        <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-900/30 flex flex-col items-center">
+          <p className="text-[10px] font-mono text-zinc-600 uppercase mb-4">Hold vs Sold</p>
+          <svg viewBox={`0 0 ${size} ${size}`} className="w-full max-w-[200px]">
+            <path d={holdPath} fill="#8b5cf6" stroke="#09090b" strokeWidth="1.5" />
+            <path d={soldPath} fill="#3f3f46" stroke="#09090b" strokeWidth="1.5" />
+            <text x={cx} y={cy - 4} textAnchor="middle" className="fill-white font-bold" style={{ fontSize: 22 }}>{d.sellRate}%</text>
+            <text x={cx} y={cy + 12} textAnchor="middle" className="fill-zinc-500" style={{ fontSize: 10 }}>sold</text>
+          </svg>
+          <div className="flex gap-4 mt-3">
+            <span className="flex items-center gap-1.5 text-[10px] text-zinc-500"><span className="w-2.5 h-2.5 rounded-sm bg-violet-500" /> Held ({holdPct}%)</span>
+            <span className="flex items-center gap-1.5 text-[10px] text-zinc-500"><span className="w-2.5 h-2.5 rounded-sm bg-zinc-600" /> Sold ({soldPct}%)</span>
+          </div>
+        </div>
+
+        {/* Details */}
+        <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-900/30 space-y-3">
+          <p className="text-[10px] font-mono text-zinc-600 uppercase mb-2">Airdrop Details</p>
+          {[
+            { label: 'Total recipients', value: d.totalRecipients.toLocaleString() },
+            { label: 'Gross MIND sent', value: d.grossSent.toLocaleString() },
+            { label: 'Duplicate/extra sends', value: d.duplicateExtra.toLocaleString(), note: 'Script ran multiple times' },
+            { label: 'Failed wallets', value: d.failedWallets.toLocaleString(), note: 'Closed/invalid accounts' },
+            { label: 'Remaining holders', value: String(d.holdersRemaining), note: '5 are team staking PDAs' },
+            { label: 'MIND still held', value: d.mindStillHeld.toLocaleString() },
+          ].map((row) => (
+            <div key={row.label} className="flex items-baseline justify-between">
+              <div>
+                <span className="text-xs text-zinc-400">{row.label}</span>
+                {row.note && <span className="text-[10px] text-zinc-600 ml-2">{row.note}</span>}
+              </div>
+              <span className="text-sm font-mono text-white font-bold">{row.value}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HoldersTab() {
+  return (
+    <div className="space-y-4">
+      <p className="text-xs text-zinc-500">Top holders by $MIND balance. Team wallets are Smithii staking PDAs from the $UBC ecosystem.</p>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="text-zinc-500 text-xs uppercase border-b border-zinc-800">
+              <th className="text-left py-2 font-mono">#</th>
+              <th className="text-left py-2 font-mono">Wallet</th>
+              <th className="text-right py-2 font-mono">$MIND</th>
+              <th className="text-left py-2 pl-4 font-mono">Identity</th>
+              <th className="text-center py-2 font-mono">Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            {TOP_HOLDERS.map((h, i) => (
+              <tr key={h.wallet} className="border-b border-zinc-800/50">
+                <td className="py-3 text-zinc-600 font-mono">{i + 1}</td>
+                <td className="py-3">
+                  <a href={`https://solscan.io/account/${h.wallet}`} target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-violet-400 hover:text-violet-300 transition">
+                    {truncAddr(h.wallet, 8)}
+                  </a>
+                </td>
+                <td className="py-3 text-right font-mono font-bold text-white">{h.mind.toLocaleString()}</td>
+                <td className="py-3 pl-4 text-xs text-zinc-400">{h.identity}</td>
+                <td className="py-3 text-center">
+                  <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-mono font-medium ${h.isTeam ? 'bg-zinc-800 text-zinc-400 border border-zinc-700' : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'}`}>
+                    {h.isTeam ? 'Team' : 'External'}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr className="border-t-2 border-zinc-700">
+              <td className="py-3 text-white font-bold" colSpan={2}>Total (top holders)</td>
+              <td className="py-3 text-right font-mono font-bold text-amber-500">{TOP_HOLDERS.reduce((s, h) => s + h.mind, 0).toLocaleString()}</td>
+              <td colSpan={2} />
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function VestingTab() {
+  return (
+    <div className="space-y-4">
+      <p className="text-xs text-zinc-500">Vesting schedules for advisors and early contributors, managed through Smithii staking panels.</p>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="text-zinc-500 text-xs uppercase border-b border-zinc-800">
+              <th className="text-left py-2 font-mono">Name</th>
+              <th className="text-left py-2 font-mono">Panel</th>
+              <th className="text-left py-2 font-mono">Amount</th>
+              <th className="text-left py-2 font-mono">Duration</th>
+              <th className="text-center py-2 font-mono">Unlocks</th>
+            </tr>
+          </thead>
+          <tbody>
+            {VESTING_SCHEDULES.map((v) => (
+              <tr key={v.name} className="border-b border-zinc-800/50">
+                <td className="py-3 text-white font-medium">{v.name}</td>
+                <td className="py-3">
+                  <a href={`https://stake.smithii.io/vesting/${v.panel}`} target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-violet-400 hover:text-violet-300 transition">
+                    {v.panel}
+                  </a>
+                </td>
+                <td className="py-3 text-xs font-mono text-zinc-300">{v.amount}</td>
+                <td className="py-3 text-xs text-zinc-400">{v.duration}</td>
+                <td className="py-3 text-center font-mono text-white">{v.unlocks ?? <span className="text-zinc-600">&mdash;</span>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="text-[10px] text-zinc-600">Vesting managed via <a href="https://stake.smithii.io" target="_blank" rel="noopener noreferrer" className="text-violet-400 hover:text-violet-300">Smithii</a> &mdash; staking program: <span className="font-mono">{truncAddr(UBC_ECOSYSTEM.stakingProgram)}</span></p>
+    </div>
+  );
+}
+
+function CapTableTab() {
+  const roleBg: Record<string, string> = {
+    'CTO / Founder': 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+    'Advisor': 'bg-blue-500/10 text-blue-400 border-blue-500/30',
+    'Investor': 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+    'Developer': 'bg-violet-500/10 text-violet-400 border-violet-500/30',
+  };
+
+  return (
+    <div className="space-y-4">
+      <p className="text-xs text-zinc-500">Core team, advisors, and early investors in the UBC / $MIND ecosystem.</p>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="text-zinc-500 text-xs uppercase border-b border-zinc-800">
+              <th className="text-left py-2 font-mono">Name</th>
+              <th className="text-left py-2 font-mono">Role</th>
+              <th className="text-left py-2 font-mono">Wallet</th>
+              <th className="text-left py-2 font-mono">Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {CAP_TABLE.map((p) => (
+              <tr key={p.name} className="border-b border-zinc-800/50">
+                <td className="py-3 text-white font-medium">{p.name}</td>
+                <td className="py-3">
+                  <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-mono font-medium border ${roleBg[p.role] || 'bg-zinc-800 text-zinc-400 border-zinc-700'}`}>
+                    {p.role}
+                  </span>
+                </td>
+                <td className="py-3 text-xs font-mono text-zinc-400">{p.wallet ?? <span className="text-zinc-600">&mdash;</span>}</td>
+                <td className="py-3 text-xs text-zinc-500">{p.notes || <span className="text-zinc-700">&mdash;</span>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 // ─── Expense Row ─────────────────────────────────────────────
 
 function StatusBadge({ status }: { status: ExpenseStatus }) {
@@ -348,6 +786,7 @@ export default function OrgPage({ params }: { params: { slug: string } }) {
   const [mounted, setMounted] = useState(false);
   const [expenses, setExpenses] = useState<Expense[]>(INITIAL_EXPENSES);
   const [filter, setFilter] = useState<'all' | ExpenseStatus>('all');
+  const [tokenTab, setTokenTab] = useState<TokenomicsTab>('overview');
   const { publicKey } = useWallet();
 
   useEffect(() => setMounted(true), []);
@@ -672,6 +1111,24 @@ export default function OrgPage({ params }: { params: { slug: string } }) {
                   {['Vercel', 'ngrok', 'Telegram', 'Discord', 'Spotify', 'Garmin', 'Google APIs', 'Helius', 'Neo4j', 'CoinGecko', 'FluxBeam', 'LinkedIn', 'Gemini', 'Stripe'].map((s) => (
                     <span key={s} className="px-2.5 py-1 rounded-full bg-zinc-800/50 border border-zinc-700/30 text-zinc-500 text-[10px] font-mono">{s}</span>
                   ))}
+                </div>
+              </section>
+
+              {/* ════════════════════════════════════════════════════════
+                  TOKENOMICS — wallet-gated
+                  ════════════════════════════════════════════════════════ */}
+              <section className="mt-16 pt-10 border-t border-zinc-800">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-400 text-xs font-mono mb-6">
+                  <span className="w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
+                  Tokenomics (Private)
+                </div>
+                <TokenomicsTabs active={tokenTab} onChange={setTokenTab} />
+                <div className="mt-6">
+                  {tokenTab === 'overview' && <OverviewTab />}
+                  {tokenTab === 'airdrops' && <AirdropsTab />}
+                  {tokenTab === 'holders' && <HoldersTab />}
+                  {tokenTab === 'vesting' && <VestingTab />}
+                  {tokenTab === 'captable' && <CapTableTab />}
                 </div>
               </section>
             </>
