@@ -15,9 +15,8 @@ const NAV_KEYS = [
   { href: '/connectome', key: 'connectome' },
   { href: '/house', key: 'house' },
   { href: '/registry', key: 'registry' },
-  { href: '/marketplace', key: 'marketplace' },
-  { href: '/schema', key: 'schema' },
   { href: '/wallet', key: 'wallet' },
+  { href: '/actif', key: 'actif' },
 ] as const;
 
 export function TopNav() {

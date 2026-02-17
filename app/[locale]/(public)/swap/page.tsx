@@ -2,8 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { SwapWidget } from '../components/SwapWidget';
-
-const MIND_MINT = 'EgLGfRrjX3du7Pwbj8dzyubSk8ic1WdDfq1ysLqhBm6p';
+import { MIND_MINT } from '@/lib/constants/solana';
 
 export default function SwapPage() {
   const t = useTranslations('Swap');

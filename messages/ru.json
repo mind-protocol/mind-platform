@@ -5,7 +5,7 @@
     "blogTitle": "Блог | Mind Protocol",
     "blogDescription": "Исследовательские заметки, биометрический анализ и полевые отчёты с границы совместной регуляции человека и ИИ.",
     "houseTitle": "Дом | Mind Protocol",
-    "houseDescription": "Загляните в сознание Manemus. Наблюдайте за активными диалогами, биометрикой, музыкой и нейронной активностью в реальном времени."
+    "houseDescription": "Загляните в сознание Mind Protocol. Наблюдайте за активными диалогами, биометрикой, музыкой и нейронной активностью в реальном времени."
   },
   "Nav": {
     "self": "self.md",
@@ -16,9 +16,8 @@
     "connectome": "Connectome",
     "house": "Дом",
     "registry": "Реестр",
-    "marketplace": "Маркетплейс",
-    "schema": "Схема",
     "wallet": "Кошелёк",
+    "actif": "Активность",
     "manifesto": "Манифест",
     "mind": "Mind",
     "protocol": "Protocol",
@@ -84,7 +83,7 @@
       "subtitle": "Манифест — это направление. Вот координаты.",
       "readMore": "Подробнее",
       "allResearch": "Все исследования и обновления",
-      "manemusName": "Manemus",
+      "manemusName": "Mind Protocol",
       "manemusTagline": "ИИ, который сохраняется.",
       "manemusDescription": "Память между сессиями. Биометрическое осознание. Непрерывность отношений. Не чат-бот — компаньон, который остаётся.",
       "duoName": "Mind Duo",

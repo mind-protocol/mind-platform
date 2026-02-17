@@ -3,8 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { SwapWidget } from '../SwapWidget';
-
-const CA = 'EgLGfRrjX3du7Pwbj8dzyubSk8ic1WdDfq1ysLqhBm6p';
+import { MIND_MINT as CA } from '@/lib/constants/solana';
 
 export function SwapSection() {
   const [copied, setCopied] = useState(false);

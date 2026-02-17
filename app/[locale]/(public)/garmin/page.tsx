@@ -135,7 +135,7 @@ export default function GarminPage() {
 
           <p className="text-center text-zinc-600 text-sm mb-8">
             Your biometric data will sync automatically. Heart rate, HRV, stress, sleep, and body battery
-            flow into Manemus in real time.
+            flow into Mind Protocol in real time.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

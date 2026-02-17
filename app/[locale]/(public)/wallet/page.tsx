@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { MIND_MINT as MIND_CA, SOL_MINT } from '@/lib/constants/solana';
 
-const MIND_CA = 'EgLGfRrjX3du7Pwbj8dzyubSk8ic1WdDfq1ysLqhBm6p';
+const FLUXBEAM_LP_URL = `https://fluxbeam.xyz/app/liquidity?inMint=${SOL_MINT}&outMint=${MIND_CA}`;
 
 interface BalanceData {
   address: string;
@@ -382,7 +383,7 @@ export default function WalletPage() {
         </header>
 
         {/* Token quick info */}
-        <div className="flex flex-wrap justify-center gap-4 mb-10 text-xs text-zinc-500">
+        <div className="flex flex-wrap justify-center gap-4 mb-6 text-xs text-zinc-500">
           <span>Token-2022</span>
           <span>|</span>
           <span>1% Transfer Fee</span>
@@ -394,6 +395,43 @@ export default function WalletPage() {
             className="font-mono hover:text-amber-500 transition"
           >
             {shortenAddress(MIND_CA)}
+          </a>
+        </div>
+
+        {/* Action buttons */}
+        <div className="flex flex-wrap justify-center gap-3 mb-10">
+          <a
+            href={`https://jup.ag/swap/SOL-${MIND_CA}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-500 text-sm font-medium hover:bg-amber-500/20 transition"
+          >
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+            </svg>
+            Swap on Jupiter
+          </a>
+          <a
+            href={FLUXBEAM_LP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 text-sm font-medium hover:bg-blue-500/20 transition"
+          >
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Provide Liquidity
+          </a>
+          <a
+            href={`https://dexscreener.com/solana/${MIND_CA}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-zinc-800/80 border border-zinc-700/50 text-zinc-400 text-sm font-medium hover:bg-zinc-800 hover:text-zinc-300 transition"
+          >
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+            </svg>
+            Chart
           </a>
         </div>
 

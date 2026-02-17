@@ -7,9 +7,13 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const verification = searchParams.get('verification') || 'all';
-  const status = searchParams.get('status') || 'all';
-  const limit = parseInt(searchParams.get('limit') || '50');
-  const offset = parseInt(searchParams.get('offset') || '0');
+  const statusParam = searchParams.get('status') || 'all';
+  const limit = Math.min(Math.max(parseInt(searchParams.get('limit') || '50') || 50, 1), 200);
+  const offset = Math.max(parseInt(searchParams.get('offset') || '0') || 0, 0);
+
+  // Allowlist for status to prevent Cypher injection
+  const VALID_STATUSES = ['all', 'active', 'pending', 'inactive'];
+  const status = VALID_STATUSES.includes(statusParam) ? statusParam : 'all';
 
   try {
     // Query actors with their org (space) membership

@@ -3,8 +3,7 @@
 import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-
-const CA = 'EgLGfRrjX3du7Pwbj8dzyubSk8ic1WdDfq1ysLqhBm6p';
+import { MIND_MINT as CA } from '@/lib/constants/solana';
 
 export function TokenBanner() {
   const [copied, setCopied] = useState(false);

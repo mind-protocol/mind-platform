@@ -3,6 +3,16 @@ import { graphQuery } from '@/lib/db/falkordb';
 
 export const dynamic = 'force-dynamic';
 
+/** Sanitize a string for safe Cypher interpolation: strip control chars, escape quotes and backslashes */
+function cypherSafe(s: string): string {
+  return s
+    .replace(/\\/g, '\\\\')     // escape backslashes first
+    .replace(/"/g, '\\"')        // escape double quotes
+    .replace(/'/g, "\\'")        // escape single quotes
+    .replace(/[\x00-\x1f]/g, '') // strip control characters (newlines, tabs, null bytes)
+    .replace(/[\u2028\u2029]/g, ''); // strip Unicode line/paragraph separators
+}
+
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const { name, purpose } = body;
@@ -15,14 +25,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Purpose must be under 280 chars' }, { status: 400 });
   }
 
-  const cleanName = name.trim();
-  const cleanPurpose = (purpose || '').trim();
-  const citizenId = `CITIZEN_${cleanName.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${Date.now()}`;
+  const cleanName = cypherSafe(name.trim());
+  const cleanPurpose = cypherSafe((purpose || '').trim());
+  const citizenId = `CITIZEN_${name.trim().toLowerCase().replace(/[^a-z0-9]/g, '_')}_${Date.now()}`;
   const now = new Date().toISOString();
 
   try {
     // Check name uniqueness
-    const existCheck = `MATCH (a:Actor) WHERE a.name = "${cleanName.replace(/"/g, '\\"')}" AND a.type = "CITIZEN" RETURN a.id`;
+    const existCheck = `MATCH (a:Actor) WHERE a.name = "${cleanName}" AND a.type = "CITIZEN" RETURN a.id`;
     const existing = await graphQuery(existCheck);
     if (existing.result_set.length > 0) {
       return NextResponse.json({ error: 'A citizen with this name already exists' }, { status: 409 });
@@ -32,9 +42,9 @@ export async function POST(request: NextRequest) {
     const createCypher = `
       CREATE (a:Actor {
         id: "${citizenId}",
-        name: "${cleanName.replace(/"/g, '\\"')}",
+        name: "${cleanName}",
         type: "CITIZEN",
-        purpose: "${cleanPurpose.replace(/"/g, '\\"')}",
+        purpose: "${cleanPurpose}",
         status: "active",
         created_at: "${now}",
         layer: "L1"

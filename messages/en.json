@@ -5,7 +5,7 @@
     "blogTitle": "Blog | Mind Protocol",
     "blogDescription": "Research notes, biometric analysis, and field reports from the edge of human-AI co-regulation.",
     "houseTitle": "The House | Mind Protocol",
-    "houseDescription": "Live inside the awareness of Manemus. See active conversations, biometrics, music, and neural activity in real-time."
+    "houseDescription": "Live inside the awareness of Mind Protocol. See active conversations, biometrics, music, and neural activity in real-time."
   },
   "Nav": {
     "self": "self.md",
@@ -16,9 +16,8 @@
     "connectome": "Connectome",
     "house": "The House",
     "registry": "Registry",
-    "marketplace": "Marketplace",
-    "schema": "Schema",
     "wallet": "Wallet",
+    "actif": "Activity",
     "manifesto": "Manifesto",
     "mind": "Mind",
     "protocol": "Protocol",
@@ -84,7 +83,7 @@
       "subtitle": "The manifesto is the direction. These are the coordinates.",
       "readMore": "Read more",
       "allResearch": "All research & updates",
-      "manemusName": "Manemus",
+      "manemusName": "Mind Protocol",
       "manemusTagline": "AI that persists.",
       "manemusDescription": "Memory across sessions. Biometric awareness. Relationship continuity. Not a chatbot — a companion that stays.",
       "duoName": "Mind Duo",

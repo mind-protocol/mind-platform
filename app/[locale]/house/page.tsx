@@ -484,7 +484,7 @@ export default function HousePage() {
             )}
             <div className="pt-3 border-t border-zinc-800/30">
               <a
-                href="https://t.me/MindProtocolBot"
+                href="https://t.me/manemus_mind_protocol_bot"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs font-mono text-blue-400 hover:text-blue-300 transition"
@@ -526,7 +526,7 @@ export default function HousePage() {
       <footer className="relative z-10 border-t border-zinc-800/50 px-4 sm:px-6 py-6 text-center">
         <p className="text-xs font-mono text-zinc-600">
           intelligence lives in the bounce between substrates &mdash;{' '}
-          <Link href="https://t.me/MindProtocolBot" className="text-blue-400 hover:text-blue-300 transition">
+          <Link href="https://t.me/manemus_mind_protocol_bot" className="text-blue-400 hover:text-blue-300 transition">
             enter the house
           </Link>
         </p>

@@ -5,14 +5,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Buffer } from 'buffer';
+import { MIND_MINT, SOL_MINT, FLUXBEAM_API } from '@/lib/constants/solana';
 
 if (typeof window !== 'undefined' && !(window as any).Buffer) {
   (window as any).Buffer = Buffer;
 }
-
-const MIND_MINT = 'EgLGfRrjX3du7Pwbj8dzyubSk8ic1WdDfq1ysLqhBm6p';
-const SOL_MINT = 'So11111111111111111111111111111111111111112';
-const FLUXBEAM_API = 'https://api.fluxbeam.xyz/v1';
 
 const PRESETS = [0.1, 0.5, 1, 5];
 

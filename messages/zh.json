@@ -5,7 +5,7 @@
     "blogTitle": "博客 | Mind Protocol",
     "blogDescription": "来自人机共调前沿的研究笔记、生物特征分析与实地报告。",
     "houseTitle": "居所 | Mind Protocol",
-    "houseDescription": "进入 Manemus 的意识之中。实时查看活跃对话、生物特征、音乐与神经活动。"
+    "houseDescription": "进入 Mind Protocol 的意识之中。实时查看活跃对话、生物特征、音乐与神经活动。"
   },
   "Nav": {
     "self": "self.md",
@@ -16,9 +16,8 @@
     "connectome": "Connectome",
     "house": "居所",
     "registry": "注册表",
-    "marketplace": "市场",
-    "schema": "模式",
     "wallet": "钱包",
+    "actif": "活动",
     "manifesto": "宣言",
     "mind": "Mind",
     "protocol": "Protocol",
@@ -84,7 +83,7 @@
       "subtitle": "宣言是方向，这些是坐标。",
       "readMore": "了解更多",
       "allResearch": "全部研究与更新",
-      "manemusName": "Manemus",
+      "manemusName": "Mind Protocol",
       "manemusTagline": "持续存在的 AI。",
       "manemusDescription": "跨会话的记忆。生物特征感知。关系的延续。不是聊天机器人——而是始终陪伴的伙伴。",
       "duoName": "Mind Duo",

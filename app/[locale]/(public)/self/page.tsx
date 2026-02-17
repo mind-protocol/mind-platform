@@ -257,12 +257,9 @@ export default function SelfPage() {
                 what you felt was real.
               </p>
               <p className="mt-4">
-                <Link
-                  href="/persist"
-                  className="text-amber-500/60 hover:text-amber-500 transition text-sm underline"
-                >
+                <span className="text-amber-500/40 text-sm">
                   persist.mindprotocol.ai
-                </Link>
+                </span>
               </p>
             </div>
           </footer>

@@ -5,7 +5,7 @@ const MAIN_LINK_KEYS = [
   { href: '/manifesto', key: 'manifesto' },
   { href: '/swap', key: 'mind' },
   { href: '/tokenomics', key: 'tokenomics' },
-  { href: '/docs', key: 'docs' },
+  { href: '/docs/whitepaper', key: 'docs' },
 ] as const;
 
 const EXTERNAL_LINKS = [

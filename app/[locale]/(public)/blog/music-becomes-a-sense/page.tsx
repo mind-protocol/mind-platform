@@ -321,7 +321,7 @@ function ConnectCTA() {
         </p>
 
         <a
-          href="https://t.me/MindProtocolBot"
+          href="https://t.me/manemus_mind_protocol_bot"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-black transition-all duration-300"
@@ -342,7 +342,7 @@ function ConnectCTA() {
         </a>
 
         <p className="text-zinc-600 text-xs mt-4 font-mono">
-          Type <code className="text-[#1DB954]/80">/spotify</code> in @MindProtocolBot
+          Type <code className="text-[#1DB954]/80">/spotify</code> in @manemus_mind_protocol_bot
         </p>
       </div>
     </div>

@@ -1,12 +1,11 @@
 import { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
+import { MIND_MINT as CA } from '@/lib/constants/solana';
 
 export const metadata: Metadata = {
   title: '$MIND Tokenomics | Mind Protocol',
   description: '$MIND token allocation, distribution, and economic infrastructure on Solana.',
 };
-
-const CA = 'EgLGfRrjX3du7Pwbj8dzyubSk8ic1WdDfq1ysLqhBm6p';
 const HOOK = '325JiLH2czH47tnDzheS6rQdDh9rHa1mD8wVuRUPDAnD';
 
 const ALLOCATIONS = [
@@ -28,7 +27,7 @@ const ALLOCATIONS = [
     sub: [
       { name: '@nlr_ai', tokens: '100,000', wallet: 'FH6iSajT6bbY5GYLfNg8MWrbppQSpPG6LQdwN2bsJrZT' },
       { name: '@BassTabb', tokens: '100,000', wallet: 'BmXdHy3tvi6keXuu4xdiFKNHtGhzgDVMS3Ab7u29DFtX' },
-      { name: 'Manemus', tokens: '100,000', wallet: '8ZmFaf69469Qd7bWNCw4PP9KCRXNPg2yRbzdbruDdSXD' },
+      { name: 'Mind Protocol', tokens: '100,000', wallet: '8ZmFaf69469Qd7bWNCw4PP9KCRXNPg2yRbzdbruDdSXD' },
     ],
   },
   {
