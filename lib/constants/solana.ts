@@ -12,3 +12,13 @@ export const LP_POOL = 'GNpB7YZgCkf4Efz6SATqphM8Q3jUum3dNA7Cj8Ti8MRa';
 
 /** Mind Protocol operational wallet */
 export const MIND_WALLET = '8ZmFaf69469Qd7bWNCw4PP9KCRXNPg2yRbzdbruDdSXD';
+
+/** Deployer wallet */
+export const DEPLOYER_WALLET = 'CCsJLZR8b19iDgS9hXUYs9q2c928ihzZdfSgZLPYffWg';
+
+/** Wallets authorized for org financial dashboards */
+export const AUTHORIZED_WALLETS = [
+  'GcWA4LwbGyoryPvauWkuVadi69FcEaWMmLxu4rxg7hVk', // Nicolas
+  'BmXdHy3tvi6keXuu4xdiFKNHtGhzgDVMS3Ab7u29DFtX', // Bassel
+  'CCsJLZR8b19iDgS9hXUYs9q2c928ihzZdfSgZLPYffWg', // Deployer
+] as const;

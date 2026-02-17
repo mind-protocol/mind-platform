@@ -16,6 +16,7 @@ const NAV_KEYS = [
   { href: '/house', key: 'house' },
   { href: '/registry', key: 'registry' },
   { href: '/wallet', key: 'wallet' },
+  { href: '/org', key: 'org' },
   { href: '/actif', key: 'actif' },
 ] as const;
 

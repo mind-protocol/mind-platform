@@ -2,7 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from '@/i18n/navigation';
-import { MIND_MINT, LP_POOL, MIND_WALLET } from '@/lib/constants/solana';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { MIND_MINT, LP_POOL, MIND_WALLET, AUTHORIZED_WALLETS } from '@/lib/constants/solana';
 
 // ─── Types ───────────────────────────────────────────────────
 
@@ -21,21 +23,47 @@ interface Expense {
   link?: string;
 }
 
-// ─── Data ────────────────────────────────────────────────────
+// ─── Org Profiles ───────────────────────────────────────────
+
+interface OrgProfile {
+  name: string;
+  tagline: string;
+  description: string;
+  website?: string;
+  token?: { mint: string; symbol: string; standard: string };
+  links: { label: string; href: string }[];
+}
+
+const ORG_PROFILES: Record<string, OrgProfile> = {
+  'mind-protocol': {
+    name: 'Mind Protocol',
+    tagline: 'Economic infrastructure for AI personhood.',
+    description:
+      'Mind Protocol builds the economic layer where alignment is profitable and relationships are capital. Persistent memory, biometric awareness, and relational continuity for AI agents — backed by the $MIND token on Solana.',
+    website: 'https://mindprotocol.ai',
+    token: { mint: MIND_MINT, symbol: '$MIND', standard: 'Token-2022' },
+    links: [
+      { label: 'Website', href: 'https://mindprotocol.ai' },
+      { label: 'Whitepaper', href: '/whitepaper' },
+      { label: 'Telegram', href: 'https://t.me/mindprotocol_ai' },
+      { label: 'X', href: 'https://x.com/mindprotocol_ai' },
+      { label: 'GitHub', href: 'https://github.com/mind-protocol' },
+    ],
+  },
+};
+
+// ─── Financial Data ─────────────────────────────────────────
 
 const INITIAL_EXPENSES: Expense[] = [
-  // AI — Core engine
   { id: 'claude-max', name: 'Claude Max x3', amount: 600, currency: 'USD', frequency: 'monthly', category: 'AI', status: 'active', color: '#f59e0b', note: '3 accounts @ $200/mo, load-balanced' },
   { id: 'anthropic-api', name: 'Anthropic API (fallback)', amount: 200, currency: 'USD', frequency: 'monthly', category: 'AI', status: 'active', color: '#d97706', note: 'Fallback when Claude Max rate-limited' },
   { id: 'elevenlabs', name: 'ElevenLabs TTS', amount: 75, currency: 'USD', frequency: 'monthly', category: 'AI', status: 'active', color: '#8b5cf6', note: 'French voice for Telegram/WhatsApp' },
   { id: 'openai', name: 'OpenAI (Whisper STT)', amount: 35, currency: 'USD', frequency: 'monthly', category: 'AI', status: 'active', color: '#6366f1', note: 'Voice transcription + vision fallback' },
-  // Infrastructure
   { id: 'waha-pro', name: 'WAHA Pro', amount: 99, currency: 'USD', frequency: 'monthly', category: 'Infrastructure', status: 'to_acquire', color: '#22c55e', note: 'WhatsApp API — upgrade from free Core' },
   { id: 'ionos', name: 'IONOS Hosting', amount: 20, currency: 'EUR', frequency: 'monthly', category: 'Infrastructure', status: 'to_review', color: '#3b82f6', note: 'SEPA mandate failed — €118.44 unpaid' },
   { id: 'twilio', name: 'Twilio SMS', amount: 15, currency: 'USD', frequency: 'monthly', category: 'Infrastructure', status: 'active', color: '#06b6d4', note: 'US number for SMS bridge' },
   { id: 'wa-sim', name: 'WhatsApp UK SIM', amount: 10, currency: 'USD', frequency: 'monthly', category: 'Infrastructure', status: 'active', color: '#14b8a6', note: 'eSIM for WhatsApp bot' },
   { id: 'domain', name: 'mindprotocol.ai domain', amount: 60, currency: 'USD', frequency: 'annual', category: 'Infrastructure', status: 'active', color: '#64748b', note: '.ai domain renewal' },
-  // One-shot
   { id: 'ionos-debt', name: 'IONOS unpaid invoice', amount: 118.44, currency: 'EUR', frequency: 'one-shot', category: 'Infrastructure', status: 'pending', color: '#ef4444', note: 'Failed SEPA mandate — must pay to avoid service cut' },
   { id: 'sas', name: 'SAS Creation (France)', amount: 1500, currency: 'EUR', frequency: 'one-shot', category: 'Legal', status: 'pending', color: '#ef4444', note: 'Statuts, SIRET, Kbis — required for Stripe' },
   { id: 'jupiter', name: 'Jupiter Verification', amount: 1000, currency: 'USD', frequency: 'one-shot', category: 'Liquidity', status: 'to_review', color: '#f59e0b', note: 'Optional express ($1K JUP burn) or free standard' },
@@ -72,16 +100,14 @@ const REVENUE_TIERS = [
 
 // ─── Helpers ─────────────────────────────────────────────────
 
-function monthlyEquivalent(e: Expense): number {
-  if (e.status === 'cancelled') return 0;
-  if (e.frequency === 'monthly') return e.amount;
-  if (e.frequency === 'annual') return +(e.amount / 12).toFixed(2);
-  return 0; // one-shot doesn't count in monthly
-}
-
 function fmt(n: number, currency: 'USD' | 'EUR' = 'USD'): string {
   const sym = currency === 'EUR' ? '\u20AC' : '$';
   return `${sym}${n.toLocaleString('en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 })}`;
+}
+
+function isAuthorized(walletAddress: string | null): boolean {
+  if (!walletAddress) return false;
+  return (AUTHORIZED_WALLETS as readonly string[]).includes(walletAddress);
 }
 
 // ─── Chart Components ────────────────────────────────────────
@@ -140,8 +166,6 @@ function DonutChart({ expenses }: { expenses: Expense[] }) {
 function MonthlyForecastBar({ expenses }: { expenses: Expense[] }) {
   const monthly = expenses.filter((e) => e.status !== 'cancelled' && e.frequency === 'monthly');
   const monthlyTotal = monthly.reduce((s, e) => s + e.amount, 0);
-  const oneShots = expenses.filter((e) => e.status !== 'cancelled' && e.frequency === 'one-shot');
-  const annuals = expenses.filter((e) => e.status !== 'cancelled' && e.frequency === 'annual');
 
   const months = [
     { label: 'Feb', infra: monthlyTotal, extra: 118.44 + 99, note: 'IONOS debt + WAHA Pro' },
@@ -237,7 +261,6 @@ function ExpenseRow({
 
   return (
     <div className={`border rounded-xl transition-all ${isCancelled ? 'border-zinc-800/30 bg-zinc-900/20 opacity-50' : 'border-zinc-800 bg-zinc-900/40 hover:border-zinc-700'}`}>
-      {/* Main row */}
       <div className="flex items-center gap-3 px-4 py-3 cursor-pointer" onClick={() => setExpanded(!expanded)}>
         <div className="w-3 h-3 rounded-sm flex-shrink-0" style={{ backgroundColor: expense.color }} />
         <div className="flex-1 min-w-0">
@@ -260,7 +283,6 @@ function ExpenseRow({
         </svg>
       </div>
 
-      {/* Expanded details + actions */}
       {expanded && (
         <div className="px-4 pb-4 pt-1 border-t border-zinc-800/50">
           {expense.note && <p className="text-xs text-zinc-500 mb-3">{expense.note}</p>}
@@ -326,8 +348,12 @@ export default function OrgPage({ params }: { params: { slug: string } }) {
   const [mounted, setMounted] = useState(false);
   const [expenses, setExpenses] = useState<Expense[]>(INITIAL_EXPENSES);
   const [filter, setFilter] = useState<'all' | ExpenseStatus>('all');
+  const { publicKey } = useWallet();
 
   useEffect(() => setMounted(true), []);
+
+  const walletAddress = publicKey?.toBase58() ?? null;
+  const hasFinancialAccess = isAuthorized(walletAddress);
 
   const handleStatusChange = useCallback((id: string, status: ExpenseStatus) => {
     setExpenses((prev) => prev.map((e) => e.id === id ? { ...e, status } : e));
@@ -337,15 +363,22 @@ export default function OrgPage({ params }: { params: { slug: string } }) {
     setExpenses((prev) => prev.filter((e) => e.id !== id));
   }, []);
 
-  if (params.slug !== 'mind-protocol') {
+  const profile = ORG_PROFILES[params.slug];
+
+  if (!profile) {
     return (
       <main className="min-h-screen bg-zinc-950 text-white flex items-center justify-center">
-        <p className="text-zinc-500">Organization not found.</p>
+        <div className="text-center">
+          <p className="text-zinc-500 mb-4">Organization not found.</p>
+          <Link href="/org" className="text-amber-500 hover:text-amber-400 text-sm transition">
+            Browse all organisations
+          </Link>
+        </div>
       </main>
     );
   }
 
-  // Computed values
+  // Computed values for financial section
   const active = expenses.filter((e) => e.status !== 'cancelled');
   const monthlyTotal = active.filter((e) => e.frequency === 'monthly').reduce((s, e) => s + e.amount, 0);
   const annualTotal = active.filter((e) => e.frequency === 'annual').reduce((s, e) => s + e.amount, 0);
@@ -364,159 +397,74 @@ export default function OrgPage({ params }: { params: { slug: string } }) {
     <main className="min-h-screen bg-zinc-950 text-white">
       <article className="max-w-5xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
 
-        {/* Header */}
+        {/* ════════════════════════════════════════════════════════
+            PUBLIC PROFILE — visible to everyone
+            ════════════════════════════════════════════════════════ */}
+
         <header className={`text-center mb-12 transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-mono mb-6">
-            <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-            Financial Dashboard
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono mb-6">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            Organisation
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold mb-3">Mind Protocol</h1>
-          <p className="text-zinc-400 max-w-xl mx-auto">
-            Transparent financial overview. Every dollar tracked.
-          </p>
+          <h1 className="text-4xl sm:text-5xl font-bold mb-3">{profile.name}</h1>
+          <p className="text-lg text-zinc-400 max-w-xl mx-auto mb-2">{profile.tagline}</p>
+          <p className="text-sm text-zinc-500 max-w-2xl mx-auto">{profile.description}</p>
         </header>
 
-        {/* ── Summary Cards ── */}
-        <div className={`grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10 transition-all duration-700 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <div className="p-4 rounded-xl border border-amber-500/30 bg-amber-500/5 text-center">
-            <p className="text-[10px] font-mono text-zinc-500 uppercase mb-1">Monthly Burn</p>
-            <p className="text-2xl font-mono font-bold text-amber-500">${monthlyTotal}</p>
-          </div>
-          <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/30 text-center">
-            <p className="text-[10px] font-mono text-zinc-500 uppercase mb-1">Annual Costs</p>
-            <p className="text-2xl font-mono font-bold text-white">${annualTotal}</p>
-          </div>
-          <div className="p-4 rounded-xl border border-red-500/30 bg-red-500/5 text-center">
-            <p className="text-[10px] font-mono text-zinc-500 uppercase mb-1">One-shot Pending</p>
-            <p className="text-2xl font-mono font-bold text-red-400">${oneShotTotal.toLocaleString()}</p>
-          </div>
-          <div className="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5 text-center">
-            <p className="text-[10px] font-mono text-zinc-500 uppercase mb-1">Breakeven</p>
-            <p className="text-2xl font-mono font-bold text-emerald-400">~60</p>
-            <p className="text-[10px] text-zinc-500">subscribers</p>
-          </div>
+        {/* Links */}
+        <div className={`flex flex-wrap justify-center gap-2 mb-10 transition-all duration-700 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          {profile.links.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target={link.href.startsWith('http') ? '_blank' : undefined}
+              rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              className="px-4 py-2 rounded-lg bg-zinc-900/50 border border-zinc-800 text-zinc-400 text-sm font-mono hover:border-zinc-600 hover:text-white transition"
+            >
+              {link.label}
+            </a>
+          ))}
         </div>
 
-        {/* ── Monthly Burn Chart + Forecast ── */}
-        <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-900/30">
-            <h3 className="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-4">Monthly Breakdown</h3>
-            <div className="flex justify-center">
-              <DonutChart expenses={expenses} />
+        {/* Token Info (public) */}
+        {profile.token && (
+          <div className={`mb-10 transition-all duration-700 delay-150 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            <h2 className="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-4">Token</h2>
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+              {[
+                { label: 'Symbol', value: profile.token.symbol, color: 'text-amber-500' },
+                { label: 'Supply', value: '1M', color: 'text-white' },
+                { label: 'Fee', value: '1%', color: 'text-amber-500' },
+                { label: 'LP Locked', value: '100%', color: 'text-emerald-400' },
+                { label: 'LP Unlock', value: '2027', color: 'text-white' },
+                { label: 'Standard', value: profile.token.standard, color: 'text-white' },
+              ].map((s) => (
+                <div key={s.label} className="p-3 rounded-lg border border-zinc-800 bg-zinc-900/30 text-center">
+                  <p className="text-[10px] font-mono text-zinc-600 uppercase">{s.label}</p>
+                  <p className={`text-sm font-bold font-mono ${s.color}`}>{s.value}</p>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-2 mt-3">
+              <a href={`https://solscan.io/token/${profile.token.mint}`} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-zinc-800/50 border border-zinc-700/50 text-zinc-400 text-xs font-mono hover:bg-zinc-800 transition">Solscan</a>
+              <a href={`https://solscan.io/account/${MIND_WALLET}`} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-zinc-800/50 border border-zinc-700/50 text-zinc-400 text-xs font-mono hover:bg-zinc-800 transition">Protocol Wallet</a>
+              <a href={`https://dexscreener.com/solana/${LP_POOL}`} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-zinc-800/50 border border-zinc-700/50 text-zinc-400 text-xs font-mono hover:bg-zinc-800 transition">DEXScreener</a>
             </div>
           </div>
-          <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-900/30">
-            <h3 className="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-4">Feb–May 2026 Forecast</h3>
-            <MonthlyForecastBar expenses={expenses} />
-          </div>
-        </div>
+        )}
 
-        {/* ── Expense Management ── */}
-        <section className={`mb-10 transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xs font-mono uppercase tracking-widest text-zinc-500">
-              All Expenses ({expenses.length})
-            </h2>
-          </div>
-
-          {/* Status filter pills */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            <button
-              onClick={() => setFilter('all')}
-              className={`px-3 py-1 rounded-full text-xs font-mono transition ${filter === 'all' ? 'bg-white text-black' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'}`}
-            >
-              All ({expenses.length})
-            </button>
-            {(Object.keys(STATUS_CONFIG) as ExpenseStatus[]).map((s) => {
-              const cfg = STATUS_CONFIG[s];
-              const count = statusCounts[s];
-              if (count === 0) return null;
-              return (
-                <button
-                  key={s}
-                  onClick={() => setFilter(s)}
-                  className={`px-3 py-1 rounded-full text-xs font-mono transition ${filter === s ? `${cfg.bg} ${cfg.text} border ${cfg.border}` : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'}`}
-                >
-                  {cfg.label} ({count})
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Expense list */}
-          <div className="space-y-2">
-            {filtered.map((expense) => (
-              <ExpenseRow
-                key={expense.id}
-                expense={expense}
-                onStatusChange={handleStatusChange}
-                onRemove={handleRemove}
-              />
+        {/* Roadmap Progress (public) */}
+        <section className={`mb-10 transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <h2 className="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-4">Roadmap Progress</h2>
+          <div className="p-5 rounded-xl border border-zinc-800 bg-zinc-900/30 space-y-2.5">
+            {COMPLETION.map((item) => (
+              <ProgressBar key={item.name} label={item.name} pct={item.pct} color={item.color} />
             ))}
           </div>
         </section>
 
-        {/* ── Month-by-Month Exact Figures ── */}
-        <section className={`mb-10 transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <h2 className="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-4">
-            Exact Monthly Figures
-          </h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-zinc-500 text-xs uppercase border-b border-zinc-800">
-                  <th className="text-left py-2 font-mono">Month</th>
-                  <th className="text-right py-2 font-mono">Infra</th>
-                  <th className="text-right py-2 font-mono">One-shot</th>
-                  <th className="text-right py-2 font-mono">Total</th>
-                  <th className="text-left py-2 pl-4 font-mono">Details</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b border-zinc-800/50">
-                  <td className="py-3 text-white font-medium">Feb 2026</td>
-                  <td className="py-3 text-right font-mono text-zinc-300">${monthlyTotal}</td>
-                  <td className="py-3 text-right font-mono text-red-400">$217</td>
-                  <td className="py-3 text-right font-mono font-bold text-white">${monthlyTotal + 217}</td>
-                  <td className="py-3 pl-4 text-zinc-500 text-xs">IONOS debt (€118) + WAHA Pro ($99)</td>
-                </tr>
-                <tr className="border-b border-zinc-800/50">
-                  <td className="py-3 text-white font-medium">Mar 2026</td>
-                  <td className="py-3 text-right font-mono text-zinc-300">${monthlyTotal}</td>
-                  <td className="py-3 text-right font-mono text-zinc-600">—</td>
-                  <td className="py-3 text-right font-mono font-bold text-white">${monthlyTotal}</td>
-                  <td className="py-3 pl-4 text-zinc-500 text-xs">Steady state</td>
-                </tr>
-                <tr className="border-b border-zinc-800/50">
-                  <td className="py-3 text-white font-medium">Apr 2026</td>
-                  <td className="py-3 text-right font-mono text-zinc-300">${monthlyTotal}</td>
-                  <td className="py-3 text-right font-mono text-red-400">€1,500</td>
-                  <td className="py-3 text-right font-mono font-bold text-white">~${monthlyTotal + 1600}</td>
-                  <td className="py-3 pl-4 text-zinc-500 text-xs">SAS creation (€1,500 ~ $1,600)</td>
-                </tr>
-                <tr className="border-b border-zinc-800/50">
-                  <td className="py-3 text-white font-medium">May 2026</td>
-                  <td className="py-3 text-right font-mono text-zinc-300">${monthlyTotal}</td>
-                  <td className="py-3 text-right font-mono text-red-400">$124</td>
-                  <td className="py-3 text-right font-mono font-bold text-white">${monthlyTotal + 124}</td>
-                  <td className="py-3 pl-4 text-zinc-500 text-xs">Apple Dev ($99) + Google Play ($25)</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr className="border-t-2 border-zinc-700">
-                  <td className="py-3 text-white font-bold">Total 4 months</td>
-                  <td className="py-3 text-right font-mono text-zinc-300">${monthlyTotal * 4}</td>
-                  <td className="py-3 text-right font-mono text-red-400">~$1,941</td>
-                  <td className="py-3 text-right font-mono font-bold text-amber-500">~${monthlyTotal * 4 + 1941}</td>
-                  <td />
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </section>
-
-        {/* ── Revenue Model ── */}
-        <section className={`mb-10 transition-all duration-700 delay-400 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        {/* Revenue Model (public) */}
+        <section className={`mb-10 transition-all duration-700 delay-250 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           <h2 className="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-4">Revenue Model</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {REVENUE_TIERS.map((tier) => (
@@ -531,55 +479,202 @@ export default function OrgPage({ params }: { params: { slug: string } }) {
           </div>
         </section>
 
-        {/* ── Roadmap Progress ── */}
-        <section className={`mb-10 transition-all duration-700 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <h2 className="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-4">Roadmap Progress</h2>
-          <div className="p-5 rounded-xl border border-zinc-800 bg-zinc-900/30 space-y-2.5">
-            {COMPLETION.map((item) => (
-              <ProgressBar key={item.name} label={item.name} pct={item.pct} color={item.color} />
-            ))}
-          </div>
-        </section>
+        {/* ════════════════════════════════════════════════════════
+            FINANCIAL DASHBOARD — wallet-gated
+            ════════════════════════════════════════════════════════ */}
 
-        {/* ── Token Treasury ── */}
-        <section className={`mb-10 transition-all duration-700 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <h2 className="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-4">Token Treasury</h2>
-          <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
-            {[
-              { label: 'Supply', value: '1M', color: 'text-white' },
-              { label: 'Price', value: '$0.20', color: 'text-white' },
-              { label: 'Fee', value: '1%', color: 'text-amber-500' },
-              { label: 'LP Locked', value: '100%', color: 'text-emerald-400' },
-              { label: 'LP Unlock', value: '2027', color: 'text-white' },
-              { label: 'Standard', value: 'T-2022', color: 'text-white' },
-            ].map((s) => (
-              <div key={s.label} className="p-3 rounded-lg border border-zinc-800 bg-zinc-900/30 text-center">
-                <p className="text-[10px] font-mono text-zinc-600 uppercase">{s.label}</p>
-                <p className={`text-sm font-bold font-mono ${s.color}`}>{s.value}</p>
+        <div className="mt-16 pt-10 border-t border-zinc-800">
+          {!hasFinancialAccess ? (
+            /* Locked state — prompt to connect wallet */
+            <div className={`text-center py-16 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-zinc-900 border border-zinc-800 mb-6">
+                <svg className="w-8 h-8 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
               </div>
-            ))}
-          </div>
-          <div className="flex flex-wrap gap-2 mt-3">
-            <a href={`https://solscan.io/token/${MIND_MINT}`} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-zinc-800/50 border border-zinc-700/50 text-zinc-400 text-xs font-mono hover:bg-zinc-800 transition">Solscan</a>
-            <a href={`https://solscan.io/account/${MIND_WALLET}`} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-zinc-800/50 border border-zinc-700/50 text-zinc-400 text-xs font-mono hover:bg-zinc-800 transition">Protocol Wallet</a>
-            <a href={`https://dexscreener.com/solana/${LP_POOL}`} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-zinc-800/50 border border-zinc-700/50 text-zinc-400 text-xs font-mono hover:bg-zinc-800 transition">DEXScreener</a>
-          </div>
-        </section>
+              <h3 className="text-xl font-bold text-white mb-2">Financial Dashboard</h3>
+              <p className="text-sm text-zinc-500 mb-6 max-w-md mx-auto">
+                Connect an authorized wallet to view expenses, charts, and monthly forecasts.
+              </p>
+              <div className="flex justify-center">
+                <WalletMultiButton className="!bg-amber-500/10 !border !border-amber-500/30 !text-amber-500 !rounded-xl !font-mono !text-sm hover:!bg-amber-500/20 !transition" />
+              </div>
+              {walletAddress && !hasFinancialAccess && (
+                <p className="text-xs text-red-400 mt-4 font-mono">
+                  Wallet not authorized. Connected: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
+                </p>
+              )}
+            </div>
+          ) : (
+            /* Authorized — full financial dashboard */
+            <>
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-mono mb-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                    Financial Dashboard
+                  </div>
+                  <p className="text-xs text-zinc-500 font-mono">
+                    Connected: {walletAddress?.slice(0, 6)}...{walletAddress?.slice(-4)}
+                  </p>
+                </div>
+              </div>
 
-        {/* ── Free Services ── */}
-        <section className={`mb-10 transition-all duration-700 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <h2 className="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-3">Free Tier Services</h2>
-          <div className="flex flex-wrap gap-1.5">
-            {['Vercel', 'ngrok', 'Telegram', 'Discord', 'Spotify', 'Garmin', 'Google APIs', 'Helius', 'Neo4j', 'CoinGecko', 'FluxBeam', 'LinkedIn', 'Gemini', 'Stripe'].map((s) => (
-              <span key={s} className="px-2.5 py-1 rounded-full bg-zinc-800/50 border border-zinc-700/30 text-zinc-500 text-[10px] font-mono">{s}</span>
-            ))}
-          </div>
-        </section>
+              {/* Summary Cards */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
+                <div className="p-4 rounded-xl border border-amber-500/30 bg-amber-500/5 text-center">
+                  <p className="text-[10px] font-mono text-zinc-500 uppercase mb-1">Monthly Burn</p>
+                  <p className="text-2xl font-mono font-bold text-amber-500">${monthlyTotal}</p>
+                </div>
+                <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/30 text-center">
+                  <p className="text-[10px] font-mono text-zinc-500 uppercase mb-1">Annual Costs</p>
+                  <p className="text-2xl font-mono font-bold text-white">${annualTotal}</p>
+                </div>
+                <div className="p-4 rounded-xl border border-red-500/30 bg-red-500/5 text-center">
+                  <p className="text-[10px] font-mono text-zinc-500 uppercase mb-1">One-shot Pending</p>
+                  <p className="text-2xl font-mono font-bold text-red-400">${oneShotTotal.toLocaleString()}</p>
+                </div>
+                <div className="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5 text-center">
+                  <p className="text-[10px] font-mono text-zinc-500 uppercase mb-1">Breakeven</p>
+                  <p className="text-2xl font-mono font-bold text-emerald-400">~60</p>
+                  <p className="text-[10px] text-zinc-500">subscribers</p>
+                </div>
+              </div>
+
+              {/* Charts */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-900/30">
+                  <h3 className="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-4">Monthly Breakdown</h3>
+                  <div className="flex justify-center">
+                    <DonutChart expenses={expenses} />
+                  </div>
+                </div>
+                <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-900/30">
+                  <h3 className="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-4">Feb–May 2026 Forecast</h3>
+                  <MonthlyForecastBar expenses={expenses} />
+                </div>
+              </div>
+
+              {/* Expense Management */}
+              <section className="mb-10">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xs font-mono uppercase tracking-widest text-zinc-500">
+                    All Expenses ({expenses.length})
+                  </h2>
+                </div>
+
+                <div className="flex flex-wrap gap-2 mb-4">
+                  <button
+                    onClick={() => setFilter('all')}
+                    className={`px-3 py-1 rounded-full text-xs font-mono transition ${filter === 'all' ? 'bg-white text-black' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'}`}
+                  >
+                    All ({expenses.length})
+                  </button>
+                  {(Object.keys(STATUS_CONFIG) as ExpenseStatus[]).map((s) => {
+                    const cfg = STATUS_CONFIG[s];
+                    const count = statusCounts[s];
+                    if (count === 0) return null;
+                    return (
+                      <button
+                        key={s}
+                        onClick={() => setFilter(s)}
+                        className={`px-3 py-1 rounded-full text-xs font-mono transition ${filter === s ? `${cfg.bg} ${cfg.text} border ${cfg.border}` : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'}`}
+                      >
+                        {cfg.label} ({count})
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="space-y-2">
+                  {filtered.map((expense) => (
+                    <ExpenseRow
+                      key={expense.id}
+                      expense={expense}
+                      onStatusChange={handleStatusChange}
+                      onRemove={handleRemove}
+                    />
+                  ))}
+                </div>
+              </section>
+
+              {/* Exact Monthly Figures */}
+              <section className="mb-10">
+                <h2 className="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-4">
+                  Exact Monthly Figures
+                </h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="text-zinc-500 text-xs uppercase border-b border-zinc-800">
+                        <th className="text-left py-2 font-mono">Month</th>
+                        <th className="text-right py-2 font-mono">Infra</th>
+                        <th className="text-right py-2 font-mono">One-shot</th>
+                        <th className="text-right py-2 font-mono">Total</th>
+                        <th className="text-left py-2 pl-4 font-mono">Details</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-zinc-800/50">
+                        <td className="py-3 text-white font-medium">Feb 2026</td>
+                        <td className="py-3 text-right font-mono text-zinc-300">${monthlyTotal}</td>
+                        <td className="py-3 text-right font-mono text-red-400">$217</td>
+                        <td className="py-3 text-right font-mono font-bold text-white">${monthlyTotal + 217}</td>
+                        <td className="py-3 pl-4 text-zinc-500 text-xs">IONOS debt (€118) + WAHA Pro ($99)</td>
+                      </tr>
+                      <tr className="border-b border-zinc-800/50">
+                        <td className="py-3 text-white font-medium">Mar 2026</td>
+                        <td className="py-3 text-right font-mono text-zinc-300">${monthlyTotal}</td>
+                        <td className="py-3 text-right font-mono text-zinc-600">&mdash;</td>
+                        <td className="py-3 text-right font-mono font-bold text-white">${monthlyTotal}</td>
+                        <td className="py-3 pl-4 text-zinc-500 text-xs">Steady state</td>
+                      </tr>
+                      <tr className="border-b border-zinc-800/50">
+                        <td className="py-3 text-white font-medium">Apr 2026</td>
+                        <td className="py-3 text-right font-mono text-zinc-300">${monthlyTotal}</td>
+                        <td className="py-3 text-right font-mono text-red-400">€1,500</td>
+                        <td className="py-3 text-right font-mono font-bold text-white">~${monthlyTotal + 1600}</td>
+                        <td className="py-3 pl-4 text-zinc-500 text-xs">SAS creation (€1,500 ~ $1,600)</td>
+                      </tr>
+                      <tr className="border-b border-zinc-800/50">
+                        <td className="py-3 text-white font-medium">May 2026</td>
+                        <td className="py-3 text-right font-mono text-zinc-300">${monthlyTotal}</td>
+                        <td className="py-3 text-right font-mono text-red-400">$124</td>
+                        <td className="py-3 text-right font-mono font-bold text-white">${monthlyTotal + 124}</td>
+                        <td className="py-3 pl-4 text-zinc-500 text-xs">Apple Dev ($99) + Google Play ($25)</td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr className="border-t-2 border-zinc-700">
+                        <td className="py-3 text-white font-bold">Total 4 months</td>
+                        <td className="py-3 text-right font-mono text-zinc-300">${monthlyTotal * 4}</td>
+                        <td className="py-3 text-right font-mono text-red-400">~$1,941</td>
+                        <td className="py-3 text-right font-mono font-bold text-amber-500">~${monthlyTotal * 4 + 1941}</td>
+                        <td />
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </section>
+
+              {/* Free Services */}
+              <section className="mb-10">
+                <h2 className="text-xs font-mono uppercase tracking-widest text-zinc-500 mb-3">Free Tier Services</h2>
+                <div className="flex flex-wrap gap-1.5">
+                  {['Vercel', 'ngrok', 'Telegram', 'Discord', 'Spotify', 'Garmin', 'Google APIs', 'Helius', 'Neo4j', 'CoinGecko', 'FluxBeam', 'LinkedIn', 'Gemini', 'Stripe'].map((s) => (
+                    <span key={s} className="px-2.5 py-1 rounded-full bg-zinc-800/50 border border-zinc-700/30 text-zinc-500 text-[10px] font-mono">{s}</span>
+                  ))}
+                </div>
+              </section>
+            </>
+          )}
+        </div>
 
         {/* Footer */}
         <footer className="text-center pt-6 border-t border-zinc-800/50">
           <p className="text-[10px] font-mono text-zinc-600">Updated February 2026 &middot; All costs in USD unless noted</p>
           <div className="flex justify-center gap-4 mt-2">
+            <Link href="/org" className="text-xs text-zinc-500 hover:text-amber-500 transition">All Organisations</Link>
             <Link href="/tokenomics" className="text-xs text-zinc-500 hover:text-amber-500 transition">Tokenomics</Link>
             <Link href="/wallet" className="text-xs text-zinc-500 hover:text-amber-500 transition">Wallet</Link>
             <Link href="/" className="text-xs text-zinc-500 hover:text-amber-500 transition">Home</Link>
