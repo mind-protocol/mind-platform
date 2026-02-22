@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import Recommendation from './components/Recommendation';
 import SubstanceCard from './components/SubstanceCard';
 import LogForm from './components/LogForm';
 import BiometricCorrelation from './components/BiometricCorrelation';
@@ -13,11 +14,32 @@ export default function TrackerPage() {
 
   const refresh = () => setRefreshKey((k) => k + 1);
 
+  const quickLog = useCallback(async (substance: string, details: Record<string, unknown>) => {
+    const amount = (details.amount as number) || 1;
+    const unit = (details.unit as string) || 'unit';
+    const intent = (details.intent as string) || '';
+    try {
+      const res = await fetch('/api/tracker/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          substance,
+          dose: { amount, unit, details },
+          intent,
+          notes: 'via recommendation',
+        }),
+      });
+      if (res.ok) refresh();
+    } catch {
+      // silent
+    }
+  }, []);
+
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
         {/* Header */}
-        <header className="flex items-center justify-between mb-8">
+        <header className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold font-mono">
               Substance Tracker
@@ -33,6 +55,11 @@ export default function TrackerPage() {
             {showKCalc ? 'Hide' : 'K Calculator'}
           </button>
         </header>
+
+        {/* Recommendation */}
+        <div className="mb-6">
+          <Recommendation refreshKey={refreshKey} onQuickLog={quickLog} />
+        </div>
 
         {/* K Calculator (toggle) */}
         {showKCalc && (
