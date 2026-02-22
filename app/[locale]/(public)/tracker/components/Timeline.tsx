@@ -41,6 +41,9 @@ function doseLabel(entry: LogEntry): string {
   const amt = dose.amount;
   if (substance === 'thc') return `${amt} chamber${amt > 1 ? 's' : ''}`;
   if (substance === 'ketamine') {
+    if (dose.details?.form === 'crystal' || dose.unit === 'mg') {
+      return `~${amt}mg crystal`;
+    }
     const mg = dose.details?.total_mg || (dose.details?.mg_per_spray as number || 0) * amt;
     return `${amt} spray${amt > 1 ? 's' : ''}${mg ? ` (${mg}mg)` : ''}`;
   }

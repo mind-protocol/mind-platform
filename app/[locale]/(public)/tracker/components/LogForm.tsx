@@ -18,10 +18,18 @@ const INTENTS: Record<string, string[]> = {
 
 const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<string, unknown> }> = {
   thc: { amount: 1, unit: 'chamber', details: { strain_thc: 22, temp_c: 230 } },
-  ketamine: { amount: 1, unit: 'spray', details: { mg_per_spray: 0, total_mg: 0 } },
+  ketamine: { amount: 30, unit: 'mg', details: { form: 'crystal', route: 'intranasal', estimate: 'visual' } },
   nicotine: { amount: 5, unit: 'puffs', details: { strength_pct: 20, mode: 'ATL' } },
   hydration: { amount: 500, unit: 'ml', details: { additives: [] } },
 };
+
+const K_PRESETS = [
+  { mg: 15, label: 'Bump', desc: 'tiny line' },
+  { mg: 30, label: 'Light', desc: 'small key' },
+  { mg: 50, label: 'Moderate', desc: 'medium line' },
+  { mg: 80, label: 'Strong', desc: 'fat line' },
+  { mg: 120, label: 'Deep', desc: 'heavy dose' },
+];
 
 const ADDITIVES = ['sodium', 'potassium', 'magnesium', 'vitC', 'B12', 'B6', 'B2'];
 
@@ -47,9 +55,12 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
     setSubmitting(true);
     setFeedback('');
     try {
+      const unit = tab === 'ketamine'
+        ? (details.form === 'spray' ? 'spray' : 'mg')
+        : DEFAULTS[tab].unit;
       const body = {
         substance: tab,
-        dose: { amount, unit: DEFAULTS[tab].unit, details },
+        dose: { amount, unit, details },
         intent,
         notes,
       };
@@ -111,12 +122,12 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
         {/* Amount */}
         <div>
           <label className="text-xs text-zinc-500 block mb-1">
-            Amount ({DEFAULTS[tab].unit})
+            Amount ({tab === 'ketamine' ? (details.form === 'spray' ? 'sprays' : 'mg estimate') : DEFAULTS[tab].unit})
           </label>
           <input
             type="number"
             min={0}
-            step={tab === 'hydration' ? 50 : 1}
+            step={tab === 'hydration' ? 50 : tab === 'ketamine' && details.form !== 'spray' ? 5 : 1}
             value={amount}
             onChange={(e) => setAmount(Number(e.target.value))}
             className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
@@ -148,26 +159,83 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
         )}
 
         {tab === 'ketamine' && (
-          <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-3">
+            {/* Form toggle: crystal vs spray */}
             <div>
-              <label className="text-xs text-zinc-500 block mb-1">mg/spray</label>
-              <input
-                type="number"
-                step={0.1}
-                value={(details.mg_per_spray as number) || 0}
-                onChange={(e) => {
-                  const mgps = Number(e.target.value);
-                  setDetails({ ...details, mg_per_spray: mgps, total_mg: mgps * amount });
-                }}
-                className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-zinc-500 block mb-1">Total mg</label>
-              <div className="bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-purple-400 font-mono text-sm">
-                {((details.mg_per_spray as number) || 0) * amount || '—'}
+              <label className="text-xs text-zinc-500 block mb-1">Form</label>
+              <div className="flex gap-2">
+                {(['crystal', 'spray'] as const).map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => {
+                      const isCrystal = f === 'crystal';
+                      setDetails({
+                        ...details,
+                        form: f,
+                        route: 'intranasal',
+                        estimate: isCrystal ? 'visual' : undefined,
+                      });
+                      if (isCrystal && amount < 5) setAmount(30);
+                      if (!isCrystal && amount > 20) setAmount(3);
+                    }}
+                    className={`px-3 py-1.5 rounded text-sm border transition ${
+                      details.form === f
+                        ? 'border-purple-500/50 text-purple-400 bg-purple-500/10'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {f === 'crystal' ? '💎 Crystal' : '🔬 Spray'}
+                  </button>
+                ))}
               </div>
             </div>
+
+            {/* Crystal: quick presets */}
+            {details.form === 'crystal' && (
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">Quick dose</label>
+                <div className="flex flex-wrap gap-1.5">
+                  {K_PRESETS.map((p) => (
+                    <button
+                      key={p.mg}
+                      onClick={() => setAmount(p.mg)}
+                      className={`px-2 py-1 rounded text-xs border transition ${
+                        amount === p.mg
+                          ? 'border-purple-500/50 text-purple-300 bg-purple-500/15'
+                          : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      {p.mg}mg <span className="text-zinc-600">· {p.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Spray: mg/spray + total */}
+            {details.form === 'spray' && (
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-xs text-zinc-500 block mb-1">mg/spray</label>
+                  <input
+                    type="number"
+                    step={0.1}
+                    value={(details.mg_per_spray as number) || 0}
+                    onChange={(e) => {
+                      const mgps = Number(e.target.value);
+                      setDetails({ ...details, mg_per_spray: mgps, total_mg: mgps * amount });
+                    }}
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-zinc-500 block mb-1">Total mg</label>
+                  <div className="bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-purple-400 font-mono text-sm">
+                    {((details.mg_per_spray as number) || 0) * amount || '—'}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
