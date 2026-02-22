@@ -22,6 +22,13 @@
     "manifesto": "宣言",
     "mind": "Mind",
     "protocol": "Protocol",
+    "token": "代币",
+    "team": "团队",
+    "graph": "知识",
+    "swap": "兑换",
+    "groupProtocol": "协议",
+    "groupMind": "$MIND",
+    "groupExplore": "探索",
     "toggleMenu": "切换菜单"
   },
   "Footer": {

@@ -22,6 +22,9 @@
     "groupExplore": "Explore",
     "mind": "Mind",
     "protocol": "Protocol",
+    "token": "Token",
+    "team": "Team",
+    "graph": "Knowledge",
     "toggleMenu": "Toggle menu"
   },
   "Footer": {
