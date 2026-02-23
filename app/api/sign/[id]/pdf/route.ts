@@ -10,7 +10,10 @@ export async function GET(
 ) {
   const { id } = await params;
   try {
-    const res = await fetch(`${MANEMUS_URL}/sign/${id}/pdf`);
+    const res = await fetch(`${MANEMUS_URL}/sign/${id}/pdf`, {
+      cache: 'no-store',
+      headers: { 'ngrok-skip-browser-warning': '1' },
+    });
 
     if (!res.ok) {
       const data = await res.json().catch(() => ({ error: 'PDF generation failed' }));

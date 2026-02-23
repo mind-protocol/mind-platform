@@ -11,7 +11,10 @@ export async function GET(req: Request) {
     if (!userId) {
       return NextResponse.json({ error: 'user_id required' }, { status: 400 });
     }
-    const res = await fetch(`${MANEMUS_URL}/garmin/auth/status/${encodeURIComponent(userId)}`);
+    const res = await fetch(`${MANEMUS_URL}/garmin/auth/status/${encodeURIComponent(userId)}`, {
+      cache: 'no-store',
+      headers: { 'ngrok-skip-browser-warning': '1' },
+    });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
   } catch {

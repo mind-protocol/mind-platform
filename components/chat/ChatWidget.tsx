@@ -206,6 +206,9 @@ export default function ChatWidget() {
     initThread();
   }, [initThread]);
 
+  // Detect if waiting for response (any user message in 'sent' state)
+  const isWaiting = messages.some((m) => m.role === 'user' && m.status === 'sent');
+
   // Polling
   useEffect(() => {
     if (!threadId) return;
@@ -213,13 +216,14 @@ export default function ChatWidget() {
     // Initial poll
     pollMessages();
 
-    const interval = isOpen ? 2000 : 10000;
+    // Poll faster when actively waiting for a response
+    const interval = isWaiting ? 1500 : isOpen ? 3000 : 15000;
     pollRef.current = setInterval(pollMessages, interval);
 
     return () => {
       if (pollRef.current) clearInterval(pollRef.current);
     };
-  }, [threadId, isOpen, pollMessages]);
+  }, [threadId, isOpen, isWaiting, pollMessages]);
 
   // Auto-scroll
   useEffect(() => {
@@ -317,7 +321,7 @@ export default function ChatWidget() {
                 onTTS={msg.role === 'assistant' ? handleTTS : undefined}
               />
             ))}
-            {isSending && <TypingIndicator />}
+            {(isSending || messages.some((m) => m.role === 'user' && m.status === 'sent')) && <TypingIndicator />}
             <div ref={messagesEndRef} />
           </div>
 

@@ -8,7 +8,10 @@ export async function GET(req: NextRequest) {
   try {
     const params = req.nextUrl.searchParams.toString();
     const url = `${MANEMUS_URL}/api/tracker/log${params ? `?${params}` : ''}`;
-    const res = await fetch(url);
+    const res = await fetch(url, {
+      cache: 'no-store',
+      headers: { 'ngrok-skip-browser-warning': '1' },
+    });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
   } catch {
@@ -21,8 +24,9 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const res = await fetch(`${MANEMUS_URL}/api/tracker/log`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': '1' },
       body: JSON.stringify(body),
+      cache: 'no-store',
     });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });

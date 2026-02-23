@@ -14,7 +14,8 @@ export async function GET() {
 
   try {
     const res = await fetch(`${MANEMUS_URL}/house/state`, {
-      next: { revalidate: 5 },
+      cache: 'no-store',
+      headers: { 'ngrok-skip-browser-warning': '1' },
     });
     if (!res.ok) throw new Error(`${res.status}`);
     const data = await res.json();

@@ -16,8 +16,10 @@ export async function POST(
       headers: {
         'Content-Type': 'application/json',
         'X-Forwarded-For': req.headers.get('x-forwarded-for') || '',
+        'ngrok-skip-browser-warning': '1',
       },
       body: JSON.stringify(body),
+      cache: 'no-store',
     });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });

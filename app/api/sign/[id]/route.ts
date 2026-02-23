@@ -11,7 +11,8 @@ export async function GET(
   const { id } = await params;
   try {
     const res = await fetch(`${MANEMUS_URL}/sign/${id}`, {
-      headers: { 'Content-Type': 'application/json' },
+      cache: 'no-store',
+      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': '1' },
     });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });

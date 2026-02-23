@@ -10,7 +10,10 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const res = await fetch(`${MANEMUS_URL}/api/graph/node/${encodeURIComponent(id)}`);
+    const res = await fetch(`${MANEMUS_URL}/api/graph/node/${encodeURIComponent(id)}`, {
+      cache: 'no-store',
+      headers: { 'ngrok-skip-browser-warning': '1' },
+    });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
   } catch {

@@ -13,7 +13,10 @@ export async function GET(req: Request) {
     }
     const since = searchParams.get('since') || '';
     const url = `${MANEMUS_URL}/chat/messages/${encodeURIComponent(threadId)}${since ? `?since=${encodeURIComponent(since)}` : ''}`;
-    const res = await fetch(url);
+    const res = await fetch(url, {
+      cache: 'no-store',
+      headers: { 'ngrok-skip-browser-warning': '1' },
+    });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
   } catch {

@@ -11,7 +11,10 @@ export async function GET(req: Request) {
     if (!address) {
       return NextResponse.json({ error: 'address required' }, { status: 400 });
     }
-    const res = await fetch(`${MANEMUS_URL}/wallet/balance/${encodeURIComponent(address)}`);
+    const res = await fetch(`${MANEMUS_URL}/wallet/balance/${encodeURIComponent(address)}`, {
+      cache: 'no-store',
+      headers: { 'ngrok-skip-browser-warning': '1' },
+    });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
   } catch {

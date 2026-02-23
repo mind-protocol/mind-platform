@@ -9,8 +9,9 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const res = await fetch(`${MANEMUS_URL}/api/tracker/k-calc`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': '1' },
       body: JSON.stringify(body),
+      cache: 'no-store',
     });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });

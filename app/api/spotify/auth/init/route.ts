@@ -13,7 +13,8 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'link_code and user_id required' }, { status: 400 });
     }
     const res = await fetch(
-      `${MANEMUS_URL}/spotify/auth/init?link_code=${encodeURIComponent(linkCode)}&user_id=${encodeURIComponent(userId)}`
+      `${MANEMUS_URL}/spotify/auth/init?link_code=${encodeURIComponent(linkCode)}&user_id=${encodeURIComponent(userId)}`,
+      { cache: 'no-store', headers: { 'ngrok-skip-browser-warning': '1' } }
     );
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
