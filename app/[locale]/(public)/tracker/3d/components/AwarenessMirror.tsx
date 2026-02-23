@@ -1,10 +1,13 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useRef, useState, useMemo } from 'react';
+import { useFrame } from '@react-three/fiber';
 import { Canvas } from '@react-three/fiber';
 import { PerformanceMonitor, Environment } from '@react-three/drei';
+import * as THREE from 'three';
 import { useAwarenessState } from '@/lib/tracker/hooks/useAwarenessState';
 import { SUBSTANCE_KEYS, SUBSTANCE_CONFIG, type SubstanceKey } from '@/lib/tracker/constants';
+import type { AwarenessState } from '@/lib/tracker/pharmacokinetics';
 import SceneControls from './SceneControls';
 import ConsciousnessCore from './ConsciousnessCore';
 import ActiveSubstanceOrb from './ActiveSubstanceOrb';
@@ -78,9 +81,99 @@ export default function AwarenessMirror() {
         />
       ))}
 
+      {/* Cursor glow — attention probe */}
+      <CursorGlow awareness={awareness} />
+
       {/* Biometric environmental field */}
       <BiometricField awareness={awareness} />
     </Canvas>
+  );
+}
+
+/**
+ * Cursor glow — a soft luminous point that follows the mouse through 3D space.
+ * Represents the observer's attention/focus probing the awareness field.
+ */
+function CursorGlow({ awareness }: { awareness: AwarenessState }) {
+  const groupRef = useRef<THREE.Group>(null);
+  const glowRef = useRef<THREE.Mesh>(null);
+  const trailRef = useRef<THREE.Mesh>(null);
+  const smoothPos = useRef(new THREE.Vector3(0, 0, 5));
+
+  useFrame((state) => {
+    const pointer = state.pointer;
+
+    // Map 2D pointer to 3D position in front of scene
+    const targetX = pointer.x * 8;
+    const targetY = pointer.y * 5 + 1;
+    const targetZ = 5;
+
+    smoothPos.current.lerp(
+      new THREE.Vector3(targetX, targetY, targetZ),
+      0.1,
+    );
+
+    if (groupRef.current) {
+      groupRef.current.position.copy(smoothPos.current);
+    }
+
+    // Glow pulses with cursor movement speed
+    if (glowRef.current) {
+      const speed = Math.abs(pointer.x - (smoothPos.current.x / 8)) +
+                    Math.abs(pointer.y - ((smoothPos.current.y - 1) / 5));
+      const movementGlow = Math.min(1, speed * 10);
+      const scale = 0.15 + movementGlow * 0.1 + awareness.alterationDepth * 0.1;
+      glowRef.current.scale.setScalar(scale);
+
+      const mat = glowRef.current.material as THREE.MeshBasicMaterial;
+      if (mat.opacity !== undefined) {
+        mat.opacity = 0.15 + movementGlow * 0.3 + awareness.psychedelicLoad * 0.15;
+      }
+    }
+
+    // Trail — lagging soft echo
+    if (trailRef.current) {
+      trailRef.current.scale.setScalar(0.3 + awareness.alterationDepth * 0.2);
+      const mat = trailRef.current.material as THREE.MeshBasicMaterial;
+      if (mat.opacity !== undefined) {
+        mat.opacity = 0.04 + awareness.psychedelicLoad * 0.06;
+      }
+    }
+  });
+
+  // Color based on dominant substance or neutral
+  const glowColor = awareness.dominant
+    ? SUBSTANCE_CONFIG[awareness.dominant].color
+    : '#818cf8';
+
+  return (
+    <group ref={groupRef}>
+      {/* Core glow point */}
+      <mesh ref={glowRef}>
+        <sphereGeometry args={[1, 12, 12]} />
+        <meshBasicMaterial
+          color={glowColor}
+          transparent
+          opacity={0.2}
+        />
+      </mesh>
+      {/* Soft halo */}
+      <mesh ref={trailRef}>
+        <sphereGeometry args={[1, 8, 8]} />
+        <meshBasicMaterial
+          color={glowColor}
+          transparent
+          opacity={0.05}
+        />
+      </mesh>
+      {/* Cursor light emission */}
+      <pointLight
+        color={glowColor}
+        intensity={0.4 + awareness.alterationDepth * 0.6}
+        distance={8}
+        decay={2}
+      />
+    </group>
   );
 }
 

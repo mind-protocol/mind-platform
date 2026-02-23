@@ -44,8 +44,20 @@ export default function ConsciousnessCore({ awareness }: CoreProps) {
     return c;
   }, [awareness.substances]);
 
+  // Smoothed pointer for fluid motion
+  const smoothPointer = useRef(new THREE.Vector2(0, 0));
+
   useFrame((state) => {
     const t = state.clock.elapsedTime;
+    const pointer = state.pointer; // -1 to 1 normalized
+
+    // Smooth the pointer (lerp toward actual position)
+    smoothPointer.current.lerp(pointer, 0.08);
+    const px = smoothPointer.current.x;
+    const py = smoothPointer.current.y;
+
+    // Cursor distance from center (0-1.414)
+    const cursorDist = Math.sqrt(px * px + py * py);
 
     // Smooth color transition
     colorRef.current.lerp(targetColor, 0.02);
@@ -60,26 +72,39 @@ export default function ConsciousnessCore({ awareness }: CoreProps) {
 
     if (outerRef.current) {
       const baseScale = 1.2 + awareness.alterationDepth * 0.8;
-      outerRef.current.scale.setScalar(baseScale * pulse);
+      // Cursor proximity makes the core breathe larger
+      const cursorInfluence = 1 + cursorDist * 0.08;
+      outerRef.current.scale.setScalar(baseScale * pulse * cursorInfluence);
 
-      const mat = outerRef.current.material as THREE.MeshStandardMaterial & { distort?: number };
+      // Core leans toward cursor — subtle tilt
+      const leanStrength = 0.15 + awareness.psychedelicLoad * 0.2;
+      outerRef.current.rotation.x = -py * leanStrength;
+      outerRef.current.rotation.z = px * leanStrength;
+
+      const mat = outerRef.current.material as THREE.MeshStandardMaterial & { distort?: number; speed?: number };
       if (mat.color) mat.color.copy(colorRef.current);
       if (mat.emissive) {
-        emissiveRef.current.copy(colorRef.current).multiplyScalar(0.3 + awareness.psychedelicLoad * 0.4);
+        emissiveRef.current.copy(colorRef.current).multiplyScalar(0.3 + awareness.psychedelicLoad * 0.4 + cursorDist * 0.15);
         mat.emissive.copy(emissiveRef.current);
       }
       if ('distort' in mat) {
-        mat.distort = 0.15 + awareness.psychedelicLoad * 0.5 + awareness.sedativeLoad * 0.1;
+        // Distortion increases as cursor moves away from center
+        mat.distort = 0.15 + awareness.psychedelicLoad * 0.5 + awareness.sedativeLoad * 0.1 + cursorDist * 0.1;
+      }
+      if ('speed' in mat) {
+        // Morph speed responds to cursor movement
+        mat.speed = 1.5 + awareness.psychedelicLoad * 3 + cursorDist * 2;
       }
     }
 
     if (innerRef.current) {
       innerRef.current.scale.setScalar((0.4 + stressGlow * 0.3) * pulse);
-      innerRef.current.rotation.y = t * 0.1;
-      innerRef.current.rotation.x = Math.sin(t * 0.07) * 0.2;
+      // Inner core tracks cursor more directly
+      innerRef.current.rotation.y = t * 0.1 + px * 0.5;
+      innerRef.current.rotation.x = Math.sin(t * 0.07) * 0.2 + py * 0.3;
       const mat = innerRef.current.material as THREE.MeshBasicMaterial;
       if (mat.opacity !== undefined) {
-        mat.opacity = 0.2 + stressGlow * 0.4 + awareness.alterationDepth * 0.2;
+        mat.opacity = 0.2 + stressGlow * 0.4 + awareness.alterationDepth * 0.2 + cursorDist * 0.1;
       }
     }
 
@@ -87,11 +112,11 @@ export default function ConsciousnessCore({ awareness }: CoreProps) {
     if (shellRef.current) {
       const bb = awareness.bodyBattery != null ? awareness.bodyBattery / 100 : 0.5;
       shellRef.current.scale.setScalar(2.0 + bb * 0.5);
-      shellRef.current.rotation.y = -t * 0.02;
-      shellRef.current.rotation.z = t * 0.015;
+      shellRef.current.rotation.y = -t * 0.02 + px * 0.1;
+      shellRef.current.rotation.z = t * 0.015 + py * 0.08;
       const mat = shellRef.current.material as THREE.MeshPhysicalMaterial;
       if (mat.opacity !== undefined) {
-        mat.opacity = 0.03 + bb * 0.06;
+        mat.opacity = 0.03 + bb * 0.06 + cursorDist * 0.02;
       }
     }
   });

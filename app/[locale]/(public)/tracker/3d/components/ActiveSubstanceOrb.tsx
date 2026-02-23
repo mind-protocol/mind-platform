@@ -112,12 +112,19 @@ function OrbPosition({
       const t = state.clock.elapsedTime;
       const speed = speeds[substance];
       const currentAngle = angle + t * speed;
+      const pointer = state.pointer;
 
       // Orbital position
       const r = radius * (0.8 + intensity * 0.4);
-      ref.current.position.x = Math.cos(currentAngle) * r;
-      ref.current.position.z = Math.sin(currentAngle) * r;
-      ref.current.position.y = (yOffsets[substance] ?? 0) + Math.sin(t * 0.3 + angle) * 0.3;
+      const baseX = Math.cos(currentAngle) * r;
+      const baseZ = Math.sin(currentAngle) * r;
+      const baseY = (yOffsets[substance] ?? 0) + Math.sin(t * 0.3 + angle) * 0.3;
+
+      // Cursor attraction — orbs drift toward pointer side
+      const attractStrength = 1.5 * intensity;
+      ref.current.position.x = baseX + pointer.x * attractStrength;
+      ref.current.position.z = baseZ;
+      ref.current.position.y = baseY + pointer.y * attractStrength * 0.5;
     }
   });
 

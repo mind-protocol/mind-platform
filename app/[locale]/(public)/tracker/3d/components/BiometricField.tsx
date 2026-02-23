@@ -39,10 +39,14 @@ function StressRings({ stress }: { stress: number | null }) {
 
   useFrame((state) => {
     const t = state.clock.elapsedTime;
+    const pointer = state.pointer;
     const pulseSpeed = 0.5 + stressNorm * 2; // Faster pulse under stress
 
     if (groupRef.current) {
       groupRef.current.rotation.y = t * 0.02;
+      // Stress rings tilt toward cursor
+      groupRef.current.rotation.x = pointer.y * 0.1;
+      groupRef.current.rotation.z = -pointer.x * 0.1;
     }
 
     const rings = [ring1Ref, ring2Ref, ring3Ref];
@@ -56,7 +60,9 @@ function StressRings({ stress }: { stress: number | null }) {
 
         const mat = ref.current.material as THREE.MeshBasicMaterial;
         if (mat.opacity !== undefined) {
-          mat.opacity = stressNorm * 0.08 * (1 - i * 0.2);
+          // Stress rings brighten on cursor proximity
+          const cursorDist = Math.sqrt(pointer.x * pointer.x + pointer.y * pointer.y);
+          mat.opacity = stressNorm * 0.08 * (1 - i * 0.2) + cursorDist * 0.02;
         }
       }
     });
@@ -117,13 +123,20 @@ function EnergyEnvelope({ bodyBattery }: { bodyBattery: number | null }) {
   );
 }
 
-/** Atmospheric lighting that responds to overall state */
+/** Atmospheric lighting that responds to overall state + cursor */
 function AtmosphericLighting({ awareness }: { awareness: AwarenessState }) {
   const light1Ref = useRef<THREE.PointLight>(null);
   const light2Ref = useRef<THREE.PointLight>(null);
+  const cursorLightRef = useRef<THREE.PointLight>(null);
+  const smoothPointer = useRef(new THREE.Vector2(0, 0));
 
   useFrame((state) => {
     const t = state.clock.elapsedTime;
+    const pointer = state.pointer;
+    smoothPointer.current.lerp(pointer, 0.06);
+    const px = smoothPointer.current.x;
+    const py = smoothPointer.current.y;
+
     const bpm = awareness.hr ?? 65;
     const breathRate = bpm / 60;
     const breathPulse = Math.sin(t * breathRate * Math.PI) * 0.5 + 0.5;
@@ -137,6 +150,9 @@ function AtmosphericLighting({ awareness }: { awareness: AwarenessState }) {
         0.4 + awareness.psychedelicLoad * 0.4,
         0.5,
       );
+      // Key light subtly follows cursor
+      light1Ref.current.position.x = px * 5;
+      light1Ref.current.position.z = 3 + py * 3;
     }
 
     if (light2Ref.current) {
@@ -144,6 +160,16 @@ function AtmosphericLighting({ awareness }: { awareness: AwarenessState }) {
       light2Ref.current.intensity = 0.15 + awareness.sedativeLoad * 0.2;
       light2Ref.current.position.x = Math.cos(t * 0.05) * 15;
       light2Ref.current.position.z = Math.sin(t * 0.05) * 15;
+    }
+
+    // Cursor light — probes the scene, reveals structure
+    if (cursorLightRef.current) {
+      cursorLightRef.current.position.x = px * 8;
+      cursorLightRef.current.position.y = 2 + py * 4;
+      cursorLightRef.current.position.z = 6;
+      // Intensity based on cursor distance from center
+      const dist = Math.sqrt(px * px + py * py);
+      cursorLightRef.current.intensity = 0.3 + dist * 0.5 + awareness.alterationDepth * 0.3;
     }
   });
 
@@ -166,6 +192,15 @@ function AtmosphericLighting({ awareness }: { awareness: AwarenessState }) {
         distance={25}
         decay={2}
       />
+      {/* Cursor-tracking probe light */}
+      <pointLight
+        ref={cursorLightRef}
+        position={[0, 2, 6]}
+        intensity={0.3}
+        color="#e2e8f0"
+        distance={20}
+        decay={2}
+      />
     </>
   );
 }
@@ -176,10 +211,13 @@ function OrbitRing({ awareness }: { awareness: AwarenessState }) {
 
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.z = state.clock.elapsedTime * 0.005;
+      const pointer = state.pointer;
+      ref.current.rotation.z = state.clock.elapsedTime * 0.005 + pointer.x * 0.05;
+      ref.current.rotation.x = Math.PI / 2 + pointer.y * 0.08;
       const mat = ref.current.material as THREE.MeshBasicMaterial;
       if (mat.opacity !== undefined) {
-        mat.opacity = 0.03 + awareness.alterationDepth * 0.04;
+        const cursorDist = Math.sqrt(pointer.x * pointer.x + pointer.y * pointer.y);
+        mat.opacity = 0.03 + awareness.alterationDepth * 0.04 + cursorDist * 0.03;
       }
     }
   });
