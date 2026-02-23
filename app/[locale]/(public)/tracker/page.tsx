@@ -9,12 +9,35 @@ import BiometricCorrelation from './components/BiometricCorrelation';
 import Timeline from './components/Timeline';
 import KCalculator from './components/KCalculator';
 import FoodLog from './components/FoodLog';
+import PlanViewToggle from './components/planning/PlanViewToggle';
+import PlanningCalendar from './components/planning/PlanningCalendar';
+import ScheduleDoseForm from './components/planning/ScheduleDoseForm';
+import type { SubstanceKey } from '@/lib/tracker/constants';
 
 export default function TrackerPage() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [showKCalc, setShowKCalc] = useState(false);
+  const [viewMode, setViewMode] = useState<'now' | 'plan'>('now');
+  const [showScheduleForm, setShowScheduleForm] = useState(false);
+  const [scheduleDefaults, setScheduleDefaults] = useState<{
+    substance?: SubstanceKey;
+    dose?: { amount: number; unit: string };
+    intent?: string;
+  }>({});
 
   const refresh = () => setRefreshKey((k) => k + 1);
+
+  const openSchedule = useCallback((substance: string, details: Record<string, unknown>) => {
+    setScheduleDefaults({
+      substance: substance as SubstanceKey,
+      dose: {
+        amount: (details.amount as number) || 1,
+        unit: (details.unit as string) || 'unit',
+      },
+      intent: (details.intent as string) || '',
+    });
+    setShowScheduleForm(true);
+  }, []);
 
   const quickLog = useCallback(async (substance: string, details: Record<string, unknown>) => {
     const amount = (details.amount as number) || 1;
@@ -50,7 +73,8 @@ export default function TrackerPage() {
               Precision dosing &middot; Biometric correlation
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
+            <PlanViewToggle mode={viewMode} onChange={setViewMode} />
             <Link
               href="/tracker/3d"
               className="text-sm px-3 py-1.5 rounded border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition"
@@ -66,41 +90,70 @@ export default function TrackerPage() {
           </div>
         </header>
 
-        {/* Recommendation */}
-        <div className="mb-6">
-          <Recommendation refreshKey={refreshKey} onQuickLog={quickLog} />
-        </div>
+        {viewMode === 'plan' ? (
+          <>
+            {/* Planning Calendar */}
+            <div className="mb-6">
+              <PlanningCalendar />
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Recommendation */}
+            <div className="mb-6">
+              <Recommendation refreshKey={refreshKey} onQuickLog={quickLog} onSchedule={openSchedule} />
+            </div>
 
-        {/* K Calculator (toggle) */}
-        {showKCalc && (
-          <div className="mb-6">
-            <KCalculator />
-          </div>
+            {/* K Calculator (toggle) */}
+            {showKCalc && (
+              <div className="mb-6">
+                <KCalculator />
+              </div>
+            )}
+
+            {/* Summary cards */}
+            <SubstanceCard refreshKey={refreshKey} />
+
+            {/* Log form */}
+            <div className="mt-6">
+              <LogForm onLogged={refresh} />
+            </div>
+          </>
         )}
 
-        {/* Summary cards */}
-        <SubstanceCard refreshKey={refreshKey} />
-
-        {/* Log form */}
-        <div className="mt-6">
-          <LogForm onLogged={refresh} />
-        </div>
-
-        {/* Food tracker */}
+        {/* Food tracker — always visible */}
         <div className="mt-6">
           <FoodLog refreshKey={refreshKey} />
         </div>
 
-        {/* Biometric correlation chart */}
+        {/* Biometric correlation chart — always visible */}
         <div className="mt-6">
           <BiometricCorrelation refreshKey={refreshKey} />
         </div>
 
-        {/* Timeline */}
+        {/* Timeline — always visible */}
         <div className="mt-6">
           <Timeline refreshKey={refreshKey} />
         </div>
       </div>
+
+      {/* Schedule form modal (from recommendation "Plan" button) */}
+      {showScheduleForm && (
+        <ScheduleDoseForm
+          defaults={scheduleDefaults}
+          onSchedule={async (data) => {
+            try {
+              await fetch('/api/tracker/plan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+              });
+            } catch { /* silent */ }
+            setShowScheduleForm(false);
+          }}
+          onClose={() => setShowScheduleForm(false)}
+        />
+      )}
     </main>
   );
 }

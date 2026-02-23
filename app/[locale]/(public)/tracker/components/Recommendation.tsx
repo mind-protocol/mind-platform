@@ -64,9 +64,11 @@ const PERIOD_LABELS: Record<string, string> = {
 export default function Recommendation({
   refreshKey,
   onQuickLog,
+  onSchedule,
 }: {
   refreshKey: number;
   onQuickLog: (substance: string, details: Record<string, unknown>) => void;
+  onSchedule?: (substance: string, details: Record<string, unknown>) => void;
 }) {
   const [data, setData] = useState<RecResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -142,13 +144,24 @@ export default function Recommendation({
             <div className="text-xs text-zinc-500 mt-0.5">{top.reason}</div>
           </div>
           {top.substance !== 'none' && (
-            <button
-              onClick={() => onQuickLog(top.substance, top.details)}
-              className="shrink-0 px-3 py-1.5 rounded text-xs font-medium transition hover:opacity-80"
-              style={{ backgroundColor: SUB_COLORS[top.substance], color: '#000' }}
-            >
-              Log
-            </button>
+            <div className="flex gap-1.5 shrink-0">
+              <button
+                onClick={() => onQuickLog(top.substance, top.details)}
+                className="px-3 py-1.5 rounded text-xs font-medium transition hover:opacity-80"
+                style={{ backgroundColor: SUB_COLORS[top.substance], color: '#000' }}
+              >
+                Log
+              </button>
+              {onSchedule && (
+                <button
+                  onClick={() => onSchedule(top.substance, top.details)}
+                  className="px-2 py-1.5 rounded text-xs font-medium border transition hover:opacity-80"
+                  style={{ borderColor: SUB_COLORS[top.substance] + '60', color: SUB_COLORS[top.substance] }}
+                >
+                  Plan
+                </button>
+              )}
+            </div>
           )}
         </div>
       )}
@@ -162,12 +175,22 @@ export default function Recommendation({
               <span className="text-xs text-zinc-400 flex-1 truncate">{rec.action}</span>
               <span className="text-[10px] text-zinc-600 shrink-0">{rec.reason}</span>
               {rec.substance !== 'none' && (
-                <button
-                  onClick={() => onQuickLog(rec.substance, rec.details)}
-                  className="text-[10px] px-1.5 py-0.5 rounded border border-zinc-700 text-zinc-500 hover:text-zinc-300 transition"
-                >
-                  log
-                </button>
+                <div className="flex gap-1 shrink-0">
+                  <button
+                    onClick={() => onQuickLog(rec.substance, rec.details)}
+                    className="text-[10px] px-1.5 py-0.5 rounded border border-zinc-700 text-zinc-500 hover:text-zinc-300 transition"
+                  >
+                    log
+                  </button>
+                  {onSchedule && (
+                    <button
+                      onClick={() => onSchedule(rec.substance, rec.details)}
+                      className="text-[10px] px-1.5 py-0.5 rounded border border-indigo-500/30 text-indigo-400/60 hover:text-indigo-300 transition"
+                    >
+                      plan
+                    </button>
+                  )}
+                </div>
               )}
             </div>
           ))}
