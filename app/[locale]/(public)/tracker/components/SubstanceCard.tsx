@@ -20,6 +20,9 @@ const SUBSTANCES = [
   { key: 'lsd', label: 'LSD', color: '#ec4899', icon: '🔮' },
   { key: 'nicotine', label: 'Nic', color: '#f59e0b', icon: '💨' },
   { key: 'hydration', label: 'H₂O', color: '#3b82f6', icon: '💧' },
+  { key: 'melatonin', label: 'Mel', color: '#6366f1', icon: '🌙' },
+  { key: 'venlafaxine', label: 'Ven', color: '#14b8a6', icon: '💊' },
+  { key: 'prazepam', label: 'Praz', color: '#94a3b8', icon: '🫧' },
 ] as const;
 
 function timeSince(ts: string): string {

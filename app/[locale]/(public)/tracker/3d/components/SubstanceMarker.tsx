@@ -262,6 +262,152 @@ function HydrationMarker({ scale, hovered, color }: { scale: number; hovered: bo
   );
 }
 
+// Melatonin: soft, dreamy, lunar — crescent with gentle pulse and sleep-dust glow
+function MelatoninMarker({ scale, hovered, color }: { scale: number; hovered: boolean; color: string }) {
+  const groupRef = useRef<THREE.Group>(null);
+
+  useFrame((state) => {
+    if (groupRef.current) {
+      // Gentle rocking like falling asleep
+      groupRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.3) * 0.15;
+      groupRef.current.rotation.y = state.clock.elapsedTime * 0.08;
+    }
+  });
+
+  return (
+    <Float speed={0.5} rotationIntensity={0.1} floatIntensity={0.3}>
+      <group ref={groupRef}>
+        {/* Crescent moon — torus segment with subtracted inner sphere */}
+        <mesh scale={scale * 0.7} rotation={[0, 0, 0.3]}>
+          <torusGeometry args={[0.35, 0.15, 16, 32, Math.PI * 1.3]} />
+          <meshPhysicalMaterial
+            color={color}
+            emissive={color}
+            emissiveIntensity={hovered ? 0.7 : 0.25}
+            metalness={0.1}
+            roughness={0.8}
+            clearcoat={0.6}
+            clearcoatRoughness={0.3}
+            transparent
+            opacity={0.85}
+          />
+        </mesh>
+        {/* Inner sleep glow — soft diffuse sphere */}
+        <mesh scale={scale * 0.25}>
+          <sphereGeometry args={[0.4, 16, 16]} />
+          <MeshDistortMaterial
+            color="#c4b5fd"
+            emissive={color}
+            emissiveIntensity={hovered ? 0.6 : 0.3}
+            distort={0.15}
+            speed={0.5}
+            transparent
+            opacity={0.4}
+          />
+        </mesh>
+        {/* Ambient sleep-dust light */}
+        <pointLight
+          color={color}
+          intensity={hovered ? 1.5 : 0.4}
+          distance={3 * scale}
+          decay={2}
+        />
+      </group>
+    </Float>
+  );
+}
+
+// Venlafaxine: steady, clinical, reliable — capsule shape with teal pulse
+function VenlafaxineMarker({ scale, hovered, color }: { scale: number; hovered: boolean; color: string }) {
+  const meshRef = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      // Slow, steady rotation — reliable, predictable
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.2;
+      // Subtle breathing scale — serotonin pulse
+      const pulse = 1 + Math.sin(state.clock.elapsedTime * 0.8) * 0.03;
+      meshRef.current.scale.setScalar(scale * 0.7 * pulse);
+    }
+  });
+
+  return (
+    <Float speed={0.6} rotationIntensity={0.05} floatIntensity={0.2}>
+      {/* Capsule body */}
+      <mesh ref={meshRef} scale={scale * 0.7} rotation={[Math.PI / 2, 0, 0]}>
+        <capsuleGeometry args={[0.2, 0.4, 8, 16]} />
+        <meshPhysicalMaterial
+          color={color}
+          emissive={color}
+          emissiveIntensity={hovered ? 0.6 : 0.2}
+          metalness={0.3}
+          roughness={0.3}
+          clearcoat={0.8}
+          clearcoatRoughness={0.1}
+          transparent
+          opacity={0.9}
+        />
+      </mesh>
+      {/* Inner compound glow */}
+      <mesh scale={scale * 0.3} rotation={[Math.PI / 2, 0, 0]}>
+        <capsuleGeometry args={[0.12, 0.2, 6, 12]} />
+        <meshBasicMaterial color="#5eead4" transparent opacity={hovered ? 0.5 : 0.2} />
+      </mesh>
+    </Float>
+  );
+}
+
+// Prazepam: dissolving, calming, sublingual — flat disc that ripples and melts
+function PrazepamMarker({ scale, hovered, color }: { scale: number; hovered: boolean; color: string }) {
+  const discRef = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
+    if (discRef.current) {
+      // Slow dissolving rotation
+      discRef.current.rotation.y = state.clock.elapsedTime * 0.25;
+      // Gentle wobble — like dissolving under the tongue
+      discRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.6) * 0.1;
+    }
+  });
+
+  return (
+    <Float speed={0.7} rotationIntensity={0.1} floatIntensity={0.25}>
+      {/* Flat tablet disc */}
+      <mesh ref={discRef} scale={scale * 0.7}>
+        <cylinderGeometry args={[0.35, 0.35, 0.08, 24]} />
+        <meshPhysicalMaterial
+          color={color}
+          emissive={color}
+          emissiveIntensity={hovered ? 0.5 : 0.15}
+          metalness={0.05}
+          roughness={0.7}
+          clearcoat={0.3}
+          clearcoatRoughness={0.5}
+          transparent
+          opacity={hovered ? 0.9 : 0.7}
+        />
+      </mesh>
+      {/* Dissolving aura — spreading ring */}
+      <mesh scale={scale * 0.9} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[0.25, 0.4, 24]} />
+        <meshBasicMaterial
+          color={color}
+          transparent
+          opacity={hovered ? 0.2 : 0.06}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      {/* Sublingual absorption glow */}
+      <pointLight
+        color={color}
+        intensity={hovered ? 0.8 : 0.2}
+        distance={2.5 * scale}
+        decay={2}
+      />
+    </Float>
+  );
+}
+
 // Main marker component — dispatches to substance-specific renderer
 export default function SubstanceMarker({ substance, position, amount, entry }: MarkerProps) {
   const groupRef = useRef<THREE.Group>(null);
@@ -281,6 +427,12 @@ export default function SubstanceMarker({ substance, position, amount, entry }: 
         return <NicotineMarker scale={scale} hovered={hovered} color={cfg.color} />;
       case 'hydration':
         return <HydrationMarker scale={scale} hovered={hovered} color={cfg.color} />;
+      case 'melatonin':
+        return <MelatoninMarker scale={scale} hovered={hovered} color={cfg.color} />;
+      case 'venlafaxine':
+        return <VenlafaxineMarker scale={scale} hovered={hovered} color={cfg.color} />;
+      case 'prazepam':
+        return <PrazepamMarker scale={scale} hovered={hovered} color={cfg.color} />;
     }
   };
 

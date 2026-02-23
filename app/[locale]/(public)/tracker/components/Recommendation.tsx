@@ -34,6 +34,9 @@ const SUB_COLORS: Record<string, string> = {
   lsd: '#ec4899',
   nicotine: '#f59e0b',
   hydration: '#3b82f6',
+  melatonin: '#6366f1',
+  venlafaxine: '#14b8a6',
+  prazepam: '#94a3b8',
   none: '#52525b',
 };
 
@@ -43,6 +46,9 @@ const SUB_ICONS: Record<string, string> = {
   lsd: '🔮',
   nicotine: '💨',
   hydration: '💧',
+  melatonin: '🌙',
+  venlafaxine: '💊',
+  prazepam: '🫧',
   none: '✓',
 };
 

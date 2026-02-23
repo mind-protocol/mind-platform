@@ -23,6 +23,9 @@ const SUB_CONFIG: Record<string, { color: string; icon: string; label: string }>
   lsd: { color: '#ec4899', icon: '🔮', label: 'LSD' },
   nicotine: { color: '#f59e0b', icon: '💨', label: 'Nic' },
   hydration: { color: '#3b82f6', icon: '💧', label: 'H₂O' },
+  melatonin: { color: '#6366f1', icon: '🌙', label: 'Mel' },
+  venlafaxine: { color: '#14b8a6', icon: '💊', label: 'Ven' },
+  prazepam: { color: '#94a3b8', icon: '🫧', label: 'Praz' },
 };
 
 function formatTime(ts: string): string {
@@ -60,6 +63,9 @@ function doseLabel(entry: LogEntry): string {
     const adds = (dose.details?.additives as string[]) || [];
     return `${amt}ml${adds.length ? ` + ${adds.join(', ')}` : ''}`;
   }
+  if (substance === 'melatonin') return `${amt}mg ${dose.details?.form || 'tablet'}`;
+  if (substance === 'venlafaxine') return `${amt}mg ${dose.details?.release === 'extended' ? 'LP' : ''}`.trim();
+  if (substance === 'prazepam') return `${amt}mg ${dose.details?.route || 'sublingual'}`;
   return `${amt} ${dose.unit}`;
 }
 

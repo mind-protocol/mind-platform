@@ -8,6 +8,9 @@ const TABS = [
   { key: 'lsd', label: 'LSD', color: '#ec4899', icon: '🔮' },
   { key: 'nicotine', label: 'Nicotine', color: '#f59e0b', icon: '💨' },
   { key: 'hydration', label: 'H₂O', color: '#3b82f6', icon: '💧' },
+  { key: 'melatonin', label: 'Melatonin', color: '#6366f1', icon: '🌙' },
+  { key: 'venlafaxine', label: 'Venlafaxine', color: '#14b8a6', icon: '💊' },
+  { key: 'prazepam', label: 'Prazepam', color: '#94a3b8', icon: '🫧' },
 ] as const;
 
 const INTENTS: Record<string, string[]> = {
@@ -16,6 +19,9 @@ const INTENTS: Record<string, string[]> = {
   lsd: ['microdose', 'creative', 'introspection', 'therapeutic', 'social'],
   nicotine: ['focus', 'break', 'craving'],
   hydration: ['baseline', 'recovery', 'pre-sleep'],
+  melatonin: ['sleep', 'jet-lag', 'circadian-reset'],
+  venlafaxine: ['daily', 'morning', 'evening'],
+  prazepam: ['anxiety', 'panic', 'sleep', 'as-needed'],
 };
 
 const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<string, unknown> }> = {
@@ -24,6 +30,9 @@ const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<s
   lsd: { amount: 0.5, unit: 'carton', details: { form: 'carton', ug_estimate: 100 } },
   nicotine: { amount: 5, unit: 'puffs', details: { strength_pct: 20, mode: 'ATL' } },
   hydration: { amount: 500, unit: 'ml', details: { additives: [] } },
+  melatonin: { amount: 3, unit: 'mg', details: { form: 'tablet' } },
+  venlafaxine: { amount: 75, unit: 'mg', details: { form: 'capsule', release: 'extended' } },
+  prazepam: { amount: 10, unit: 'mg', details: { form: 'sublingual', route: 'sublingual' } },
 };
 
 const K_PRESETS = [
@@ -68,7 +77,7 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
     try {
       const unit = tab === 'ketamine'
         ? (details.form === 'spray' ? 'spray' : 'mg')
-        : DEFAULTS[tab].unit;
+        : DEFAULTS[tab]?.unit || 'mg';
       const body = {
         substance: tab,
         dose: { amount, unit, details },
@@ -339,6 +348,69 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
                   </button>
                 );
               })}
+            </div>
+          </div>
+        )}
+
+        {tab === 'melatonin' && (
+          <div>
+            <label className="text-xs text-zinc-500 block mb-1">Form</label>
+            <div className="flex gap-2">
+              {(['tablet', 'gummy', 'liquid', 'spray'] as const).map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setDetails({ ...details, form: f })}
+                  className={`px-3 py-1.5 rounded text-sm border transition ${
+                    details.form === f
+                      ? 'border-indigo-500/50 text-indigo-400 bg-indigo-500/10'
+                      : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                  }`}
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {tab === 'venlafaxine' && (
+          <div>
+            <label className="text-xs text-zinc-500 block mb-1">Release</label>
+            <div className="flex gap-2">
+              {(['extended', 'immediate'] as const).map((r) => (
+                <button
+                  key={r}
+                  onClick={() => setDetails({ ...details, release: r })}
+                  className={`px-3 py-1.5 rounded text-sm border transition ${
+                    details.release === r
+                      ? 'border-teal-500/50 text-teal-400 bg-teal-500/10'
+                      : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                  }`}
+                >
+                  {r === 'extended' ? 'LP (Extended)' : 'Immediate'}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {tab === 'prazepam' && (
+          <div>
+            <label className="text-xs text-zinc-500 block mb-1">Route</label>
+            <div className="flex gap-2">
+              {(['sublingual', 'oral'] as const).map((r) => (
+                <button
+                  key={r}
+                  onClick={() => setDetails({ ...details, route: r })}
+                  className={`px-3 py-1.5 rounded text-sm border transition ${
+                    details.route === r
+                      ? 'border-slate-400/50 text-slate-300 bg-slate-500/10'
+                      : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                  }`}
+                >
+                  {r === 'sublingual' ? '👅 Sublingual' : '💊 Oral'}
+                </button>
+              ))}
             </div>
           </div>
         )}

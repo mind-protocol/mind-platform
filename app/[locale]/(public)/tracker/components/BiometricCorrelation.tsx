@@ -28,6 +28,9 @@ const SUB_COLORS: Record<string, string> = {
   lsd: '#ec4899',
   nicotine: '#f59e0b',
   hydration: '#3b82f6',
+  melatonin: '#6366f1',
+  venlafaxine: '#14b8a6',
+  prazepam: '#94a3b8',
 };
 
 const SUB_ICONS: Record<string, string> = {
@@ -36,6 +39,9 @@ const SUB_ICONS: Record<string, string> = {
   lsd: '🔮',
   nicotine: '💨',
   hydration: '💧',
+  melatonin: '🌙',
+  venlafaxine: '💊',
+  prazepam: '🫧',
 };
 
 export default function BiometricCorrelation({ refreshKey }: { refreshKey: number }) {
