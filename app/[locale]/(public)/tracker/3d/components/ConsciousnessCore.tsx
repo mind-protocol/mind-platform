@@ -40,6 +40,7 @@ export default function ConsciousnessCore({ awareness }: CoreProps) {
     if (s.melatonin > 0.05) c.lerp(new THREE.Color('#6366f1'), s.melatonin * 0.3);
     if (s.prazepam > 0.05) c.lerp(new THREE.Color('#94a3b8'), s.prazepam * 0.3);
     if (s.venlafaxine > 0.05) c.lerp(new THREE.Color('#14b8a6'), s.venlafaxine * 0.2);
+    if (s.cyamemazine > 0.05) c.lerp(new THREE.Color('#7e22ce'), s.cyamemazine * 0.4);
 
     return c;
   }, [awareness.substances]);
