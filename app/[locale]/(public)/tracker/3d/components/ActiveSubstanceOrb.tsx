@@ -143,8 +143,8 @@ function OrbShape({
   children?: React.ReactNode;
 }) {
   const cfg = SUBSTANCE_CONFIG[substance];
-  const scale = 0.3 + intensity * 0.8;
-  const emissiveBoost = hovered ? 0.8 : 0;
+  const scale = 0.6 + intensity * 1.2;
+  const emissiveBoost = hovered ? 1.2 : 0;
 
   switch (substance) {
     case 'thc':
@@ -155,16 +155,21 @@ function OrbShape({
             <MeshDistortMaterial
               color={cfg.color}
               emissive={cfg.color}
-              emissiveIntensity={0.2 + intensity * 0.4 + emissiveBoost}
+              emissiveIntensity={0.4 + intensity * 0.8 + emissiveBoost}
               distort={0.2 + intensity * 0.3}
               speed={1.5 + intensity * 2}
-              roughness={0.6}
-              metalness={0.1}
+              roughness={0.4}
+              metalness={0.15}
               transparent
-              opacity={0.3 + intensity * 0.5}
+              opacity={0.5 + intensity * 0.4}
             />
           </mesh>
-          <pointLight color={cfg.color} intensity={intensity * 2} distance={5} decay={2} />
+          {/* Glow aura */}
+          <mesh scale={scale * 1.6}>
+            <icosahedronGeometry args={[0.5, 2]} />
+            <meshBasicMaterial color={cfg.color} transparent opacity={0.06 + intensity * 0.06} side={THREE.BackSide} />
+          </mesh>
+          <pointLight color={cfg.color} intensity={intensity * 5} distance={8} decay={2} />
         </Float>
       );
 
@@ -187,40 +192,45 @@ function OrbShape({
               ior={2.0 + intensity * 0.8}
             />
           </mesh>
-          <mesh scale={scale * 0.5} position={[0.15 * scale, 0.2 * scale, 0.1 * scale]}>
+          <mesh scale={scale * 0.55} position={[0.15 * scale, 0.2 * scale, 0.1 * scale]}>
             <octahedronGeometry args={[0.3, 0]} />
             <meshPhysicalMaterial
               color={cfg.color}
               metalness={0.9}
               roughness={0.05}
               emissive={cfg.color}
-              emissiveIntensity={0.15 + intensity * 0.3 + emissiveBoost}
+              emissiveIntensity={0.3 + intensity * 0.6 + emissiveBoost}
               transparent
-              opacity={0.4 + intensity * 0.4}
+              opacity={0.6 + intensity * 0.35}
             />
           </mesh>
-          <pointLight color={cfg.color} intensity={intensity * 3} distance={6} decay={2} />
+          {/* Crystal glow shell */}
+          <mesh scale={scale * 1.5}>
+            <octahedronGeometry args={[0.45, 0]} />
+            <meshBasicMaterial color={cfg.color} transparent opacity={0.04 + intensity * 0.06} side={THREE.BackSide} />
+          </mesh>
+          <pointLight color={cfg.color} intensity={intensity * 6} distance={10} decay={2} />
         </OrbSpin>
       );
 
     case 'lsd':
       return (
         <OrbSpin speed={0.2 + intensity * 0.15} axes="xyz">
-          <mesh scale={scale * 0.9}>
+          <mesh scale={scale}>
             <icosahedronGeometry args={[0.5, 2]} />
             <MeshWobbleMaterial
               color={cfg.color}
               emissive={cfg.color}
-              emissiveIntensity={0.2 + intensity * 0.5 + emissiveBoost}
+              emissiveIntensity={0.4 + intensity * 0.8 + emissiveBoost}
               factor={0.3 + intensity * 0.6}
               speed={1 + intensity * 3}
               metalness={0.7}
               roughness={0.15}
               transparent
-              opacity={0.3 + intensity * 0.5}
+              opacity={0.5 + intensity * 0.4}
             />
           </mesh>
-          <mesh scale={scale * 0.45}>
+          <mesh scale={scale * 0.5}>
             <dodecahedronGeometry args={[0.4, 0]} />
             <meshPhysicalMaterial
               color="#ffffff"
@@ -230,12 +240,17 @@ function OrbShape({
               iridescenceIOR={1.8}
               iridescenceThicknessRange={[100, 800]}
               emissive={cfg.color}
-              emissiveIntensity={0.3 + intensity * 0.3}
+              emissiveIntensity={0.5 + intensity * 0.5}
               transparent
-              opacity={0.5 + intensity * 0.4}
+              opacity={0.6 + intensity * 0.35}
             />
           </mesh>
-          <pointLight color={cfg.color} intensity={intensity * 4} distance={8} decay={2} />
+          {/* Psychedelic aura */}
+          <mesh scale={scale * 1.7}>
+            <icosahedronGeometry args={[0.5, 1]} />
+            <meshBasicMaterial color={cfg.color} transparent opacity={0.05 + intensity * 0.08} side={THREE.BackSide} />
+          </mesh>
+          <pointLight color={cfg.color} intensity={intensity * 8} distance={12} decay={2} />
         </OrbSpin>
       );
 
@@ -243,30 +258,31 @@ function OrbShape({
       return (
         <Float speed={3} rotationIntensity={0.1} floatIntensity={0.6 * intensity}>
           <OrbSpin speed={1.5 + intensity}>
-            <mesh scale={scale * 0.8}>
-              <torusGeometry args={[0.3, 0.05, 8, 24]} />
+            <mesh scale={scale}>
+              <torusGeometry args={[0.3, 0.08, 12, 32]} />
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.3 + intensity * 0.5 + emissiveBoost}
+                emissiveIntensity={0.5 + intensity * 0.7 + emissiveBoost}
                 metalness={0.3}
-                roughness={0.4}
+                roughness={0.3}
                 transparent
-                opacity={0.3 + intensity * 0.5}
+                opacity={0.5 + intensity * 0.4}
               />
             </mesh>
           </OrbSpin>
-          <mesh scale={scale * 0.15}>
+          <mesh scale={scale * 0.25}>
             <sphereGeometry args={[0.3, 8, 8]} />
-            <meshBasicMaterial color={cfg.color} transparent opacity={0.3 + intensity * 0.4} />
+            <meshBasicMaterial color={cfg.color} transparent opacity={0.4 + intensity * 0.4} />
           </mesh>
+          <pointLight color={cfg.color} intensity={intensity * 4} distance={6} decay={2} />
         </Float>
       );
 
     case 'hydration':
       return (
         <Float speed={0.8} rotationIntensity={0.15} floatIntensity={0.3}>
-          <mesh scale={[scale * 0.7, scale * 0.85, scale * 0.7]}>
+          <mesh scale={[scale * 0.8, scale, scale * 0.8]}>
             <sphereGeometry args={[0.4, 20, 20]} />
             <MeshTransmissionMaterial
               backside
@@ -278,22 +294,23 @@ function OrbShape({
               temporalDistortion={0.15}
               roughness={0}
               color={cfg.color}
-              transmission={0.92}
+              transmission={0.88}
               ior={1.33}
             />
           </mesh>
-          <mesh scale={scale * 0.2}>
+          <mesh scale={scale * 0.3}>
             <sphereGeometry args={[0.3, 10, 10]} />
             <MeshDistortMaterial
               color={cfg.color}
               emissive={cfg.color}
-              emissiveIntensity={0.3 + emissiveBoost}
+              emissiveIntensity={0.5 + emissiveBoost}
               distort={0.3}
               speed={2}
               transparent
-              opacity={0.3 + intensity * 0.3}
+              opacity={0.4 + intensity * 0.4}
             />
           </mesh>
+          <pointLight color={cfg.color} intensity={intensity * 3} distance={6} decay={2} />
         </Float>
       );
 
@@ -301,32 +318,37 @@ function OrbShape({
       return (
         <Float speed={0.4} rotationIntensity={0.1} floatIntensity={0.2}>
           <OrbSpin speed={0.08}>
-            <mesh scale={scale * 0.8} rotation={[0, 0, 0.3]}>
-              <torusGeometry args={[0.3, 0.12, 12, 24, Math.PI * 1.3]} />
+            <mesh scale={scale} rotation={[0, 0, 0.3]}>
+              <torusGeometry args={[0.3, 0.14, 16, 32, Math.PI * 1.3]} />
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.2 + intensity * 0.4 + emissiveBoost}
+                emissiveIntensity={0.4 + intensity * 0.6 + emissiveBoost}
                 metalness={0.1}
-                roughness={0.8}
+                roughness={0.6}
                 transparent
-                opacity={0.4 + intensity * 0.4}
+                opacity={0.6 + intensity * 0.35}
               />
             </mesh>
           </OrbSpin>
-          <mesh scale={scale * 0.2}>
+          <mesh scale={scale * 0.3}>
             <sphereGeometry args={[0.35, 12, 12]} />
             <MeshDistortMaterial
               color="#c4b5fd"
               emissive={cfg.color}
-              emissiveIntensity={0.3}
+              emissiveIntensity={0.5}
               distort={0.1}
               speed={0.5}
               transparent
-              opacity={0.2 + intensity * 0.3}
+              opacity={0.3 + intensity * 0.4}
             />
           </mesh>
-          <pointLight color={cfg.color} intensity={intensity * 1.5} distance={4} decay={2} />
+          {/* Sleep aura */}
+          <mesh scale={scale * 1.5}>
+            <sphereGeometry args={[0.4, 12, 12]} />
+            <meshBasicMaterial color={cfg.color} transparent opacity={0.04 + intensity * 0.05} side={THREE.BackSide} />
+          </mesh>
+          <pointLight color={cfg.color} intensity={intensity * 4} distance={7} decay={2} />
         </Float>
       );
 
@@ -334,21 +356,27 @@ function OrbShape({
       return (
         <Float speed={0.5} rotationIntensity={0.05} floatIntensity={0.15}>
           <OrbSpin speed={0.1}>
-            <mesh scale={scale * 0.7} rotation={[Math.PI / 2, 0, 0]}>
-              <capsuleGeometry args={[0.18, 0.35, 8, 16]} />
+            <mesh scale={scale * 0.85} rotation={[Math.PI / 2, 0, 0]}>
+              <capsuleGeometry args={[0.2, 0.4, 8, 16]} />
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.15 + intensity * 0.3 + emissiveBoost}
+                emissiveIntensity={0.3 + intensity * 0.5 + emissiveBoost}
                 metalness={0.3}
-                roughness={0.3}
-                clearcoat={0.8}
-                clearcoatRoughness={0.1}
+                roughness={0.2}
+                clearcoat={1.0}
+                clearcoatRoughness={0.05}
                 transparent
-                opacity={0.5 + intensity * 0.4}
+                opacity={0.6 + intensity * 0.35}
               />
             </mesh>
           </OrbSpin>
+          {/* Steady-state glow */}
+          <mesh scale={scale * 1.3}>
+            <sphereGeometry args={[0.3, 10, 10]} />
+            <meshBasicMaterial color={cfg.color} transparent opacity={0.04 + intensity * 0.04} side={THREE.BackSide} />
+          </mesh>
+          <pointLight color={cfg.color} intensity={intensity * 3} distance={5} decay={2} />
         </Float>
       );
 
@@ -356,24 +384,25 @@ function OrbShape({
       return (
         <Float speed={0.6} rotationIntensity={0.08} floatIntensity={0.2}>
           <OrbSpin speed={0.12}>
-            <mesh scale={scale * 0.7}>
-              <cylinderGeometry args={[0.3, 0.3, 0.07, 20]} />
+            <mesh scale={scale * 0.85}>
+              <cylinderGeometry args={[0.35, 0.35, 0.1, 24]} />
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.1 + intensity * 0.3 + emissiveBoost}
+                emissiveIntensity={0.3 + intensity * 0.5 + emissiveBoost}
                 metalness={0.05}
-                roughness={0.7}
+                roughness={0.5}
                 transparent
-                opacity={0.4 + intensity * 0.4}
+                opacity={0.6 + intensity * 0.35}
               />
             </mesh>
           </OrbSpin>
           {/* Dissolving aura */}
-          <mesh scale={scale * 0.9} rotation={[-Math.PI / 2, 0, 0]}>
-            <ringGeometry args={[0.2, 0.35, 20]} />
-            <meshBasicMaterial color={cfg.color} transparent opacity={intensity * 0.12} side={THREE.DoubleSide} />
+          <mesh scale={scale * 1.2} rotation={[-Math.PI / 2, 0, 0]}>
+            <ringGeometry args={[0.2, 0.4, 24]} />
+            <meshBasicMaterial color={cfg.color} transparent opacity={0.06 + intensity * 0.1} side={THREE.DoubleSide} />
           </mesh>
+          <pointLight color={cfg.color} intensity={intensity * 3} distance={5} decay={2} />
         </Float>
       );
 
@@ -381,25 +410,30 @@ function OrbShape({
       return (
         <Float speed={0.3} rotationIntensity={0.05} floatIntensity={0.15}>
           <OrbSpin speed={0.1}>
-            <mesh scale={scale * 0.7}>
+            <mesh scale={scale * 0.85}>
               <tetrahedronGeometry args={[0.4, 0]} />
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.15 + intensity * 0.35 + emissiveBoost}
+                emissiveIntensity={0.3 + intensity * 0.6 + emissiveBoost}
                 metalness={0.6}
-                roughness={0.2}
-                clearcoat={0.5}
+                roughness={0.15}
+                clearcoat={0.7}
                 transparent
-                opacity={0.4 + intensity * 0.4}
+                opacity={0.6 + intensity * 0.35}
               />
             </mesh>
           </OrbSpin>
-          <mesh scale={scale * 0.2}>
+          <mesh scale={scale * 0.3}>
             <sphereGeometry args={[0.25, 10, 10]} />
-            <meshBasicMaterial color="#1a0a2e" transparent opacity={0.2 + intensity * 0.3} />
+            <meshBasicMaterial color="#2a0a4e" transparent opacity={0.3 + intensity * 0.3} />
           </mesh>
-          <pointLight color={cfg.color} intensity={intensity * 1.5} distance={4} decay={2} />
+          {/* Deep void aura */}
+          <mesh scale={scale * 1.4}>
+            <tetrahedronGeometry args={[0.4, 0]} />
+            <meshBasicMaterial color={cfg.color} transparent opacity={0.04 + intensity * 0.05} side={THREE.BackSide} />
+          </mesh>
+          <pointLight color={cfg.color} intensity={intensity * 4} distance={7} decay={2} />
         </Float>
       );
 
