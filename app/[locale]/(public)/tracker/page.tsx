@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import Link from 'next/link';
 import Recommendation from './components/Recommendation';
 import SubstanceCard from './components/SubstanceCard';
 import LogForm from './components/LogForm';
@@ -49,12 +50,20 @@ export default function TrackerPage() {
               Precision dosing &middot; Biometric correlation
             </p>
           </div>
-          <button
-            onClick={() => setShowKCalc(!showKCalc)}
-            className="text-sm px-3 py-1.5 rounded border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition"
-          >
-            {showKCalc ? 'Hide' : 'K Calculator'}
-          </button>
+          <div className="flex gap-2">
+            <Link
+              href="/tracker/3d"
+              className="text-sm px-3 py-1.5 rounded border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition"
+            >
+              3D View
+            </Link>
+            <button
+              onClick={() => setShowKCalc(!showKCalc)}
+              className="text-sm px-3 py-1.5 rounded border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition"
+            >
+              {showKCalc ? 'Hide' : 'K Calculator'}
+            </button>
+          </div>
         </header>
 
         {/* Recommendation */}
