@@ -1,17 +1,18 @@
-export type SubstanceKey = 'thc' | 'cbd' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'prazepam' | 'cyamemazine';
+export type SubstanceKey = 'thc' | 'cbd' | 'lions_mane' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'prazepam' | 'cyamemazine';
 
 export interface SubstanceConfig {
   color: string;
   icon: string;
   label: string;
   unit: string;
-  geometry: 'cylinder' | 'octahedron' | 'icosahedron' | 'torus' | 'sphere' | 'capsule' | 'disc' | 'crescent' | 'tetrahedron' | 'dodecahedron';
+  geometry: 'cylinder' | 'octahedron' | 'icosahedron' | 'torus' | 'sphere' | 'capsule' | 'disc' | 'crescent' | 'tetrahedron' | 'dodecahedron' | 'cone';
   laneY: number;
 }
 
 export const SUBSTANCE_CONFIG: Record<SubstanceKey, SubstanceConfig> = {
   thc:         { color: '#22c55e', icon: '\u{1F33F}', label: 'THC',         unit: 'chambers', geometry: 'cylinder',     laneY: 0 },
   cbd:         { color: '#84cc16', icon: '\u{1F331}', label: 'CBD',         unit: 'mg',       geometry: 'dodecahedron', laneY: 1.25 },
+  lions_mane:  { color: '#b45309', icon: '\u{1F981}', label: "Lion's Mane", unit: 'mg',       geometry: 'cone',         laneY: 1.75 },
   ketamine:    { color: '#8b5cf6', icon: '\u{1F48E}', label: 'Ketamine',    unit: 'mg',       geometry: 'octahedron',   laneY: 2.5 },
   lsd:         { color: '#ec4899', icon: '\u{1F52E}', label: 'LSD',         unit: 'ug',       geometry: 'icosahedron',  laneY: 5 },
   nicotine:    { color: '#f59e0b', icon: '\u{1F4A8}', label: 'Nicotine',    unit: 'puffs',    geometry: 'torus',        laneY: 7.5 },
@@ -28,6 +29,7 @@ export const SUBSTANCE_KEYS = Object.keys(SUBSTANCE_CONFIG) as SubstanceKey[];
 export const DOSE_RANGES: Record<SubstanceKey, { min: number; max: number }> = {
   thc:         { min: 1, max: 5 },
   cbd:         { min: 5, max: 100 },
+  lions_mane:  { min: 420, max: 2520 },
   ketamine:    { min: 15, max: 150 },
   lsd:         { min: 25, max: 200 },
   nicotine:    { min: 1, max: 20 },

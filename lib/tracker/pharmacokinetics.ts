@@ -44,6 +44,15 @@ export const PK_PROFILES: Record<SubstanceKey, PKProfile> = {
     peakIntensity: 0.45,    // Non-psychoactive — subtle anxiolytic/body effect
     decayShape: 'linear',
   },
+  lions_mane: {
+    onsetMin: 0,
+    peakMin: 0,
+    plateauEndMin: 0,
+    durationMin: 1440,      // 24h — daily supplement, steady state
+    peakIntensity: 0.2,     // Very subtle — cumulative nootropic, not felt acutely
+    decayShape: 'linear',
+    steadyState: true,      // Like venlafaxine — always "on" once taken daily
+  },
   ketamine: {
     onsetMin: 5,
     peakMin: 20,
@@ -218,7 +227,7 @@ export function computeAwareness(
   biometrics?: { stress?: number | null; body_battery?: number | null; hr?: number | null },
 ): AwarenessState {
   const substances: Record<string, number> = {};
-  const keys: SubstanceKey[] = ['thc', 'cbd', 'ketamine', 'lsd', 'nicotine', 'hydration', 'melatonin', 'venlafaxine', 'prazepam', 'cyamemazine'];
+  const keys: SubstanceKey[] = ['thc', 'cbd', 'lions_mane', 'ketamine', 'lsd', 'nicotine', 'hydration', 'melatonin', 'venlafaxine', 'prazepam', 'cyamemazine'];
 
   for (const key of keys) {
     // Sum intensities from all recent doses of this substance
@@ -253,7 +262,8 @@ export function computeAwareness(
     sub.prazepam * 0.1 +
     sub.cyamemazine * 0.1 +
     sub.melatonin * 0.05 +
-    sub.nicotine * 0.05
+    sub.nicotine * 0.05 +
+    sub.lions_mane * 0.02
   );
 
   // Find dominant

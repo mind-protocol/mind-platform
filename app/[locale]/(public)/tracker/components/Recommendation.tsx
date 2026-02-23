@@ -31,6 +31,7 @@ interface RecResponse {
 const SUB_COLORS: Record<string, string> = {
   thc: '#22c55e',
   cbd: '#84cc16',
+  lions_mane: '#b45309',
   ketamine: '#8b5cf6',
   lsd: '#ec4899',
   nicotine: '#f59e0b',
@@ -45,6 +46,7 @@ const SUB_COLORS: Record<string, string> = {
 const SUB_ICONS: Record<string, string> = {
   thc: '🌿',
   cbd: '🌱',
+  lions_mane: '🦁',
   ketamine: '💎',
   lsd: '🔮',
   nicotine: '💨',

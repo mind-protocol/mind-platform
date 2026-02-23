@@ -85,6 +85,7 @@ function OrbPosition({
   const speeds: Record<SubstanceKey, number> = {
     thc: 0.08,
     cbd: 0.07,         // Slightly slower than THC — calming
+    lions_mane: 0.02,  // Very slow — steady supplement
     ketamine: 0.05,
     lsd: 0.03,        // Slow, expansive orbit
     nicotine: 0.25,    // Fast, jittery
@@ -101,6 +102,7 @@ function OrbPosition({
     ketamine: 1.5,
     thc: 0.5,
     cbd: 0.3,
+    lions_mane: 0.2,
     nicotine: 0,
     hydration: -0.5,
     venlafaxine: -1,
@@ -199,6 +201,33 @@ function OrbShape({
             <meshBasicMaterial color={cfg.color} transparent opacity={0.05 + intensity * 0.06} side={THREE.BackSide} />
           </mesh>
           <pointLight color={cfg.color} intensity={intensity * 4} distance={6} decay={2} />
+        </Float>
+      );
+
+    case 'lions_mane':
+      return (
+        <Float speed={0.4} rotationIntensity={0.05} floatIntensity={0.15}>
+          <OrbSpin speed={0.03}>
+            <mesh scale={scale * 0.9}>
+              <coneGeometry args={[0.35, 0.5, 8]} />
+              <meshPhysicalMaterial
+                color={cfg.color}
+                emissive={cfg.color}
+                emissiveIntensity={0.2 + intensity * 0.4 + emissiveBoost}
+                metalness={0.05}
+                roughness={0.7}
+                clearcoat={0.3}
+                transparent
+                opacity={0.5 + intensity * 0.4}
+              />
+            </mesh>
+          </OrbSpin>
+          {/* Mycelium glow */}
+          <mesh scale={scale * 1.3}>
+            <sphereGeometry args={[0.3, 8, 8]} />
+            <meshBasicMaterial color={cfg.color} transparent opacity={0.04 + intensity * 0.05} side={THREE.BackSide} />
+          </mesh>
+          <pointLight color={cfg.color} intensity={intensity * 2} distance={5} decay={2} />
         </Float>
       );
 

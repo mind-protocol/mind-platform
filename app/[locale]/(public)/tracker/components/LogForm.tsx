@@ -5,6 +5,7 @@ import { useState, useCallback } from 'react';
 const TABS = [
   { key: 'thc', label: 'THC', color: '#22c55e', icon: '🌿' },
   { key: 'cbd', label: 'CBD', color: '#84cc16', icon: '🌱' },
+  { key: 'lions_mane', label: "Lion's Mane", color: '#b45309', icon: '🦁' },
   { key: 'ketamine', label: 'Ketamine', color: '#8b5cf6', icon: '💎' },
   { key: 'lsd', label: 'LSD', color: '#ec4899', icon: '🔮' },
   { key: 'nicotine', label: 'Nicotine', color: '#f59e0b', icon: '💨' },
@@ -18,6 +19,7 @@ const TABS = [
 const INTENTS: Record<string, string[]> = {
   thc: ['focus', 'relax', 'creative', 'sleep', 'social'],
   cbd: ['relax', 'pain', 'sleep', 'anxiety', 'recovery'],
+  lions_mane: ['focus', 'neuroprotection', 'memory', 'daily'],
   ketamine: ['micro-boost', 'dissociation', 'identity-dissolution'],
   lsd: ['microdose', 'creative', 'introspection', 'therapeutic', 'social'],
   nicotine: ['focus', 'break', 'craving'],
@@ -31,6 +33,7 @@ const INTENTS: Record<string, string[]> = {
 const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<string, unknown> }> = {
   thc: { amount: 1, unit: 'chamber', details: { strain_thc: 22, temp_c: 230 } },
   cbd: { amount: 20, unit: 'mg', details: { route: 'vaporized', cbd_pct: 7, temp_c: 230 } },
+  lions_mane: { amount: 420, unit: 'mg', details: { form: 'capsule', mg_per_capsule: 420 } },
   ketamine: { amount: 30, unit: 'mg', details: { form: 'crystal', route: 'intranasal', estimate: 'visual' } },
   lsd: { amount: 0.5, unit: 'carton', details: { form: 'carton', ug_estimate: 100 } },
   nicotine: { amount: 5, unit: 'puffs', details: { strength_pct: 20, mode: 'ATL' } },
@@ -290,6 +293,30 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {tab === 'lions_mane' && (
+          <div>
+            <label className="text-xs text-zinc-500 block mb-1">Quick dose (420mg/capsule)</label>
+            <div className="flex flex-wrap gap-1.5">
+              {[1, 2, 3, 4].map((caps) => {
+                const mg = caps * 420;
+                return (
+                  <button
+                    key={caps}
+                    onClick={() => setAmount(mg)}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      amount === mg
+                        ? 'border-amber-600/50 text-amber-400 bg-amber-600/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {caps} cap{caps > 1 ? 's' : ''} <span className="text-zinc-600">· {mg}mg</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         )}
 
