@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 
 const TABS = [
   { key: 'thc', label: 'THC', color: '#22c55e', icon: '🌿' },
+  { key: 'cbd', label: 'CBD', color: '#84cc16', icon: '🌱' },
   { key: 'ketamine', label: 'Ketamine', color: '#8b5cf6', icon: '💎' },
   { key: 'lsd', label: 'LSD', color: '#ec4899', icon: '🔮' },
   { key: 'nicotine', label: 'Nicotine', color: '#f59e0b', icon: '💨' },
@@ -16,6 +17,7 @@ const TABS = [
 
 const INTENTS: Record<string, string[]> = {
   thc: ['focus', 'relax', 'creative', 'sleep', 'social'],
+  cbd: ['relax', 'pain', 'sleep', 'anxiety', 'recovery'],
   ketamine: ['micro-boost', 'dissociation', 'identity-dissolution'],
   lsd: ['microdose', 'creative', 'introspection', 'therapeutic', 'social'],
   nicotine: ['focus', 'break', 'craving'],
@@ -28,6 +30,7 @@ const INTENTS: Record<string, string[]> = {
 
 const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<string, unknown> }> = {
   thc: { amount: 1, unit: 'chamber', details: { strain_thc: 22, temp_c: 230 } },
+  cbd: { amount: 20, unit: 'mg', details: { route: 'vaporized', cbd_pct: 7, temp_c: 230 } },
   ketamine: { amount: 30, unit: 'mg', details: { form: 'crystal', route: 'intranasal', estimate: 'visual' } },
   lsd: { amount: 0.5, unit: 'carton', details: { form: 'carton', ug_estimate: 100 } },
   nicotine: { amount: 5, unit: 'puffs', details: { strength_pct: 20, mode: 'ATL' } },
@@ -80,6 +83,8 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
     try {
       const unit = tab === 'ketamine'
         ? (details.form === 'spray' ? 'spray' : 'mg')
+        : tab === 'cbd'
+        ? (details.route === 'vaporized' ? 'chambers' : 'mg')
         : DEFAULTS[tab]?.unit || 'mg';
       const body = {
         substance: tab,
@@ -145,7 +150,7 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
         {/* Amount */}
         <div>
           <label className="text-xs text-zinc-500 block mb-1">
-            Amount ({tab === 'ketamine' ? (details.form === 'spray' ? 'sprays' : 'mg estimate') : DEFAULTS[tab].unit})
+            Amount ({tab === 'ketamine' ? (details.form === 'spray' ? 'sprays' : 'mg estimate') : tab === 'cbd' ? (details.route === 'vaporized' ? 'chambers' : 'mg') : DEFAULTS[tab].unit})
           </label>
           <input
             type="number"
@@ -178,6 +183,113 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
                 className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
               />
             </div>
+          </div>
+        )}
+
+        {tab === 'cbd' && (
+          <div className="space-y-3">
+            {/* Route toggle: sublingual vs vaporized */}
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Route</label>
+              <div className="flex gap-2">
+                {(['sublingual', 'vaporized'] as const).map((r) => (
+                  <button
+                    key={r}
+                    onClick={() => {
+                      const isSublingual = r === 'sublingual';
+                      setDetails({
+                        ...details,
+                        route: r,
+                        cbd_pct: isSublingual ? (details.cbd_pct as number) || 10 : (details.cbd_pct as number) || 7,
+                        temp_c: isSublingual ? undefined : 230,
+                      });
+                      if (isSublingual) {
+                        setAmount(Number(details.drops || 5));
+                      } else {
+                        setAmount(1);
+                      }
+                    }}
+                    className={`px-3 py-1.5 rounded text-sm border transition ${
+                      details.route === r
+                        ? 'border-lime-500/50 text-lime-400 bg-lime-500/10'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {r === 'sublingual' ? '💧 Sublingual' : '🌿 Vaporized 230°C'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* CBD % selector */}
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">CBD %</label>
+                <input
+                  type="number"
+                  value={(details.cbd_pct as number) || 7}
+                  onChange={(e) => setDetails({ ...details, cbd_pct: Number(e.target.value) })}
+                  min={1}
+                  max={100}
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                />
+              </div>
+              {details.route === 'vaporized' && (
+                <div>
+                  <label className="text-xs text-zinc-500 block mb-1">Temp °C</label>
+                  <input
+                    type="number"
+                    value={(details.temp_c as number) || 230}
+                    onChange={(e) => setDetails({ ...details, temp_c: Number(e.target.value) })}
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Sublingual: % quick presets */}
+            {details.route === 'sublingual' && (
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">Quick %</label>
+                <div className="flex flex-wrap gap-1.5">
+                  {[5, 10, 15, 20, 30].map((pct) => (
+                    <button
+                      key={pct}
+                      onClick={() => setDetails({ ...details, cbd_pct: pct })}
+                      className={`px-2 py-1 rounded text-xs border transition ${
+                        (details.cbd_pct as number) === pct
+                          ? 'border-lime-500/50 text-lime-300 bg-lime-500/15'
+                          : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      {pct}%
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Vaporized: chamber presets */}
+            {details.route === 'vaporized' && (
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">Quick dose</label>
+                <div className="flex flex-wrap gap-1.5">
+                  {[1, 2, 3].map((chambers) => (
+                    <button
+                      key={chambers}
+                      onClick={() => setAmount(chambers)}
+                      className={`px-2 py-1 rounded text-xs border transition ${
+                        amount === chambers
+                          ? 'border-lime-500/50 text-lime-300 bg-lime-500/15'
+                          : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      {chambers} chamber{chambers > 1 ? 's' : ''} <span className="text-zinc-600">· {(details.cbd_pct as number) || 7}% CBD</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
