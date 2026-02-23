@@ -7,6 +7,7 @@ import LogForm from './components/LogForm';
 import BiometricCorrelation from './components/BiometricCorrelation';
 import Timeline from './components/Timeline';
 import KCalculator from './components/KCalculator';
+import FoodLog from './components/FoodLog';
 
 export default function TrackerPage() {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -74,6 +75,11 @@ export default function TrackerPage() {
         {/* Log form */}
         <div className="mt-6">
           <LogForm onLogged={refresh} />
+        </div>
+
+        {/* Food tracker */}
+        <div className="mt-6">
+          <FoodLog refreshKey={refreshKey} />
         </div>
 
         {/* Biometric correlation chart */}
