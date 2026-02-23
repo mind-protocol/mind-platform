@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { PerformanceMonitor } from '@react-three/drei';
+import { PerformanceMonitor, Environment } from '@react-three/drei';
 import { useTrackerData } from '@/lib/tracker/hooks/useTrackerData';
 import { useTimeScale } from '@/lib/tracker/hooks/useTimeScale';
 import { SUBSTANCE_KEYS, type SubstanceKey } from '@/lib/tracker/constants';
@@ -11,6 +11,7 @@ import AmbientLighting from './AmbientLighting';
 import TimeAxis from './TimeAxis';
 import SubstanceLane from './SubstanceLane';
 import BiometricTerrain from './BiometricTerrain';
+import ReflectorFloor from './ReflectorFloor';
 
 interface TemporalSceneProps {
   days: number;
@@ -33,16 +34,22 @@ export default function TemporalScene({ days }: TemporalSceneProps) {
     <Canvas
       camera={{ position: [0, 10, 25], fov: 50 }}
       dpr={dpr}
-      gl={{ antialias: true, alpha: false }}
+      gl={{ antialias: true, alpha: false, toneMapping: 3 }}
       style={{ background: '#09090b' }}
     >
       <PerformanceMonitor onDecline={() => setDpr(1)} onIncline={() => setDpr(1.5)} />
       <color attach="background" args={['#09090b']} />
-      <fog attach="fog" args={['#09090b', 35, 80]} />
+      <fog attach="fog" args={['#09090b', 40, 90]} />
+
+      {/* Environment map for reflections/refractions on transmission materials */}
+      <Environment preset="night" />
 
       <AmbientLighting />
       <SceneControls />
       <TimeAxis gridLines={gridLines} worldWidth={worldWidth} />
+
+      {/* Reflective ground plane */}
+      <ReflectorFloor worldWidth={worldWidth} />
 
       {SUBSTANCE_KEYS.map((sub: SubstanceKey) => (
         <SubstanceLane
