@@ -11,6 +11,7 @@ const TABS = [
   { key: 'melatonin', label: 'Melatonin', color: '#6366f1', icon: '🌙' },
   { key: 'venlafaxine', label: 'Venlafaxine', color: '#14b8a6', icon: '💊' },
   { key: 'prazepam', label: 'Prazepam', color: '#94a3b8', icon: '🫧' },
+  { key: 'cyamemazine', label: 'Cyamemazine', color: '#7e22ce', icon: '🌌' },
 ] as const;
 
 const INTENTS: Record<string, string[]> = {
@@ -22,6 +23,7 @@ const INTENTS: Record<string, string[]> = {
   melatonin: ['sleep', 'jet-lag', 'circadian-reset'],
   venlafaxine: ['daily', 'morning', 'evening'],
   prazepam: ['anxiety', 'panic', 'sleep', 'as-needed'],
+  cyamemazine: ['sleep', 'anxiety', 'as-needed'],
 };
 
 const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<string, unknown> }> = {
@@ -33,6 +35,7 @@ const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<s
   melatonin: { amount: 3, unit: 'mg', details: { form: 'tablet' } },
   venlafaxine: { amount: 75, unit: 'mg', details: { form: 'capsule', release: 'extended' } },
   prazepam: { amount: 10, unit: 'mg', details: { form: 'sublingual', route: 'sublingual' } },
+  cyamemazine: { amount: 25, unit: 'mg', details: { form: 'tablet' } },
 };
 
 const K_PRESETS = [
@@ -388,6 +391,27 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
                   }`}
                 >
                   {r === 'extended' ? 'LP (Extended)' : 'Immediate'}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {tab === 'cyamemazine' && (
+          <div>
+            <label className="text-xs text-zinc-500 block mb-1">Quick dose</label>
+            <div className="flex flex-wrap gap-1.5">
+              {[12.5, 25, 50, 100].map((mg) => (
+                <button
+                  key={mg}
+                  onClick={() => setAmount(mg)}
+                  className={`px-2 py-1 rounded text-xs border transition ${
+                    amount === mg
+                      ? 'border-purple-600/50 text-purple-400 bg-purple-600/15'
+                      : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                  }`}
+                >
+                  {mg}mg
                 </button>
               ))}
             </div>

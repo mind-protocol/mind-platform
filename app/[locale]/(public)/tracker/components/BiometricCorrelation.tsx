@@ -31,6 +31,7 @@ const SUB_COLORS: Record<string, string> = {
   melatonin: '#6366f1',
   venlafaxine: '#14b8a6',
   prazepam: '#94a3b8',
+  cyamemazine: '#7e22ce',
 };
 
 const SUB_ICONS: Record<string, string> = {
@@ -42,6 +43,7 @@ const SUB_ICONS: Record<string, string> = {
   melatonin: '🌙',
   venlafaxine: '💊',
   prazepam: '🫧',
+  cyamemazine: '🌌',
 };
 
 export default function BiometricCorrelation({ refreshKey }: { refreshKey: number }) {

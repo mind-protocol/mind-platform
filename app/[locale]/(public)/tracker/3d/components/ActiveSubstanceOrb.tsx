@@ -91,6 +91,7 @@ function OrbPosition({
     melatonin: 0.04,   // Slow, dreamy
     venlafaxine: 0.02, // Very slow, steady
     prazepam: 0.035,   // Slow, calming
+    cyamemazine: 0.03, // Very slow, heavy
   };
 
   // Vertical offsets — psychedelics float higher, sedatives lower
@@ -103,6 +104,7 @@ function OrbPosition({
     venlafaxine: -1,
     melatonin: -1.5,
     prazepam: -2,
+    cyamemazine: -2.5,
   };
 
   useFrame((state) => {
@@ -365,6 +367,32 @@ function OrbShape({
             <ringGeometry args={[0.2, 0.35, 20]} />
             <meshBasicMaterial color={cfg.color} transparent opacity={intensity * 0.12} side={THREE.DoubleSide} />
           </mesh>
+        </Float>
+      );
+
+    case 'cyamemazine':
+      return (
+        <Float speed={0.3} rotationIntensity={0.05} floatIntensity={0.15}>
+          <OrbSpin speed={0.1}>
+            <mesh scale={scale * 0.7}>
+              <tetrahedronGeometry args={[0.4, 0]} />
+              <meshPhysicalMaterial
+                color={cfg.color}
+                emissive={cfg.color}
+                emissiveIntensity={0.15 + intensity * 0.35 + emissiveBoost}
+                metalness={0.6}
+                roughness={0.2}
+                clearcoat={0.5}
+                transparent
+                opacity={0.4 + intensity * 0.4}
+              />
+            </mesh>
+          </OrbSpin>
+          <mesh scale={scale * 0.2}>
+            <sphereGeometry args={[0.25, 10, 10]} />
+            <meshBasicMaterial color="#1a0a2e" transparent opacity={0.2 + intensity * 0.3} />
+          </mesh>
+          <pointLight color={cfg.color} intensity={intensity * 1.5} distance={4} decay={2} />
         </Float>
       );
 

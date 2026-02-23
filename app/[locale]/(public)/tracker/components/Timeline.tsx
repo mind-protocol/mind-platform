@@ -26,6 +26,7 @@ const SUB_CONFIG: Record<string, { color: string; icon: string; label: string }>
   melatonin: { color: '#6366f1', icon: '🌙', label: 'Mel' },
   venlafaxine: { color: '#14b8a6', icon: '💊', label: 'Ven' },
   prazepam: { color: '#94a3b8', icon: '🫧', label: 'Praz' },
+  cyamemazine: { color: '#7e22ce', icon: '🌌', label: 'Cya' },
 };
 
 function formatTime(ts: string): string {
@@ -66,6 +67,7 @@ function doseLabel(entry: LogEntry): string {
   if (substance === 'melatonin') return `${amt}mg ${dose.details?.form || 'tablet'}`;
   if (substance === 'venlafaxine') return `${amt}mg ${dose.details?.release === 'extended' ? 'LP' : ''}`.trim();
   if (substance === 'prazepam') return `${amt}mg ${dose.details?.route || 'sublingual'}`;
+  if (substance === 'cyamemazine') return `${amt}mg`;
   return `${amt} ${dose.unit}`;
 }
 

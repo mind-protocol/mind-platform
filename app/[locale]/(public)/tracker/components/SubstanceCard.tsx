@@ -23,6 +23,7 @@ const SUBSTANCES = [
   { key: 'melatonin', label: 'Mel', color: '#6366f1', icon: '🌙' },
   { key: 'venlafaxine', label: 'Ven', color: '#14b8a6', icon: '💊' },
   { key: 'prazepam', label: 'Praz', color: '#94a3b8', icon: '🫧' },
+  { key: 'cyamemazine', label: 'Cya', color: '#7e22ce', icon: '🌌' },
 ] as const;
 
 function timeSince(ts: string): string {

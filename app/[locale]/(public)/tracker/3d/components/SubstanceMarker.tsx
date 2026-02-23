@@ -408,6 +408,49 @@ function PrazepamMarker({ scale, hovered, color }: { scale: number; hovered: boo
   );
 }
 
+// Cyamemazine: deep sedation, heavy, gravitational — dense tetrahedron with purple void
+function CyamemazineMarker({ scale, hovered, color }: { scale: number; hovered: boolean; color: string }) {
+  const meshRef = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.1;
+      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.15) * 0.1;
+    }
+  });
+
+  return (
+    <Float speed={0.3} rotationIntensity={0.05} floatIntensity={0.15}>
+      {/* Dense tetrahedron — gravitational, heavy */}
+      <mesh ref={meshRef} scale={scale * 0.7}>
+        <tetrahedronGeometry args={[0.45, 0]} />
+        <meshPhysicalMaterial
+          color={color}
+          emissive={color}
+          emissiveIntensity={hovered ? 0.6 : 0.2}
+          metalness={0.6}
+          roughness={0.2}
+          clearcoat={0.5}
+          clearcoatRoughness={0.2}
+          transparent
+          opacity={hovered ? 0.9 : 0.7}
+        />
+      </mesh>
+      {/* Inner void — dark center */}
+      <mesh scale={scale * 0.25}>
+        <sphereGeometry args={[0.3, 12, 12]} />
+        <meshBasicMaterial color="#1a0a2e" transparent opacity={hovered ? 0.5 : 0.3} />
+      </mesh>
+      <pointLight
+        color={color}
+        intensity={hovered ? 1.2 : 0.3}
+        distance={3 * scale}
+        decay={2}
+      />
+    </Float>
+  );
+}
+
 // Main marker component — dispatches to substance-specific renderer
 export default function SubstanceMarker({ substance, position, amount, entry }: MarkerProps) {
   const groupRef = useRef<THREE.Group>(null);
@@ -433,6 +476,8 @@ export default function SubstanceMarker({ substance, position, amount, entry }: 
         return <VenlafaxineMarker scale={scale} hovered={hovered} color={cfg.color} />;
       case 'prazepam':
         return <PrazepamMarker scale={scale} hovered={hovered} color={cfg.color} />;
+      case 'cyamemazine':
+        return <CyamemazineMarker scale={scale} hovered={hovered} color={cfg.color} />;
     }
   };
 

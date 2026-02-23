@@ -1,11 +1,11 @@
-export type SubstanceKey = 'thc' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'prazepam';
+export type SubstanceKey = 'thc' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'prazepam' | 'cyamemazine';
 
 export interface SubstanceConfig {
   color: string;
   icon: string;
   label: string;
   unit: string;
-  geometry: 'cylinder' | 'octahedron' | 'icosahedron' | 'torus' | 'sphere' | 'capsule' | 'disc' | 'crescent';
+  geometry: 'cylinder' | 'octahedron' | 'icosahedron' | 'torus' | 'sphere' | 'capsule' | 'disc' | 'crescent' | 'tetrahedron';
   laneY: number;
 }
 
@@ -18,6 +18,7 @@ export const SUBSTANCE_CONFIG: Record<SubstanceKey, SubstanceConfig> = {
   melatonin:   { color: '#6366f1', icon: '\u{1F319}', label: 'Melatonin',   unit: 'mg',       geometry: 'crescent',     laneY: 12.5 },
   venlafaxine: { color: '#14b8a6', icon: '\u{1F48A}', label: 'Venlafaxine', unit: 'mg',       geometry: 'capsule',      laneY: 15 },
   prazepam:    { color: '#94a3b8', icon: '\u{1FAE7}', label: 'Prazepam',    unit: 'mg',       geometry: 'disc',         laneY: 17.5 },
+  cyamemazine: { color: '#7e22ce', icon: '\u{1F30C}', label: 'Cyamemazine', unit: 'mg',       geometry: 'tetrahedron',  laneY: 20 },
 };
 
 export const SUBSTANCE_KEYS = Object.keys(SUBSTANCE_CONFIG) as SubstanceKey[];
@@ -32,6 +33,7 @@ export const DOSE_RANGES: Record<SubstanceKey, { min: number; max: number }> = {
   melatonin:   { min: 0.5, max: 10 },
   venlafaxine: { min: 37.5, max: 225 },
   prazepam:    { min: 5, max: 20 },
+  cyamemazine: { min: 12.5, max: 100 },
 };
 
 export function normalizeDose(substance: SubstanceKey, amount: number): number {
