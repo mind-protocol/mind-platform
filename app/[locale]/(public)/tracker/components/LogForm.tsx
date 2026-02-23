@@ -5,6 +5,7 @@ import { useState, useCallback } from 'react';
 const TABS = [
   { key: 'thc', label: 'THC', color: '#22c55e', icon: '🌿' },
   { key: 'ketamine', label: 'Ketamine', color: '#8b5cf6', icon: '💎' },
+  { key: 'lsd', label: 'LSD', color: '#ec4899', icon: '🔮' },
   { key: 'nicotine', label: 'Nicotine', color: '#f59e0b', icon: '💨' },
   { key: 'hydration', label: 'H₂O', color: '#3b82f6', icon: '💧' },
 ] as const;
@@ -12,6 +13,7 @@ const TABS = [
 const INTENTS: Record<string, string[]> = {
   thc: ['focus', 'relax', 'creative', 'sleep', 'social'],
   ketamine: ['micro-boost', 'dissociation', 'identity-dissolution'],
+  lsd: ['microdose', 'creative', 'introspection', 'therapeutic', 'social'],
   nicotine: ['focus', 'break', 'craving'],
   hydration: ['baseline', 'recovery', 'pre-sleep'],
 };
@@ -19,6 +21,7 @@ const INTENTS: Record<string, string[]> = {
 const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<string, unknown> }> = {
   thc: { amount: 1, unit: 'chamber', details: { strain_thc: 22, temp_c: 230 } },
   ketamine: { amount: 30, unit: 'mg', details: { form: 'crystal', route: 'intranasal', estimate: 'visual' } },
+  lsd: { amount: 0.5, unit: 'carton', details: { form: 'carton', ug_estimate: 100 } },
   nicotine: { amount: 5, unit: 'puffs', details: { strength_pct: 20, mode: 'ATL' } },
   hydration: { amount: 500, unit: 'ml', details: { additives: [] } },
 };
@@ -29,6 +32,14 @@ const K_PRESETS = [
   { mg: 50, label: 'Moderate', desc: 'medium line' },
   { mg: 80, label: 'Strong', desc: 'fat line' },
   { mg: 120, label: 'Deep', desc: 'heavy dose' },
+];
+
+const LSD_PRESETS = [
+  { dose: 0.25, label: '¼ carton', desc: 'microdose', ug: 25 },
+  { dose: 0.5, label: '½ carton', desc: 'light / threshold', ug: 50 },
+  { dose: 1, label: '1 carton', desc: 'standard', ug: 100 },
+  { dose: 1.5, label: '1½ cartons', desc: 'strong', ug: 150 },
+  { dose: 2, label: '2 cartons', desc: 'heavy', ug: 200 },
 ];
 
 const ADDITIVES = ['sodium', 'potassium', 'magnesium', 'vitC', 'B12', 'B6', 'B2'];
@@ -236,6 +247,46 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {tab === 'lsd' && (
+          <div className="space-y-3">
+            {/* Dose presets */}
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Quick dose</label>
+              <div className="flex flex-wrap gap-1.5">
+                {LSD_PRESETS.map((p) => (
+                  <button
+                    key={p.dose}
+                    onClick={() => {
+                      setAmount(p.dose);
+                      setDetails({ ...details, ug_estimate: p.ug });
+                    }}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      amount === p.dose
+                        ? 'border-pink-500/50 text-pink-300 bg-pink-500/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {p.label} <span className="text-zinc-600">· ~{p.ug}ug</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* ug estimate */}
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">ug estimate</label>
+              <input
+                type="number"
+                step={5}
+                min={0}
+                value={(details.ug_estimate as number) || 100}
+                onChange={(e) => setDetails({ ...details, ug_estimate: Number(e.target.value) })}
+                className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+              />
+            </div>
           </div>
         )}
 

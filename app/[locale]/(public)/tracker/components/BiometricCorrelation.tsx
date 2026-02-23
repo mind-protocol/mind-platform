@@ -25,6 +25,7 @@ interface CorrelationData {
 const SUB_COLORS: Record<string, string> = {
   thc: '#22c55e',
   ketamine: '#8b5cf6',
+  lsd: '#ec4899',
   nicotine: '#f59e0b',
   hydration: '#3b82f6',
 };
@@ -32,6 +33,7 @@ const SUB_COLORS: Record<string, string> = {
 const SUB_ICONS: Record<string, string> = {
   thc: '🌿',
   ketamine: '💎',
+  lsd: '🔮',
   nicotine: '💨',
   hydration: '💧',
 };

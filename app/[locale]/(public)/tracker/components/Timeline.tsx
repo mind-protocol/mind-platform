@@ -20,6 +20,7 @@ interface LogEntry {
 const SUB_CONFIG: Record<string, { color: string; icon: string; label: string }> = {
   thc: { color: '#22c55e', icon: '🌿', label: 'THC' },
   ketamine: { color: '#8b5cf6', icon: '💎', label: 'K' },
+  lsd: { color: '#ec4899', icon: '🔮', label: 'LSD' },
   nicotine: { color: '#f59e0b', icon: '💨', label: 'Nic' },
   hydration: { color: '#3b82f6', icon: '💧', label: 'H₂O' },
 };
@@ -46,6 +47,13 @@ function doseLabel(entry: LogEntry): string {
     }
     const mg = dose.details?.total_mg || (dose.details?.mg_per_spray as number || 0) * amt;
     return `${amt} spray${amt > 1 ? 's' : ''}${mg ? ` (${mg}mg)` : ''}`;
+  }
+  if (substance === 'lsd') {
+    const ug = dose.details?.ug_estimate as number;
+    if (amt === 0.25) return `¼ carton${ug ? ` (~${ug}ug)` : ''}`;
+    if (amt === 0.5) return `½ carton${ug ? ` (~${ug}ug)` : ''}`;
+    if (amt === 1.5) return `1½ cartons${ug ? ` (~${ug}ug)` : ''}`;
+    return `${amt} carton${amt > 1 ? 's' : ''}${ug ? ` (~${ug}ug)` : ''}`;
   }
   if (substance === 'nicotine') return `~${amt} puff${amt > 1 ? 's' : ''} ${dose.details?.mode || ''}`;
   if (substance === 'hydration') {

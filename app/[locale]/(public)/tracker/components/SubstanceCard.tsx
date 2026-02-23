@@ -17,6 +17,7 @@ interface StatsResponse {
 const SUBSTANCES = [
   { key: 'thc', label: 'THC', color: '#22c55e', icon: '🌿' },
   { key: 'ketamine', label: 'K', color: '#8b5cf6', icon: '💎' },
+  { key: 'lsd', label: 'LSD', color: '#ec4899', icon: '🔮' },
   { key: 'nicotine', label: 'Nic', color: '#f59e0b', icon: '💨' },
   { key: 'hydration', label: 'H₂O', color: '#3b82f6', icon: '💧' },
 ] as const;
