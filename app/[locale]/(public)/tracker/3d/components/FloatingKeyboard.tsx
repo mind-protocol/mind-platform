@@ -7,24 +7,20 @@ import * as THREE from 'three';
 import { AZERTY_ROWS, ALL_KEY_CODES, type KeyState } from '@/lib/tracker/hooks/useKeyboardReactive';
 
 // ── Constants ──────────────────────────────────────────────────────────
-const KEY_UNIT = 0.09;       // base key size in 3D units
+const KEY_UNIT = 0.09;       // base key depth (Z) in 3D units
 const KEY_GAP = 0.008;       // gap between keys
-const KEY_HEIGHT = 0.012;    // key thickness (thin chiclet)
-const CORNER_RADIUS = 0.004;
+const KEY_HEIGHT = 0.025;    // key thickness (Y) — visible chiclet
 
 // Colors — cold, subtle, living blue (not neon gaming)
-const BASE_COLOR = new THREE.Color(0x0c0c20);
-const GLOW_COLOR = new THREE.Color(0x5aaaff);   // rgba(90, 170, 255) — hit impact
-const HALO_COLOR = new THREE.Color(0x468cff);    // rgba(70, 140, 255) — softer halo
-const IDLE_COLOR = new THREE.Color(0x161630);    // visible idle — not invisible
+const GLOW_COLOR = new THREE.Color(0x5aaaff);   // hit impact
+const HALO_COLOR = new THREE.Color(0x468cff);    // softer halo
+const IDLE_COLOR = new THREE.Color(0x1a1a40);    // visible idle blue
 const LABEL_COLOR = '#8ab4ff';
 
 // ── Neighbor map for glow spill ────────────────────────────────────────
-// Pre-compute adjacency: for each key, which keys are physically next to it
 function buildNeighborMap(): Map<string, string[]> {
   const map = new Map<string, string[]>();
 
-  // Build position lookup
   const positions = new Map<string, { row: number; col: number }>();
   AZERTY_ROWS.forEach((row, rowIdx) => {
     row.forEach((key, colIdx) => {
@@ -34,19 +30,15 @@ function buildNeighborMap(): Map<string, string[]> {
 
   positions.forEach(({ row, col }, code) => {
     const neighbors: string[] = [];
-    // Same row: left and right
     const rowKeys = AZERTY_ROWS[row];
     if (col > 0) neighbors.push(rowKeys[col - 1].code);
     if (col < rowKeys.length - 1) neighbors.push(rowKeys[col + 1].code);
-    // Row above
     if (row > 0) {
       const above = AZERTY_ROWS[row - 1];
-      // Nearest 1-2 keys above (by column index proximity)
       const start = Math.max(0, col - 1);
       const end = Math.min(above.length - 1, col + 1);
       for (let i = start; i <= end; i++) neighbors.push(above[i].code);
     }
-    // Row below
     if (row < AZERTY_ROWS.length - 1) {
       const below = AZERTY_ROWS[row + 1];
       const start = Math.max(0, col - 1);
@@ -61,7 +53,7 @@ function buildNeighborMap(): Map<string, string[]> {
 
 const NEIGHBOR_MAP = buildNeighborMap();
 
-// ── Single Key mesh ────────────────────────────────────────────────────
+// ── Single Key mesh (BoxGeometry — reliable rendering) ───────────────
 function KeyMesh({
   code,
   label,
@@ -84,7 +76,7 @@ function KeyMesh({
     const state = keyStatesRef.current.get(code);
     const glow = state?.glow || 0;
 
-    // Compute neighbor spill (5-12% of strongest neighbor)
+    // Neighbor spill (8% of strongest neighbor)
     let neighborGlow = 0;
     const neighbors = NEIGHBOR_MAP.get(code);
     if (neighbors) {
@@ -95,7 +87,7 @@ function KeyMesh({
         }
       }
     }
-    const spillGlow = neighborGlow * 0.08; // 8% spill
+    const spillGlow = neighborGlow * 0.08;
     const totalGlow = Math.min(1, glow + spillGlow);
 
     // Emissive: baseline blue glow + stronger on hit
@@ -106,71 +98,52 @@ function KeyMesh({
     matRef.current.color.copy(IDLE_COLOR).lerp(GLOW_COLOR, 0.1 + totalGlow * 0.25);
 
     // Opacity: clearly visible idle, brighter on hit
-    matRef.current.opacity = 0.35 + totalGlow * 0.45;
+    matRef.current.opacity = 0.4 + totalGlow * 0.45;
 
-    // Label opacity follows glow but always readable
+    // Label opacity
     if (labelRef.current) {
-      labelRef.current.fillOpacity = 0.35 + totalGlow * 0.5;
+      labelRef.current.fillOpacity = 0.4 + totalGlow * 0.5;
     }
 
     // Subtle Y press displacement
     if (meshRef.current) {
-      meshRef.current.position.y = position[1] - glow * 0.004;
+      meshRef.current.position.y = position[1] + KEY_HEIGHT / 2 - glow * 0.006;
     }
   });
-
-  const geo = useMemo(() => {
-    const shape = new THREE.Shape();
-    const w = width;
-    const h = KEY_UNIT;
-    const r = CORNER_RADIUS;
-    shape.moveTo(r, 0);
-    shape.lineTo(w - r, 0);
-    shape.quadraticCurveTo(w, 0, w, r);
-    shape.lineTo(w, h - r);
-    shape.quadraticCurveTo(w, h, w - r, h);
-    shape.lineTo(r, h);
-    shape.quadraticCurveTo(0, h, 0, h - r);
-    shape.lineTo(0, r);
-    shape.quadraticCurveTo(0, 0, r, 0);
-
-    return new THREE.ExtrudeGeometry(shape, {
-      depth: KEY_HEIGHT,
-      bevelEnabled: true,
-      bevelThickness: 0.0008,
-      bevelSize: 0.0008,
-      bevelSegments: 1,
-    });
-  }, [width]);
 
   const showLabel = label.length <= 3;
   const fontSize = label.length === 1 ? 0.026 : 0.016;
 
   return (
     <group position={position}>
-      <mesh ref={meshRef} geometry={geo} rotation={[Math.PI / 2, 0, 0]}>
+      {/* Key cap — BoxGeometry (centered at half-extents) */}
+      <mesh
+        ref={meshRef}
+        position={[width / 2, KEY_HEIGHT / 2, KEY_UNIT / 2]}
+      >
+        <boxGeometry args={[width * 0.94, KEY_HEIGHT, KEY_UNIT * 0.94]} />
         <meshStandardMaterial
           ref={matRef}
           color={IDLE_COLOR}
-          roughness={0.65}
-          metalness={0.2}
+          roughness={0.6}
+          metalness={0.15}
           emissive={HALO_COLOR}
           emissiveIntensity={0.8}
           transparent
-          opacity={0.35}
+          opacity={0.4}
         />
       </mesh>
       {/* Label */}
       {showLabel && (
         <Text
           ref={labelRef as React.Ref<never>}
-          position={[width / 2, KEY_HEIGHT / 2 + 0.001, KEY_UNIT / 2]}
+          position={[width / 2, KEY_HEIGHT + 0.002, KEY_UNIT / 2]}
           rotation={[-Math.PI / 2, 0, 0]}
           fontSize={fontSize}
           color={LABEL_COLOR}
           anchorX="center"
           anchorY="middle"
-          fillOpacity={0.35}
+          fillOpacity={0.4}
           font={undefined}
         >
           {label}
@@ -194,7 +167,7 @@ export default function FloatingKeyboard({
   rotation?: [number, number, number];
   scale?: number;
 }) {
-  // Run decay + neighbor spill in useFrame
+  // Run decay in useFrame
   useFrame((_, delta) => {
     decayKeys(delta);
   });
@@ -243,21 +216,21 @@ export default function FloatingKeyboard({
 
   return (
     <group position={position} rotation={rotation} scale={scale} frustumCulled={false}>
-      {/* DEBUG: single large magenta box inside FloatingKeyboard group */}
-      <mesh position={[0, 0.05, kbdDepth / 2]} renderOrder={9000}>
-        <boxGeometry args={[kbdWidth, 0.08, kbdDepth]} />
-        <meshBasicMaterial color="#ff00ff" depthTest={false} />
+      {/* Subtle base plate — dark, barely visible */}
+      <mesh position={[0, -0.002, kbdDepth / 2]}>
+        <boxGeometry args={[kbdWidth, 0.004, kbdDepth]} />
+        <meshStandardMaterial
+          color="#0a0a1e"
+          roughness={0.8}
+          metalness={0.1}
+          emissive={HALO_COLOR}
+          emissiveIntensity={0.15}
+          transparent
+          opacity={0.25}
+        />
       </mesh>
 
-      {/* DEBUG: simple colored boxes for first row of keys (no ExtrudeGeometry) */}
-      {keys.slice(0, 14).map((k, i) => (
-        <mesh key={k.code} position={[k.pos[0] + k.width / 2, 0.05, k.pos[2] + KEY_UNIT / 2]}>
-          <boxGeometry args={[k.width * 0.95, 0.04, KEY_UNIT * 0.95]} />
-          <meshBasicMaterial color={i % 2 === 0 ? '#3388ff' : '#55aaff'} />
-        </mesh>
-      ))}
-
-      {/* Original keys — temporarily kept for comparison */}
+      {/* Key caps */}
       {keys.map((k) => (
         <KeyMesh
           key={k.code}
@@ -268,6 +241,15 @@ export default function FloatingKeyboard({
           keyStatesRef={keyStatesRef}
         />
       ))}
+
+      {/* Underglow light — soft blue from below */}
+      <pointLight
+        position={[0, -0.15, kbdDepth / 2]}
+        color="#4488ff"
+        intensity={0.6}
+        distance={3}
+        decay={2}
+      />
     </group>
   );
 }

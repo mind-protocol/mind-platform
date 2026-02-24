@@ -1,5 +1,7 @@
+'use client';
+
 import { Link } from '@/i18n/navigation';
-import { getTranslations } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 
 const MAIN_LINK_KEYS = [
   { href: '/manifesto', key: 'manifesto' },
@@ -21,8 +23,8 @@ const LEGAL_LINK_KEYS = [
   { href: '/deletion', key: 'deletion' },
 ] as const;
 
-export async function Footer() {
-  const t = await getTranslations('Footer');
+export function Footer() {
+  const t = useTranslations('Footer');
 
   return (
     <footer className="border-t border-zinc-800 bg-zinc-950">
