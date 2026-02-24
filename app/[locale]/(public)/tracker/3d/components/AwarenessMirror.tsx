@@ -108,6 +108,12 @@ export default function AwarenessMirror() {
         <BiometricField awareness={awareness} />
       </group>
 
+      {/* DEBUG: bright box at keyboard position — remove after confirming visibility */}
+      <mesh position={[0, -1.5, 7]}>
+        <boxGeometry args={[3, 0.1, 1]} />
+        <meshBasicMaterial color="#ff00ff" />
+      </mesh>
+
       {/* Floating keyboard — audio-reactive AZERTY ghost */}
       <group raycast={() => null}>
         <FloatingKeyboard
