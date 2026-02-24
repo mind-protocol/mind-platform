@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface FoodItem {
   name: string;
@@ -20,6 +20,8 @@ interface FoodEntry {
   items: FoodItem[];
   totals: { cal: number; protein_g: number; fat_g: number; carbs_g: number };
   notes: string;
+  photo?: string;
+  estimation_source?: string;
   biometrics_at_log?: Record<string, unknown>;
 }
 
@@ -38,6 +40,9 @@ const MEAL_ICONS: Record<string, string> = {
   snack: '🍿',
   other: '🍽️',
 };
+
+const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/heic', 'video/mp4', 'video/quicktime'];
+const MAX_SIZE = 20 * 1024 * 1024; // 20 MB
 
 function autoMealType(): string {
   const h = new Date().getHours();
@@ -58,6 +63,13 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
   const [submitting, setSubmitting] = useState(false);
   const [feedback, setFeedback] = useState('');
 
+  // Photo upload state
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [entries, setEntries] = useState<FoodEntry[]>([]);
   const [todayStats, setTodayStats] = useState<TodayStats>({ cal: 0, protein_g: 0, fat_g: 0, carbs_g: 0, meals: 0 });
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -75,6 +87,104 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
 
   useEffect(() => { fetchData(); }, [fetchData, refreshKey]);
 
+  // Handle file selection (from input or drop)
+  const handleFile = useCallback(async (file: File) => {
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setFeedback('Type non supporté. Utilisez PNG, JPG, WebP, HEIC, MP4 ou MOV.');
+      return;
+    }
+    if (file.size > MAX_SIZE) {
+      setFeedback('Fichier trop volumineux (max 20MB).');
+      return;
+    }
+
+    setPhotoFile(file);
+    setFeedback('');
+
+    // Generate preview
+    if (file.type.startsWith('image/')) {
+      const url = URL.createObjectURL(file);
+      setPhotoPreview(url);
+    } else {
+      setPhotoPreview(null); // Video: no preview thumbnail
+    }
+
+    // Upload and analyze
+    setAnalyzing(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('meal_type', mealType);
+
+      const res = await fetch('/api/tracker/food/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.description) {
+          setDescription(data.description);
+        }
+        if (data.needs_description) {
+          setFeedback('Photo enregistrée. Ajoutez une description pour analyser la nutrition.');
+        } else {
+          const cal = data.totals?.cal || 0;
+          setFeedback(`Analysé — ${cal} cal (${data.items?.length || 0} items détectés)`);
+          fetchData();
+          // Auto-clear after successful vision log
+          setTimeout(() => {
+            setPhotoFile(null);
+            setPhotoPreview(null);
+            setDescription('');
+            setFeedback('');
+          }, 3000);
+        }
+      } else {
+        const err = await res.json();
+        setFeedback(err.error || 'Échec de l\'upload');
+      }
+    } catch {
+      setFeedback('Erreur réseau');
+    } finally {
+      setAnalyzing(false);
+    }
+  }, [mealType, fetchData]);
+
+  // Drag & drop handlers
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragOver(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragOver(false);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) handleFile(file);
+  }, [handleFile]);
+
+  const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleFile(file);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  }, [handleFile]);
+
+  const clearPhoto = () => {
+    setPhotoFile(null);
+    if (photoPreview) URL.revokeObjectURL(photoPreview);
+    setPhotoPreview(null);
+  };
+
+  // Text-only submit (existing behavior)
   const submit = async () => {
     if (!description.trim()) return;
     setSubmitting(true);
@@ -90,6 +200,7 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
         setFeedback(`Logged — ${entry.totals?.cal || 0} cal`);
         setDescription('');
         setNotes('');
+        clearPhoto();
         fetchData();
         setTimeout(() => setFeedback(''), 3000);
       } else {
@@ -124,6 +235,8 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
   const totalF = todayStats.fat_g;
   const totalC = todayStats.carbs_g;
   const macroTotal = totalP + totalF + totalC || 1;
+
+  const isDisabled = submitting || analyzing;
 
   return (
     <div className="space-y-4">
@@ -164,14 +277,86 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
       )}
 
       {/* Input form */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4" onKeyDown={handleKeyDown}>
+      <div
+        className={`bg-zinc-900 border rounded-lg p-4 transition-colors ${
+          dragOver ? 'border-orange-500 bg-orange-500/5' : 'border-zinc-800'
+        }`}
+        onKeyDown={handleKeyDown}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        {/* Photo drop zone / preview */}
+        {!photoFile && !analyzing && (
+          <div
+            className="mb-3 border-2 border-dashed border-zinc-700 rounded-lg p-4 text-center cursor-pointer hover:border-zinc-500 hover:bg-zinc-800/50 transition"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp,image/heic,video/mp4,video/quicktime"
+              className="hidden"
+              onChange={handleFileInput}
+              disabled={isDisabled}
+            />
+            <div className="text-zinc-500 text-sm">
+              <span className="text-lg">📸</span>
+              <p className="mt-1">Glissez une photo ou cliquez pour uploader</p>
+              <p className="text-xs text-zinc-600 mt-0.5">PNG, JPG, WebP, HEIC, MP4, MOV — max 20MB</p>
+            </div>
+          </div>
+        )}
+
+        {/* Analyzing spinner */}
+        {analyzing && (
+          <div className="mb-3 border border-orange-500/30 rounded-lg p-4 bg-orange-500/5 flex items-center gap-3">
+            {photoPreview && (
+              <img src={photoPreview} alt="food" className="w-16 h-16 rounded object-cover shrink-0" />
+            )}
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+                <span className="text-sm text-orange-400">Analyse en cours...</span>
+              </div>
+              <p className="text-xs text-zinc-500 mt-1">GPT-4o identifie les aliments et estime la nutrition</p>
+            </div>
+          </div>
+        )}
+
+        {/* Photo preview (after analysis) */}
+        {photoFile && !analyzing && (
+          <div className="mb-3 flex items-start gap-3">
+            {photoPreview && (
+              <img src={photoPreview} alt="food" className="w-20 h-20 rounded-lg object-cover shrink-0 border border-zinc-700" />
+            )}
+            {!photoPreview && photoFile.type.startsWith('video/') && (
+              <div className="w-20 h-20 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center shrink-0">
+                <span className="text-2xl">🎬</span>
+              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-zinc-400 truncate">{photoFile.name}</span>
+                <button
+                  onClick={clearPhoto}
+                  className="text-zinc-500 hover:text-zinc-300 text-xs ml-2 shrink-0"
+                >
+                  ✕
+                </button>
+              </div>
+              <p className="text-xs text-zinc-600 mt-0.5">{(photoFile.size / 1024).toFixed(0)} KB</p>
+            </div>
+          </div>
+        )}
+
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Describe what you ate... (e.g. 2 crêpes avec sucre de coco, 1 camembert avec baguette)"
+          placeholder={photoFile ? 'Description auto-remplie par la vision...' : 'Décrivez ce que vous mangez... (ex: 2 crêpes avec sucre de coco)'}
           className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white text-sm resize-none focus:outline-none focus:border-zinc-500 placeholder:text-zinc-600"
           rows={2}
-          disabled={submitting}
+          disabled={isDisabled}
         />
 
         <div className="flex items-center justify-between mt-3">
@@ -194,7 +379,7 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
 
           <button
             onClick={submit}
-            disabled={submitting || !description.trim()}
+            disabled={isDisabled || !description.trim()}
             className="px-5 py-2 rounded font-medium text-sm transition disabled:opacity-40 bg-orange-500 text-black"
           >
             {submitting ? 'Analyzing...' : 'Log'}
@@ -202,7 +387,9 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
         </div>
 
         {feedback && (
-          <div className="mt-2 text-xs text-zinc-400">{feedback}</div>
+          <div className={`mt-2 text-xs ${feedback.includes('Analysé') || feedback.includes('Logged') ? 'text-green-400' : 'text-zinc-400'}`}>
+            {feedback}
+          </div>
         )}
       </div>
 
@@ -225,6 +412,7 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
                       <div className="flex items-center gap-2 min-w-0">
                         <span className="text-xs text-zinc-600 font-mono w-10 shrink-0">{formatTime(e.ts)}</span>
                         <span className="text-sm">{MEAL_ICONS[e.meal_type] || '🍽️'}</span>
+                        {e.photo && <span className="text-xs" title="Photo logged">📸</span>}
                         <span className="text-sm text-zinc-300 truncate">{e.description}</span>
                       </div>
                       <span className="text-xs font-mono text-orange-400 ml-2 shrink-0">{e.totals.cal} cal</span>
@@ -248,6 +436,9 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
                           {e.totals.cal}cal · {e.totals.protein_g}p · {e.totals.fat_g}f · {e.totals.carbs_g}c
                         </span>
                       </div>
+                      {e.estimation_source === 'vision' && (
+                        <div className="text-[10px] text-zinc-600 mt-1">via GPT-4o vision</div>
+                      )}
                     </div>
                   )}
                 </div>

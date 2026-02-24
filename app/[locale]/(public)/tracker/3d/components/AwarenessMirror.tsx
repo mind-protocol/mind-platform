@@ -13,12 +13,15 @@ import SceneControls from './SceneControls';
 import ConsciousnessCore from './ConsciousnessCore';
 import ActiveSubstanceOrb from './ActiveSubstanceOrb';
 import BiometricField from './BiometricField';
+import FloatingKeyboard from './FloatingKeyboard';
 import EnvironmentRenderer from './environments/EnvironmentRenderer';
+import { useKeyboardReactive } from '@/lib/tracker/hooks/useKeyboardReactive';
 
 export default function AwarenessMirror() {
   const { awareness, loading } = useAwarenessState();
   const { active: activeEnv } = useEnvironments();
   const [dpr, setDpr] = useState<number>(1.5);
+  const { keyStatesRef, decayKeys } = useKeyboardReactive({ enabled: true });
 
   // Determine which substances are currently active
   const activeSubstances = useMemo(() => {
@@ -103,6 +106,17 @@ export default function AwarenessMirror() {
 
         {/* Biometric environmental field */}
         <BiometricField awareness={awareness} />
+      </group>
+
+      {/* Floating keyboard — audio-reactive AZERTY ghost */}
+      <group raycast={() => null}>
+        <FloatingKeyboard
+          keyStatesRef={keyStatesRef}
+          decayKeys={decayKeys}
+          position={[0, -2.5, 2]}
+          rotation={[-0.35, 0, 0]}
+          scale={1.2}
+        />
       </group>
     </Canvas>
   );
@@ -194,57 +208,162 @@ function CursorGlow({ awareness }: { awareness: AwarenessState }) {
   );
 }
 
-/** Overlay HUD showing real-time state readout */
+/** Mini Awareness HUD — glowing dots with collapse */
 export function AwarenessHUD({ className }: { className?: string }) {
   const { awareness } = useAwarenessState();
+  const [collapsed, setCollapsed] = useState(false);
 
   const activeSubstances = SUBSTANCE_KEYS.filter(k => awareness.substances[k] > 0.02);
 
-  return (
-    <div className={`bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-lg p-3 ${className || ''}`}>
-      <div className="text-[10px] uppercase tracking-wider text-zinc-600 mb-2">Awareness State</div>
+  // Collapsed: just a column of glowing dots
+  if (collapsed) {
+    return (
+      <div className={`flex items-center gap-1.5 ${className || ''}`}>
+        <button
+          onClick={() => setCollapsed(false)}
+          className="text-zinc-700 hover:text-zinc-400 transition text-xs"
+          title="Expand"
+        >
+          &rsaquo;
+        </button>
+        <div className="flex flex-col gap-1.5">
+          {/* Biometric dots */}
+          {awareness.hr != null && (
+            <div
+              className="rounded-full animate-pulse"
+              style={{
+                width: 6, height: 6,
+                backgroundColor: '#ef4444',
+                boxShadow: '0 0 6px #ef444480',
+              }}
+              title={`HR ${awareness.hr}`}
+            />
+          )}
+          {awareness.stress != null && (
+            <div
+              className="rounded-full"
+              style={{
+                width: 5 + (awareness.stress / 100) * 4,
+                height: 5 + (awareness.stress / 100) * 4,
+                backgroundColor: awareness.stress > 50 ? '#ef4444' : '#a1a1aa',
+                boxShadow: awareness.stress > 50 ? '0 0 8px #ef444480' : '0 0 4px #a1a1aa40',
+                filter: `blur(${awareness.stress > 70 ? 0.5 : 0}px)`,
+              }}
+              title={`Stress ${awareness.stress}`}
+            />
+          )}
+          {awareness.bodyBattery != null && (
+            <div
+              className="rounded-full"
+              style={{
+                width: 4 + (awareness.bodyBattery / 100) * 5,
+                height: 4 + (awareness.bodyBattery / 100) * 5,
+                backgroundColor: awareness.bodyBattery < 30 ? '#f59e0b' : '#22d3ee',
+                boxShadow: `0 0 ${4 + (awareness.bodyBattery / 100) * 8}px ${awareness.bodyBattery < 30 ? '#f59e0b60' : '#22d3ee60'}`,
+              }}
+              title={`BB ${awareness.bodyBattery}`}
+            />
+          )}
+          {/* Substance dots */}
+          {activeSubstances.map(key => {
+            const cfg = SUBSTANCE_CONFIG[key];
+            const intensity = awareness.substances[key];
+            const size = 4 + intensity * 7;
+            return (
+              <div
+                key={key}
+                className="rounded-full transition-all duration-500"
+                style={{
+                  width: size, height: size,
+                  backgroundColor: cfg.color,
+                  boxShadow: `0 0 ${4 + intensity * 12}px ${cfg.color}80`,
+                  filter: `blur(${intensity > 0.5 ? 0.5 : 0}px)`,
+                }}
+                title={`${cfg.label} ${(intensity * 100).toFixed(0)}%`}
+              />
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
 
-      {/* Biometric vitals */}
-      <div className="flex gap-3 text-xs text-zinc-500 mb-3">
+  return (
+    <div className={`bg-zinc-900/60 backdrop-blur-sm border border-zinc-800/50 rounded-lg p-2.5 max-w-[200px] ${className || ''}`}>
+      {/* Header with collapse button */}
+      <div className="flex items-center justify-between mb-2">
+        <div className="text-[9px] uppercase tracking-wider text-zinc-600">Awareness</div>
+        <button
+          onClick={() => setCollapsed(true)}
+          className="text-zinc-700 hover:text-zinc-400 transition text-[10px] px-1"
+          title="Collapse"
+        >
+          &lsaquo;
+        </button>
+      </div>
+
+      {/* Biometric vitals — compact row with dots */}
+      <div className="flex items-center gap-2.5 mb-2">
         {awareness.hr != null && (
-          <span className="flex items-center gap-1">
-            <span className="text-red-400 animate-pulse">♡</span>
+          <span className="flex items-center gap-1 text-[10px] text-zinc-500">
+            <span
+              className="inline-block w-1.5 h-1.5 rounded-full animate-pulse"
+              style={{ backgroundColor: '#ef4444', boxShadow: '0 0 4px #ef444480' }}
+            />
             {awareness.hr}
           </span>
         )}
         {awareness.stress != null && (
-          <span className={awareness.stress > 50 ? 'text-red-400' : ''}>
-            σ{awareness.stress}
+          <span className="flex items-center gap-1 text-[10px]" style={{ color: awareness.stress > 50 ? '#ef4444' : '#a1a1aa' }}>
+            <span
+              className="inline-block rounded-full"
+              style={{
+                width: 5 + (awareness.stress / 100) * 3,
+                height: 5 + (awareness.stress / 100) * 3,
+                backgroundColor: awareness.stress > 50 ? '#ef4444' : '#a1a1aa',
+                boxShadow: awareness.stress > 50 ? '0 0 6px #ef444460' : 'none',
+              }}
+            />
+            {awareness.stress}
           </span>
         )}
         {awareness.bodyBattery != null && (
-          <span className={awareness.bodyBattery < 30 ? 'text-amber-400' : 'text-cyan-400'}>
-            ⚡{awareness.bodyBattery}
+          <span className="flex items-center gap-1 text-[10px]" style={{ color: awareness.bodyBattery < 30 ? '#f59e0b' : '#22d3ee' }}>
+            <span
+              className="inline-block rounded-full"
+              style={{
+                width: 4 + (awareness.bodyBattery / 100) * 4,
+                height: 4 + (awareness.bodyBattery / 100) * 4,
+                backgroundColor: awareness.bodyBattery < 30 ? '#f59e0b' : '#22d3ee',
+                boxShadow: `0 0 ${3 + (awareness.bodyBattery / 100) * 6}px ${awareness.bodyBattery < 30 ? '#f59e0b50' : '#22d3ee50'}`,
+              }}
+            />
+            {awareness.bodyBattery}
           </span>
         )}
       </div>
 
-      {/* Active substances with intensity bars */}
+      {/* Active substances — dot + label, no bars */}
       {activeSubstances.length > 0 ? (
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           {activeSubstances.map(key => {
             const cfg = SUBSTANCE_CONFIG[key];
             const intensity = awareness.substances[key];
+            const dotSize = 5 + intensity * 6;
+            const glowSize = 3 + intensity * 10;
             return (
               <div key={key} className="flex items-center gap-2">
-                <span className="text-xs w-5">{cfg.icon}</span>
-                <span className="text-[11px] text-zinc-400 w-12 shrink-0">{cfg.label}</span>
-                <div className="flex-1 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{
-                      width: `${intensity * 100}%`,
-                      backgroundColor: cfg.color,
-                      boxShadow: `0 0 6px ${cfg.color}60`,
-                    }}
-                  />
-                </div>
-                <span className="text-[10px] text-zinc-600 w-8 text-right font-mono">
+                <span
+                  className="inline-block rounded-full shrink-0 transition-all duration-500"
+                  style={{
+                    width: dotSize, height: dotSize,
+                    backgroundColor: cfg.color,
+                    boxShadow: `0 0 ${glowSize}px ${cfg.color}80`,
+                    filter: intensity > 0.6 ? `blur(0.5px)` : 'none',
+                  }}
+                />
+                <span className="text-[10px] text-zinc-500">{cfg.label}</span>
+                <span className="text-[9px] text-zinc-700 font-mono ml-auto">
                   {(intensity * 100).toFixed(0)}%
                 </span>
               </div>
@@ -252,45 +371,7 @@ export function AwarenessHUD({ className }: { className?: string }) {
           })}
         </div>
       ) : (
-        <div className="text-xs text-zinc-600">Baseline — no active substances</div>
-      )}
-
-      {/* Composite loads */}
-      {awareness.alterationDepth > 0.05 && (
-        <div className="mt-3 pt-2 border-t border-zinc-800">
-          <div className="flex gap-3 text-[10px] text-zinc-600">
-            {awareness.psychedelicLoad > 0.05 && (
-              <span style={{ color: '#ec4899' }}>
-                Psychedelic {(awareness.psychedelicLoad * 100).toFixed(0)}%
-              </span>
-            )}
-            {awareness.sedativeLoad > 0.05 && (
-              <span style={{ color: '#6366f1' }}>
-                Sedative {(awareness.sedativeLoad * 100).toFixed(0)}%
-              </span>
-            )}
-            {awareness.stimulantLoad > 0.05 && (
-              <span style={{ color: '#f59e0b' }}>
-                Stimulant {(awareness.stimulantLoad * 100).toFixed(0)}%
-              </span>
-            )}
-            {awareness.adaptogenicLoad > 0.05 && (
-              <span style={{ color: '#d97706' }}>
-                Adaptogène {(awareness.adaptogenicLoad * 100).toFixed(0)}%
-              </span>
-            )}
-            {awareness.serotonergicSupport > 0.05 && (
-              <span style={{ color: '#a855f7' }}>
-                5-HTP {(awareness.serotonergicSupport * 100).toFixed(0)}%
-              </span>
-            )}
-            {awareness.neuroprotectiveLoad > 0.05 && (
-              <span style={{ color: '#0ea5e9' }}>
-                Neuro {(awareness.neuroprotectiveLoad * 100).toFixed(0)}%
-              </span>
-            )}
-          </div>
-        </div>
+        <div className="text-[10px] text-zinc-700">Baseline</div>
       )}
     </div>
   );
