@@ -16,6 +16,9 @@ interface StatsResponse {
 
 const SUBSTANCES = [
   { key: 'thc', label: 'THC', color: '#22c55e', icon: '🌿' },
+  { key: 'cbd', label: 'CBD', color: '#84cc16', icon: '🌱' },
+  { key: 'lions_mane', label: "Lion's Mane", color: '#b45309', icon: '🦁' },
+  { key: 'caffeine', label: 'Café', color: '#d97706', icon: '☕' },
   { key: 'ketamine', label: 'K', color: '#8b5cf6', icon: '💎' },
   { key: 'lsd', label: 'LSD', color: '#ec4899', icon: '🔮' },
   { key: 'nicotine', label: 'Nic', color: '#f59e0b', icon: '💨' },
@@ -24,6 +27,8 @@ const SUBSTANCES = [
   { key: 'venlafaxine', label: 'Ven', color: '#14b8a6', icon: '💊' },
   { key: 'prazepam', label: 'Praz', color: '#94a3b8', icon: '🫧' },
   { key: 'cyamemazine', label: 'Cya', color: '#7e22ce', icon: '🌌' },
+  { key: 'dynabiane', label: 'Dyna', color: '#10b981', icon: '🧬' },
+  { key: 'omegabiane', label: 'Omega', color: '#0ea5e9', icon: '🐟' },
 ] as const;
 
 function timeSince(ts: string): string {

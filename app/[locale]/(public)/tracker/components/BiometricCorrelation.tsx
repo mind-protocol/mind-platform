@@ -24,6 +24,9 @@ interface CorrelationData {
 
 const SUB_COLORS: Record<string, string> = {
   thc: '#22c55e',
+  cbd: '#84cc16',
+  lions_mane: '#b45309',
+  caffeine: '#d97706',
   ketamine: '#8b5cf6',
   lsd: '#ec4899',
   nicotine: '#f59e0b',
@@ -32,10 +35,15 @@ const SUB_COLORS: Record<string, string> = {
   venlafaxine: '#14b8a6',
   prazepam: '#94a3b8',
   cyamemazine: '#7e22ce',
+  dynabiane: '#10b981',
+  omegabiane: '#0ea5e9',
 };
 
 const SUB_ICONS: Record<string, string> = {
   thc: '🌿',
+  cbd: '🌱',
+  lions_mane: '🦁',
+  caffeine: '☕',
   ketamine: '💎',
   lsd: '🔮',
   nicotine: '💨',
@@ -44,6 +52,8 @@ const SUB_ICONS: Record<string, string> = {
   venlafaxine: '💊',
   prazepam: '🫧',
   cyamemazine: '🌌',
+  dynabiane: '🧬',
+  omegabiane: '🐟',
 };
 
 export default function BiometricCorrelation({ refreshKey }: { refreshKey: number }) {

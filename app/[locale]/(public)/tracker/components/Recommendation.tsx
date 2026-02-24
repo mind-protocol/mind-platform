@@ -41,6 +41,8 @@ const SUB_COLORS: Record<string, string> = {
   venlafaxine: '#14b8a6',
   prazepam: '#94a3b8',
   cyamemazine: '#7e22ce',
+  dynabiane: '#10b981',
+  omegabiane: '#0ea5e9',
   none: '#52525b',
 };
 
@@ -57,6 +59,8 @@ const SUB_ICONS: Record<string, string> = {
   venlafaxine: '💊',
   prazepam: '🫧',
   cyamemazine: '🌌',
+  dynabiane: '🧬',
+  omegabiane: '🐟',
   none: '✓',
 };
 

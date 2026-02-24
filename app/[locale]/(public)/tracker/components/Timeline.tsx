@@ -19,6 +19,9 @@ interface LogEntry {
 
 const SUB_CONFIG: Record<string, { color: string; icon: string; label: string }> = {
   thc: { color: '#22c55e', icon: '🌿', label: 'THC' },
+  cbd: { color: '#84cc16', icon: '🌱', label: 'CBD' },
+  lions_mane: { color: '#b45309', icon: '🦁', label: "Lion's Mane" },
+  caffeine: { color: '#d97706', icon: '☕', label: 'Café' },
   ketamine: { color: '#8b5cf6', icon: '💎', label: 'K' },
   lsd: { color: '#ec4899', icon: '🔮', label: 'LSD' },
   nicotine: { color: '#f59e0b', icon: '💨', label: 'Nic' },
@@ -27,6 +30,8 @@ const SUB_CONFIG: Record<string, { color: string; icon: string; label: string }>
   venlafaxine: { color: '#14b8a6', icon: '💊', label: 'Ven' },
   prazepam: { color: '#94a3b8', icon: '🫧', label: 'Praz' },
   cyamemazine: { color: '#7e22ce', icon: '🌌', label: 'Cya' },
+  dynabiane: { color: '#10b981', icon: '🧬', label: 'Dyna' },
+  omegabiane: { color: '#0ea5e9', icon: '🐟', label: 'Omega' },
 };
 
 function formatTime(ts: string): string {
@@ -68,6 +73,18 @@ function doseLabel(entry: LogEntry): string {
   if (substance === 'venlafaxine') return `${amt}mg ${dose.details?.release === 'extended' ? 'LP' : ''}`.trim();
   if (substance === 'prazepam') return `${amt}mg ${dose.details?.route || 'sublingual'}`;
   if (substance === 'cyamemazine') return `${amt}mg`;
+  if (substance === 'cbd') {
+    if (dose.details?.route === 'vaporized') return `${amt} chamber${amt > 1 ? 's' : ''} CBD`;
+    if (dose.details?.route === 'sublingual') return `${amt}mg sublingual`;
+    return `${amt} comprimé${amt > 1 ? 's' : ''}`;
+  }
+  if (substance === 'lions_mane') return `${amt}mg`;
+  if (substance === 'caffeine') {
+    const shots = dose.details?.shots as number;
+    return shots ? `${shots} shot${shots > 1 ? 's' : ''} (${amt}mg)` : `${amt}mg`;
+  }
+  if (substance === 'dynabiane') return `${amt} gélule${amt > 1 ? 's' : ''}`;
+  if (substance === 'omegabiane') return `${amt} gélule${amt > 1 ? 's' : ''}`;
   return `${amt} ${dose.unit}`;
 }
 
@@ -117,7 +134,7 @@ export default function Timeline({ refreshKey }: { refreshKey: number }) {
           </div>
           <div className="space-y-1.5">
             {dayEntries.map((entry) => {
-              const cfg = SUB_CONFIG[entry.substance] || SUB_CONFIG.thc;
+              const cfg = SUB_CONFIG[entry.substance] || { color: '#71717a', icon: '💊', label: entry.substance };
               const isExpanded = expanded.has(entry.id);
               const bio = entry.biometrics_at_log;
 
