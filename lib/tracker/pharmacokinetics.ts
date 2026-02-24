@@ -37,11 +37,11 @@ export const PK_PROFILES: Record<SubstanceKey, PKProfile> = {
     decayShape: 'exponential',
   },
   cbd: {
-    onsetMin: 5,            // Vaporized onset; sublingual ~15-20 min
-    peakMin: 30,
-    plateauEndMin: 90,
-    durationMin: 300,       // ~5 hours (sublingual longer, vaporized shorter)
-    peakIntensity: 0.45,    // Non-psychoactive — subtle anxiolytic/body effect
+    onsetMin: 25,           // Oral tablet — slower absorption
+    peakMin: 75,            // ~1h15 to peak (CBD + ashwagandha + griffonia synergy)
+    plateauEndMin: 180,     // 3h plateau (adaptogenic compounds sustain effect)
+    durationMin: 420,       // ~7 hours (ashwagandha + magnesium long tail)
+    peakIntensity: 0.55,    // Stronger than pure CBD — compound synergy
     decayShape: 'linear',
   },
   lions_mane: {
@@ -205,6 +205,10 @@ export interface AwarenessState {
   sedativeLoad: number;
   /** Antidepressant baseline (venlafaxine) */
   antidepressantBaseline: number;
+  /** Adaptogenic load (ashwagandha + rhodiola via CBD complex) */
+  adaptogenicLoad: number;
+  /** Serotonergic support (griffonia 5-HTP + B6 via CBD complex) */
+  serotonergicSupport: number;
   /** Hydration level */
   hydrationLevel: number;
   /** Overall consciousness alteration 0-1 */
@@ -256,9 +260,13 @@ export function computeAwareness(
 
   // Composite loads
   const psychedelicLoad = Math.min(1, sub.lsd * 1.0 + sub.ketamine * 0.8 + sub.thc * 0.4);
-  const stimulantLoad = Math.min(1, sub.nicotine + sub.caffeine * 0.7);
-  const sedativeLoad = Math.min(1, sub.melatonin + sub.prazepam * 0.8 + sub.cyamemazine * 0.7 + sub.cbd * 0.3);
+  const stimulantLoad = Math.min(1, sub.nicotine + sub.caffeine * 0.7 + sub.cbd * 0.1); // Rhodiola mild stimulant
+  const sedativeLoad = Math.min(1, sub.melatonin + sub.prazepam * 0.8 + sub.cyamemazine * 0.7 + sub.cbd * 0.35); // CBD + ashwagandha anxiolytic
   const antidepressantBaseline = sub.venlafaxine;
+  // CBD Complex compound loads: ashwagandha (280mg) + rhodiola (30mg) = adaptogenic
+  const adaptogenicLoad = Math.min(1, sub.cbd * 0.8 + sub.lions_mane * 0.15);
+  // CBD Complex compound loads: griffonia 5-HTP (50.5mg) + B6 (1.4mg) = serotonin support
+  const serotonergicSupport = Math.min(1, sub.cbd * 0.6 + sub.venlafaxine * 0.3);
   const hydrationLevel = sub.hydration;
 
   // Overall alteration depth — weighted sum
@@ -266,7 +274,7 @@ export function computeAwareness(
     sub.lsd * 0.35 +
     sub.ketamine * 0.3 +
     sub.thc * 0.15 +
-    sub.cbd * 0.05 +
+    sub.cbd * 0.08 +     // CBD complex has stronger effect than pure CBD
     sub.prazepam * 0.1 +
     sub.cyamemazine * 0.1 +
     sub.melatonin * 0.05 +
@@ -291,6 +299,8 @@ export function computeAwareness(
     stimulantLoad,
     sedativeLoad,
     antidepressantBaseline,
+    adaptogenicLoad,
+    serotonergicSupport,
     hydrationLevel,
     alterationDepth,
     dominant,

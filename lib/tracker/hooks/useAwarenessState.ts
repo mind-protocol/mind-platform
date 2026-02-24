@@ -18,6 +18,8 @@ export function useAwarenessState(): {
     stimulantLoad: 0,
     sedativeLoad: 0,
     antidepressantBaseline: 0,
+    adaptogenicLoad: 0,
+    serotonergicSupport: 0,
     hydrationLevel: 0,
     alterationDepth: 0,
     dominant: null,

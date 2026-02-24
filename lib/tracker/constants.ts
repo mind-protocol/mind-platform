@@ -11,7 +11,7 @@ export interface SubstanceConfig {
 
 export const SUBSTANCE_CONFIG: Record<SubstanceKey, SubstanceConfig> = {
   thc:         { color: '#22c55e', icon: '\u{1F33F}', label: 'THC',         unit: 'chambers', geometry: 'cylinder',     laneY: 0 },
-  cbd:         { color: '#84cc16', icon: '\u{1F331}', label: 'CBD',         unit: 'mg',       geometry: 'dodecahedron', laneY: 1.25 },
+  cbd:         { color: '#84cc16', icon: '\u{1F331}', label: 'CBD Complex', unit: 'comprimé',  geometry: 'dodecahedron', laneY: 1.25 },
   lions_mane:  { color: '#b45309', icon: '\u{1F981}', label: "Lion's Mane", unit: 'mg',       geometry: 'cone',         laneY: 1.75 },
   caffeine:    { color: '#d97706', icon: '\u{2615}',  label: 'Caffeine',    unit: 'mg',       geometry: 'ring',         laneY: 2.25 },
   ketamine:    { color: '#8b5cf6', icon: '\u{1F48E}', label: 'Ketamine',    unit: 'mg',       geometry: 'octahedron',   laneY: 2.5 },
@@ -29,7 +29,7 @@ export const SUBSTANCE_KEYS = Object.keys(SUBSTANCE_CONFIG) as SubstanceKey[];
 // Map raw dose amounts to a 0.3-1.5 scale factor for 3D marker size
 export const DOSE_RANGES: Record<SubstanceKey, { min: number; max: number }> = {
   thc:         { min: 1, max: 5 },
-  cbd:         { min: 5, max: 100 },
+  cbd:         { min: 1, max: 3 },     // Comprimé count (1-3 tablets)
   lions_mane:  { min: 420, max: 2520 },
   caffeine:    { min: 40, max: 400 },
   ketamine:    { min: 15, max: 150 },

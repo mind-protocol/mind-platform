@@ -137,6 +137,26 @@ function OrbPosition({
   return <group ref={ref}>{children}</group>;
 }
 
+/** Animated particle orbiting the CBD compound orb */
+function CompoundParticle({ color, offset, scale, intensity }: { color: string; offset: number; scale: number; intensity: number }) {
+  const ref = useRef<THREE.Mesh>(null);
+  useFrame(({ clock }) => {
+    if (!ref.current) return;
+    const t = clock.elapsedTime;
+    ref.current.position.set(
+      Math.cos(t + offset) * 0.6 * scale,
+      Math.sin(t * 0.8 + offset) * 0.3 * scale,
+      Math.sin(t + offset) * 0.6 * scale,
+    );
+  });
+  return (
+    <mesh ref={ref} scale={scale * 0.25}>
+      <sphereGeometry args={[0.15, 8, 8]} />
+      <meshBasicMaterial color={color} transparent opacity={0.4 + intensity * 0.4} />
+    </mesh>
+  );
+}
+
 /** Substance-specific visual shape */
 function OrbShape({
   substance,
@@ -183,6 +203,7 @@ function OrbShape({
       return (
         <Float speed={1.2} rotationIntensity={0.15 * intensity} floatIntensity={0.3}>
           <OrbSpin speed={0.08}>
+            {/* Core dodecahedron — CBD isolat */}
             <mesh scale={scale}>
               <dodecahedronGeometry args={[0.4, 0]} />
               <meshPhysicalMaterial
@@ -196,6 +217,10 @@ function OrbShape({
                 opacity={0.55 + intensity * 0.35}
               />
             </mesh>
+            {/* Orbiting compound particles */}
+            <CompoundParticle color="#a855f7" offset={0} scale={scale} intensity={intensity} />
+            <CompoundParticle color="#f59e0b" offset={Math.PI * 0.66} scale={scale} intensity={intensity} />
+            <CompoundParticle color="#f43f5e" offset={Math.PI * 1.33} scale={scale} intensity={intensity} />
           </OrbSpin>
           {/* Organic glow aura */}
           <mesh scale={scale * 1.5}>

@@ -32,8 +32,9 @@ export default function AwarenessMirror() {
     if (awareness.psychedelicLoad > 0.5) return '#0a0515'; // Deep purple-black
     if (awareness.sedativeLoad > 0.5) return '#080810';    // Deep indigo-black
     if (awareness.stimulantLoad > 0.3) return '#0f0a05';   // Warm dark
+    if (awareness.adaptogenicLoad > 0.3) return '#0a0d05'; // Forest-green dark
     return '#09090b'; // Default dark
-  }, [awareness.psychedelicLoad, awareness.sedativeLoad, awareness.stimulantLoad]);
+  }, [awareness.psychedelicLoad, awareness.sedativeLoad, awareness.stimulantLoad, awareness.adaptogenicLoad]);
 
   if (loading) {
     return (
@@ -267,6 +268,16 @@ export function AwarenessHUD({ className }: { className?: string }) {
             {awareness.stimulantLoad > 0.05 && (
               <span style={{ color: '#f59e0b' }}>
                 Stimulant {(awareness.stimulantLoad * 100).toFixed(0)}%
+              </span>
+            )}
+            {awareness.adaptogenicLoad > 0.05 && (
+              <span style={{ color: '#d97706' }}>
+                Adaptogène {(awareness.adaptogenicLoad * 100).toFixed(0)}%
+              </span>
+            )}
+            {awareness.serotonergicSupport > 0.05 && (
+              <span style={{ color: '#a855f7' }}>
+                5-HTP {(awareness.serotonergicSupport * 100).toFixed(0)}%
               </span>
             )}
           </div>
