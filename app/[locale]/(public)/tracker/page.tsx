@@ -14,10 +14,15 @@ import PlanningCalendar from './components/planning/PlanningCalendar';
 import ScheduleDoseForm from './components/planning/ScheduleDoseForm';
 import type { SubstanceKey } from '@/lib/tracker/constants';
 
+// Category filters
+const BODY_SUBSTANCES = ['hydration', 'lions_mane', 'dynabiane', 'omegabiane', 'venlafaxine', 'prazepam', 'cyamemazine', 'melatonin'];
+const RECREATIONAL_SUBSTANCES = ['thc', 'cbd', 'caffeine', 'ketamine', 'lsd', 'nicotine'];
+
 export default function TrackerPage() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [showKCalc, setShowKCalc] = useState(false);
   const [viewMode, setViewMode] = useState<'now' | 'plan'>('now');
+  const [activeTab, setActiveTab] = useState<'body' | 'substances'>('body');
   const [showScheduleForm, setShowScheduleForm] = useState(false);
   const [scheduleDefaults, setScheduleDefaults] = useState<{
     substance?: SubstanceKey;
@@ -60,6 +65,8 @@ export default function TrackerPage() {
     }
   }, []);
 
+  const currentFilter = activeTab === 'body' ? BODY_SUBSTANCES : RECREATIONAL_SUBSTANCES;
+
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
@@ -67,13 +74,13 @@ export default function TrackerPage() {
         <header className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold font-mono">
-              Substance Tracker
+              Body Tracker
             </h1>
             <p className="text-zinc-500 text-sm mt-1">
               Precision dosing &middot; Biometric correlation
             </p>
           </div>
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center flex-wrap justify-end">
             <PlanViewToggle mode={viewMode} onChange={setViewMode} />
             <Link
               href="/tracker/3d"
@@ -116,32 +123,66 @@ export default function TrackerPage() {
               <Recommendation refreshKey={refreshKey} onQuickLog={quickLog} onSchedule={openSchedule} />
             </div>
 
-            {/* K Calculator (toggle) */}
-            {showKCalc && (
+            {/* ── Category tabs ────────────────────────────────── */}
+            <div className="flex gap-3 mb-6">
+              <button
+                onClick={() => setActiveTab('body')}
+                className={`flex-1 py-3 px-4 rounded-lg text-sm font-medium transition border ${
+                  activeTab === 'body'
+                    ? 'border-teal-500/40 bg-teal-500/10 text-teal-400'
+                    : 'border-zinc-800 bg-zinc-900 text-zinc-500 hover:text-zinc-300 hover:border-zinc-700'
+                }`}
+              >
+                <span className="text-lg mr-2">💊</span>
+                Body
+                <span className="block text-[10px] text-zinc-600 mt-0.5 font-normal">
+                  Eau, nourriture, vitamines, médicaments
+                </span>
+              </button>
+              <button
+                onClick={() => setActiveTab('substances')}
+                className={`flex-1 py-3 px-4 rounded-lg text-sm font-medium transition border ${
+                  activeTab === 'substances'
+                    ? 'border-green-500/40 bg-green-500/10 text-green-400'
+                    : 'border-zinc-800 bg-zinc-900 text-zinc-500 hover:text-zinc-300 hover:border-zinc-700'
+                }`}
+              >
+                <span className="text-lg mr-2">🌿</span>
+                Substances
+                <span className="block text-[10px] text-zinc-600 mt-0.5 font-normal">
+                  THC, CBD, Café, K, LSD, Nicotine
+                </span>
+              </button>
+            </div>
+
+            {/* K Calculator (toggle, substances tab only) */}
+            {showKCalc && activeTab === 'substances' && (
               <div className="mb-6">
                 <KCalculator />
               </div>
             )}
 
             {/* Summary cards */}
-            <SubstanceCard refreshKey={refreshKey} />
+            <SubstanceCard refreshKey={refreshKey} filter={currentFilter} />
 
-            {/* Log form */}
+            {/* Body tab: food log above substance log */}
+            {activeTab === 'body' && (
+              <div className="mt-6">
+                <FoodLog refreshKey={refreshKey} />
+              </div>
+            )}
+
+            {/* Log form (filtered by tab) */}
             <div className="mt-6">
-              <LogForm onLogged={refresh} />
+              <LogForm onLogged={refresh} filter={currentFilter} />
             </div>
 
-            {/* Timeline — directly below log form */}
+            {/* Timeline (filtered by tab) */}
             <div className="mt-6">
-              <Timeline refreshKey={refreshKey} />
+              <Timeline refreshKey={refreshKey} filter={currentFilter} />
             </div>
           </>
         )}
-
-        {/* Food tracker — always visible */}
-        <div className="mt-6">
-          <FoodLog refreshKey={refreshKey} />
-        </div>
 
         {/* Biometric correlation chart — always visible */}
         <div className="mt-6">

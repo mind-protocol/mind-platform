@@ -40,7 +40,7 @@ function timeSince(ts: string): string {
   return `${Math.floor(hrs / 24)}d ago`;
 }
 
-export default function SubstanceCard({ refreshKey }: { refreshKey: number }) {
+export default function SubstanceCard({ refreshKey, filter }: { refreshKey: number; filter?: string[] }) {
   const [stats, setStats] = useState<StatsResponse | null>(null);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function SubstanceCard({ refreshKey }: { refreshKey: number }) {
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-      {SUBSTANCES.map((sub) => {
+      {(filter ? SUBSTANCES.filter((s) => filter.includes(s.key)) : SUBSTANCES).map((sub) => {
         const s = todayStats?.[sub.key];
         return (
           <div

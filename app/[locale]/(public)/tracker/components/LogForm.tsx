@@ -71,8 +71,10 @@ const LSD_PRESETS = [
 
 const ADDITIVES = ['sodium', 'potassium', 'magnesium', 'vitC', 'B12', 'B6', 'B2'];
 
-export default function LogForm({ onLogged }: { onLogged: () => void }) {
-  const [tab, setTab] = useState('thc');
+export default function LogForm({ onLogged, filter }: { onLogged: () => void; filter?: string[] }) {
+  const filteredTabs = filter ? TABS.filter((t) => filter.includes(t.key)) : TABS;
+  const defaultTab = filteredTabs[0]?.key || 'thc';
+  const [tab, setTab] = useState(defaultTab);
   const [amount, setAmount] = useState(DEFAULTS.thc.amount);
   const [intent, setIntent] = useState('');
   const [notes, setNotes] = useState('');
@@ -154,8 +156,8 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
       onKeyDown={handleKeyDown}
     >
       {/* Tabs */}
-      <div className="flex gap-1 mb-4">
-        {TABS.map((t) => (
+      <div className="flex gap-1 mb-4 flex-wrap">
+        {filteredTabs.map((t) => (
           <button
             key={t.key}
             onClick={() => switchTab(t.key)}

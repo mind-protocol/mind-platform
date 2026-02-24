@@ -88,7 +88,7 @@ function doseLabel(entry: LogEntry): string {
   return `${amt} ${dose.unit}`;
 }
 
-export default function Timeline({ refreshKey }: { refreshKey: number }) {
+export default function Timeline({ refreshKey, filter }: { refreshKey: number; filter?: string[] }) {
   const [entries, setEntries] = useState<LogEntry[]>([]);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [editing, setEditing] = useState<string | null>(null);
@@ -103,9 +103,12 @@ export default function Timeline({ refreshKey }: { refreshKey: number }) {
       .catch(() => {});
   }, [refreshKey]);
 
+  // Filter entries by substance category if filter provided
+  const filtered = filter ? entries.filter((e) => filter.includes(e.substance)) : entries;
+
   // Group by date
   const grouped: Record<string, LogEntry[]> = {};
-  for (const e of entries) {
+  for (const e of filtered) {
     const dateKey = formatDate(e.ts);
     if (!grouped[dateKey]) grouped[dateKey] = [];
     grouped[dateKey].push(e);
@@ -163,7 +166,7 @@ export default function Timeline({ refreshKey }: { refreshKey: number }) {
     } catch { /* ignore */ }
   };
 
-  if (entries.length === 0) {
+  if (filtered.length === 0) {
     return (
       <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-6 text-center text-zinc-500 text-sm">
         No entries yet. Log your first substance above.
