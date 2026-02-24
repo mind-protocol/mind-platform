@@ -64,10 +64,8 @@ export default function TaperingProtocols({ substances, selected, onSelect }: Pr
     );
   }
 
-  // If a substance is selected, show only that one
-  const displayed = selected && substances[selected]?.tapering
-    ? [[selected, substances[selected]] as [string, SubstanceDependency]]
-    : sorted;
+  // Always show all substances (no filtering by selection)
+  const displayed = sorted;
 
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
@@ -105,10 +103,7 @@ export default function TaperingProtocols({ substances, selected, onSelect }: Pr
             }`}>
               {/* Protocol header */}
               <button
-                onClick={() => {
-                  toggleExpanded(key);
-                  onSelect(key);
-                }}
+                onClick={() => toggleExpanded(key)}
                 className="w-full flex items-center justify-between p-4 hover:bg-zinc-800/50 transition text-left"
               >
                 <div className="flex-1">
