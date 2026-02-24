@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useMemo } from 'react';
+import { useRef, useState, useMemo, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Canvas } from '@react-three/fiber';
 import { PerformanceMonitor, Environment } from '@react-three/drei';
@@ -12,10 +12,20 @@ import SceneControls from './SceneControls';
 import ConsciousnessCore from './ConsciousnessCore';
 import ActiveSubstanceOrb from './ActiveSubstanceOrb';
 import BiometricField from './BiometricField';
+import EnvironmentSkybox from './EnvironmentSkybox';
 
 export default function AwarenessMirror() {
   const { awareness, loading } = useAwarenessState();
   const [dpr, setDpr] = useState<number>(1.5);
+  const [skyboxUrl, setSkyboxUrl] = useState<string | null>(null);
+
+  // Fetch current skybox on mount
+  useEffect(() => {
+    fetch('/api/tracker/skybox')
+      .then(r => r.json())
+      .then(d => { if (d.skybox) setSkyboxUrl(d.skybox); })
+      .catch(() => {});
+  }, []);
 
   // Determine which substances are currently active
   const activeSubstances = useMemo(() => {
@@ -53,17 +63,26 @@ export default function AwarenessMirror() {
       <color attach="background" args={[fogColor]} />
       <fog attach="fog" args={[fogColor, 25, 60]} />
 
-      <Environment preset="night" />
+      {/* Use uploaded panorama if available, otherwise default night env */}
+      {skyboxUrl ? (
+        <EnvironmentSkybox url={skyboxUrl} />
+      ) : (
+        <Environment preset="night" />
+      )}
 
-      {/* Base ambient — very dim, state-dependent */}
-      <ambientLight intensity={0.08 + awareness.alterationDepth * 0.04} color="#1e1b4b" />
+      {/* Base ambient — state-dependent */}
+      <ambientLight intensity={0.1 + awareness.alterationDepth * 0.05} color="#1e1b4b" />
 
       {/* Key light — shifts warm/cool with state */}
       <directionalLight
         position={[5, 12, 5]}
-        intensity={0.2 + awareness.alterationDepth * 0.15}
+        intensity={0.25 + awareness.alterationDepth * 0.17}
         color="#c4b5fd"
       />
+
+      {/* Fill light — subtle warm from below to reveal dark shapes */}
+      <pointLight position={[0, -4, 8]} intensity={0.12} color="#a78bfa" distance={20} decay={2} />
+      <pointLight position={[-8, 2, 6]} intensity={0.08} color="#e2e8f0" distance={15} decay={2} />
 
       <SceneControls />
 
@@ -169,8 +188,8 @@ function CursorGlow({ awareness }: { awareness: AwarenessState }) {
       {/* Cursor light emission */}
       <pointLight
         color={glowColor}
-        intensity={0.4 + awareness.alterationDepth * 0.6}
-        distance={8}
+        intensity={0.5 + awareness.alterationDepth * 0.7}
+        distance={10}
         decay={2}
       />
     </group>
