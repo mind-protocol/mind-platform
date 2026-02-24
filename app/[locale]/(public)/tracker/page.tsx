@@ -81,6 +81,18 @@ export default function TrackerPage() {
             >
               3D View
             </Link>
+            <Link
+              href="/tracker/health"
+              className="text-sm px-3 py-1.5 rounded border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 transition"
+            >
+              Health
+            </Link>
+            <Link
+              href="/tracker/dependencies"
+              className="text-sm px-3 py-1.5 rounded border border-amber-500/30 text-amber-400 hover:bg-amber-500/10 transition"
+            >
+              Dépendances
+            </Link>
             <button
               onClick={() => setShowKCalc(!showKCalc)}
               className="text-sm px-3 py-1.5 rounded border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition"
