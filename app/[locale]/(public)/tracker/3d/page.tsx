@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import RangeSelector from './components/RangeSelector';
 import Legend from './components/Legend';
+import EnvironmentManager from '../components/EnvironmentManager';
 
 const TemporalScene = dynamic(
   () => import('./components/TemporalScene'),
@@ -69,6 +70,13 @@ export default function Tracker3DPage() {
           </button>
         </div>
       </div>
+
+      {/* Environment manager — top right in mirror mode */}
+      {mode === 'mirror' && (
+        <div className="absolute top-4 right-4 z-10">
+          <EnvironmentManager />
+        </div>
+      )}
 
       {/* Timeline controls — only show in timeline mode */}
       {mode === 'timeline' && (

@@ -1,31 +1,24 @@
 'use client';
 
-import { useRef, useState, useMemo, useEffect } from 'react';
+import { useRef, useState, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Canvas } from '@react-three/fiber';
 import { PerformanceMonitor, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 import { useAwarenessState } from '@/lib/tracker/hooks/useAwarenessState';
+import { useEnvironments } from '@/lib/tracker/hooks/useEnvironments';
 import { SUBSTANCE_KEYS, SUBSTANCE_CONFIG, type SubstanceKey } from '@/lib/tracker/constants';
 import type { AwarenessState } from '@/lib/tracker/pharmacokinetics';
 import SceneControls from './SceneControls';
 import ConsciousnessCore from './ConsciousnessCore';
 import ActiveSubstanceOrb from './ActiveSubstanceOrb';
 import BiometricField from './BiometricField';
-import EnvironmentSkybox from './EnvironmentSkybox';
+import EnvironmentRenderer from './environments/EnvironmentRenderer';
 
 export default function AwarenessMirror() {
   const { awareness, loading } = useAwarenessState();
+  const { active: activeEnv } = useEnvironments();
   const [dpr, setDpr] = useState<number>(1.5);
-  const [skyboxUrl, setSkyboxUrl] = useState<string | null>(null);
-
-  // Fetch current skybox on mount
-  useEffect(() => {
-    fetch('/api/tracker/skybox')
-      .then(r => r.json())
-      .then(d => { if (d.skybox) setSkyboxUrl(d.skybox); })
-      .catch(() => {});
-  }, []);
 
   // Determine which substances are currently active
   const activeSubstances = useMemo(() => {
@@ -63,9 +56,9 @@ export default function AwarenessMirror() {
       <color attach="background" args={[fogColor]} />
       <fog attach="fog" args={[fogColor, 25, 60]} />
 
-      {/* Use uploaded panorama if available, otherwise default night env */}
-      {skyboxUrl ? (
-        <EnvironmentSkybox url={skyboxUrl} />
+      {/* Environment: user capture or default night */}
+      {activeEnv ? (
+        <EnvironmentRenderer env={activeEnv} />
       ) : (
         <Environment preset="night" />
       )}
