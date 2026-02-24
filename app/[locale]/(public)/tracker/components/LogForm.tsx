@@ -47,7 +47,7 @@ const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<s
   caffeine: { amount: 150, unit: 'mg', details: { form: 'espresso', shots: 2, milk: true, sugar: 1 } },
   ketamine: { amount: 30, unit: 'mg', details: { form: 'crystal', route: 'intranasal', estimate: 'visual' } },
   lsd: { amount: 0.5, unit: 'carton', details: { form: 'carton', ug_estimate: 100 } },
-  nicotine: { amount: 5, unit: 'puffs', details: { strength_pct: 20, mode: 'ATL' } },
+  nicotine: { amount: 5, unit: 'puffs', details: { strength_pct: 20, mode: 'POWER', wattage: 22, resistance: 1.2, voltage_v: null, puff_duration_s: null } },
   hydration: { amount: 500, unit: 'ml', details: { additives: [] } },
   melatonin: { amount: 3, unit: 'mg', details: { form: 'tablet' } },
   venlafaxine: { amount: 75, unit: 'mg', details: { form: 'capsule', release: 'extended' } },
@@ -75,6 +75,9 @@ const LSD_PRESETS = [
 ];
 
 const ADDITIVES = ['sodium', 'potassium', 'magnesium', 'vitC', 'B12', 'B6', 'B2'];
+
+const RESISTANCE_OPTIONS = [0.2, 0.4, 0.6, 0.8, 1.2];
+const VAPE_MODES = ['POWER', 'BYPASS', 'TC-SS', 'TC-Ni', 'TC-Ti', 'ATL', 'MTL'] as const;
 
 const YOGA_STYLES = [
   { key: 'vinyasa', label: 'Vinyasa', icon: '🌊', hasFlow: true },
@@ -769,22 +772,89 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
         )}
 
         {tab === 'nicotine' && (
-          <div>
-            <label className="text-xs text-zinc-500 block mb-1">Mode</label>
-            <div className="flex gap-2">
-              {['ATL', 'MTL'].map((m) => (
-                <button
-                  key={m}
-                  onClick={() => setDetails({ ...details, mode: m })}
-                  className={`px-3 py-1.5 rounded text-sm border transition ${
-                    details.mode === m
-                      ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
-                      : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
-                  }`}
-                >
-                  {m}
-                </button>
-              ))}
+          <div className="space-y-3 sm:col-span-2">
+            {/* Row 1: Wattage + Resistance */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">Wattage (W)</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={200}
+                  step={0.5}
+                  value={(details.wattage as number) ?? 22}
+                  onChange={(e) => setDetails({ ...details, wattage: Number(e.target.value) })}
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">Résistance (ohm)</label>
+                <div className="flex gap-1.5 flex-wrap">
+                  {RESISTANCE_OPTIONS.map((r) => (
+                    <button
+                      key={r}
+                      onClick={() => setDetails({ ...details, resistance: r })}
+                      className={`px-2.5 py-1.5 rounded text-xs font-mono border transition ${
+                        (details.resistance as number) === r
+                          ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
+                          : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      {r}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Row 2: Mode */}
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Mode</label>
+              <div className="flex gap-1.5 flex-wrap">
+                {VAPE_MODES.map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => setDetails({ ...details, mode: m })}
+                    className={`px-2.5 py-1.5 rounded text-xs border transition ${
+                      details.mode === m
+                        ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {m}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Row 3: Voltage + Puff duration (S) */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">Voltage (V)</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={10}
+                  step={0.1}
+                  value={(details.voltage_v as number) ?? ''}
+                  onChange={(e) => setDetails({ ...details, voltage_v: e.target.value ? Number(e.target.value) : null })}
+                  placeholder="ex: 3.7"
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500 placeholder:text-zinc-600"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">S (sec)</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={30}
+                  step={0.01}
+                  value={(details.puff_duration_s as number) ?? ''}
+                  onChange={(e) => setDetails({ ...details, puff_duration_s: e.target.value ? Number(e.target.value) : null })}
+                  placeholder="ex: 1.25"
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500 placeholder:text-zinc-600"
+                />
+              </div>
             </div>
           </div>
         )}

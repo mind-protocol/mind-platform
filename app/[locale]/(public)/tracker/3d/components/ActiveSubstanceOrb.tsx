@@ -303,7 +303,7 @@ function OrbShape({
             <octahedronGeometry args={[0.45, 0]} />
             <MeshTransmissionMaterial
               backside
-              samples={4}
+              samples={2}
               thickness={0.5}
               chromaticAberration={intensity * 0.15}
               distortion={intensity * 0.2}
@@ -409,7 +409,7 @@ function OrbShape({
             <sphereGeometry args={[0.4, 20, 20]} />
             <MeshTransmissionMaterial
               backside
-              samples={3}
+              samples={2}
               thickness={0.6}
               chromaticAberration={0.02}
               distortion={0.1 + intensity * 0.15}

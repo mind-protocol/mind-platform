@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { BufferGeometry, Float32BufferAttribute, DoubleSide } from 'three';
 import type { TimeseriesPoint } from '@/lib/tracker/hooks/useTrackerData';
 
@@ -100,15 +100,43 @@ function buildSurface(
 }
 
 export default function BiometricTerrain({ timeseries, xScale }: TerrainProps) {
-  const stressGeo = useMemo(
-    () => buildSurface(timeseries, xScale, 'stress', -2, 2.5, 1.5),
-    [timeseries, xScale],
-  );
+  const [stressGeo, setStressGeo] = useState<BufferGeometry | null>(null);
+  const [bbGeo, setBbGeo] = useState<BufferGeometry | null>(null);
+  const prevStressGeo = useRef<BufferGeometry | null>(null);
+  const prevBbGeo = useRef<BufferGeometry | null>(null);
 
-  const bbGeo = useMemo(
-    () => buildSurface(timeseries, xScale, 'body_battery', -5, 2.5, 1.5),
-    [timeseries, xScale],
-  );
+  // Defer geometry building off the render critical path
+  useEffect(() => {
+    let cancelled = false;
+    const handle = setTimeout(() => {
+      if (cancelled) return;
+      prevStressGeo.current?.dispose();
+      const geo = buildSurface(timeseries, xScale, 'stress', -2, 2.5, 1.5);
+      prevStressGeo.current = geo;
+      setStressGeo(geo);
+    }, 0);
+    return () => { cancelled = true; clearTimeout(handle); };
+  }, [timeseries, xScale]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const handle = setTimeout(() => {
+      if (cancelled) return;
+      prevBbGeo.current?.dispose();
+      const geo = buildSurface(timeseries, xScale, 'body_battery', -5, 2.5, 1.5);
+      prevBbGeo.current = geo;
+      setBbGeo(geo);
+    }, 0);
+    return () => { cancelled = true; clearTimeout(handle); };
+  }, [timeseries, xScale]);
+
+  // Dispose on unmount
+  useEffect(() => {
+    return () => {
+      prevStressGeo.current?.dispose();
+      prevBbGeo.current?.dispose();
+    };
+  }, []);
 
   return (
     <group>

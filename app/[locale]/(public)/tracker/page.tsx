@@ -86,13 +86,19 @@ export default function TrackerPage() {
               href="/tracker/3d"
               className="text-sm px-3 py-1.5 rounded border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition"
             >
-              3D View
+              Awareness Mirror
             </Link>
             <Link
               href="/tracker/health"
               className="text-sm px-3 py-1.5 rounded border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 transition"
             >
               Health
+            </Link>
+            <Link
+              href="/tracker/protocols"
+              className="text-sm px-3 py-1.5 rounded border border-orange-500/30 text-orange-400 hover:bg-orange-500/10 transition"
+            >
+              Protocoles
             </Link>
             <Link
               href="/tracker/dependencies"

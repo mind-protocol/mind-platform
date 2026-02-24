@@ -65,7 +65,15 @@ function doseLabel(entry: LogEntry): string {
     if (amt === 1.5) return `1½ cartons${ug ? ` (~${ug}ug)` : ''}`;
     return `${amt} carton${amt > 1 ? 's' : ''}${ug ? ` (~${ug}ug)` : ''}`;
   }
-  if (substance === 'nicotine') return `~${amt} puff${amt > 1 ? 's' : ''} ${dose.details?.mode || ''}`;
+  if (substance === 'nicotine') {
+    const mode = dose.details?.mode || '';
+    const w = dose.details?.wattage as number;
+    const v = dose.details?.voltage_v as number;
+    const parts = [`~${amt} puff${amt > 1 ? 's' : ''}`, mode];
+    if (w) parts.push(`${w}W`);
+    if (v) parts.push(`${v}V`);
+    return parts.filter(Boolean).join(' ');
+  }
   if (substance === 'hydration') {
     const adds = (dose.details?.additives as string[]) || [];
     return `${amt}ml${adds.length ? ` + ${adds.join(', ')}` : ''}`;
@@ -100,6 +108,7 @@ export default function Timeline({ refreshKey, filter }: { refreshKey: number; f
   const [editAmount, setEditAmount] = useState(0);
   const [editIntent, setEditIntent] = useState('');
   const [saving, setSaving] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
   useEffect(() => {
     fetch('/api/tracker/log?days=7')
@@ -318,12 +327,30 @@ export default function Timeline({ refreshKey, filter }: { refreshKey: number; f
                             >
                               Annuler
                             </button>
-                            <button
-                              onClick={() => { if (confirm('Supprimer cette entrée ?')) deleteEntry(entry.id); }}
-                              className="px-3 py-1 rounded text-xs text-red-500/60 border border-red-500/20 hover:text-red-400 hover:border-red-500/40 transition ml-auto"
-                            >
-                              Supprimer
-                            </button>
+                            {confirmDelete === entry.id ? (
+                              <span className="ml-auto flex items-center gap-1.5">
+                                <span className="text-red-400/80 text-[10px]">Sûr ?</span>
+                                <button
+                                  onClick={() => { deleteEntry(entry.id); setConfirmDelete(null); }}
+                                  className="px-2 py-0.5 rounded text-[10px] text-red-400 border border-red-500/40 bg-red-500/10 hover:bg-red-500/20 transition"
+                                >
+                                  Oui
+                                </button>
+                                <button
+                                  onClick={() => setConfirmDelete(null)}
+                                  className="px-2 py-0.5 rounded text-[10px] text-zinc-500 border border-zinc-700 hover:text-zinc-300 transition"
+                                >
+                                  Non
+                                </button>
+                              </span>
+                            ) : (
+                              <button
+                                onClick={() => setConfirmDelete(entry.id)}
+                                className="px-3 py-1 rounded text-xs text-red-500/60 border border-red-500/20 hover:text-red-400 hover:border-red-500/40 transition ml-auto"
+                              >
+                                Supprimer
+                              </button>
+                            )}
                           </div>
                         </div>
                       )}

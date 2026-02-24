@@ -80,10 +80,12 @@ export default function AwarenessMirror() {
 
       <SceneControls />
 
-      {/* Core consciousness sphere */}
-      <ConsciousnessCore awareness={awareness} />
+      {/* Core consciousness sphere — no pointer interaction, skip raycasting */}
+      <group raycast={() => null}>
+        <ConsciousnessCore awareness={awareness} />
+      </group>
 
-      {/* Orbiting active substance orbs */}
+      {/* Orbiting active substance orbs — interactive (hover tooltip) */}
       {activeSubstances.map((sub, i) => (
         <ActiveSubstanceOrb
           key={sub}
@@ -94,11 +96,14 @@ export default function AwarenessMirror() {
         />
       ))}
 
-      {/* Cursor glow — attention probe */}
-      <CursorGlow awareness={awareness} />
+      {/* Non-interactive scene elements — skip raycasting */}
+      <group raycast={() => null}>
+        {/* Cursor glow — attention probe */}
+        <CursorGlow awareness={awareness} />
 
-      {/* Biometric environmental field */}
-      <BiometricField awareness={awareness} />
+        {/* Biometric environmental field */}
+        <BiometricField awareness={awareness} />
+      </group>
     </Canvas>
   );
 }
@@ -112,6 +117,7 @@ function CursorGlow({ awareness }: { awareness: AwarenessState }) {
   const glowRef = useRef<THREE.Mesh>(null);
   const trailRef = useRef<THREE.Mesh>(null);
   const smoothPos = useRef(new THREE.Vector3(0, 0, 5));
+  const targetVec = useRef(new THREE.Vector3(0, 0, 5));
 
   useFrame((state) => {
     const pointer = state.pointer;
@@ -121,10 +127,8 @@ function CursorGlow({ awareness }: { awareness: AwarenessState }) {
     const targetY = pointer.y * 5 + 1;
     const targetZ = 5;
 
-    smoothPos.current.lerp(
-      new THREE.Vector3(targetX, targetY, targetZ),
-      0.1,
-    );
+    targetVec.current.set(targetX, targetY, targetZ);
+    smoothPos.current.lerp(targetVec.current, 0.1);
 
     if (groupRef.current) {
       groupRef.current.position.copy(smoothPos.current);
