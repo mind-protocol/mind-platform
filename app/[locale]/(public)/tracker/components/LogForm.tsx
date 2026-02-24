@@ -145,6 +145,17 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
     recommendation: string;
     intent_category: string;
     period: string;
+    body_model?: {
+      bmi: number | null;
+      weight_kg: number | null;
+      height_cm: number | null;
+      fitness_strengths: string[];
+      fitness_weaknesses: string[];
+      steps_percentile: number | null;
+      sleep_percentile: number | null;
+      floors_percentile: number | null;
+      running_percentile: number | null;
+    } | null;
   } | null>(null);
   const [mindAnalyzing, setMindAnalyzing] = useState(false);
   const [analysisCollapsed, setAnalysisCollapsed] = useState(false);
@@ -1361,6 +1372,45 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                       {flag}
                     </div>
                   ))}
+                </div>
+              )}
+
+              {/* Body model */}
+              {mindAnalysis.body_model && (
+                <div className="flex flex-wrap gap-2 text-[10px]">
+                  {mindAnalysis.body_model.bmi && (
+                    <span className="px-2 py-0.5 rounded border border-zinc-700 text-zinc-500">
+                      IMC {mindAnalysis.body_model.bmi}
+                    </span>
+                  )}
+                  {mindAnalysis.body_model.steps_percentile != null && (
+                    <span className={`px-2 py-0.5 rounded border ${
+                      mindAnalysis.body_model.steps_percentile < 40
+                        ? 'border-amber-500/30 text-amber-400/70'
+                        : 'border-zinc-700 text-zinc-500'
+                    }`}>
+                      Pas P{mindAnalysis.body_model.steps_percentile}
+                    </span>
+                  )}
+                  {mindAnalysis.body_model.floors_percentile != null && (
+                    <span className={`px-2 py-0.5 rounded border ${
+                      mindAnalysis.body_model.floors_percentile > 60
+                        ? 'border-green-500/30 text-green-400/70'
+                        : 'border-zinc-700 text-zinc-500'
+                    }`}>
+                      Etages P{mindAnalysis.body_model.floors_percentile}
+                    </span>
+                  )}
+                  {mindAnalysis.body_model.sleep_percentile != null && (
+                    <span className="px-2 py-0.5 rounded border border-indigo-500/30 text-indigo-400/70">
+                      Sommeil P{mindAnalysis.body_model.sleep_percentile}
+                    </span>
+                  )}
+                  {mindAnalysis.body_model.running_percentile != null && (
+                    <span className="px-2 py-0.5 rounded border border-zinc-700 text-zinc-500">
+                      Course P{mindAnalysis.body_model.running_percentile}
+                    </span>
+                  )}
                 </div>
               )}
 
