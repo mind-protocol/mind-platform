@@ -132,6 +132,23 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
   const yogaStartTime = useRef<string | null>(null);
   const timerInterval = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // MIND analysis state (triggered after every log)
+  const [mindAnalysis, setMindAnalysis] = useState<{
+    substance: string;
+    biometrics: Record<string, number | string | null> | null;
+    active_substances: { substance: string; since_min: number; intensity: number; dose: number; unit: string; steady_state: boolean }[];
+    interactions: { substances: string[]; severity: string; note: string }[];
+    frequency: { today: number; avg_daily_7d: number; hours_since_last: number | null };
+    dependency: { frequency_daily: number; count_30d: number; risk_class: string; warning?: string } | null;
+    medical_flags: string[];
+    insights: string[];
+    recommendation: string;
+    intent_category: string;
+    period: string;
+  } | null>(null);
+  const [mindAnalyzing, setMindAnalyzing] = useState(false);
+  const [analysisCollapsed, setAnalysisCollapsed] = useState(false);
+
   // Yoga timer effect
   useEffect(() => {
     if (yogaTimerRunning && yogaTimerRemaining > 0) {
@@ -217,6 +234,28 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
           } catch { /* silent */ }
           setYogaAnalyzing(false);
         }
+
+        // MIND analysis: cross-reference all data sources
+        setMindAnalyzing(true);
+        setAnalysisCollapsed(false);
+        try {
+          const analyzeRes = await fetch('/api/tracker/log/analyze', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              substance: tab,
+              dose: { amount, unit, details },
+              intent,
+              notes,
+            }),
+          });
+          if (analyzeRes.ok) {
+            const analysis = await analyzeRes.json();
+            setMindAnalysis(analysis);
+          }
+        } catch { /* silent */ }
+        setMindAnalyzing(false);
+
         setNotes('');
       } else if (res.status === 422) {
         const data = await res.json();
@@ -1191,6 +1230,149 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
 
       {feedback && (
         <div className="mt-2 text-xs text-zinc-400">{feedback}</div>
+      )}
+
+      {/* MIND Analysis Card */}
+      {mindAnalyzing && (
+        <div className="mt-4 border border-zinc-700/50 bg-zinc-800/30 rounded-lg p-4 text-center">
+          <div className="text-sm text-zinc-400 animate-pulse">Analyse MIND en cours...</div>
+        </div>
+      )}
+      {mindAnalysis && !mindAnalyzing && (
+        <div className="mt-4 border border-zinc-700/50 bg-zinc-800/30 rounded-lg overflow-hidden">
+          {/* Header — always visible */}
+          <button
+            onClick={() => setAnalysisCollapsed(!analysisCollapsed)}
+            className="w-full flex items-center justify-between px-4 py-3 hover:bg-zinc-800/50 transition text-left"
+          >
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-mono text-zinc-500">MIND</span>
+              <span className="text-sm text-zinc-300">
+                {mindAnalysis.insights[0] || 'Analyse complète'}
+              </span>
+            </div>
+            <span className="text-zinc-600 text-xs">{analysisCollapsed ? '▸' : '▾'}</span>
+          </button>
+
+          {!analysisCollapsed && (
+            <div className="px-4 pb-4 space-y-3 border-t border-zinc-800">
+              {/* Biometric snapshot */}
+              {mindAnalysis.biometrics && (
+                <div className="flex flex-wrap gap-3 pt-3 text-xs">
+                  {mindAnalysis.biometrics.hr != null && (
+                    <span className="text-zinc-400">♡ {mindAnalysis.biometrics.hr} bpm</span>
+                  )}
+                  {mindAnalysis.biometrics.stress != null && (
+                    <span className={`${Number(mindAnalysis.biometrics.stress) > 60 ? 'text-amber-400' : 'text-zinc-400'}`}>
+                      σ {mindAnalysis.biometrics.stress}
+                    </span>
+                  )}
+                  {mindAnalysis.biometrics.body_battery != null && (
+                    <span className={`${Number(mindAnalysis.biometrics.body_battery) < 25 ? 'text-red-400' : 'text-zinc-400'}`}>
+                      ⚡ {mindAnalysis.biometrics.body_battery}
+                    </span>
+                  )}
+                  {mindAnalysis.biometrics.ans_mode && mindAnalysis.biometrics.ans_mode !== 'unknown' && (
+                    <span className="text-zinc-500">ANS: {mindAnalysis.biometrics.ans_mode}</span>
+                  )}
+                </div>
+              )}
+
+              {/* Frequency context */}
+              <div className="flex flex-wrap gap-3 text-xs text-zinc-500">
+                <span>{mindAnalysis.frequency.today}x aujourd&apos;hui</span>
+                <span>moy. {mindAnalysis.frequency.avg_daily_7d}/j</span>
+                {mindAnalysis.frequency.hours_since_last != null && (
+                  <span>dernière : il y a {mindAnalysis.frequency.hours_since_last < 1
+                    ? `${Math.round(mindAnalysis.frequency.hours_since_last * 60)}min`
+                    : `${mindAnalysis.frequency.hours_since_last.toFixed(1)}h`}
+                  </span>
+                )}
+                <span className="text-zinc-600">{mindAnalysis.period} · {mindAnalysis.intent_category}</span>
+              </div>
+
+              {/* Active substances */}
+              {mindAnalysis.active_substances.length > 0 && (
+                <div>
+                  <div className="text-[10px] text-zinc-600 uppercase tracking-wider mb-1">Substances actives</div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {mindAnalysis.active_substances.map((a) => (
+                      <span
+                        key={a.substance}
+                        className="text-[11px] px-2 py-0.5 rounded-full border border-zinc-700 text-zinc-400"
+                        style={{ opacity: 0.4 + a.intensity * 0.6 }}
+                      >
+                        {a.substance} {a.since_min}min {Math.round(a.intensity * 100)}%
+                        {a.steady_state && ' ∞'}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Interactions */}
+              {mindAnalysis.interactions.length > 0 && (
+                <div className="space-y-1">
+                  {mindAnalysis.interactions.map((ix, i) => (
+                    <div
+                      key={i}
+                      className={`text-xs px-3 py-1.5 rounded border ${
+                        ix.severity === 'high'
+                          ? 'border-red-500/30 bg-red-500/5 text-red-400'
+                          : ix.severity === 'moderate'
+                          ? 'border-amber-500/30 bg-amber-500/5 text-amber-400'
+                          : 'border-zinc-700 text-zinc-400'
+                      }`}
+                    >
+                      {ix.note}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Insights */}
+              {mindAnalysis.insights.length > 1 && (
+                <div className="space-y-1 pt-1">
+                  {mindAnalysis.insights.slice(1).map((insight, i) => (
+                    <div key={i} className="text-xs text-zinc-400 flex gap-2">
+                      <span className="text-zinc-600 shrink-0">·</span>
+                      {insight}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Dependency flag */}
+              {mindAnalysis.dependency?.warning && (
+                <div className="text-xs px-3 py-1.5 rounded border border-amber-500/20 bg-amber-500/5 text-amber-400/80">
+                  {mindAnalysis.dependency.warning}
+                  {mindAnalysis.dependency.risk_class !== 'none' && (
+                    <span className="text-zinc-600 ml-2">({mindAnalysis.dependency.risk_class})</span>
+                  )}
+                </div>
+              )}
+
+              {/* Medical flags */}
+              {mindAnalysis.medical_flags.length > 0 && (
+                <div className="space-y-1">
+                  {mindAnalysis.medical_flags.map((flag, i) => (
+                    <div key={i} className="text-xs text-teal-400/70 flex gap-2">
+                      <span className="shrink-0">🏥</span>
+                      {flag}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Recommendation */}
+              {mindAnalysis.recommendation && (
+                <div className="text-xs text-zinc-300 bg-zinc-800/80 rounded px-3 py-2 border border-zinc-700/50">
+                  {mindAnalysis.recommendation}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       )}
 
       <div className="mt-2 text-xs text-zinc-600">Ctrl+Enter to submit</div>

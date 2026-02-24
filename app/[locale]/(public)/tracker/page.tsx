@@ -133,7 +133,7 @@ export default function TrackerPage() {
                     : 'border-zinc-800 bg-zinc-900 text-zinc-500 hover:text-zinc-300 hover:border-zinc-700'
                 }`}
               >
-                <span className="text-lg mr-2">💊</span>
+                <span className="text-lg mr-2">💪</span>
                 Body
                 <span className="block text-[10px] text-zinc-600 mt-0.5 font-normal">
                   Eau, nourriture, vitamines, médicaments
