@@ -91,6 +91,10 @@ function doseLabel(entry: LogEntry): string {
 export default function Timeline({ refreshKey }: { refreshKey: number }) {
   const [entries, setEntries] = useState<LogEntry[]>([]);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [editing, setEditing] = useState<string | null>(null);
+  const [editAmount, setEditAmount] = useState(0);
+  const [editIntent, setEditIntent] = useState('');
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     fetch('/api/tracker/log?days=7')
@@ -108,11 +112,55 @@ export default function Timeline({ refreshKey }: { refreshKey: number }) {
   }
 
   const toggle = (id: string) => {
+    if (editing === id) return; // Don't collapse while editing
     setExpanded((prev) => {
       const next = new Set(prev);
       next.has(id) ? next.delete(id) : next.add(id);
       return next;
     });
+  };
+
+  const startEdit = (entry: LogEntry) => {
+    setEditing(entry.id);
+    setEditAmount(entry.dose.amount);
+    setEditIntent(entry.intent);
+    setExpanded((prev) => new Set(prev).add(entry.id));
+  };
+
+  const cancelEdit = () => {
+    setEditing(null);
+  };
+
+  const saveEdit = async (entry: LogEntry) => {
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/tracker/log/${entry.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          dose: { amount: editAmount },
+          intent: editIntent,
+        }),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setEntries((prev) =>
+          prev.map((e) => (e.id === entry.id ? { ...e, ...updated } : e))
+        );
+        setEditing(null);
+      }
+    } catch { /* ignore */ }
+    setSaving(false);
+  };
+
+  const deleteEntry = async (id: string) => {
+    try {
+      const res = await fetch(`/api/tracker/log/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setEntries((prev) => prev.filter((e) => e.id !== id));
+        setEditing(null);
+      }
+    } catch { /* ignore */ }
   };
 
   if (entries.length === 0) {
@@ -136,6 +184,7 @@ export default function Timeline({ refreshKey }: { refreshKey: number }) {
             {dayEntries.map((entry) => {
               const cfg = SUB_CONFIG[entry.substance] || { color: '#71717a', icon: '💊', label: entry.substance };
               const isExpanded = expanded.has(entry.id);
+              const isEditing = editing === entry.id;
               const bio = entry.biometrics_at_log;
 
               return (
@@ -172,19 +221,104 @@ export default function Timeline({ refreshKey }: { refreshKey: number }) {
                   </button>
 
                   {isExpanded && (
-                    <div className="ml-16 pl-3 border-l border-zinc-800 text-xs text-zinc-500 py-1 space-y-1">
-                      {entry.notes && <div className="text-zinc-400">{entry.notes}</div>}
-                      {bio && (
-                        <div className="flex flex-wrap gap-3">
-                          {bio.hr && <span>HR: {bio.hr} bpm</span>}
-                          {bio.stress != null && <span>Stress: {bio.stress}</span>}
-                          {bio.body_battery != null && <span>BB: {bio.body_battery}</span>}
-                          {bio.ans_mode && <span>ANS: {bio.ans_mode}</span>}
+                    <div className="ml-16 pl-3 border-l border-zinc-800 text-xs text-zinc-500 py-1 space-y-2">
+                      {!isEditing ? (
+                        <>
+                          {entry.notes && <div className="text-zinc-400">{entry.notes}</div>}
+                          {bio && (
+                            <div className="flex flex-wrap gap-3">
+                              {bio.hr && <span>HR: {bio.hr} bpm</span>}
+                              {bio.stress != null && <span>Stress: {bio.stress}</span>}
+                              {bio.body_battery != null && <span>BB: {bio.body_battery}</span>}
+                              {bio.ans_mode && <span>ANS: {bio.ans_mode}</span>}
+                            </div>
+                          )}
+                          <div className="text-zinc-600">
+                            {JSON.stringify(entry.dose.details)}
+                          </div>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); startEdit(entry); }}
+                            className="text-zinc-600 hover:text-zinc-400 transition text-[10px] border border-zinc-800 rounded px-2 py-0.5 mt-1"
+                          >
+                            Corriger
+                          </button>
+                        </>
+                      ) : (
+                        <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
+                          {/* Dose amount edit */}
+                          <div className="flex items-center gap-2">
+                            <label className="text-zinc-500 w-12">Dose:</label>
+                            <input
+                              type="number"
+                              value={editAmount}
+                              onChange={(e) => setEditAmount(Number(e.target.value))}
+                              min={0}
+                              step={entry.substance === 'hydration' ? 50 : 1}
+                              className="w-24 bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-white font-mono text-xs focus:outline-none focus:border-zinc-500"
+                            />
+                            <span className="text-zinc-600">{entry.dose.unit}</span>
+                          </div>
+
+                          {/* Quick correction buttons */}
+                          {entry.dose.amount >= 10 && (
+                            <div className="flex gap-1.5 flex-wrap">
+                              {[
+                                Math.round(entry.dose.amount / 10),
+                                Math.round(entry.dose.amount / 5),
+                                Math.round(entry.dose.amount / 2),
+                              ].filter((v, i, a) => v > 0 && v < entry.dose.amount && a.indexOf(v) === i)
+                               .map((v) => (
+                                <button
+                                  key={v}
+                                  onClick={() => setEditAmount(v)}
+                                  className={`px-2 py-0.5 rounded text-[10px] border transition ${
+                                    editAmount === v
+                                      ? 'border-amber-500/50 text-amber-300 bg-amber-500/10'
+                                      : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                                  }`}
+                                >
+                                  {v} {entry.dose.unit}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Intent edit */}
+                          <div className="flex items-center gap-2">
+                            <label className="text-zinc-500 w-12">Intent:</label>
+                            <input
+                              type="text"
+                              value={editIntent}
+                              onChange={(e) => setEditIntent(e.target.value)}
+                              className="flex-1 bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-white text-xs focus:outline-none focus:border-zinc-500"
+                            />
+                          </div>
+
+                          {/* Action buttons */}
+                          <div className="flex gap-2 pt-1">
+                            <button
+                              onClick={() => saveEdit(entry)}
+                              disabled={saving}
+                              className="px-3 py-1 rounded text-xs font-medium transition border"
+                              style={{ borderColor: cfg.color + '60', color: cfg.color, backgroundColor: cfg.color + '10' }}
+                            >
+                              {saving ? '...' : 'Sauvegarder'}
+                            </button>
+                            <button
+                              onClick={cancelEdit}
+                              className="px-3 py-1 rounded text-xs text-zinc-500 border border-zinc-700 hover:text-zinc-300 transition"
+                            >
+                              Annuler
+                            </button>
+                            <button
+                              onClick={() => { if (confirm('Supprimer cette entrée ?')) deleteEntry(entry.id); }}
+                              className="px-3 py-1 rounded text-xs text-red-500/60 border border-red-500/20 hover:text-red-400 hover:border-red-500/40 transition ml-auto"
+                            >
+                              Supprimer
+                            </button>
+                          </div>
                         </div>
                       )}
-                      <div className="text-zinc-600">
-                        {JSON.stringify(entry.dose.details)}
-                      </div>
                     </div>
                   )}
                 </div>

@@ -130,6 +130,11 @@ export default function TrackerPage() {
             <div className="mt-6">
               <LogForm onLogged={refresh} />
             </div>
+
+            {/* Timeline — directly below log form */}
+            <div className="mt-6">
+              <Timeline refreshKey={refreshKey} />
+            </div>
           </>
         )}
 
@@ -141,11 +146,6 @@ export default function TrackerPage() {
         {/* Biometric correlation chart — always visible */}
         <div className="mt-6">
           <BiometricCorrelation refreshKey={refreshKey} />
-        </div>
-
-        {/* Timeline — always visible */}
-        <div className="mt-6">
-          <Timeline refreshKey={refreshKey} />
         </div>
       </div>
 
