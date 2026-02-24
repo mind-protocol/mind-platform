@@ -79,6 +79,11 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
   const [details, setDetails] = useState<Record<string, unknown>>(DEFAULTS.thc.details);
   const [submitting, setSubmitting] = useState(false);
   const [feedback, setFeedback] = useState('');
+  const [doseWarning, setDoseWarning] = useState<{
+    message: string;
+    suggestions: number[];
+    unit: string;
+  } | null>(null);
 
   const switchTab = useCallback((key: string) => {
     setTab(key);
@@ -89,21 +94,23 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
     setFeedback('');
   }, []);
 
-  const submit = async () => {
+  const submit = async (force = false) => {
     setSubmitting(true);
     setFeedback('');
+    setDoseWarning(null);
     try {
       const unit = tab === 'ketamine'
         ? (details.form === 'spray' ? 'spray' : 'mg')
         : tab === 'cbd'
         ? (details.route === 'vaporized' ? 'chambers' : 'mg')
         : DEFAULTS[tab]?.unit || 'mg';
-      const body = {
+      const body: Record<string, unknown> = {
         substance: tab,
         dose: { amount, unit, details },
         intent,
         notes,
       };
+      if (force) body.force = true;
       const res = await fetch('/api/tracker/log', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -114,6 +121,13 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
         setNotes('');
         onLogged();
         setTimeout(() => setFeedback(''), 2000);
+      } else if (res.status === 422) {
+        const data = await res.json();
+        if (data.warning?.type === 'aberrant_dose') {
+          setDoseWarning(data.warning);
+        } else {
+          setFeedback(data.warning?.message || 'Validation error');
+        }
       } else {
         const err = await res.json();
         setFeedback(err.error || 'Failed');
@@ -839,7 +853,7 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
           />
         </div>
         <button
-          onClick={submit}
+          onClick={() => submit()}
           disabled={submitting || amount <= 0}
           className="px-5 py-2 rounded font-medium text-sm transition disabled:opacity-40"
           style={{ backgroundColor: currentTab.color, color: '#000' }}
@@ -847,6 +861,33 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
           {submitting ? '...' : 'Log'}
         </button>
       </div>
+
+      {/* Aberrant dose warning */}
+      {doseWarning && (
+        <div className="mt-3 border border-amber-500/30 bg-amber-500/5 rounded-lg p-3 space-y-2">
+          <div className="text-sm text-amber-400">{doseWarning.message}</div>
+          <div className="flex flex-wrap gap-2">
+            {doseWarning.suggestions.map((s) => (
+              <button
+                key={s}
+                onClick={() => {
+                  setAmount(s);
+                  setDoseWarning(null);
+                }}
+                className="px-3 py-1.5 rounded text-sm font-medium border border-amber-500/40 text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 transition"
+              >
+                Ah si, {s} {doseWarning.unit}
+              </button>
+            ))}
+            <button
+              onClick={() => submit(true)}
+              className="px-3 py-1.5 rounded text-sm border border-zinc-700 text-zinc-400 hover:text-zinc-200 transition"
+            >
+              Non, {amount} {doseWarning.unit} c&apos;est correct
+            </button>
+          </div>
+        </div>
+      )}
 
       {feedback && (
         <div className="mt-2 text-xs text-zinc-400">{feedback}</div>
