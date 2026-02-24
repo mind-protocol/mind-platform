@@ -38,7 +38,7 @@ const INTENTS: Record<string, string[]> = {
 
 const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<string, unknown> }> = {
   thc: { amount: 1, unit: 'chamber', details: { strain_thc: 22, temp_c: 230 } },
-  cbd: { amount: 1, unit: 'comprimé', details: { form: 'tablet', composition: { cbd_mg: 45, griffonia_mg: 50.5, rhodiola_mg: 30, ashwagandha_mg: 280, magnesium_mg: 117, b6_mg: 1.4 } } },
+  cbd: { amount: 1, unit: 'comprimé', details: { route: 'complex', form: 'tablet' } },
   lions_mane: { amount: 420, unit: 'mg', details: { form: 'capsule', mg_per_capsule: 420 } },
   caffeine: { amount: 150, unit: 'mg', details: { form: 'espresso', shots: 2, milk: true, sugar: 1 } },
   ketamine: { amount: 30, unit: 'mg', details: { form: 'crystal', route: 'intranasal', estimate: 'visual' } },
@@ -200,64 +200,192 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
 
         {tab === 'cbd' && (
           <div className="space-y-3">
-            {/* Tablet count presets */}
+            {/* Route toggle: Complexe / Sublingual / Vaporisé */}
             <div>
-              <label className="text-xs text-zinc-500 block mb-1">Nombre de comprimés</label>
-              <div className="flex flex-wrap gap-1.5">
-                {[1, 2, 3].map((count) => (
+              <label className="text-xs text-zinc-500 block mb-1">Forme</label>
+              <div className="flex gap-2">
+                {([
+                  { key: 'complex', label: '💊 Complexe', desc: 'Comprimé multi-composé' },
+                  { key: 'sublingual', label: '💧 Sublingual', desc: 'Huile CBD' },
+                  { key: 'vaporized', label: '🌿 Vaporisé 230°C', desc: 'Chambre' },
+                ] as const).map((r) => (
                   <button
-                    key={count}
-                    onClick={() => setAmount(count)}
+                    key={r.key}
+                    onClick={() => {
+                      if (r.key === 'complex') {
+                        setDetails({ ...details, route: 'complex', form: 'tablet' });
+                        setAmount(1);
+                      } else if (r.key === 'sublingual') {
+                        setDetails({ ...details, route: 'sublingual', cbd_pct: (details.cbd_pct as number) || 20 });
+                        setAmount(20);
+                      } else {
+                        setDetails({ ...details, route: 'vaporized', cbd_pct: (details.cbd_pct as number) || 7, temp_c: 230 });
+                        setAmount(1);
+                      }
+                    }}
                     className={`px-3 py-1.5 rounded text-sm border transition ${
-                      amount === count
-                        ? 'border-lime-500/50 text-lime-300 bg-lime-500/15'
+                      details.route === r.key
+                        ? 'border-lime-500/50 text-lime-400 bg-lime-500/10'
                         : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
                     }`}
                   >
-                    {count} comprimé{count > 1 ? 's' : ''}
+                    {r.label}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Composition breakdown */}
-            <div className="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-3">
-              <div className="text-xs text-zinc-400 mb-2 font-medium">
-                Composition par comprimé <span className="text-zinc-600">&times; {amount}</span>
-              </div>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-                {[
-                  { name: 'CBD isolat', mg: 45, color: 'text-lime-400' },
-                  { name: 'Griffonia (5-HTP)', mg: 50.5, color: 'text-purple-400' },
-                  { name: 'Rhodiola', mg: 30, color: 'text-rose-400' },
-                  { name: 'Ashwagandha', mg: 280, color: 'text-amber-400' },
-                  { name: 'Magnésium', mg: 117, color: 'text-blue-400', note: '31% AJR' },
-                  { name: 'Vitamine B6', mg: 1.4, color: 'text-teal-400', note: '100% AJR' },
-                ].map((c) => (
-                  <div key={c.name} className="flex items-center justify-between text-xs py-0.5">
-                    <span className={c.color}>{c.name}</span>
-                    <span className="text-zinc-500 font-mono">
-                      {(c.mg * amount).toFixed(c.mg < 2 ? 1 : 0)} mg
-                      {c.note && <span className="text-zinc-600 ml-1">({c.note})</span>}
-                    </span>
+            {/* === COMPLEXE === */}
+            {(details.route === 'complex' || !details.route) && (
+              <>
+                <div>
+                  <label className="text-xs text-zinc-500 block mb-1">Nombre de comprimés</label>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[1, 2, 3].map((count) => (
+                      <button
+                        key={count}
+                        onClick={() => setAmount(count)}
+                        className={`px-3 py-1.5 rounded text-sm border transition ${
+                          amount === count
+                            ? 'border-lime-500/50 text-lime-300 bg-lime-500/15'
+                            : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                        }`}
+                      >
+                        {count} comprimé{count > 1 ? 's' : ''}
+                      </button>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
+                <div className="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-3">
+                  <div className="text-xs text-zinc-400 mb-2 font-medium">
+                    Composition par comprimé <span className="text-zinc-600">&times; {amount}</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                    {[
+                      { name: 'CBD isolat', mg: 45, color: 'text-lime-400' },
+                      { name: 'Griffonia (5-HTP)', mg: 50.5, color: 'text-purple-400' },
+                      { name: 'Rhodiola', mg: 30, color: 'text-rose-400' },
+                      { name: 'Ashwagandha', mg: 280, color: 'text-amber-400' },
+                      { name: 'Magnésium', mg: 117, color: 'text-blue-400', note: '31% AJR' },
+                      { name: 'Vitamine B6', mg: 1.4, color: 'text-teal-400', note: '100% AJR' },
+                    ].map((c) => (
+                      <div key={c.name} className="flex items-center justify-between text-xs py-0.5">
+                        <span className={c.color}>{c.name}</span>
+                        <span className="text-zinc-500 font-mono">
+                          {(c.mg * amount).toFixed(c.mg < 2 ? 1 : 0)} mg
+                          {c.note && <span className="text-zinc-600 ml-1">({c.note})</span>}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    { label: 'Anxiolytique', color: 'border-lime-500/30 text-lime-400/70' },
+                    { label: 'Adaptogène', color: 'border-amber-500/30 text-amber-400/70' },
+                    { label: 'Sérotoninergique', color: 'border-purple-500/30 text-purple-400/70' },
+                    { label: 'Sans THC', color: 'border-zinc-600 text-zinc-500' },
+                  ].map((tag) => (
+                    <span key={tag.label} className={`text-[10px] px-2 py-0.5 rounded-full border ${tag.color}`}>
+                      {tag.label}
+                    </span>
+                  ))}
+                </div>
+              </>
+            )}
 
-            {/* Compound effects summary */}
-            <div className="flex flex-wrap gap-1.5">
-              {[
-                { label: 'Anxiolytique', color: 'border-lime-500/30 text-lime-400/70' },
-                { label: 'Adaptogène', color: 'border-amber-500/30 text-amber-400/70' },
-                { label: 'Sérotoninergique', color: 'border-purple-500/30 text-purple-400/70' },
-                { label: 'Sans THC', color: 'border-zinc-600 text-zinc-500' },
-              ].map((tag) => (
-                <span key={tag.label} className={`text-[10px] px-2 py-0.5 rounded-full border ${tag.color}`}>
-                  {tag.label}
-                </span>
-              ))}
-            </div>
+            {/* === SUBLINGUAL === */}
+            {details.route === 'sublingual' && (
+              <>
+                <div>
+                  <label className="text-xs text-zinc-500 block mb-1">CBD %</label>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[10, 20, 30, 40].map((pct) => (
+                      <button
+                        key={pct}
+                        onClick={() => {
+                          setDetails({ ...details, cbd_pct: pct });
+                          setAmount(pct);
+                        }}
+                        className={`px-2 py-1 rounded text-xs border transition ${
+                          (details.cbd_pct as number) === pct
+                            ? 'border-lime-500/50 text-lime-300 bg-lime-500/15'
+                            : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                        }`}
+                      >
+                        {pct}%
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-xs text-zinc-500 block mb-1">Dose (mg)</label>
+                    <input
+                      type="number"
+                      value={amount}
+                      onChange={(e) => setAmount(Number(e.target.value))}
+                      className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-zinc-500 block mb-1">Gouttes</label>
+                    <input
+                      type="number"
+                      value={(details.drops as number) || 5}
+                      onChange={(e) => setDetails({ ...details, drops: Number(e.target.value) })}
+                      className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* === VAPORISÉ === */}
+            {details.route === 'vaporized' && (
+              <>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-xs text-zinc-500 block mb-1">CBD %</label>
+                    <input
+                      type="number"
+                      value={(details.cbd_pct as number) || 7}
+                      onChange={(e) => setDetails({ ...details, cbd_pct: Number(e.target.value) })}
+                      min={1}
+                      max={100}
+                      className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-zinc-500 block mb-1">Temp °C</label>
+                    <input
+                      type="number"
+                      value={(details.temp_c as number) || 230}
+                      onChange={(e) => setDetails({ ...details, temp_c: Number(e.target.value) })}
+                      className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-xs text-zinc-500 block mb-1">Chambers</label>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[1, 2, 3].map((chambers) => (
+                      <button
+                        key={chambers}
+                        onClick={() => setAmount(chambers)}
+                        className={`px-2 py-1 rounded text-xs border transition ${
+                          amount === chambers
+                            ? 'border-lime-500/50 text-lime-300 bg-lime-500/15'
+                            : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                        }`}
+                      >
+                        {chambers} chamber{chambers > 1 ? 's' : ''} <span className="text-zinc-600">· {(details.cbd_pct as number) || 7}%</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         )}
 
