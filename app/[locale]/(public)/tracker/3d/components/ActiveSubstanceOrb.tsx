@@ -86,6 +86,7 @@ function OrbPosition({
     thc: 0.08,
     cbd: 0.07,         // Slightly slower than THC — calming
     lions_mane: 0.02,  // Very slow — steady supplement
+    caffeine: 0.18,    // Fast, energetic
     ketamine: 0.05,
     lsd: 0.03,        // Slow, expansive orbit
     nicotine: 0.25,    // Fast, jittery
@@ -103,6 +104,7 @@ function OrbPosition({
     thc: 0.5,
     cbd: 0.3,
     lions_mane: 0.2,
+    caffeine: 0.8,     // High up — stimulant energy
     nicotine: 0,
     hydration: -0.5,
     venlafaxine: -1,
@@ -228,6 +230,38 @@ function OrbShape({
             <meshBasicMaterial color={cfg.color} transparent opacity={0.04 + intensity * 0.05} side={THREE.BackSide} />
           </mesh>
           <pointLight color={cfg.color} intensity={intensity * 2} distance={5} decay={2} />
+        </Float>
+      );
+
+    case 'caffeine':
+      return (
+        <Float speed={2.5} rotationIntensity={0.2 * intensity} floatIntensity={0.5 * intensity}>
+          <OrbSpin speed={0.3 + intensity * 0.4}>
+            <mesh scale={scale} rotation={[Math.PI / 2, 0, 0]}>
+              <torusGeometry args={[0.3, 0.12, 12, 24]} />
+              <meshPhysicalMaterial
+                color={cfg.color}
+                emissive={cfg.color}
+                emissiveIntensity={0.4 + intensity * 0.7 + emissiveBoost}
+                metalness={0.2}
+                roughness={0.4}
+                clearcoat={0.5}
+                transparent
+                opacity={0.6 + intensity * 0.35}
+              />
+            </mesh>
+          </OrbSpin>
+          {/* Steam wisps — small bright core */}
+          <mesh scale={scale * 0.2}>
+            <sphereGeometry args={[0.3, 8, 8]} />
+            <meshBasicMaterial color="#fbbf24" transparent opacity={0.3 + intensity * 0.4} />
+          </mesh>
+          {/* Warm aura */}
+          <mesh scale={scale * 1.4}>
+            <sphereGeometry args={[0.3, 10, 10]} />
+            <meshBasicMaterial color={cfg.color} transparent opacity={0.05 + intensity * 0.07} side={THREE.BackSide} />
+          </mesh>
+          <pointLight color={cfg.color} intensity={intensity * 5} distance={7} decay={2} />
         </Float>
       );
 

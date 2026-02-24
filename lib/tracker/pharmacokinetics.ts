@@ -53,6 +53,14 @@ export const PK_PROFILES: Record<SubstanceKey, PKProfile> = {
     decayShape: 'linear',
     steadyState: true,      // Like venlafaxine — always "on" once taken daily
   },
+  caffeine: {
+    onsetMin: 15,           // Espresso absorbed fast
+    peakMin: 45,            // Peak alertness ~45min
+    plateauEndMin: 120,     // 2h solid plateau
+    durationMin: 480,       // ~8h total (half-life ~5-6h)
+    peakIntensity: 0.55,    // Noticeable stimulant, not psychoactive
+    decayShape: 'exponential',
+  },
   ketamine: {
     onsetMin: 5,
     peakMin: 20,
@@ -227,7 +235,7 @@ export function computeAwareness(
   biometrics?: { stress?: number | null; body_battery?: number | null; hr?: number | null },
 ): AwarenessState {
   const substances: Record<string, number> = {};
-  const keys: SubstanceKey[] = ['thc', 'cbd', 'lions_mane', 'ketamine', 'lsd', 'nicotine', 'hydration', 'melatonin', 'venlafaxine', 'prazepam', 'cyamemazine'];
+  const keys: SubstanceKey[] = ['thc', 'cbd', 'lions_mane', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'hydration', 'melatonin', 'venlafaxine', 'prazepam', 'cyamemazine'];
 
   for (const key of keys) {
     // Sum intensities from all recent doses of this substance
@@ -248,7 +256,7 @@ export function computeAwareness(
 
   // Composite loads
   const psychedelicLoad = Math.min(1, sub.lsd * 1.0 + sub.ketamine * 0.8 + sub.thc * 0.4);
-  const stimulantLoad = sub.nicotine;
+  const stimulantLoad = Math.min(1, sub.nicotine + sub.caffeine * 0.7);
   const sedativeLoad = Math.min(1, sub.melatonin + sub.prazepam * 0.8 + sub.cyamemazine * 0.7 + sub.cbd * 0.3);
   const antidepressantBaseline = sub.venlafaxine;
   const hydrationLevel = sub.hydration;
@@ -263,6 +271,7 @@ export function computeAwareness(
     sub.cyamemazine * 0.1 +
     sub.melatonin * 0.05 +
     sub.nicotine * 0.05 +
+    sub.caffeine * 0.03 +
     sub.lions_mane * 0.02
   );
 

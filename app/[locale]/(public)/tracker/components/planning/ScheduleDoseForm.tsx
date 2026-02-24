@@ -7,6 +7,7 @@ const INTENTS: Record<SubstanceKey, string[]> = {
   thc: ['focus', 'relax', 'creative', 'sleep', 'social'],
   cbd: ['relax', 'pain', 'sleep', 'anxiety', 'recovery'],
   lions_mane: ['focus', 'neuroprotection', 'memory', 'daily'],
+  caffeine: ['focus', 'energy', 'morning-ritual', 'social', 'pre-workout'],
   ketamine: ['micro-boost', 'dissociation', 'identity-dissolution'],
   lsd: ['microdose', 'creative', 'introspection', 'therapeutic', 'social'],
   nicotine: ['focus', 'break', 'craving'],

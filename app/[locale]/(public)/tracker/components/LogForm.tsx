@@ -6,6 +6,7 @@ const TABS = [
   { key: 'thc', label: 'THC', color: '#22c55e', icon: '🌿' },
   { key: 'cbd', label: 'CBD', color: '#84cc16', icon: '🌱' },
   { key: 'lions_mane', label: "Lion's Mane", color: '#b45309', icon: '🦁' },
+  { key: 'caffeine', label: 'Caffeine', color: '#d97706', icon: '☕' },
   { key: 'ketamine', label: 'Ketamine', color: '#8b5cf6', icon: '💎' },
   { key: 'lsd', label: 'LSD', color: '#ec4899', icon: '🔮' },
   { key: 'nicotine', label: 'Nicotine', color: '#f59e0b', icon: '💨' },
@@ -20,6 +21,7 @@ const INTENTS: Record<string, string[]> = {
   thc: ['focus', 'relax', 'creative', 'sleep', 'social'],
   cbd: ['relax', 'pain', 'sleep', 'anxiety', 'recovery'],
   lions_mane: ['focus', 'neuroprotection', 'memory', 'daily'],
+  caffeine: ['focus', 'energy', 'morning-ritual', 'social', 'pre-workout'],
   ketamine: ['micro-boost', 'dissociation', 'identity-dissolution'],
   lsd: ['microdose', 'creative', 'introspection', 'therapeutic', 'social'],
   nicotine: ['focus', 'break', 'craving'],
@@ -34,6 +36,7 @@ const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<s
   thc: { amount: 1, unit: 'chamber', details: { strain_thc: 22, temp_c: 230 } },
   cbd: { amount: 20, unit: 'mg', details: { route: 'vaporized', cbd_pct: 7, temp_c: 230 } },
   lions_mane: { amount: 420, unit: 'mg', details: { form: 'capsule', mg_per_capsule: 420 } },
+  caffeine: { amount: 150, unit: 'mg', details: { form: 'espresso', shots: 2, milk: true, sugar: 1 } },
   ketamine: { amount: 30, unit: 'mg', details: { form: 'crystal', route: 'intranasal', estimate: 'visual' } },
   lsd: { amount: 0.5, unit: 'carton', details: { form: 'carton', ug_estimate: 100 } },
   nicotine: { amount: 5, unit: 'puffs', details: { strength_pct: 20, mode: 'ATL' } },
@@ -316,6 +319,77 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
                   </button>
                 );
               })}
+            </div>
+          </div>
+        )}
+
+        {tab === 'caffeine' && (
+          <div className="space-y-3">
+            {/* Espresso presets */}
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Quick dose</label>
+              <div className="flex flex-wrap gap-1.5">
+                {[
+                  { shots: 1, mg: 75, label: 'Simple', desc: 'espresso' },
+                  { shots: 2, mg: 150, label: 'Double', desc: 'espresso' },
+                  { shots: 3, mg: 225, label: 'Triple', desc: 'espresso' },
+                ].map((p) => (
+                  <button
+                    key={p.shots}
+                    onClick={() => {
+                      setAmount(p.mg);
+                      setDetails({ ...details, form: 'espresso', shots: p.shots });
+                    }}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      amount === p.mg && details.form === 'espresso'
+                        ? 'border-amber-500/50 text-amber-300 bg-amber-500/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {p.label} <span className="text-zinc-600">· {p.mg}mg</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Milk + Sugar */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">Lait</label>
+                <div className="flex gap-2">
+                  {[true, false].map((v) => (
+                    <button
+                      key={String(v)}
+                      onClick={() => setDetails({ ...details, milk: v })}
+                      className={`px-3 py-1.5 rounded text-sm border transition ${
+                        details.milk === v
+                          ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
+                          : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      {v ? '🥛 Oui' : 'Non'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">Sucre</label>
+                <div className="flex gap-1.5">
+                  {[0, 1, 2].map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => setDetails({ ...details, sugar: s })}
+                      className={`px-2 py-1.5 rounded text-sm border transition ${
+                        (details.sugar as number) === s
+                          ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
+                          : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      {s === 0 ? 'Sans' : `${s}`}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         )}

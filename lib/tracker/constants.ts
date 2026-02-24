@@ -1,11 +1,11 @@
-export type SubstanceKey = 'thc' | 'cbd' | 'lions_mane' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'prazepam' | 'cyamemazine';
+export type SubstanceKey = 'thc' | 'cbd' | 'lions_mane' | 'caffeine' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'prazepam' | 'cyamemazine';
 
 export interface SubstanceConfig {
   color: string;
   icon: string;
   label: string;
   unit: string;
-  geometry: 'cylinder' | 'octahedron' | 'icosahedron' | 'torus' | 'sphere' | 'capsule' | 'disc' | 'crescent' | 'tetrahedron' | 'dodecahedron' | 'cone';
+  geometry: 'cylinder' | 'octahedron' | 'icosahedron' | 'torus' | 'sphere' | 'capsule' | 'disc' | 'crescent' | 'tetrahedron' | 'dodecahedron' | 'cone' | 'ring';
   laneY: number;
 }
 
@@ -13,6 +13,7 @@ export const SUBSTANCE_CONFIG: Record<SubstanceKey, SubstanceConfig> = {
   thc:         { color: '#22c55e', icon: '\u{1F33F}', label: 'THC',         unit: 'chambers', geometry: 'cylinder',     laneY: 0 },
   cbd:         { color: '#84cc16', icon: '\u{1F331}', label: 'CBD',         unit: 'mg',       geometry: 'dodecahedron', laneY: 1.25 },
   lions_mane:  { color: '#b45309', icon: '\u{1F981}', label: "Lion's Mane", unit: 'mg',       geometry: 'cone',         laneY: 1.75 },
+  caffeine:    { color: '#d97706', icon: '\u{2615}',  label: 'Caffeine',    unit: 'mg',       geometry: 'ring',         laneY: 2.25 },
   ketamine:    { color: '#8b5cf6', icon: '\u{1F48E}', label: 'Ketamine',    unit: 'mg',       geometry: 'octahedron',   laneY: 2.5 },
   lsd:         { color: '#ec4899', icon: '\u{1F52E}', label: 'LSD',         unit: 'ug',       geometry: 'icosahedron',  laneY: 5 },
   nicotine:    { color: '#f59e0b', icon: '\u{1F4A8}', label: 'Nicotine',    unit: 'puffs',    geometry: 'torus',        laneY: 7.5 },
@@ -30,6 +31,7 @@ export const DOSE_RANGES: Record<SubstanceKey, { min: number; max: number }> = {
   thc:         { min: 1, max: 5 },
   cbd:         { min: 5, max: 100 },
   lions_mane:  { min: 420, max: 2520 },
+  caffeine:    { min: 40, max: 400 },
   ketamine:    { min: 15, max: 150 },
   lsd:         { min: 25, max: 200 },
   nicotine:    { min: 1, max: 20 },
