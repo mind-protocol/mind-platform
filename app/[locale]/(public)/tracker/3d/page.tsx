@@ -264,7 +264,11 @@ function AdjustmentPanel({
 
           {/* Sliders */}
           <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 scrollbar-hide">
-            {(Object.keys(ADJUSTMENT_LABELS) as (keyof ImageAdjustments)[]).map((key) => (
+            {(Object.keys(ADJUSTMENT_LABELS) as (keyof ImageAdjustments)[]).map((key) => {
+              const extended = key === 'vignette' || key === 'warmth';
+              const min = extended ? -200 : -100;
+              const max = extended ? 200 : 100;
+              return (
               <div key={key}>
                 <div className="flex items-center justify-between mb-1">
                   <label className="text-[10px] text-zinc-500">{ADJUSTMENT_LABELS[key]}</label>
@@ -274,8 +278,8 @@ function AdjustmentPanel({
                 </div>
                 <input
                   type="range"
-                  min={-100}
-                  max={100}
+                  min={min}
+                  max={max}
                   step={1}
                   value={adjustments[key]}
                   onChange={(e) => handleSlider(key, Number(e.target.value))}
@@ -288,7 +292,8 @@ function AdjustmentPanel({
                     [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer"
                 />
               </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Action buttons */}
