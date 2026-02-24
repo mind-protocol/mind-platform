@@ -280,6 +280,11 @@ export function AwarenessHUD({ className }: { className?: string }) {
                 5-HTP {(awareness.serotonergicSupport * 100).toFixed(0)}%
               </span>
             )}
+            {awareness.neuroprotectiveLoad > 0.05 && (
+              <span style={{ color: '#0ea5e9' }}>
+                Neuro {(awareness.neuroprotectiveLoad * 100).toFixed(0)}%
+              </span>
+            )}
           </div>
         </div>
       )}

@@ -95,6 +95,8 @@ function OrbPosition({
     venlafaxine: 0.02, // Very slow, steady
     prazepam: 0.035,   // Slow, calming
     cyamemazine: 0.03, // Very slow, heavy
+    dynabiane: 0.02,   // Very slow — steady supplement
+    omegabiane: 0.02,  // Very slow — steady supplement
   };
 
   // Vertical offsets — psychedelics float higher, sedatives lower
@@ -111,6 +113,8 @@ function OrbPosition({
     melatonin: -1.5,
     prazepam: -2,
     cyamemazine: -2.5,
+    dynabiane: -0.3,    // Neutral, subtle
+    omegabiane: -0.1,   // Neutral, subtle
   };
 
   useFrame((state) => {
@@ -551,6 +555,60 @@ function OrbShape({
             <meshBasicMaterial color={cfg.color} transparent opacity={0.04 + intensity * 0.05} side={THREE.BackSide} />
           </mesh>
           <pointLight color={cfg.color} intensity={intensity * 4} distance={7} decay={2} />
+        </Float>
+      );
+
+    case 'dynabiane':
+      return (
+        <Float speed={0.5} rotationIntensity={0.05} floatIntensity={0.15}>
+          <OrbSpin speed={0.04}>
+            {/* Pill-shaped capsule */}
+            <mesh scale={scale * 0.8}>
+              <capsuleGeometry args={[0.15, 0.35, 8, 16]} />
+              <meshPhysicalMaterial
+                color={cfg.color}
+                emissive={cfg.color}
+                emissiveIntensity={0.2 + intensity * 0.4 + emissiveBoost}
+                metalness={0.05}
+                roughness={0.6}
+                clearcoat={0.4}
+                transparent
+                opacity={0.5 + intensity * 0.35}
+              />
+            </mesh>
+          </OrbSpin>
+          <mesh scale={scale * 1.3}>
+            <sphereGeometry args={[0.3, 12, 12]} />
+            <meshBasicMaterial color={cfg.color} transparent opacity={0.04 + intensity * 0.05} side={THREE.BackSide} />
+          </mesh>
+          <pointLight color={cfg.color} intensity={intensity * 3} distance={5} decay={2} />
+        </Float>
+      );
+
+    case 'omegabiane':
+      return (
+        <Float speed={0.6} rotationIntensity={0.08} floatIntensity={0.2}>
+          <OrbSpin speed={0.05}>
+            {/* Droplet-like sphere — omega oil */}
+            <mesh scale={[scale * 0.7, scale * 0.9, scale * 0.7]}>
+              <sphereGeometry args={[0.35, 16, 16]} />
+              <meshPhysicalMaterial
+                color={cfg.color}
+                emissive={cfg.color}
+                emissiveIntensity={0.25 + intensity * 0.5 + emissiveBoost}
+                metalness={0.15}
+                roughness={0.3}
+                clearcoat={0.8}
+                transparent
+                opacity={0.55 + intensity * 0.35}
+              />
+            </mesh>
+          </OrbSpin>
+          <mesh scale={scale * 1.3}>
+            <sphereGeometry args={[0.3, 12, 12]} />
+            <meshBasicMaterial color={cfg.color} transparent opacity={0.04 + intensity * 0.05} side={THREE.BackSide} />
+          </mesh>
+          <pointLight color={cfg.color} intensity={intensity * 3} distance={5} decay={2} />
         </Float>
       );
 

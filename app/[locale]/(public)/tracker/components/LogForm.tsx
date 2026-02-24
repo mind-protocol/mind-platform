@@ -15,6 +15,8 @@ const TABS = [
   { key: 'venlafaxine', label: 'Venlafaxine', color: '#14b8a6', icon: '💊' },
   { key: 'prazepam', label: 'Prazepam', color: '#94a3b8', icon: '🫧' },
   { key: 'cyamemazine', label: 'Cyamemazine', color: '#7e22ce', icon: '🌌' },
+  { key: 'dynabiane', label: 'Dynabiane', color: '#10b981', icon: '🧬' },
+  { key: 'omegabiane', label: 'Omegabiane', color: '#0ea5e9', icon: '🐟' },
 ] as const;
 
 const INTENTS: Record<string, string[]> = {
@@ -30,6 +32,8 @@ const INTENTS: Record<string, string[]> = {
   venlafaxine: ['daily', 'morning', 'evening'],
   prazepam: ['anxiety', 'panic', 'sleep', 'as-needed'],
   cyamemazine: ['sleep', 'anxiety', 'as-needed'],
+  dynabiane: ['daily', 'gut-brain', 'immunity', 'mood'],
+  omegabiane: ['daily', 'neuroprotection', 'anti-inflammatory', 'cardiovascular'],
 };
 
 const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<string, unknown> }> = {
@@ -45,6 +49,8 @@ const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<s
   venlafaxine: { amount: 75, unit: 'mg', details: { form: 'capsule', release: 'extended' } },
   prazepam: { amount: 10, unit: 'mg', details: { form: 'sublingual', route: 'sublingual' } },
   cyamemazine: { amount: 25, unit: 'mg', details: { form: 'tablet' } },
+  dynabiane: { amount: 1, unit: 'gélule', details: { form: 'capsule', brand: 'PiLeJe', type: 'probiotic' } },
+  omegabiane: { amount: 1, unit: 'gélule', details: { form: 'capsule', brand: 'PiLeJe', type: 'omega-3' } },
 };
 
 const K_PRESETS = [
@@ -604,6 +610,64 @@ export default function LogForm({ onLogged }: { onLogged: () => void }) {
                   {r === 'sublingual' ? '👅 Sublingual' : '💊 Oral'}
                 </button>
               ))}
+            </div>
+          </div>
+        )}
+
+        {tab === 'dynabiane' && (
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Nombre de gélules</label>
+              <div className="flex flex-wrap gap-1.5">
+                {[1, 2].map((count) => (
+                  <button
+                    key={count}
+                    onClick={() => setAmount(count)}
+                    className={`px-3 py-1.5 rounded text-sm border transition ${
+                      amount === count
+                        ? 'border-emerald-500/50 text-emerald-300 bg-emerald-500/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {count} gélule{count > 1 ? 's' : ''}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-3">
+              <div className="text-xs text-zinc-400 mb-1 font-medium">PiLeJe Dynabiane</div>
+              <div className="text-xs text-zinc-500">
+                Probiotique axe intestin-cerveau — soutien microbiote, humeur, immunité
+              </div>
+            </div>
+          </div>
+        )}
+
+        {tab === 'omegabiane' && (
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Nombre de gélules</label>
+              <div className="flex flex-wrap gap-1.5">
+                {[1, 2, 3].map((count) => (
+                  <button
+                    key={count}
+                    onClick={() => setAmount(count)}
+                    className={`px-3 py-1.5 rounded text-sm border transition ${
+                      amount === count
+                        ? 'border-sky-500/50 text-sky-300 bg-sky-500/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {count} gélule{count > 1 ? 's' : ''}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-3">
+              <div className="text-xs text-zinc-400 mb-1 font-medium">PiLeJe Omegabiane EPA/DHA</div>
+              <div className="text-xs text-zinc-500">
+                Omega-3 haute concentration — neuroprotection, anti-inflammatoire, cardiovasculaire
+              </div>
             </div>
           </div>
         )}

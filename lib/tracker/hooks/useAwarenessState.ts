@@ -20,6 +20,7 @@ export function useAwarenessState(): {
     antidepressantBaseline: 0,
     adaptogenicLoad: 0,
     serotonergicSupport: 0,
+    neuroprotectiveLoad: 0,
     hydrationLevel: 0,
     alterationDepth: 0,
     dominant: null,

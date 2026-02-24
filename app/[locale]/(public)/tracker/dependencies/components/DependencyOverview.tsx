@@ -15,6 +15,8 @@ const SUBSTANCE_META: Record<string, { icon: string; label: string; color: strin
   venlafaxine: { icon: '💊', label: 'Venlafaxine', color: '#14b8a6' },
   prazepam:    { icon: '🫧', label: 'Prazépam',    color: '#94a3b8' },
   cyamemazine: { icon: '🌌', label: 'Cyamémazine', color: '#7e22ce' },
+  dynabiane:   { icon: '🧬', label: 'Dynabiane',   color: '#10b981' },
+  omegabiane:  { icon: '🐟', label: 'Omegabiane',  color: '#0ea5e9' },
 };
 
 const RISK_COLORS = {

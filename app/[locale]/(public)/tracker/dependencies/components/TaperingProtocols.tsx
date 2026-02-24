@@ -14,6 +14,8 @@ const SUBSTANCE_LABELS: Record<string, string> = {
   ketamine: 'Kétamine', lsd: 'LSD', nicotine: 'Nicotine', hydration: 'H2O',
   melatonin: 'Mélatonine', venlafaxine: 'Venlafaxine', prazepam: 'Prazépam',
   cyamemazine: 'Cyamémazine',
+  dynabiane: 'Dynabiane',
+  omegabiane: 'Omegabiane',
 };
 
 interface Props {

@@ -126,6 +126,24 @@ export const PK_PROFILES: Record<SubstanceKey, PKProfile> = {
     peakIntensity: 0.7,
     decayShape: 'linear',
   },
+  dynabiane: {
+    onsetMin: 0,
+    peakMin: 0,
+    plateauEndMin: 0,
+    durationMin: 1440,      // 24h — daily probiotic, steady state
+    peakIntensity: 0.15,    // Very subtle — gut-brain axis, cumulative
+    decayShape: 'linear',
+    steadyState: true,
+  },
+  omegabiane: {
+    onsetMin: 0,
+    peakMin: 0,
+    plateauEndMin: 0,
+    durationMin: 1440,      // 24h — daily omega-3, steady state
+    peakIntensity: 0.15,    // Subtle — structural brain support, not felt acutely
+    decayShape: 'linear',
+    steadyState: true,
+  },
 };
 
 /**
@@ -209,6 +227,8 @@ export interface AwarenessState {
   adaptogenicLoad: number;
   /** Serotonergic support (griffonia 5-HTP + B6 via CBD complex) */
   serotonergicSupport: number;
+  /** Neuroprotective load (omega-3 EPA/DHA + lion's mane NGF) */
+  neuroprotectiveLoad: number;
   /** Hydration level */
   hydrationLevel: number;
   /** Overall consciousness alteration 0-1 */
@@ -239,7 +259,7 @@ export function computeAwareness(
   biometrics?: { stress?: number | null; body_battery?: number | null; hr?: number | null },
 ): AwarenessState {
   const substances: Record<string, number> = {};
-  const keys: SubstanceKey[] = ['thc', 'cbd', 'lions_mane', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'hydration', 'melatonin', 'venlafaxine', 'prazepam', 'cyamemazine'];
+  const keys: SubstanceKey[] = ['thc', 'cbd', 'lions_mane', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'hydration', 'melatonin', 'venlafaxine', 'prazepam', 'cyamemazine', 'dynabiane', 'omegabiane'];
 
   for (const key of keys) {
     // Sum intensities from all recent doses of this substance
@@ -263,10 +283,12 @@ export function computeAwareness(
   const stimulantLoad = Math.min(1, sub.nicotine + sub.caffeine * 0.7 + sub.cbd * 0.1); // Rhodiola mild stimulant
   const sedativeLoad = Math.min(1, sub.melatonin + sub.prazepam * 0.8 + sub.cyamemazine * 0.7 + sub.cbd * 0.35); // CBD + ashwagandha anxiolytic
   const antidepressantBaseline = sub.venlafaxine;
-  // CBD Complex compound loads: ashwagandha (280mg) + rhodiola (30mg) = adaptogenic
-  const adaptogenicLoad = Math.min(1, sub.cbd * 0.8 + sub.lions_mane * 0.15);
-  // CBD Complex compound loads: griffonia 5-HTP (50.5mg) + B6 (1.4mg) = serotonin support
-  const serotonergicSupport = Math.min(1, sub.cbd * 0.6 + sub.venlafaxine * 0.3);
+  // Adaptogenic: ashwagandha (280mg) + rhodiola (30mg) via CBD complex + lion's mane + dynabiane gut-brain
+  const adaptogenicLoad = Math.min(1, sub.cbd * 0.8 + sub.lions_mane * 0.15 + sub.dynabiane * 0.1);
+  // Serotonin support: griffonia 5-HTP (50.5mg) + B6 (1.4mg) via CBD complex + venlafaxine + dynabiane gut-serotonin
+  const serotonergicSupport = Math.min(1, sub.cbd * 0.6 + sub.venlafaxine * 0.3 + sub.dynabiane * 0.1);
+  // Neuroprotective: omega-3 EPA/DHA + lion's mane NGF
+  const neuroprotectiveLoad = Math.min(1, sub.omegabiane * 0.7 + sub.lions_mane * 0.3);
   const hydrationLevel = sub.hydration;
 
   // Overall alteration depth — weighted sum
@@ -280,7 +302,9 @@ export function computeAwareness(
     sub.melatonin * 0.05 +
     sub.nicotine * 0.05 +
     sub.caffeine * 0.03 +
-    sub.lions_mane * 0.02
+    sub.lions_mane * 0.02 +
+    sub.dynabiane * 0.01 +
+    sub.omegabiane * 0.01
   );
 
   // Find dominant
@@ -301,6 +325,7 @@ export function computeAwareness(
     antidepressantBaseline,
     adaptogenicLoad,
     serotonergicSupport,
+    neuroprotectiveLoad,
     hydrationLevel,
     alterationDepth,
     dominant,

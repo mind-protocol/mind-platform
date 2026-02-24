@@ -1,11 +1,11 @@
-export type SubstanceKey = 'thc' | 'cbd' | 'lions_mane' | 'caffeine' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'prazepam' | 'cyamemazine';
+export type SubstanceKey = 'thc' | 'cbd' | 'lions_mane' | 'caffeine' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'prazepam' | 'cyamemazine' | 'dynabiane' | 'omegabiane';
 
 export interface SubstanceConfig {
   color: string;
   icon: string;
   label: string;
   unit: string;
-  geometry: 'cylinder' | 'octahedron' | 'icosahedron' | 'torus' | 'sphere' | 'capsule' | 'disc' | 'crescent' | 'tetrahedron' | 'dodecahedron' | 'cone' | 'ring';
+  geometry: 'cylinder' | 'octahedron' | 'icosahedron' | 'torus' | 'sphere' | 'capsule' | 'disc' | 'crescent' | 'tetrahedron' | 'dodecahedron' | 'cone' | 'ring' | 'pill' | 'droplet';
   laneY: number;
 }
 
@@ -22,6 +22,8 @@ export const SUBSTANCE_CONFIG: Record<SubstanceKey, SubstanceConfig> = {
   venlafaxine: { color: '#14b8a6', icon: '\u{1F48A}', label: 'Venlafaxine', unit: 'mg',       geometry: 'capsule',      laneY: 15 },
   prazepam:    { color: '#94a3b8', icon: '\u{1FAE7}', label: 'Prazepam',    unit: 'mg',       geometry: 'disc',         laneY: 17.5 },
   cyamemazine: { color: '#7e22ce', icon: '\u{1F30C}', label: 'Cyamemazine', unit: 'mg',       geometry: 'tetrahedron',  laneY: 20 },
+  dynabiane:   { color: '#10b981', icon: '\u{1F9EC}', label: 'Dynabiane',   unit: 'gélule',   geometry: 'pill',         laneY: 22.5 },
+  omegabiane:  { color: '#0ea5e9', icon: '\u{1F41F}', label: 'Omegabiane',  unit: 'gélule',   geometry: 'droplet',      laneY: 25 },
 };
 
 export const SUBSTANCE_KEYS = Object.keys(SUBSTANCE_CONFIG) as SubstanceKey[];
@@ -40,6 +42,8 @@ export const DOSE_RANGES: Record<SubstanceKey, { min: number; max: number }> = {
   venlafaxine: { min: 37.5, max: 225 },
   prazepam:    { min: 5, max: 20 },
   cyamemazine: { min: 12.5, max: 100 },
+  dynabiane:   { min: 1, max: 2 },       // 1-2 gélules/jour
+  omegabiane:  { min: 1, max: 3 },       // 1-3 gélules/jour
 };
 
 export function normalizeDose(substance: SubstanceKey, amount: number): number {

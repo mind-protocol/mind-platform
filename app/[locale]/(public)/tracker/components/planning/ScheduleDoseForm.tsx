@@ -16,6 +16,8 @@ const INTENTS: Record<SubstanceKey, string[]> = {
   venlafaxine: ['daily', 'morning', 'evening'],
   prazepam: ['anxiety', 'panic', 'sleep', 'as-needed'],
   cyamemazine: ['sleep', 'anxiety', 'as-needed'],
+  dynabiane: ['daily', 'gut-brain', 'immunity', 'mood'],
+  omegabiane: ['daily', 'neuroprotection', 'anti-inflammatory', 'cardiovascular'],
 };
 
 interface ScheduleDoseFormProps {
