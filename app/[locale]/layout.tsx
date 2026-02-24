@@ -1,8 +1,15 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
-import { SolanaProvider } from '@/components/SolanaProvider';
+import dynamic from 'next/dynamic';
 import type { ReactNode } from 'react';
+
+// Dynamic import prevents wallet adapter SSR hydration mismatch
+// (Phantom/Solflare extensions inject DOM during hydration)
+const SolanaProvider = dynamic(
+  () => import('@/components/SolanaProvider').then(m => ({ default: m.SolanaProvider })),
+  { ssr: false },
+);
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
