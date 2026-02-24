@@ -243,48 +243,21 @@ export default function FloatingKeyboard({
 
   return (
     <group position={position} rotation={rotation} scale={scale} frustumCulled={false}>
-      {/* Base plate — visible glowing surface */}
-      <mesh position={[0, -0.006, kbdDepth / 2 - KEY_UNIT / 2 - 0.01]}>
-        <boxGeometry args={[kbdWidth, 0.005, kbdDepth]} />
-        <meshStandardMaterial
-          color="#0c0c22"
-          roughness={0.85}
-          metalness={0.1}
-          transparent
-          opacity={0.6}
-          emissive="#1a1a40"
-          emissiveIntensity={0.5}
-        />
+      {/* DEBUG: single large magenta box inside FloatingKeyboard group */}
+      <mesh position={[0, 0.05, kbdDepth / 2]} renderOrder={9000}>
+        <boxGeometry args={[kbdWidth, 0.08, kbdDepth]} />
+        <meshBasicMaterial color="#ff00ff" depthTest={false} />
       </mesh>
 
-      {/* Edge glow ring around base plate */}
-      <mesh position={[0, -0.003, kbdDepth / 2 - KEY_UNIT / 2 - 0.01]}>
-        <boxGeometry args={[kbdWidth + 0.015, 0.002, kbdDepth + 0.015]} />
-        <meshBasicMaterial
-          color="#3060cc"
-          transparent
-          opacity={0.2}
-        />
-      </mesh>
+      {/* DEBUG: simple colored boxes for first row of keys (no ExtrudeGeometry) */}
+      {keys.slice(0, 14).map((k, i) => (
+        <mesh key={k.code} position={[k.pos[0] + k.width / 2, 0.05, k.pos[2] + KEY_UNIT / 2]}>
+          <boxGeometry args={[k.width * 0.95, 0.04, KEY_UNIT * 0.95]} />
+          <meshBasicMaterial color={i % 2 === 0 ? '#3388ff' : '#55aaff'} />
+        </mesh>
+      ))}
 
-      {/* Ambient point light — blue underglow (strong) */}
-      <pointLight
-        position={[0, -0.05, kbdDepth / 2 - 0.05]}
-        color="#4080dd"
-        intensity={1.2}
-        distance={2.5}
-        decay={2}
-      />
-      {/* Top light to illuminate key surfaces */}
-      <pointLight
-        position={[0, 0.2, kbdDepth / 2 - 0.05]}
-        color="#3060cc"
-        intensity={0.8}
-        distance={2.0}
-        decay={2}
-      />
-
-      {/* Keys */}
+      {/* Original keys — temporarily kept for comparison */}
       {keys.map((k) => (
         <KeyMesh
           key={k.code}
