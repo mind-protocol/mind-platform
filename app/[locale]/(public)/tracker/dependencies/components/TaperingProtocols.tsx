@@ -23,7 +23,24 @@ interface Props {
 }
 
 export default function TaperingProtocols({ substances, selected, onSelect }: Props) {
-  const [expandedStep, setExpandedStep] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+
+  const toggleExpanded = (key: string) => {
+    setExpanded(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
+  const expandAll = () => {
+    setExpanded(new Set(Object.keys(substances)));
+  };
+
+  const collapseAll = () => {
+    setExpanded(new Set());
+  };
 
   // Show ALL substances that have tapering data
   const allWithTapering = Object.entries(substances).filter(
@@ -54,13 +71,29 @@ export default function TaperingProtocols({ substances, selected, onSelect }: Pr
 
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-      <h2 className="text-lg font-semibold text-amber-400 mb-4">Protocoles de Sevrage</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-semibold text-amber-400">Protocoles de Sevrage</h2>
+        <div className="flex gap-2">
+          <button
+            onClick={expandAll}
+            className="text-xs px-2 py-1 rounded border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition"
+          >
+            Tout ouvrir
+          </button>
+          <button
+            onClick={collapseAll}
+            className="text-xs px-2 py-1 rounded border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition"
+          >
+            Tout fermer
+          </button>
+        </div>
+      </div>
 
       <div className="space-y-3">
         {displayed.map(([key, dep]) => {
           const tap = dep.tapering!;
           const safety = SAFETY_BADGES[tap.safety_level] || SAFETY_BADGES.self_managed;
-          const isExpanded = expandedStep === key;
+          const isExpanded = expanded.has(key);
           const hasSteps = tap.steps.length > 0;
           const label = SUBSTANCE_LABELS[key] || key;
 
@@ -73,7 +106,7 @@ export default function TaperingProtocols({ substances, selected, onSelect }: Pr
               {/* Protocol header */}
               <button
                 onClick={() => {
-                  setExpandedStep(isExpanded ? null : key);
+                  toggleExpanded(key);
                   onSelect(key);
                 }}
                 className="w-full flex items-center justify-between p-4 hover:bg-zinc-800/50 transition text-left"
