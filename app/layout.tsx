@@ -23,8 +23,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const locale = await getLocale();
 
   return (
-    <html lang={locale} className={`${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="font-sans">{children}</body>
+    <html lang={locale} className={`${inter.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+      <body className="font-sans" suppressHydrationWarning>{children}</body>
     </html>
   );
 }
