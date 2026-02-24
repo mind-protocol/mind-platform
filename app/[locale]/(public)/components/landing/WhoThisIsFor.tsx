@@ -1,4 +1,6 @@
-import { getTranslations } from 'next-intl/server';
+'use client';
+
+import { useTranslations } from 'next-intl';
 
 interface DoorProps {
   icon: string;
@@ -16,8 +18,8 @@ function Door({ icon, identity, message }: DoorProps) {
   );
 }
 
-export async function WhoThisIsFor() {
-  const t = await getTranslations('Landing.Doors');
+export function WhoThisIsFor() {
+  const t = useTranslations('Landing.Doors');
 
   const doors: DoorProps[] = [
     { icon: '🕯️', identity: t('door1Identity'), message: t('door1Message') },

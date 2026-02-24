@@ -1,8 +1,10 @@
-import { Link } from '@/i18n/navigation';
-import { getTranslations } from 'next-intl/server';
+'use client';
 
-export async function Hero() {
-  const t = await getTranslations('Landing.Hero');
+import { Link } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
+
+export function Hero() {
+  const t = useTranslations('Landing.Hero');
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-16">

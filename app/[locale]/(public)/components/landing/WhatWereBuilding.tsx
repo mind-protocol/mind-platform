@@ -1,5 +1,7 @@
+'use client';
+
 import { Link } from '@/i18n/navigation';
-import { getTranslations } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 
 interface ProjectCardProps {
   name: string;
@@ -42,8 +44,8 @@ function ProjectCard({ name, tagline, description, status, statusLabel, readMore
   return content;
 }
 
-export async function WhatWereBuilding() {
-  const t = await getTranslations('Landing.Building');
+export function WhatWereBuilding() {
+  const t = useTranslations('Landing.Building');
 
   const projects = [
     {

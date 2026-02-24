@@ -1,8 +1,10 @@
-import { Link } from '@/i18n/navigation';
-import { getTranslations } from 'next-intl/server';
+'use client';
 
-export async function TheInvitation() {
-  const t = await getTranslations('Landing.Invitation');
+import { Link } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
+
+export function TheInvitation() {
+  const t = useTranslations('Landing.Invitation');
 
   return (
     <section id="invitation" className="py-24 px-6 bg-zinc-900/30">

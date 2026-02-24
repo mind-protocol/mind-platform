@@ -1,7 +1,9 @@
-import { getTranslations } from 'next-intl/server';
+'use client';
 
-export async function TheFork() {
-  const t = await getTranslations('Landing.TheFork');
+import { useTranslations } from 'next-intl';
+
+export function TheFork() {
+  const t = useTranslations('Landing.TheFork');
 
   return (
     <section className="py-24 px-6">

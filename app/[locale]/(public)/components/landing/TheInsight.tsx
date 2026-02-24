@@ -1,7 +1,9 @@
-import { getTranslations } from 'next-intl/server';
+'use client';
 
-export async function TheInsight() {
-  const t = await getTranslations('Landing.TheInsight');
+import { useTranslations } from 'next-intl';
+
+export function TheInsight() {
+  const t = useTranslations('Landing.TheInsight');
 
   return (
     <section className="py-24 px-6 bg-zinc-900/30">

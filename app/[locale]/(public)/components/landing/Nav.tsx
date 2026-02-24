@@ -1,8 +1,10 @@
-import { Link } from '@/i18n/navigation';
-import { getTranslations } from 'next-intl/server';
+'use client';
 
-export async function Nav() {
-  const t = await getTranslations('Nav');
+import { Link } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
+
+export function Nav() {
+  const t = useTranslations('Nav');
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-zinc-950/80 backdrop-blur-sm border-b border-zinc-900">
