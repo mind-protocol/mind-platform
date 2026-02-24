@@ -13,11 +13,11 @@ const KEY_HEIGHT = 0.012;    // key thickness (thin chiclet)
 const CORNER_RADIUS = 0.004;
 
 // Colors — cold, subtle, living blue (not neon gaming)
-const BASE_COLOR = new THREE.Color(0x060610);
-const GLOW_COLOR = new THREE.Color(0x5aaaff);   // rgba(90, 170, 255)
+const BASE_COLOR = new THREE.Color(0x0c0c20);
+const GLOW_COLOR = new THREE.Color(0x5aaaff);   // rgba(90, 170, 255) — hit impact
 const HALO_COLOR = new THREE.Color(0x468cff);    // rgba(70, 140, 255) — softer halo
-const IDLE_COLOR = new THREE.Color(0x0a0a18);    // near-invisible idle
-const LABEL_COLOR = '#78a0ff';
+const IDLE_COLOR = new THREE.Color(0x161630);    // visible idle — not invisible
+const LABEL_COLOR = '#8ab4ff';
 
 // ── Neighbor map for glow spill ────────────────────────────────────────
 // Pre-compute adjacency: for each key, which keys are physically next to it
@@ -98,19 +98,19 @@ function KeyMesh({
     const spillGlow = neighborGlow * 0.08; // 8% spill
     const totalGlow = Math.min(1, glow + spillGlow);
 
-    // Emissive: blue glow proportional to activation
+    // Emissive: baseline blue glow + stronger on hit
     matRef.current.emissive.lerpColors(HALO_COLOR, GLOW_COLOR, totalGlow);
-    matRef.current.emissiveIntensity = totalGlow * 3.0;
+    matRef.current.emissiveIntensity = 0.8 + totalGlow * 2.5;
 
-    // Base color: nearly invisible idle → subtle blue on hit
-    matRef.current.color.copy(IDLE_COLOR).lerp(GLOW_COLOR, totalGlow * 0.12);
+    // Base color: visible blue idle → brighter on hit
+    matRef.current.color.copy(IDLE_COLOR).lerp(GLOW_COLOR, 0.1 + totalGlow * 0.25);
 
-    // Opacity: very low idle, rises on hit
-    matRef.current.opacity = 0.08 + totalGlow * 0.6;
+    // Opacity: clearly visible idle, brighter on hit
+    matRef.current.opacity = 0.35 + totalGlow * 0.45;
 
-    // Label opacity follows glow
+    // Label opacity follows glow but always readable
     if (labelRef.current) {
-      labelRef.current.fillOpacity = 0.08 + totalGlow * 0.7;
+      labelRef.current.fillOpacity = 0.35 + totalGlow * 0.5;
     }
 
     // Subtle Y press displacement
@@ -152,12 +152,12 @@ function KeyMesh({
         <meshStandardMaterial
           ref={matRef}
           color={IDLE_COLOR}
-          roughness={0.8}
-          metalness={0.15}
+          roughness={0.65}
+          metalness={0.2}
           emissive={HALO_COLOR}
-          emissiveIntensity={0}
+          emissiveIntensity={0.8}
           transparent
-          opacity={0.08}
+          opacity={0.35}
         />
       </mesh>
       {/* Label */}
@@ -170,7 +170,7 @@ function KeyMesh({
           color={LABEL_COLOR}
           anchorX="center"
           anchorY="middle"
-          fillOpacity={0.08}
+          fillOpacity={0.35}
           font={undefined}
         >
           {label}
@@ -242,25 +242,45 @@ export default function FloatingKeyboard({
   const kbdDepth = AZERTY_ROWS.length * (KEY_UNIT + KEY_GAP) + 0.02;
 
   return (
-    <group position={position} rotation={rotation} scale={scale}>
-      {/* Base plate — very subtle, semi-transparent */}
+    <group position={position} rotation={rotation} scale={scale} frustumCulled={false}>
+      {/* Base plate — visible glowing surface */}
       <mesh position={[0, -0.006, kbdDepth / 2 - KEY_UNIT / 2 - 0.01]}>
-        <boxGeometry args={[kbdWidth, 0.004, kbdDepth]} />
+        <boxGeometry args={[kbdWidth, 0.005, kbdDepth]} />
         <meshStandardMaterial
-          color="#030308"
-          roughness={0.95}
-          metalness={0.05}
+          color="#0c0c22"
+          roughness={0.85}
+          metalness={0.1}
           transparent
-          opacity={0.3}
+          opacity={0.6}
+          emissive="#1a1a40"
+          emissiveIntensity={0.5}
         />
       </mesh>
 
-      {/* Ambient point light — subtle blue underglow */}
+      {/* Edge glow ring around base plate */}
+      <mesh position={[0, -0.003, kbdDepth / 2 - KEY_UNIT / 2 - 0.01]}>
+        <boxGeometry args={[kbdWidth + 0.015, 0.002, kbdDepth + 0.015]} />
+        <meshBasicMaterial
+          color="#3060cc"
+          transparent
+          opacity={0.2}
+        />
+      </mesh>
+
+      {/* Ambient point light — blue underglow (strong) */}
       <pointLight
         position={[0, -0.05, kbdDepth / 2 - 0.05]}
-        color="#3060aa"
-        intensity={0.15}
-        distance={1.5}
+        color="#4080dd"
+        intensity={1.2}
+        distance={2.5}
+        decay={2}
+      />
+      {/* Top light to illuminate key surfaces */}
+      <pointLight
+        position={[0, 0.2, kbdDepth / 2 - 0.05]}
+        color="#3060cc"
+        intensity={0.8}
+        distance={2.0}
         decay={2}
       />
 

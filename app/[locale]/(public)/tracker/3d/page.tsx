@@ -7,6 +7,7 @@ import RangeSelector from './components/RangeSelector';
 import Legend from './components/Legend';
 import EnvironmentManager from '../components/EnvironmentManager';
 import { useKeyboardSound } from '@/lib/tracker/hooks/useKeyboardSound';
+import { KEYBOARD_DEBUG } from '@/lib/tracker/hooks/useKeyboardReactive';
 
 const TemporalScene = dynamic(
   () => import('./components/TemporalScene'),
@@ -90,6 +91,7 @@ const PRESETS: { name: string; values: ImageAdjustments }[] = [
 ];
 
 const STORAGE_KEY = 'awareness-mirror-adjustments';
+const CUSTOM_PRESETS_KEY = 'awareness-mirror-custom-presets';
 
 function loadAdjustments(): ImageAdjustments {
   if (typeof window === 'undefined') return { ...DEFAULT_ADJUSTMENTS };
@@ -137,40 +139,82 @@ function AdjustmentPanel({
   onSave,
   onReset,
   onCancel,
+  chromeVisible = true,
 }: {
   adjustments: ImageAdjustments;
   onChange: (adj: ImageAdjustments) => void;
   onSave: () => void;
   onReset: () => void;
   onCancel: () => void;
+  chromeVisible?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [activePreset, setActivePreset] = useState<string | null>(null);
+  const [saveConfirm, setSaveConfirm] = useState(false);
+  const [showSaveAs, setShowSaveAs] = useState(false);
+  const [presetName, setPresetName] = useState('');
+  const [customPresets, setCustomPresets] = useState<{ name: string; values: ImageAdjustments }[]>(() => {
+    if (typeof window === 'undefined') return [];
+    try {
+      const saved = localStorage.getItem(CUSTOM_PRESETS_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
 
   const handleSlider = (key: keyof ImageAdjustments, value: number) => {
     onChange({ ...adjustments, [key]: value });
     setActivePreset(null);
   };
 
-  const applyPreset = (preset: typeof PRESETS[number]) => {
+  const applyPreset = (preset: { name: string; values: ImageAdjustments }) => {
     onChange({ ...preset.values });
     setActivePreset(preset.name);
+  };
+
+  const handleSave = () => {
+    onSave();
+    setSaveConfirm(true);
+    setTimeout(() => setSaveConfirm(false), 2000);
+  };
+
+  const handleSaveAsPreset = () => {
+    if (!presetName.trim()) return;
+    const newPreset = { name: presetName.trim(), values: { ...adjustments } };
+    const updated = [...customPresets.filter(p => p.name !== newPreset.name), newPreset];
+    setCustomPresets(updated);
+    localStorage.setItem(CUSTOM_PRESETS_KEY, JSON.stringify(updated));
+    setActivePreset(newPreset.name);
+    setShowSaveAs(false);
+    setPresetName('');
+    // Also save as current
+    onSave();
+    setSaveConfirm(true);
+    setTimeout(() => setSaveConfirm(false), 2000);
+  };
+
+  const deleteCustomPreset = (name: string) => {
+    const updated = customPresets.filter(p => p.name !== name);
+    setCustomPresets(updated);
+    localStorage.setItem(CUSTOM_PRESETS_KEY, JSON.stringify(updated));
+    if (activePreset === name) setActivePreset(null);
   };
 
   const isDefault = Object.entries(adjustments).every(
     ([k, v]) => v === DEFAULT_ADJUSTMENTS[k as keyof ImageAdjustments]
   );
 
+  const allPresets = [...PRESETS, ...customPresets];
+
   return (
     <>
       {/* Toggle button — right edge, vertically centered */}
       <button
         onClick={() => setOpen(!open)}
-        className={`fixed right-0 top-1/2 -translate-y-1/2 z-[60] px-1.5 py-4 rounded-l-lg border border-r-0 transition-all ${
+        className={`fixed right-0 top-1/2 -translate-y-1/2 z-[60] px-1.5 py-4 rounded-l-lg border border-r-0 transition-all duration-500 ${
           open
             ? 'bg-purple-500/20 border-purple-500/30 text-purple-400'
             : 'bg-zinc-900/80 border-zinc-800 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/80'
-        }`}
+        } ${!open && !chromeVisible ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
         title="Image adjustments"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -195,19 +239,26 @@ function AdjustmentPanel({
           <div className="px-4 py-3 border-b border-zinc-800/50">
             <div className="text-[10px] uppercase tracking-wider text-zinc-600 mb-2">Presets</div>
             <div className="flex flex-wrap gap-1.5">
-              {PRESETS.map((p) => (
-                <button
-                  key={p.name}
-                  onClick={() => applyPreset(p)}
-                  className={`px-2 py-1 rounded text-[10px] border transition ${
-                    activePreset === p.name
-                      ? 'border-purple-500/50 text-purple-400 bg-purple-500/10'
-                      : 'border-zinc-800 text-zinc-500 hover:text-zinc-300 hover:border-zinc-700'
-                  }`}
-                >
-                  {p.name}
-                </button>
-              ))}
+              {allPresets.map((p) => {
+                const isCustom = customPresets.some(c => c.name === p.name);
+                return (
+                  <button
+                    key={p.name}
+                    onClick={() => applyPreset(p)}
+                    onContextMenu={isCustom ? (e) => { e.preventDefault(); deleteCustomPreset(p.name); } : undefined}
+                    className={`px-2 py-1 rounded text-[10px] border transition ${
+                      activePreset === p.name
+                        ? 'border-purple-500/50 text-purple-400 bg-purple-500/10'
+                        : isCustom
+                          ? 'border-cyan-800/50 text-cyan-500 hover:text-cyan-300 hover:border-cyan-700'
+                          : 'border-zinc-800 text-zinc-500 hover:text-zinc-300 hover:border-zinc-700'
+                    }`}
+                    title={isCustom ? 'Right-click to delete' : undefined}
+                  >
+                    {p.name}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -242,12 +293,46 @@ function AdjustmentPanel({
 
           {/* Action buttons */}
           <div className="px-4 py-3 border-t border-zinc-800/50 space-y-2">
+            {/* Save as Preset input */}
+            {showSaveAs ? (
+              <div className="flex gap-1.5">
+                <input
+                  type="text"
+                  value={presetName}
+                  onChange={(e) => setPresetName(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') handleSaveAsPreset(); if (e.key === 'Escape') setShowSaveAs(false); }}
+                  placeholder="Preset name..."
+                  autoFocus
+                  className="flex-1 px-2 py-1.5 rounded text-[10px] bg-zinc-900 border border-zinc-700 text-zinc-300 placeholder-zinc-600 focus:outline-none focus:border-cyan-600"
+                />
+                <button
+                  onClick={handleSaveAsPreset}
+                  disabled={!presetName.trim()}
+                  className="px-2 py-1.5 rounded text-[10px] bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/30 disabled:opacity-30"
+                >
+                  Save
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowSaveAs(true)}
+                disabled={isDefault}
+                className="w-full py-1.5 rounded text-[10px] transition border border-dashed border-zinc-700 text-zinc-500 hover:text-cyan-400 hover:border-cyan-700 disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                Save as Preset...
+              </button>
+            )}
+
             <button
-              onClick={onSave}
+              onClick={handleSave}
               disabled={isDefault}
-              className="w-full py-2 rounded text-xs font-medium transition bg-purple-500/20 text-purple-400 border border-purple-500/30 hover:bg-purple-500/30 disabled:opacity-30 disabled:cursor-not-allowed"
+              className={`w-full py-2 rounded text-xs font-medium transition border ${
+                saveConfirm
+                  ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                  : 'bg-purple-500/20 text-purple-400 border-purple-500/30 hover:bg-purple-500/30'
+              } disabled:opacity-30 disabled:cursor-not-allowed`}
             >
-              Enregistrer
+              {saveConfirm ? 'Saved' : 'Enregistrer'}
             </button>
             <div className="flex gap-2">
               <button
@@ -271,6 +356,75 @@ function AdjustmentPanel({
   );
 }
 
+// ── Keyboard Debug Panel (Shift+D) ────────────────────────────────────
+function KeyboardDebugPanel() {
+  const [, forceUpdate] = useState(0);
+
+  // Poll debug stats at 10fps (no re-render storm)
+  useEffect(() => {
+    const id = setInterval(() => forceUpdate(n => n + 1), 100);
+    return () => clearInterval(id);
+  }, []);
+
+  const d = KEYBOARD_DEBUG;
+  const bar = (val: number, max: number = 1, color: string = '#5aaaff') => {
+    const pct = Math.min(100, (val / max) * 100);
+    return (
+      <div className="w-20 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+        <div className="h-full rounded-full transition-all duration-100" style={{ width: `${pct}%`, backgroundColor: color }} />
+      </div>
+    );
+  };
+
+  return (
+    <div className="fixed top-14 left-4 z-[70] bg-zinc-950/95 backdrop-blur-md border border-zinc-800 rounded-lg p-3 font-mono text-[10px] text-zinc-400 space-y-1.5 min-w-[200px]">
+      <div className="text-[9px] uppercase tracking-wider text-zinc-600 mb-2">Keyboard Debug</div>
+
+      <div className="flex items-center justify-between">
+        <span>mic</span>
+        <span className={d.listening ? 'text-green-400' : 'text-zinc-700'}>{d.listening ? 'ON' : 'OFF'}</span>
+      </div>
+      <div className="flex items-center justify-between">
+        <span>typing</span>
+        <span className={d.isTyping ? 'text-blue-400' : 'text-zinc-700'}>{d.isTyping ? 'YES' : 'no'}</span>
+      </div>
+      <div className="flex items-center justify-between gap-2">
+        <span>noise floor</span>
+        {bar(d.noiseFloor, 0.1, '#6b7280')}
+        <span className="w-10 text-right">{d.noiseFloor.toFixed(4)}</span>
+      </div>
+      <div className="flex items-center justify-between gap-2">
+        <span>rms</span>
+        {bar(d.rms, 0.2, '#8b5cf6')}
+        <span className="w-10 text-right">{d.rms.toFixed(4)}</span>
+      </div>
+      <div className="flex items-center justify-between gap-2">
+        <span>hf energy</span>
+        {bar(d.hfEnergy, 0.5, '#06b6d4')}
+        <span className="w-10 text-right">{d.hfEnergy.toFixed(3)}</span>
+      </div>
+      <div className="flex items-center justify-between gap-2">
+        <span>threshold</span>
+        {bar(d.threshold, 0.2, '#f59e0b')}
+        <span className="w-10 text-right">{d.threshold.toFixed(4)}</span>
+      </div>
+      <div className="flex items-center justify-between gap-2">
+        <span>audio int.</span>
+        {bar(d.audioIntensity, 1, '#5aaaff')}
+        <span className="w-10 text-right">{d.audioIntensity.toFixed(3)}</span>
+      </div>
+      <div className="flex items-center justify-between">
+        <span>active keys</span>
+        <span className="text-blue-400">{d.activeKeys}</span>
+      </div>
+      <div className="flex items-center justify-between">
+        <span>cooldown</span>
+        <span>{d.cooldownMs}ms</span>
+      </div>
+    </div>
+  );
+}
+
 // ── Main Page ──────────────────────────────────────────────────────────
 export default function Tracker3DPage() {
   const [mode, setMode] = useState<ViewMode>('mirror');
@@ -291,23 +445,34 @@ export default function Tracker3DPage() {
   });
   useKeyboardSound({ enabled: soundEnabled, volume: soundVolume });
 
-  // Auto-hide chrome (overlays) after 3s of mouse inactivity
+  // Auto-hide chrome (overlays) after inactivity
   const [chromeVisible, setChromeVisible] = useState(true);
+  const [debugPanel, setDebugPanel] = useState(false);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout>>();
   useEffect(() => {
+    const HIDE_DELAY = 4000; // 4s after last mouse activity
     const show = () => {
       setChromeVisible(true);
       clearTimeout(hideTimerRef.current);
-      hideTimerRef.current = setTimeout(() => setChromeVisible(false), 3000);
+      hideTimerRef.current = setTimeout(() => setChromeVisible(false), HIDE_DELAY);
     };
-    // Start the timer immediately
-    hideTimerRef.current = setTimeout(() => setChromeVisible(false), 3000);
+    // Shift+D toggles debug panel
+    const onKey = (e: KeyboardEvent) => {
+      if (e.shiftKey && e.code === 'KeyD') {
+        e.preventDefault();
+        setDebugPanel(prev => !prev);
+      }
+    };
+    // Initial: show chrome for 8s on first load
+    hideTimerRef.current = setTimeout(() => setChromeVisible(false), 8000);
     window.addEventListener('mousemove', show);
     window.addEventListener('mousedown', show);
+    window.addEventListener('keydown', onKey);
     return () => {
       clearTimeout(hideTimerRef.current);
       window.removeEventListener('mousemove', show);
       window.removeEventListener('mousedown', show);
+      window.removeEventListener('keydown', onKey);
     };
   }, []);
 
@@ -364,8 +529,8 @@ export default function Tracker3DPage() {
         />
       )}
 
-      {/* Overlays */}
-      <div className="fixed top-4 left-4 flex items-center gap-3 z-[52]">
+      {/* Overlays — auto-hide after 3s of inactivity */}
+      <div className={`fixed top-4 left-4 flex items-center gap-3 z-[52] transition-opacity duration-500 ${chromeVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         <Link
           href="/tracker"
           className="text-xs text-zinc-500 hover:text-zinc-300 transition bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-lg px-3 py-1.5"
@@ -400,34 +565,34 @@ export default function Tracker3DPage() {
 
       {/* Environment manager — top right in mirror mode */}
       {mode === 'mirror' && (
-        <div className="fixed top-4 right-4 z-[52]">
+        <div className={`fixed top-4 right-4 z-[52] transition-opacity duration-500 ${chromeVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <EnvironmentManager />
         </div>
       )}
 
       {/* Timeline controls — only show in timeline mode */}
       {mode === 'timeline' && (
-        <div className="fixed top-4 right-4 z-[52]">
+        <div className={`fixed top-4 right-4 z-[52] transition-opacity duration-500 ${chromeVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <RangeSelector days={days} onChange={setDays} />
         </div>
       )}
 
       {/* Awareness HUD — shows in mirror mode */}
       {mode === 'mirror' && (
-        <div className="fixed bottom-4 left-4 z-[52]">
+        <div className={`fixed bottom-4 left-4 z-[52] transition-opacity duration-500 ${chromeVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <AwarenessHUD />
         </div>
       )}
 
       {/* Legend — shows in timeline mode */}
       {mode === 'timeline' && (
-        <div className="fixed bottom-4 left-4 z-[52]">
+        <div className={`fixed bottom-4 left-4 z-[52] transition-opacity duration-500 ${chromeVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <Legend />
         </div>
       )}
 
       {/* Sound toggle + Controls hint */}
-      <div className="fixed bottom-4 right-4 z-[52] flex items-center gap-3">
+      <div className={`fixed bottom-4 right-4 z-[52] flex items-center gap-3 transition-opacity duration-500 ${chromeVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         <div className="flex items-center gap-2">
           <button
             onClick={() => {
@@ -492,7 +657,11 @@ export default function Tracker3DPage() {
         onSave={handleSave}
         onReset={handleReset}
         onCancel={handleCancel}
+        chromeVisible={chromeVisible}
       />
+
+      {/* Keyboard Debug Panel (Shift+D) */}
+      {debugPanel && <KeyboardDebugPanel />}
     </div>
   );
 }

@@ -105,6 +105,27 @@ interface UseKeyboardReactiveOptions {
   decayRate?: number;    // glow decay per second (default: 5 = full decay in ~200ms)
 }
 
+// ── Debug stats (readable from outside for debug panel) ─────────────
+export interface KeyboardDebugStats {
+  noiseFloor: number;
+  audioIntensity: number;
+  threshold: number;
+  rms: number;
+  hfEnergy: number;
+  activeKeys: number;
+  listening: boolean;
+  cooldownMs: number;
+  lastTypingTime: number;
+  isTyping: boolean;
+}
+
+// Module-level singleton — readable from any component without context
+export const KEYBOARD_DEBUG: KeyboardDebugStats = {
+  noiseFloor: 0.01, audioIntensity: 0, threshold: 0.03,
+  rms: 0, hfEnergy: 0, activeKeys: 0, listening: false,
+  cooldownMs: 30, lastTypingTime: 0, isTyping: false,
+};
+
 export function useKeyboardReactive({
   enabled = true,
   micEnabled = false,
@@ -126,6 +147,16 @@ export function useKeyboardReactive({
 
   // Last audio intensity for hybrid mode
   const lastAudioIntensityRef = useRef(0);
+
+  // Debug stats ref (read by debug panel, no re-renders)
+  const debugRef = useRef<KeyboardDebugStats>({
+    noiseFloor: 0.01, audioIntensity: 0, threshold: 0.03,
+    rms: 0, hfEnergy: 0, activeKeys: 0, listening: false,
+    cooldownMs: 30, lastTypingTime: 0, isTyping: false,
+  });
+
+  // Track last typing time for Focus Typing mode
+  const lastTypingRef = useRef(0);
 
   // Initialize key states
   useEffect(() => {
@@ -149,12 +180,22 @@ export function useKeyboardReactive({
 
   // Decay all keys (call this in useFrame with delta)
   const decayKeys = useCallback((delta: number) => {
+    let active = 0;
     keyStatesRef.current.forEach((state) => {
       if (state.glow > 0) {
         state.glow = Math.max(0, state.glow - decayRate * delta);
+        if (state.glow > 0.01) active++;
       }
     });
-  }, [decayRate]);
+    debugRef.current.activeKeys = active;
+    debugRef.current.listening = listening;
+    const now = performance.now();
+    const typing = (now - lastTypingRef.current) < 1500;
+    debugRef.current.isTyping = typing;
+    debugRef.current.lastTypingTime = lastTypingRef.current;
+    // Mirror to module singleton for external readers
+    Object.assign(KEYBOARD_DEBUG, debugRef.current);
+  }, [decayRate, listening]);
 
   // ── Audio analysis loop ──
   const audioLoop = useCallback(() => {
@@ -197,6 +238,18 @@ export function useKeyboardReactive({
       // Decay audio intensity
       lastAudioIntensityRef.current *= 0.9;
     }
+
+    // Update debug stats (no re-render, just ref mutation)
+    debugRef.current.noiseFloor = nf;
+    debugRef.current.audioIntensity = lastAudioIntensityRef.current;
+    debugRef.current.threshold = threshold;
+    debugRef.current.rms = rms;
+    debugRef.current.hfEnergy = hf;
+    KEYBOARD_DEBUG.noiseFloor = nf;
+    KEYBOARD_DEBUG.audioIntensity = lastAudioIntensityRef.current;
+    KEYBOARD_DEBUG.threshold = threshold;
+    KEYBOARD_DEBUG.rms = rms;
+    KEYBOARD_DEBUG.hfEnergy = hf;
 
     rafIdRef.current = requestAnimationFrame(audioLoop);
   }, []);
@@ -253,6 +306,22 @@ export function useKeyboardReactive({
     return () => { if (listening) stopMic(); };
   }, [micEnabled, enabled, listening, stopMic]);
 
+  // Resume AudioContext when tab regains focus (browsers suspend it on background)
+  useEffect(() => {
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible' && audioCtxRef.current?.state === 'suspended') {
+        audioCtxRef.current.resume().then(() => {
+          // Restart analysis loop if it died
+          if (listening && !rafIdRef.current) {
+            rafIdRef.current = requestAnimationFrame(audioLoop);
+          }
+        }).catch(() => { /* ignore resume failure */ });
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, [listening, audioLoop]);
+
   // ── Keyboard event handlers ──
   useEffect(() => {
     if (!enabled) return;
@@ -266,6 +335,7 @@ export function useKeyboardReactive({
         ? Math.max(0.4, Math.min(1, 0.3 + audioIntensity * 0.7))
         : 0.6 + Math.random() * 0.3; // subtle variation without mic
       activateKey(e.code, velocity);
+      lastTypingRef.current = performance.now();
     };
 
     const onKeyUp = (e: KeyboardEvent) => {
@@ -300,5 +370,7 @@ export function useKeyboardReactive({
     listening,
     startMic,
     stopMic,
+    debugRef,
+    lastTypingRef,
   };
 }

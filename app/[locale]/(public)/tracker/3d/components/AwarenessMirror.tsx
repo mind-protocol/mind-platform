@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useMemo } from 'react';
+import { useRef, useState, useMemo, useCallback, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Canvas } from '@react-three/fiber';
 import { PerformanceMonitor, Environment } from '@react-three/drei';
@@ -15,13 +15,13 @@ import ActiveSubstanceOrb from './ActiveSubstanceOrb';
 import BiometricField from './BiometricField';
 import FloatingKeyboard from './FloatingKeyboard';
 import EnvironmentRenderer from './environments/EnvironmentRenderer';
-import { useKeyboardReactive } from '@/lib/tracker/hooks/useKeyboardReactive';
+import { useKeyboardReactive, type KeyboardDebugStats } from '@/lib/tracker/hooks/useKeyboardReactive';
 
 export default function AwarenessMirror() {
   const { awareness, loading } = useAwarenessState();
   const { active: activeEnv } = useEnvironments();
   const [dpr, setDpr] = useState<number>(1.5);
-  const { keyStatesRef, decayKeys } = useKeyboardReactive({ enabled: true });
+  const { keyStatesRef, decayKeys, debugRef, lastTypingRef, listening, startMic, stopMic } = useKeyboardReactive({ enabled: true });
 
   // Determine which substances are currently active
   const activeSubstances = useMemo(() => {
@@ -113,9 +113,9 @@ export default function AwarenessMirror() {
         <FloatingKeyboard
           keyStatesRef={keyStatesRef}
           decayKeys={decayKeys}
-          position={[0, -2.5, 2]}
+          position={[0, -1.5, 7]}
           rotation={[-0.35, 0, 0]}
-          scale={1.2}
+          scale={2.0}
         />
       </group>
     </Canvas>
@@ -208,10 +208,56 @@ function CursorGlow({ awareness }: { awareness: AwarenessState }) {
   );
 }
 
-/** Mini Awareness HUD — glowing dots with collapse */
+/** Mini Awareness HUD — glowing dots with collapse, resizable */
+const HUD_WIDTH_KEY = 'awareness-hud-width';
+const DEFAULT_HUD_WIDTH = 200;
+const MIN_HUD_WIDTH = 120;
+const MAX_HUD_WIDTH = 420;
+
 export function AwarenessHUD({ className }: { className?: string }) {
   const { awareness } = useAwarenessState();
   const [collapsed, setCollapsed] = useState(false);
+  const [panelWidth, setPanelWidth] = useState(DEFAULT_HUD_WIDTH);
+  const widthRef = useRef(DEFAULT_HUD_WIDTH);
+  const resizingRef = useRef(false);
+
+  // Load saved width on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(HUD_WIDTH_KEY);
+      if (saved) {
+        const w = Math.max(MIN_HUD_WIDTH, Math.min(MAX_HUD_WIDTH, parseInt(saved, 10)));
+        setPanelWidth(w);
+        widthRef.current = w;
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  const onResizeStart = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    resizingRef.current = true;
+    const startX = e.clientX;
+    const startW = widthRef.current;
+
+    const onMove = (ev: MouseEvent) => {
+      if (!resizingRef.current) return;
+      const delta = ev.clientX - startX;
+      const next = Math.max(MIN_HUD_WIDTH, Math.min(MAX_HUD_WIDTH, startW + delta));
+      widthRef.current = next;
+      setPanelWidth(next);
+    };
+
+    const onUp = () => {
+      resizingRef.current = false;
+      localStorage.setItem(HUD_WIDTH_KEY, String(widthRef.current));
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+    };
+
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+  }, []);
 
   const activeSubstances = SUBSTANCE_KEYS.filter(k => awareness.substances[k] > 0.02);
 
@@ -289,17 +335,31 @@ export function AwarenessHUD({ className }: { className?: string }) {
   }
 
   return (
-    <div className={`bg-zinc-900/60 backdrop-blur-sm border border-zinc-800/50 rounded-lg p-2.5 max-w-[200px] ${className || ''}`}>
+    <div
+      className={`bg-zinc-900/60 backdrop-blur-sm border border-zinc-800/50 rounded-lg p-2.5 relative ${className || ''}`}
+      style={{ width: panelWidth }}
+    >
+      {/* Right-edge resize handle */}
+      <div
+        onMouseDown={onResizeStart}
+        className="absolute top-0 right-0 w-1.5 h-full cursor-ew-resize group z-10 rounded-r-lg"
+        title="Drag to resize"
+      >
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0.5 h-8 rounded-full bg-zinc-700/0 group-hover:bg-zinc-500/60 transition-colors" />
+      </div>
       {/* Header with collapse button */}
       <div className="flex items-center justify-between mb-2">
         <div className="text-[9px] uppercase tracking-wider text-zinc-600">Awareness</div>
-        <button
-          onClick={() => setCollapsed(true)}
-          className="text-zinc-700 hover:text-zinc-400 transition text-[10px] px-1"
-          title="Collapse"
-        >
-          &lsaquo;
-        </button>
+        <div className="flex items-center gap-1">
+          <span className="text-[8px] text-zinc-800 font-mono">{panelWidth}px</span>
+          <button
+            onClick={() => setCollapsed(true)}
+            className="text-zinc-700 hover:text-zinc-400 transition text-[10px] px-1"
+            title="Collapse"
+          >
+            &lsaquo;
+          </button>
+        </div>
       </div>
 
       {/* Biometric vitals — compact row with dots */}
