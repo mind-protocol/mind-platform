@@ -15,7 +15,7 @@ import ScheduleDoseForm from './components/planning/ScheduleDoseForm';
 import type { SubstanceKey } from '@/lib/tracker/constants';
 
 // Category filters
-const BODY_SUBSTANCES = ['hydration', 'lions_mane', 'dynabiane', 'omegabiane', 'venlafaxine', 'prazepam', 'cyamemazine', 'melatonin'];
+const BODY_SUBSTANCES = ['hydration', 'lions_mane', 'dynabiane', 'omegabiane', 'venlafaxine', 'prazepam', 'cyamemazine', 'melatonin', 'yoga'];
 const RECREATIONAL_SUBSTANCES = ['thc', 'cbd', 'caffeine', 'ketamine', 'lsd', 'nicotine'];
 
 export default function TrackerPage() {

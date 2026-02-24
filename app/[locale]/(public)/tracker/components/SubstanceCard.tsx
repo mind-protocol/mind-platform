@@ -29,6 +29,7 @@ const SUBSTANCES = [
   { key: 'cyamemazine', label: 'Cya', color: '#7e22ce', icon: '🌌' },
   { key: 'dynabiane', label: 'Dyna', color: '#10b981', icon: '🧬' },
   { key: 'omegabiane', label: 'Omega', color: '#0ea5e9', icon: '🐟' },
+  { key: 'yoga', label: 'Yoga', color: '#f472b6', icon: '🧘' },
 ] as const;
 
 function timeSince(ts: string): string {

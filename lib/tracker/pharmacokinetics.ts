@@ -144,6 +144,14 @@ export const PK_PROFILES: Record<SubstanceKey, PKProfile> = {
     decayShape: 'linear',
     steadyState: true,
   },
+  yoga: {
+    onsetMin: 0,
+    peakMin: 5,
+    plateauEndMin: 30,      // During session
+    durationMin: 120,       // ANS effects last ~2h post-session
+    peakIntensity: 0.5,     // Moderate — body practice, not chemical
+    decayShape: 'linear',
+  },
 };
 
 /**

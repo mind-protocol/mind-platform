@@ -32,6 +32,7 @@ const SUB_CONFIG: Record<string, { color: string; icon: string; label: string }>
   cyamemazine: { color: '#7e22ce', icon: '🌌', label: 'Cya' },
   dynabiane: { color: '#10b981', icon: '🧬', label: 'Dyna' },
   omegabiane: { color: '#0ea5e9', icon: '🐟', label: 'Omega' },
+  yoga: { color: '#f472b6', icon: '🧘', label: 'Yoga' },
 };
 
 function formatTime(ts: string): string {
@@ -85,6 +86,10 @@ function doseLabel(entry: LogEntry): string {
   }
   if (substance === 'dynabiane') return `${amt} gélule${amt > 1 ? 's' : ''}`;
   if (substance === 'omegabiane') return `${amt} gélule${amt > 1 ? 's' : ''}`;
+  if (substance === 'yoga') {
+    const style = dose.details?.style as string || '';
+    return `${amt}min ${style}`;
+  }
   return `${amt} ${dose.unit}`;
 }
 

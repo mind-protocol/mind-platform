@@ -1,4 +1,4 @@
-export type SubstanceKey = 'thc' | 'cbd' | 'lions_mane' | 'caffeine' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'prazepam' | 'cyamemazine' | 'dynabiane' | 'omegabiane';
+export type SubstanceKey = 'thc' | 'cbd' | 'lions_mane' | 'caffeine' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'prazepam' | 'cyamemazine' | 'dynabiane' | 'omegabiane' | 'yoga';
 
 export interface SubstanceConfig {
   color: string;
@@ -24,6 +24,7 @@ export const SUBSTANCE_CONFIG: Record<SubstanceKey, SubstanceConfig> = {
   cyamemazine: { color: '#7e22ce', icon: '\u{1F30C}', label: 'Cyamemazine', unit: 'mg',       geometry: 'tetrahedron',  laneY: 20 },
   dynabiane:   { color: '#10b981', icon: '\u{1F9EC}', label: 'Dynabiane',   unit: 'gélule',   geometry: 'pill',         laneY: 22.5 },
   omegabiane:  { color: '#0ea5e9', icon: '\u{1F41F}', label: 'Omegabiane',  unit: 'gélule',   geometry: 'droplet',      laneY: 25 },
+  yoga:        { color: '#f472b6', icon: '\u{1F9D8}', label: 'Yoga',        unit: 'min',      geometry: 'sphere',       laneY: 27.5 },
 };
 
 export const SUBSTANCE_KEYS = Object.keys(SUBSTANCE_CONFIG) as SubstanceKey[];
@@ -44,6 +45,7 @@ export const DOSE_RANGES: Record<SubstanceKey, { min: number; max: number }> = {
   cyamemazine: { min: 12.5, max: 100 },
   dynabiane:   { min: 1, max: 2 },       // 1-2 gélules/jour
   omegabiane:  { min: 1, max: 3 },       // 1-3 gélules/jour
+  yoga:        { min: 1, max: 60 },      // 1-60 min session
 };
 
 export function normalizeDose(substance: SubstanceKey, amount: number): number {

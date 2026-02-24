@@ -37,6 +37,7 @@ const SUB_COLORS: Record<string, string> = {
   cyamemazine: '#7e22ce',
   dynabiane: '#10b981',
   omegabiane: '#0ea5e9',
+  yoga: '#f472b6',
 };
 
 const SUB_ICONS: Record<string, string> = {
@@ -54,6 +55,7 @@ const SUB_ICONS: Record<string, string> = {
   cyamemazine: '🌌',
   dynabiane: '🧬',
   omegabiane: '🐟',
+  yoga: '🧘',
 };
 
 export default function BiometricCorrelation({ refreshKey }: { refreshKey: number }) {

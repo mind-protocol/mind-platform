@@ -18,6 +18,7 @@ const INTENTS: Record<SubstanceKey, string[]> = {
   cyamemazine: ['sleep', 'anxiety', 'as-needed'],
   dynabiane: ['daily', 'gut-brain', 'immunity', 'mood'],
   omegabiane: ['daily', 'neuroprotection', 'anti-inflammatory', 'cardiovascular'],
+  yoga: ['morning', 'recovery', 'focus', 'sleep', 'stretching', 'strength'],
 };
 
 interface ScheduleDoseFormProps {

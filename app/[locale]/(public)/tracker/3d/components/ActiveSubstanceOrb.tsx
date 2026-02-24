@@ -97,6 +97,7 @@ function OrbPosition({
     cyamemazine: 0.03, // Very slow, heavy
     dynabiane: 0.02,   // Very slow — steady supplement
     omegabiane: 0.02,  // Very slow — steady supplement
+    yoga: 0.04,        // Slow, meditative
   };
 
   // Vertical offsets — psychedelics float higher, sedatives lower
@@ -115,6 +116,7 @@ function OrbPosition({
     cyamemazine: -2.5,
     dynabiane: -0.3,    // Neutral, subtle
     omegabiane: -0.1,   // Neutral, subtle
+    yoga: 1.0,          // Floats up — body practice
   };
 
   useFrame((state) => {
