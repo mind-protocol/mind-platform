@@ -18,6 +18,9 @@ const TABS = [
   { key: 'cyamemazine', label: 'Cyamemazine', color: '#7e22ce', icon: '🌌' },
   { key: 'dynabiane', label: 'Dynabiane', color: '#10b981', icon: '🧬' },
   { key: 'omegabiane', label: 'Omegabiane', color: '#0ea5e9', icon: '🐟' },
+  { key: 'griffonia', label: 'Griffonia', color: '#a855f7', icon: '🌰' },
+  { key: 'valeriane', label: 'Valériane', color: '#65a30d', icon: '🌾' },
+  { key: 'safran', label: 'Safran', color: '#f97316', icon: '🌸' },
   { key: 'yoga', label: 'Yoga', color: '#f472b6', icon: '🧘' },
 ] as const;
 
@@ -39,17 +42,20 @@ const INTENTS: Record<string, string[]> = {
   cyamemazine: ['sleep', 'anxiety', 'as-needed'],
   dynabiane: ['daily', 'gut-brain', 'immunity', 'mood'],
   omegabiane: ['daily', 'neuroprotection', 'anti-inflammatory', 'cardiovascular'],
+  griffonia: ['daily', 'mood', 'sleep', 'serotonin-support', 'anxiety'],
+  valeriane: ['sleep', 'anxiety', 'relaxation', 'as-needed'],
+  safran: ['daily', 'mood', 'anti-stress', 'cognitive'],
   yoga: ['morning', 'recovery', 'focus', 'sleep', 'stretching', 'strength'],
 };
 
 const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<string, unknown> }> = {
-  thc: { amount: 1, unit: 'chamber', details: { strain_thc: 22, temp_c: 230 } },
-  cbd: { amount: 1, unit: 'comprimé', details: { route: 'complex', form: 'tablet' } },
+  thc: { amount: 1, unit: 'chamber', details: { strain_thc: 22, temp_c: 230, reaction: 'clean' } },
+  cbd: { amount: 1, unit: 'comprimé', details: { route: 'complex', form: 'tablet', reaction: 'clean' } },
   lions_mane: { amount: 420, unit: 'mg', details: { form: 'capsule', mg_per_capsule: 420 } },
   caffeine: { amount: 150, unit: 'mg', details: { form: 'double', shots: 2, milk: true, sugar: 1, sugarType: 'blanc' } },
   ketamine: { amount: 30, unit: 'mg', details: { form: 'crystal', route: 'intranasal', estimate: 'visual' } },
   lsd: { amount: 0.5, unit: 'carton', details: { form: 'carton', ug_estimate: 100 } },
-  nicotine: { amount: 5, unit: 'puffs', details: { strength_pct: 20, mode: 'POWER', wattage: 22, resistance: 1.2, voltage_v: null, puff_duration_s: null } },
+  nicotine: { amount: 5, unit: 'puffs', details: { strength_pct: 20, mode: 'POWER', wattage: 22, resistance: 1.2, voltage_v: null, puff_duration_s: null, reaction: 'clean' } },
   hydration: { amount: 500, unit: 'ml', details: { additives: [] } },
   melatonin: { amount: 3, unit: 'mg', details: { form: 'tablet' } },
   venlafaxine: { amount: 75, unit: 'mg', details: { form: 'capsule', release: 'extended' } },
@@ -58,6 +64,9 @@ const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<s
   cyamemazine: { amount: 25, unit: 'mg', details: { form: 'tablet' } },
   dynabiane: { amount: 1, unit: 'gélule', details: { form: 'capsule', brand: 'PiLeJe', type: 'probiotic' } },
   omegabiane: { amount: 1, unit: 'gélule', details: { form: 'capsule', brand: 'PiLeJe', type: 'omega-3' } },
+  griffonia: { amount: 200, unit: 'mg', details: { form: 'capsule', active: '5-HTP' } },
+  valeriane: { amount: 300, unit: 'mg', details: { form: 'capsule', type: 'root-extract' } },
+  safran: { amount: 30, unit: 'mg', details: { form: 'capsule', type: 'standardized-extract' } },
   yoga: { amount: 3, unit: 'min', details: { style: 'vinyasa', flow: false } },
 };
 
@@ -81,6 +90,15 @@ const ADDITIVES = ['sodium', 'potassium', 'magnesium', 'vitC', 'B12', 'B6', 'B2'
 
 const RESISTANCE_OPTIONS = [0.2, 0.4, 0.6, 0.8, 1.2];
 const VAPE_MODES = ['POWER', 'BYPASS', 'TC-SS', 'TC-Ni', 'TC-Ti', 'ATL', 'MTL'] as const;
+
+const VAPE_REACTIONS = [
+  { key: 'clean', label: 'Clean', icon: '✅' },
+  { key: 'cough-light', label: 'Cough (light)', icon: '😤' },
+  { key: 'cough-strong', label: 'Cough (strong)', icon: '🫁' },
+  { key: 'cough-very-strong', label: 'Cough (very strong)', icon: '💀' },
+  { key: 'gag', label: 'Gag', icon: '🤢' },
+  { key: 'vomit', label: 'Vomit', icon: '🤮' },
+] as const;
 
 const YOGA_STYLES = [
   { key: 'vinyasa', label: 'Vinyasa', icon: '🌊', hasFlow: true },
@@ -345,24 +363,44 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
 
         {/* Substance-specific details */}
         {tab === 'thc' && (
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <label className="text-xs text-zinc-500 block mb-1">THC %</label>
-              <input
-                type="number"
-                value={(details.strain_thc as number) || 22}
-                onChange={(e) => setDetails({ ...details, strain_thc: Number(e.target.value) })}
-                className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
-              />
+          <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">THC %</label>
+                <input
+                  type="number"
+                  value={(details.strain_thc as number) || 22}
+                  onChange={(e) => setDetails({ ...details, strain_thc: Number(e.target.value) })}
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">Temp °C</label>
+                <input
+                  type="number"
+                  value={(details.temp_c as number) || 230}
+                  onChange={(e) => setDetails({ ...details, temp_c: Number(e.target.value) })}
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                />
+              </div>
             </div>
             <div>
-              <label className="text-xs text-zinc-500 block mb-1">Temp °C</label>
-              <input
-                type="number"
-                value={(details.temp_c as number) || 230}
-                onChange={(e) => setDetails({ ...details, temp_c: Number(e.target.value) })}
-                className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
-              />
+              <label className="text-xs text-zinc-500 block mb-1">Reaction</label>
+              <div className="flex gap-1.5 flex-wrap">
+                {VAPE_REACTIONS.map((r) => (
+                  <button
+                    key={r.key}
+                    onClick={() => setDetails({ ...details, reaction: r.key })}
+                    className={`px-2 py-1.5 rounded text-xs border transition ${
+                      (details.reaction as string || 'clean') === r.key
+                        ? 'border-green-500/50 text-green-400 bg-green-500/10'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {r.icon} {r.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}
@@ -549,6 +587,24 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                         }`}
                       >
                         {chambers} chamber{chambers > 1 ? 's' : ''} <span className="text-zinc-600">· {(details.cbd_pct as number) || 7}%</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="text-xs text-zinc-500 block mb-1">Reaction</label>
+                  <div className="flex gap-1.5 flex-wrap">
+                    {VAPE_REACTIONS.map((r) => (
+                      <button
+                        key={r.key}
+                        onClick={() => setDetails({ ...details, reaction: r.key })}
+                        className={`px-2 py-1.5 rounded text-xs border transition ${
+                          (details.reaction as string || 'clean') === r.key
+                            ? 'border-lime-500/50 text-lime-400 bg-lime-500/10'
+                            : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                        }`}
+                      >
+                        {r.icon} {r.label}
                       </button>
                     ))}
                   </div>
@@ -929,6 +985,26 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                 />
               </div>
             </div>
+
+            {/* Row 4: Reaction */}
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Reaction</label>
+              <div className="flex gap-1.5 flex-wrap">
+                {VAPE_REACTIONS.map((r) => (
+                  <button
+                    key={r.key}
+                    onClick={() => setDetails({ ...details, reaction: r.key })}
+                    className={`px-2 py-1.5 rounded text-xs border transition ${
+                      (details.reaction as string || 'clean') === r.key
+                        ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {r.icon} {r.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         )}
 
@@ -1017,6 +1093,69 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                   className={`px-2 py-1 rounded text-xs border transition ${
                     amount === mg
                       ? 'border-cyan-500/50 text-cyan-400 bg-cyan-500/15'
+                      : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                  }`}
+                >
+                  {mg}mg
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {tab === 'griffonia' && (
+          <div>
+            <label className="text-xs text-zinc-500 block mb-1">Quick dose (5-HTP)</label>
+            <div className="flex flex-wrap gap-1.5">
+              {[50, 100, 200, 400].map((mg) => (
+                <button
+                  key={mg}
+                  onClick={() => setAmount(mg)}
+                  className={`px-2 py-1 rounded text-xs border transition ${
+                    amount === mg
+                      ? 'border-purple-400/50 text-purple-400 bg-purple-400/15'
+                      : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                  }`}
+                >
+                  {mg}mg
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {tab === 'valeriane' && (
+          <div>
+            <label className="text-xs text-zinc-500 block mb-1">Quick dose</label>
+            <div className="flex flex-wrap gap-1.5">
+              {[100, 200, 300, 450, 600].map((mg) => (
+                <button
+                  key={mg}
+                  onClick={() => setAmount(mg)}
+                  className={`px-2 py-1 rounded text-xs border transition ${
+                    amount === mg
+                      ? 'border-lime-600/50 text-lime-500 bg-lime-600/15'
+                      : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                  }`}
+                >
+                  {mg}mg
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {tab === 'safran' && (
+          <div>
+            <label className="text-xs text-zinc-500 block mb-1">Quick dose</label>
+            <div className="flex flex-wrap gap-1.5">
+              {[15, 20, 30].map((mg) => (
+                <button
+                  key={mg}
+                  onClick={() => setAmount(mg)}
+                  className={`px-2 py-1 rounded text-xs border transition ${
+                    amount === mg
+                      ? 'border-orange-500/50 text-orange-400 bg-orange-500/15'
                       : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
                   }`}
                 >
