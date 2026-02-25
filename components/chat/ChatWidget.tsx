@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 function TypingIndicator() {
   return (
     <div className="flex items-center gap-1 px-4 py-2">
-      <div className="flex items-center gap-1 rounded-2xl bg-zinc-800 px-3 py-2">
+      <div className="flex items-center gap-1 rounded-2xl bubble-metal-typing px-3 py-2">
         <span className="h-2 w-2 rounded-full bg-amber-500/60 animate-bounce [animation-delay:0ms]" />
         <span className="h-2 w-2 rounded-full bg-amber-500/60 animate-bounce [animation-delay:150ms]" />
         <span className="h-2 w-2 rounded-full bg-amber-500/60 animate-bounce [animation-delay:300ms]" />
@@ -40,8 +40,8 @@ function MessageBubble({ msg, onTTS }: { msg: ChatMessage; onTTS?: (text: string
       <div
         className={`max-w-[80%] rounded-2xl px-3.5 py-2 text-sm leading-relaxed ${
           isUser
-            ? 'bg-amber-500/90 text-zinc-950'
-            : 'bg-zinc-800 text-zinc-100'
+            ? 'bubble-metal-user text-zinc-950'
+            : 'bubble-metal-assistant text-zinc-100'
         }`}
       >
         <p className="whitespace-pre-wrap break-words">{msg.content}</p>

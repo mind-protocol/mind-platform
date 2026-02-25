@@ -41,3 +41,149 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* ─── Premium Metallic Chat Bubbles ──────────────────────────────────────── */
+
+@keyframes metallic-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes metallic-sheen {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  100% { transform: translateX(200%) rotate(25deg); }
+}
+
+/* User bubble — warm amber metal */
+.bubble-metal-user {
+  background:
+    linear-gradient(
+      135deg,
+      #d97706 0%,
+      #f59e0b 18%,
+      #fbbf24 28%,
+      #f59e0b 40%,
+      #d97706 52%,
+      #b45309 60%,
+      #d97706 70%,
+      #f59e0b 82%,
+      #fbbf24 90%,
+      #f59e0b 100%
+    );
+  background-size: 300% 300%;
+  animation: metallic-shift 8s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+.bubble-metal-user::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.12) 45%,
+    rgba(255, 255, 255, 0.06) 50%,
+    transparent 65%
+  );
+  background-size: 200% 100%;
+  animation: metallic-shift 6s ease-in-out infinite reverse;
+  pointer-events: none;
+}
+
+.bubble-metal-user::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
+  animation: metallic-sheen 12s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Assistant bubble — dark titanium */
+.bubble-metal-assistant {
+  background:
+    linear-gradient(
+      135deg,
+      #1e1e24 0%,
+      #2a2a32 15%,
+      #33333d 28%,
+      #2a2a32 40%,
+      #222228 52%,
+      #1e1e24 62%,
+      #2a2a32 75%,
+      #33333d 88%,
+      #2a2a32 100%
+    );
+  background-size: 300% 300%;
+  animation: metallic-shift 10s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.bubble-metal-assistant::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.04) 45%,
+    rgba(255, 255, 255, 0.02) 50%,
+    transparent 65%
+  );
+  background-size: 200% 100%;
+  animation: metallic-shift 7s ease-in-out infinite reverse;
+  pointer-events: none;
+}
+
+.bubble-metal-assistant::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.03),
+    rgba(255, 255, 255, 0.07),
+    rgba(255, 255, 255, 0.03),
+    transparent
+  );
+  animation: metallic-sheen 14s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Typing indicator — same titanium metal */
+.bubble-metal-typing {
+  background:
+    linear-gradient(
+      135deg,
+      #1e1e24 0%,
+      #2a2a32 20%,
+      #33333d 40%,
+      #2a2a32 60%,
+      #1e1e24 80%,
+      #2a2a32 100%
+    );
+  background-size: 300% 300%;
+  animation: metallic-shift 10s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
