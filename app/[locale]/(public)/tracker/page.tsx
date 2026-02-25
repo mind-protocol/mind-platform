@@ -36,7 +36,7 @@ export default function TrackerPage() {
   const { toast } = useToast();
   const { session, logout } = useSession();
   const [refreshKey, setRefreshKey] = useState(0);
-  const [showKCalc, setShowKCalc] = useState(false);
+  const [showKCalc, setShowKCalc] = useState(true);
   const [viewMode, setViewMode] = useState<'now' | 'plan'>('now');
   const [activeTab, setActiveTab] = useState<'body' | 'substances'>('body');
   const [showScheduleForm, setShowScheduleForm] = useState(false);
