@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Recommendation from './components/Recommendation';
 import SubstanceCard from './components/SubstanceCard';
@@ -31,6 +32,7 @@ const BODY_KEYS = new Set(['hydration', 'lions_mane', 'dynabiane', 'omegabiane',
 const RECREATIONAL_KEYS = new Set(['thc', 'cbd', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'cocaine', 'mmc', 'heroine']);
 
 export default function TrackerPage() {
+  const t = useTranslations('Tracker');
   const { toast } = useToast();
   const { session, logout } = useSession();
   const [refreshKey, setRefreshKey] = useState(0);
@@ -76,12 +78,12 @@ export default function TrackerPage() {
       });
       if (res.ok) {
         refresh();
-        toast('Logged successfully', 'success');
+        toast(t('logSuccess'), 'success');
       } else {
-        toast('Failed to log — try again', 'error');
+        toast(t('logFailed'), 'error');
       }
     } catch {
-      toast('Network error — check connection', 'error');
+      toast(t('networkError'), 'error');
     }
   }, []);
 
@@ -98,10 +100,10 @@ export default function TrackerPage() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold font-mono">
-                Body Tracker
+                {t('title')}
               </h1>
               <p className="text-zinc-500 text-sm mt-1 hidden sm:block">
-                Precision dosing &middot; Biometric correlation
+                {t('subtitle')}
               </p>
             </div>
             <div className="flex gap-2 items-center">
@@ -116,7 +118,7 @@ export default function TrackerPage() {
                     onClick={logout}
                     className="text-xs px-2 py-1 rounded border border-zinc-700 text-zinc-500 hover:text-red-400 hover:border-red-500/30 transition"
                   >
-                    Logout
+                    {t('logout')}
                   </button>
                 </div>
               ) : (
@@ -124,7 +126,7 @@ export default function TrackerPage() {
                   href="/login"
                   className="text-sm px-3 py-1.5 rounded border border-blue-500/30 text-blue-400 hover:bg-blue-500/10 transition"
                 >
-                  Login
+                  {t('login')}
                 </Link>
               )}
             </div>
@@ -136,37 +138,37 @@ export default function TrackerPage() {
               href="/tracker/3d"
               className="flex-none text-xs px-3 py-1.5 rounded-full border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition whitespace-nowrap"
             >
-              Awareness Mirror
+              {t('navMirror')}
             </Link>
             <Link
               href="/tracker/health"
               className="flex-none text-xs px-3 py-1.5 rounded-full border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 transition whitespace-nowrap"
             >
-              Health
+              {t('navHealth')}
             </Link>
             <Link
               href="/tracker/protocols"
               className="flex-none text-xs px-3 py-1.5 rounded-full border border-orange-500/30 text-orange-400 hover:bg-orange-500/10 transition whitespace-nowrap"
             >
-              Protocoles
+              {t('navProtocols')}
             </Link>
             <Link
               href="/tracker/dependencies"
               className="flex-none text-xs px-3 py-1.5 rounded-full border border-amber-500/30 text-amber-400 hover:bg-amber-500/10 transition whitespace-nowrap"
             >
-              Dépendances
+              {t('navDependencies')}
             </Link>
             <Link
               href="/tracker/settings"
               className="flex-none text-xs px-3 py-1.5 rounded-full border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition whitespace-nowrap"
             >
-              Settings
+              {t('navSettings')}
             </Link>
             <button
               onClick={() => setShowKCalc(!showKCalc)}
               className="flex-none text-xs px-3 py-1.5 rounded-full border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition whitespace-nowrap"
             >
-              {showKCalc ? 'Hide K Calc' : 'K Calculator'}
+              {showKCalc ? t('kCalcHide') : t('kCalcShow')}
             </button>
           </nav>
         </header>
@@ -221,9 +223,9 @@ export default function TrackerPage() {
                 }`}
               >
                 <span className="text-lg mr-2">💪</span>
-                Body
+                {t('tabBody')}
                 <span className="block text-[10px] text-zinc-600 mt-0.5 font-normal">
-                  Eau, nourriture, vitamines, médicaments
+                  {t('tabBodyDesc')}
                 </span>
               </button>
               <button
@@ -235,9 +237,9 @@ export default function TrackerPage() {
                 }`}
               >
                 <span className="text-lg mr-2">🌿</span>
-                Substances
+                {t('tabSubstances')}
                 <span className="block text-[10px] text-zinc-600 mt-0.5 font-normal">
-                  THC, CBD, Café, K, LSD, Nicotine
+                  {t('tabSubstancesDesc')}
                 </span>
               </button>
             </div>

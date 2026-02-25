@@ -207,6 +207,26 @@
     "noPosts": "暂无文章。第一篇正在撰写中。",
     "minRead": "分钟阅读"
   },
+  "Tracker": {
+    "title": "Body Tracker",
+    "subtitle": "精准剂量 · 生物特征关联",
+    "navMirror": "意识之镜",
+    "navHealth": "健康",
+    "navProtocols": "协议方案",
+    "navDependencies": "依赖性",
+    "navSettings": "设置",
+    "kCalcShow": "K 计算器",
+    "kCalcHide": "隐藏 K 计算器",
+    "logout": "退出",
+    "login": "登录",
+    "tabBody": "身体",
+    "tabBodyDesc": "水、食物、维生素、药物",
+    "tabSubstances": "物质",
+    "tabSubstancesDesc": "THC、CBD、咖啡、K、LSD、尼古丁",
+    "logSuccess": "记录成功",
+    "logFailed": "记录失败 — 请重试",
+    "networkError": "网络错误 — 请检查连接"
+  },
   "Common": {
     "back": "返回",
     "readMore": "了解更多",

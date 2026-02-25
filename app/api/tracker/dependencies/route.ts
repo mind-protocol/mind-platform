@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getUserIdFromRequest } from '@/lib/auth';
-
-const MANEMUS_URL = process.env.MANEMUS_URL || 'http://localhost:8765';
+import { manemusFetch } from '@/lib/api-fetch';
 
 export async function GET(req: NextRequest) {
   const auth = req.headers.get('authorization');
@@ -9,16 +8,13 @@ export async function GET(req: NextRequest) {
 
   const userId = await getUserIdFromRequest(req);
   const days = req.nextUrl.searchParams.get('days') || '60';
-  const url = `${MANEMUS_URL}/api/tracker/dependencies?days=${days}`;
 
   try {
-    const res = await fetch(url, {
+    const res = await manemusFetch(`/api/tracker/dependencies?days=${days}`, {
       headers: {
         'Authorization': auth,
-        'ngrok-skip-browser-warning': 'true',
         'X-User-Id': userId,
       },
-      cache: 'no-store',
     });
     const data = await res.json();
     return NextResponse.json(data, {

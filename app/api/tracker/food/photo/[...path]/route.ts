@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
+import { manemusFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
-
-const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
 
 export async function GET(
   _req: Request,
@@ -15,10 +14,7 @@ export async function GET(
   }
 
   try {
-    const res = await fetch(`${MANEMUS_URL}/uploads/food/${filename}`, {
-      headers: { 'ngrok-skip-browser-warning': '1' },
-      cache: 'no-store',
-    });
+    const res = await manemusFetch(`/uploads/food/${filename}`);
 
     if (!res.ok) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });

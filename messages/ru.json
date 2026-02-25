@@ -207,6 +207,26 @@
     "noPosts": "Записей пока нет. Первая уже пишется.",
     "minRead": "мин чтения"
   },
+  "Tracker": {
+    "title": "Body Tracker",
+    "subtitle": "Точная дозировка · Биометрическая корреляция",
+    "navMirror": "Зеркало осознанности",
+    "navHealth": "Здоровье",
+    "navProtocols": "Протоколы",
+    "navDependencies": "Зависимости",
+    "navSettings": "Настройки",
+    "kCalcShow": "Калькулятор K",
+    "kCalcHide": "Скрыть K Calc",
+    "logout": "Выйти",
+    "login": "Войти",
+    "tabBody": "Тело",
+    "tabBodyDesc": "Вода, еда, витамины, лекарства",
+    "tabSubstances": "Субстанции",
+    "tabSubstancesDesc": "THC, CBD, Кофе, K, LSD, Никотин",
+    "logSuccess": "Записано успешно",
+    "logFailed": "Ошибка записи — попробуйте снова",
+    "networkError": "Ошибка сети — проверьте подключение"
+  },
   "Common": {
     "back": "Назад",
     "readMore": "Подробнее",

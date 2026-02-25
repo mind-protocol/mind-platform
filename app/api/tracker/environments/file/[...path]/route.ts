@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { manemusFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
-
-const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
 
 /**
  * Proxy for environment files (panoramas, meshes, splats).
@@ -23,11 +22,7 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid path' }, { status: 400 });
     }
 
-    const upstream = `${MANEMUS_URL}/uploads/environments/${subpath}`;
-    const res = await fetch(upstream, {
-      cache: 'no-store',
-      headers: { 'ngrok-skip-browser-warning': '1' },
-    });
+    const res = await manemusFetch(`/uploads/environments/${subpath}`);
 
     if (!res.ok) {
       return new NextResponse(null, { status: res.status });

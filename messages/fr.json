@@ -207,6 +207,26 @@
     "noPosts": "Pas encore d'articles. Le premier est en cours d'écriture.",
     "minRead": "min de lecture"
   },
+  "Tracker": {
+    "title": "Body Tracker",
+    "subtitle": "Dosage précis · Corrélation biométrique",
+    "navMirror": "Miroir de conscience",
+    "navHealth": "Santé",
+    "navProtocols": "Protocoles",
+    "navDependencies": "Dépendances",
+    "navSettings": "Paramètres",
+    "kCalcShow": "Calculateur K",
+    "kCalcHide": "Masquer K Calc",
+    "logout": "Déconnexion",
+    "login": "Connexion",
+    "tabBody": "Corps",
+    "tabBodyDesc": "Eau, nourriture, vitamines, médicaments",
+    "tabSubstances": "Substances",
+    "tabSubstancesDesc": "THC, CBD, Café, K, LSD, Nicotine",
+    "logSuccess": "Enregistré avec succès",
+    "logFailed": "Échec de l'enregistrement — réessayez",
+    "networkError": "Erreur réseau — vérifiez la connexion"
+  },
   "Common": {
     "back": "Retour",
     "readMore": "En savoir plus",

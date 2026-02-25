@@ -207,6 +207,26 @@
     "noPosts": "Aún no hay publicaciones. La primera está siendo escrita.",
     "minRead": "min de lectura"
   },
+  "Tracker": {
+    "title": "Body Tracker",
+    "subtitle": "Dosificación precisa · Correlación biométrica",
+    "navMirror": "Espejo de consciencia",
+    "navHealth": "Salud",
+    "navProtocols": "Protocolos",
+    "navDependencies": "Dependencias",
+    "navSettings": "Ajustes",
+    "kCalcShow": "Calculadora K",
+    "kCalcHide": "Ocultar K Calc",
+    "logout": "Cerrar sesión",
+    "login": "Iniciar sesión",
+    "tabBody": "Cuerpo",
+    "tabBodyDesc": "Agua, comida, vitaminas, medicamentos",
+    "tabSubstances": "Sustancias",
+    "tabSubstancesDesc": "THC, CBD, Café, K, LSD, Nicotina",
+    "logSuccess": "Registrado con éxito",
+    "logFailed": "Error al registrar — inténtalo de nuevo",
+    "networkError": "Error de red — verifica la conexión"
+  },
   "Common": {
     "back": "Volver",
     "readMore": "Leer más",

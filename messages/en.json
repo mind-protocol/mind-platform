@@ -207,6 +207,26 @@
     "noPosts": "No posts yet. The first one is being written.",
     "minRead": "min read"
   },
+  "Tracker": {
+    "title": "Body Tracker",
+    "subtitle": "Precision dosing · Biometric correlation",
+    "navMirror": "Awareness Mirror",
+    "navHealth": "Health",
+    "navProtocols": "Protocols",
+    "navDependencies": "Dependencies",
+    "navSettings": "Settings",
+    "kCalcShow": "K Calculator",
+    "kCalcHide": "Hide K Calc",
+    "logout": "Logout",
+    "login": "Login",
+    "tabBody": "Body",
+    "tabBodyDesc": "Water, food, vitamins, medication",
+    "tabSubstances": "Substances",
+    "tabSubstancesDesc": "THC, CBD, Coffee, K, LSD, Nicotine",
+    "logSuccess": "Logged successfully",
+    "logFailed": "Failed to log — try again",
+    "networkError": "Network error — check connection"
+  },
   "Common": {
     "back": "Back",
     "readMore": "Read more",

@@ -1,22 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { manemusFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
-const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
-
-/**
- * Proxy for environment name suggestion.
- * POST /api/tracker/environments/suggest-name
- *   -> proxies to MANEMUS_URL/api/tracker/environments/suggest-name
- */
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
-    const res = await fetch(`${MANEMUS_URL}/api/tracker/environments/suggest-name`, {
+    const res = await manemusFetch('/api/tracker/environments/suggest-name', {
       method: 'POST',
-      headers: { 'ngrok-skip-browser-warning': '1' },
       body: formData,
-      cache: 'no-store',
     });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
