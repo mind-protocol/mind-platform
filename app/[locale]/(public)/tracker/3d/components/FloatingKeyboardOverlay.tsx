@@ -52,15 +52,99 @@ const IDLE_BORDER = 'rgba(180,190,215,0.16)';
 const IDLE_SHADOW = 'inset 0 1px 0 rgba(255,255,255,.10), inset 0 -1px 0 rgba(0,0,0,.35), 0 1px 2px rgba(0,0,0,.4)';
 const IDLE_LABEL = 'rgba(225,232,245,.88)';
 
-// 3-stop blue gradient for active keys
-const ACTIVE_BG = (g: number) =>
-  `linear-gradient(180deg, rgba(130,170,255,${(0.85 + g * 0.10).toFixed(2)}) 0%, rgba(85,125,235,${(0.85 + g * 0.10).toFixed(2)}) 55%, rgba(45,78,175,${(0.90 + g * 0.08).toFixed(2)}) 100%)`;
-const ACTIVE_BORDER = (g: number) =>
-  `rgba(150,190,255,${(0.35 + g * 0.30).toFixed(2)})`;
-const ACTIVE_SHADOW = (g: number) =>
-  `0 0 0 1px rgba(110,160,255,${(0.15 + g * 0.15).toFixed(2)}), 0 0 ${(10 + g * 14).toFixed(0)}px rgba(75,130,255,.35), inset 0 1px 0 rgba(255,255,255,.25)`;
-const ACTIVE_LABEL = (g: number) =>
-  `rgba(245,250,255,${(0.85 + g * 0.15).toFixed(2)})`;
+// ── Color palettes ──────────────────────────────────────────────────────
+type Palette = {
+  key: string;
+  name: string;
+  swatch: string; // CSS color for the picker dot
+  bg: (g: number) => string;
+  border: (g: number) => string;
+  shadow: (g: number) => string;
+  label: (g: number) => string;
+};
+
+const PALETTES: Palette[] = [
+  {
+    key: 'ice', name: 'Ice', swatch: '#5588ff',
+    bg: (g) => `linear-gradient(180deg, rgba(130,170,255,${(0.85+g*0.10).toFixed(2)}) 0%, rgba(85,125,235,${(0.85+g*0.10).toFixed(2)}) 55%, rgba(45,78,175,${(0.90+g*0.08).toFixed(2)}) 100%)`,
+    border: (g) => `rgba(150,190,255,${(0.35+g*0.30).toFixed(2)})`,
+    shadow: (g) => `0 0 0 1px rgba(110,160,255,${(0.15+g*0.15).toFixed(2)}), 0 0 ${(10+g*14).toFixed(0)}px rgba(75,130,255,.35), inset 0 1px 0 rgba(255,255,255,.25)`,
+    label: (g) => `rgba(245,250,255,${(0.85+g*0.15).toFixed(2)})`,
+  },
+  {
+    key: 'amber', name: 'Amber', swatch: '#f59e0b',
+    bg: (g) => `linear-gradient(180deg, rgba(255,190,80,${(0.85+g*0.10).toFixed(2)}) 0%, rgba(235,150,45,${(0.85+g*0.10).toFixed(2)}) 55%, rgba(175,95,25,${(0.90+g*0.08).toFixed(2)}) 100%)`,
+    border: (g) => `rgba(255,200,100,${(0.35+g*0.30).toFixed(2)})`,
+    shadow: (g) => `0 0 0 1px rgba(255,170,50,${(0.15+g*0.15).toFixed(2)}), 0 0 ${(10+g*14).toFixed(0)}px rgba(255,150,30,.35), inset 0 1px 0 rgba(255,255,255,.25)`,
+    label: (g) => `rgba(255,250,235,${(0.85+g*0.15).toFixed(2)})`,
+  },
+  {
+    key: 'emerald', name: 'Emerald', swatch: '#10b981',
+    bg: (g) => `linear-gradient(180deg, rgba(80,220,160,${(0.85+g*0.10).toFixed(2)}) 0%, rgba(40,180,120,${(0.85+g*0.10).toFixed(2)}) 55%, rgba(20,120,80,${(0.90+g*0.08).toFixed(2)}) 100%)`,
+    border: (g) => `rgba(100,230,170,${(0.35+g*0.30).toFixed(2)})`,
+    shadow: (g) => `0 0 0 1px rgba(60,200,140,${(0.15+g*0.15).toFixed(2)}), 0 0 ${(10+g*14).toFixed(0)}px rgba(40,180,120,.35), inset 0 1px 0 rgba(255,255,255,.25)`,
+    label: (g) => `rgba(240,255,248,${(0.85+g*0.15).toFixed(2)})`,
+  },
+  {
+    key: 'violet', name: 'Violet', swatch: '#8b5cf6',
+    bg: (g) => `linear-gradient(180deg, rgba(170,120,255,${(0.85+g*0.10).toFixed(2)}) 0%, rgba(130,80,235,${(0.85+g*0.10).toFixed(2)}) 55%, rgba(85,45,175,${(0.90+g*0.08).toFixed(2)}) 100%)`,
+    border: (g) => `rgba(180,140,255,${(0.35+g*0.30).toFixed(2)})`,
+    shadow: (g) => `0 0 0 1px rgba(150,100,255,${(0.15+g*0.15).toFixed(2)}), 0 0 ${(10+g*14).toFixed(0)}px rgba(120,70,255,.35), inset 0 1px 0 rgba(255,255,255,.25)`,
+    label: (g) => `rgba(250,245,255,${(0.85+g*0.15).toFixed(2)})`,
+  },
+  {
+    key: 'rose', name: 'Rose', swatch: '#f43f5e',
+    bg: (g) => `linear-gradient(180deg, rgba(255,110,140,${(0.85+g*0.10).toFixed(2)}) 0%, rgba(235,70,100,${(0.85+g*0.10).toFixed(2)}) 55%, rgba(175,35,65,${(0.90+g*0.08).toFixed(2)}) 100%)`,
+    border: (g) => `rgba(255,130,160,${(0.35+g*0.30).toFixed(2)})`,
+    shadow: (g) => `0 0 0 1px rgba(255,90,120,${(0.15+g*0.15).toFixed(2)}), 0 0 ${(10+g*14).toFixed(0)}px rgba(255,60,100,.35), inset 0 1px 0 rgba(255,255,255,.25)`,
+    label: (g) => `rgba(255,245,248,${(0.85+g*0.15).toFixed(2)})`,
+  },
+  {
+    key: 'sunset', name: 'Sunset', swatch: 'linear-gradient(135deg, #f97316, #ef4444)',
+    bg: (g) => `linear-gradient(180deg, rgba(255,150,60,${(0.85+g*0.10).toFixed(2)}) 0%, rgba(240,100,50,${(0.85+g*0.10).toFixed(2)}) 55%, rgba(180,50,30,${(0.90+g*0.08).toFixed(2)}) 100%)`,
+    border: (g) => `rgba(255,160,80,${(0.35+g*0.30).toFixed(2)})`,
+    shadow: (g) => `0 0 0 1px rgba(255,120,50,${(0.15+g*0.15).toFixed(2)}), 0 0 ${(10+g*14).toFixed(0)}px rgba(240,80,40,.35), inset 0 1px 0 rgba(255,255,255,.25)`,
+    label: (g) => `rgba(255,250,240,${(0.85+g*0.15).toFixed(2)})`,
+  },
+  {
+    key: 'cyan', name: 'Cyan', swatch: '#06b6d4',
+    bg: (g) => `linear-gradient(180deg, rgba(60,210,240,${(0.85+g*0.10).toFixed(2)}) 0%, rgba(30,170,210,${(0.85+g*0.10).toFixed(2)}) 55%, rgba(15,110,155,${(0.90+g*0.08).toFixed(2)}) 100%)`,
+    border: (g) => `rgba(80,220,245,${(0.35+g*0.30).toFixed(2)})`,
+    shadow: (g) => `0 0 0 1px rgba(40,200,235,${(0.15+g*0.15).toFixed(2)}), 0 0 ${(10+g*14).toFixed(0)}px rgba(20,180,220,.35), inset 0 1px 0 rgba(255,255,255,.25)`,
+    label: (g) => `rgba(240,252,255,${(0.85+g*0.15).toFixed(2)})`,
+  },
+  {
+    key: 'mono', name: 'Mono', swatch: '#d4d4d8',
+    bg: (g) => `linear-gradient(180deg, rgba(210,215,225,${(0.85+g*0.10).toFixed(2)}) 0%, rgba(170,175,185,${(0.85+g*0.10).toFixed(2)}) 55%, rgba(120,125,135,${(0.90+g*0.08).toFixed(2)}) 100%)`,
+    border: (g) => `rgba(220,225,235,${(0.35+g*0.30).toFixed(2)})`,
+    shadow: (g) => `0 0 0 1px rgba(200,205,215,${(0.15+g*0.15).toFixed(2)}), 0 0 ${(10+g*14).toFixed(0)}px rgba(180,185,195,.25), inset 0 1px 0 rgba(255,255,255,.30)`,
+    label: (g) => `rgba(255,255,255,${(0.85+g*0.15).toFixed(2)})`,
+  },
+  {
+    key: 'sakura', name: 'Sakura', swatch: 'linear-gradient(135deg, #fbb6ce, #c084fc)',
+    bg: (g) => `linear-gradient(180deg, rgba(251,182,206,${(0.85+g*0.10).toFixed(2)}) 0%, rgba(220,140,200,${(0.85+g*0.10).toFixed(2)}) 55%, rgba(160,80,160,${(0.90+g*0.08).toFixed(2)}) 100%)`,
+    border: (g) => `rgba(250,190,220,${(0.35+g*0.30).toFixed(2)})`,
+    shadow: (g) => `0 0 0 1px rgba(240,160,200,${(0.15+g*0.15).toFixed(2)}), 0 0 ${(10+g*14).toFixed(0)}px rgba(220,130,190,.35), inset 0 1px 0 rgba(255,255,255,.25)`,
+    label: (g) => `rgba(255,248,252,${(0.85+g*0.15).toFixed(2)})`,
+  },
+  {
+    key: 'aurora', name: 'Aurora', swatch: 'linear-gradient(135deg, #34d399, #818cf8)',
+    bg: (g) => `linear-gradient(180deg, rgba(80,220,170,${(0.85+g*0.10).toFixed(2)}) 0%, rgba(100,160,230,${(0.85+g*0.10).toFixed(2)}) 55%, rgba(70,90,180,${(0.90+g*0.08).toFixed(2)}) 100%)`,
+    border: (g) => `rgba(110,210,200,${(0.35+g*0.30).toFixed(2)})`,
+    shadow: (g) => `0 0 0 1px rgba(80,190,180,${(0.15+g*0.15).toFixed(2)}), 0 0 ${(10+g*14).toFixed(0)}px rgba(70,170,200,.35), inset 0 1px 0 rgba(255,255,255,.25)`,
+    label: (g) => `rgba(240,255,250,${(0.85+g*0.15).toFixed(2)})`,
+  },
+];
+
+const PALETTE_MAP = new Map(PALETTES.map(p => [p.key, p]));
+const DEFAULT_PALETTE = 'ice';
+
+function loadPalette(): string {
+  try { return localStorage.getItem('kbd-palette') || DEFAULT_PALETTE; } catch { return DEFAULT_PALETTE; }
+}
+function savePalette(key: string) {
+  try { localStorage.setItem('kbd-palette', key); } catch { /* noop */ }
+}
 
 // ── Render a row of keys ────────────────────────────────────────────────
 function KeyRow({
@@ -159,6 +243,25 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
   const dragging = useRef(false);
   const dragStart = useRef({ mx: 0, my: 0, px: 0, py: 0 });
 
+  // Palette state
+  const [paletteKey, setPaletteKey] = useState(DEFAULT_PALETTE);
+  const paletteRef = useRef<Palette>(PALETTES[0]);
+  const [showPalettes, setShowPalettes] = useState(false);
+
+  // Load palette from localStorage on mount
+  useEffect(() => {
+    const key = loadPalette();
+    setPaletteKey(key);
+    paletteRef.current = PALETTE_MAP.get(key) || PALETTES[0];
+  }, []);
+
+  const selectPalette = useCallback((key: string) => {
+    setPaletteKey(key);
+    paletteRef.current = PALETTE_MAP.get(key) || PALETTES[0];
+    savePalette(key);
+    setShowPalettes(false);
+  }, []);
+
   // Max AZERTY row width for centering
   const maxRowUnits = useMemo(() =>
     Math.max(...AZERTY_ROWS.map(row => row.reduce((s, k) => s + k.w, 0))),
@@ -213,9 +316,11 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
   }, []);
 
   // Animation loop — combine KEY_STATES glow + direct pressed state
+  // Reads paletteRef for zero-cost palette switching (no re-render needed)
   useEffect(() => {
     let rafId: number;
     const loop = () => {
+      const pal = paletteRef.current;
       for (const [code, el] of keyEls.current) {
         const stateGlow = KEY_STATES.get(code)?.glow ?? 0;
         const pressed = pressedRef.current.has(code);
@@ -236,9 +341,9 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
         const active = glow > 0.08;
 
         if (active) {
-          el.style.background = ACTIVE_BG(glow);
-          el.style.borderColor = ACTIVE_BORDER(glow);
-          el.style.boxShadow = ACTIVE_SHADOW(glow);
+          el.style.background = pal.bg(glow);
+          el.style.borderColor = pal.border(glow);
+          el.style.boxShadow = pal.shadow(glow);
           el.style.transform = `translateY(${(glow * 1.5).toFixed(1)}px) scale(0.995)`;
         } else {
           el.style.background = IDLE_BG;
@@ -249,7 +354,7 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
 
         const label = labelEls.current.get(code);
         if (label) {
-          label.style.color = active ? ACTIVE_LABEL(glow) : IDLE_LABEL;
+          label.style.color = active ? pal.label(glow) : IDLE_LABEL;
         }
       }
       rafId = requestAnimationFrame(loop);
@@ -336,6 +441,55 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
             title="Reset position & size"
           >↺</button>
         )}
+        {/* Palette picker */}
+        <div className="relative">
+          <button
+            onClick={() => setShowPalettes(v => !v)}
+            className="w-5 h-5 rounded flex items-center justify-center text-[10px] text-zinc-400 hover:text-white"
+            style={{ background: 'rgba(30,33,40,0.9)', border: '1px solid rgba(120,130,155,0.25)' }}
+            title="Color palette"
+          >
+            <span
+              style={{
+                display: 'inline-block', width: 8, height: 8, borderRadius: '50%',
+                background: PALETTE_MAP.get(paletteKey)?.swatch || '#5588ff',
+              }}
+            />
+          </button>
+          {showPalettes && (
+            <div
+              className="absolute bottom-full right-0 mb-1 rounded-lg p-2"
+              style={{
+                background: 'rgba(15,18,25,0.95)',
+                border: '1px solid rgba(120,130,155,0.3)',
+                backdropFilter: 'blur(12px)',
+                boxShadow: '0 8px 32px rgba(0,0,0,.5)',
+              }}
+            >
+              <div className="grid grid-cols-5 gap-1.5" style={{ width: 130 }}>
+                {PALETTES.map((p) => (
+                  <button
+                    key={p.key}
+                    onClick={() => selectPalette(p.key)}
+                    title={p.name}
+                    className="group relative"
+                    style={{
+                      width: 22, height: 22, borderRadius: 6,
+                      background: p.swatch,
+                      border: paletteKey === p.key
+                        ? '2px solid rgba(255,255,255,0.9)'
+                        : '1px solid rgba(255,255,255,0.15)',
+                      cursor: 'pointer',
+                      transition: 'transform 100ms, border-color 100ms',
+                    }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1.2)'; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       <div
