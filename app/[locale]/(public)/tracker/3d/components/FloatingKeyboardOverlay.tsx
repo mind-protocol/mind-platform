@@ -218,9 +218,10 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
           }
         }
 
-        // Combine: pressed gives instant 0.9, KEY_STATES gives smooth decay, neighbor gives spill
-        const glow = Math.min(1, Math.max(pressed ? 0.85 : 0, stateGlow) + neighborGlow * 0.08);
-        const active = glow > 0.02;
+        // Combine: pressed gives instant 0.9, KEY_STATES gives smooth decay
+        // Neighbor spill is very subtle (0.015) to avoid "group typing" look
+        const glow = Math.min(1, Math.max(pressed ? 0.85 : 0, stateGlow) + neighborGlow * 0.015);
+        const active = glow > 0.08;
 
         if (active) {
           el.style.background = ACTIVE_BG(glow);

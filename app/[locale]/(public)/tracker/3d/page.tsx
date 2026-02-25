@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useTransition } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import RangeSelector from './components/RangeSelector';
@@ -146,6 +146,7 @@ function buildFilterStyle(adj: ImageAdjustments): React.CSSProperties {
 function AdjustmentPanel({
   adjustments,
   onChange,
+  onPreview,
   onSave,
   onReset,
   onCancel,
@@ -153,6 +154,7 @@ function AdjustmentPanel({
 }: {
   adjustments: ImageAdjustments;
   onChange: (adj: ImageAdjustments) => void;
+  onPreview: (adj: ImageAdjustments) => void;
   onSave: () => void;
   onReset: () => void;
   onCancel: () => void;
@@ -171,24 +173,31 @@ function AdjustmentPanel({
     } catch { return []; }
   });
 
-  // ── rAF-throttled slider handler ─────────────────────────────────────
-  // Buffers onChange calls to one per animation frame, reducing re-renders
-  const rafRef = useRef(0);
-  const pendingRef = useRef<{ key: keyof ImageAdjustments; value: number } | null>(null);
+  // ── Local draft state for sliders — avoids re-rendering parent ────────
+  // During drag: update local draft + DOM preview (zero React re-renders on parent)
+  // On release: commit draft to parent via onChange (single re-render)
+  const [draft, setDraft] = useState<ImageAdjustments>(adjustments);
+  const draftRef = useRef<ImageAdjustments>(adjustments);
 
-  const handleSlider = (key: keyof ImageAdjustments, value: number) => {
-    pendingRef.current = { key, value };
-    if (!rafRef.current) {
-      rafRef.current = requestAnimationFrame(() => {
-        rafRef.current = 0;
-        const p = pendingRef.current;
-        if (p) {
-          onChange({ ...adjustments, [p.key]: p.value });
-          setActivePreset(null);
-          pendingRef.current = null;
-        }
-      });
-    }
+  // Sync draft when parent adjustments change (preset, reset, cancel)
+  useEffect(() => {
+    setDraft(adjustments);
+    draftRef.current = adjustments;
+  }, [adjustments]);
+
+  const handleSliderInput = (key: keyof ImageAdjustments, value: number) => {
+    const next = { ...draftRef.current, [key]: value };
+    draftRef.current = next;
+    setDraft(next); // local re-render only (panel sliders)
+    onPreview(next); // direct DOM update on canvas (no React)
+  };
+
+  const handleSliderCommit = () => {
+    // Commit via startTransition so the heavy 3D re-render is non-blocking
+    requestAnimationFrame(() => {
+      onChange(draftRef.current);
+      setActivePreset(null);
+    });
   };
 
   const applyPreset = (preset: { name: string; values: ImageAdjustments }) => {
@@ -298,7 +307,7 @@ function AdjustmentPanel({
                 <div className="flex items-center justify-between mb-1">
                   <label className="text-[10px] text-zinc-500">{ADJUSTMENT_LABELS[key]}</label>
                   <span className="text-[10px] font-mono text-zinc-600 w-8 text-right">
-                    {adjustments[key] > 0 ? '+' : ''}{adjustments[key]}
+                    {draft[key] > 0 ? '+' : ''}{draft[key]}
                   </span>
                 </div>
                 <input
@@ -306,8 +315,10 @@ function AdjustmentPanel({
                   min={min}
                   max={max}
                   step={1}
-                  value={adjustments[key]}
-                  onChange={(e) => handleSlider(key, Number(e.target.value))}
+                  value={draft[key]}
+                  onChange={(e) => handleSliderInput(key, Number(e.target.value))}
+                  onPointerUp={handleSliderCommit}
+                  onKeyUp={(e) => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') handleSliderCommit(); }}
                   className="w-full h-1 bg-zinc-800 rounded-full appearance-none cursor-pointer
                     [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3
                     [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-purple-400
@@ -529,28 +540,51 @@ export default function Tracker3DPage() {
     return () => { document.body.style.overflow = prev; };
   }, []);
 
+  const [, startTransition] = useTransition();
+
   const handleSave = useCallback(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(adjustments));
-    setSavedAdjustments({ ...adjustments });
+    startTransition(() => setSavedAdjustments({ ...adjustments }));
   }, [adjustments]);
 
   const handleReset = useCallback(() => {
-    setAdjustments({ ...DEFAULT_ADJUSTMENTS });
     localStorage.removeItem(STORAGE_KEY);
-    setSavedAdjustments({ ...DEFAULT_ADJUSTMENTS });
+    startTransition(() => {
+      setAdjustments({ ...DEFAULT_ADJUSTMENTS });
+      setSavedAdjustments({ ...DEFAULT_ADJUSTMENTS });
+    });
   }, []);
 
   const handleCancel = useCallback(() => {
-    setAdjustments({ ...savedAdjustments });
+    startTransition(() => setAdjustments({ ...savedAdjustments }));
   }, [savedAdjustments]);
 
   const filterStyle = buildFilterStyle(adjustments);
   const vignetteOpacity = Math.max(0, adjustments.vignette) / 100;
 
+  // Ref for direct DOM filter updates during slider drag (bypasses React)
+  const canvasWrapperRef = useRef<HTMLDivElement>(null);
+  const vignetteRef = useRef<HTMLDivElement>(null);
+
+  // Called by AdjustmentPanel during drag — DOM-only, no React re-render
+  const handleFilterPreview = useCallback((adj: ImageAdjustments) => {
+    if (canvasWrapperRef.current) {
+      const style = buildFilterStyle(adj);
+      canvasWrapperRef.current.style.filter = (style.filter as string) || 'none';
+    }
+    if (vignetteRef.current) {
+      const v = Math.max(0, adj.vignette) / 100;
+      vignetteRef.current.style.background = v > 0
+        ? `radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,${(v * 0.8).toFixed(3)}) 100%)`
+        : 'none';
+      vignetteRef.current.style.display = v > 0 ? '' : 'none';
+    }
+  }, []);
+
   return (
     <div className="fixed inset-0 z-50 bg-zinc-950 overflow-hidden">
       {/* Filtered canvas wrapper */}
-      <div className="w-full h-full" style={filterStyle}>
+      <div ref={canvasWrapperRef} className="w-full h-full" style={filterStyle}>
         {mode === 'mirror' ? (
           <AwarenessMirror />
         ) : (
@@ -558,15 +592,17 @@ export default function Tracker3DPage() {
         )}
       </div>
 
-      {/* Vignette overlay */}
-      {vignetteOpacity > 0 && (
-        <div
-          className="fixed inset-0 pointer-events-none z-[51]"
-          style={{
-            background: `radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,${vignetteOpacity * 0.8}) 100%)`,
-          }}
-        />
-      )}
+      {/* Vignette overlay — always mounted, visibility controlled via ref during drag */}
+      <div
+        ref={vignetteRef}
+        className="fixed inset-0 pointer-events-none z-[51]"
+        style={{
+          display: vignetteOpacity > 0 ? undefined : 'none',
+          background: vignetteOpacity > 0
+            ? `radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,${vignetteOpacity * 0.8}) 100%)`
+            : 'none',
+        }}
+      />
 
       {/* Overlays — auto-hide after inactivity, dim during typing */}
       <div className={`fixed top-4 left-4 flex items-center gap-3 z-[52] transition-opacity duration-500 ${chromeVisible ? (typing ? 'opacity-30' : 'opacity-100') : 'opacity-0 pointer-events-none'}`}>
@@ -580,7 +616,7 @@ export default function Tracker3DPage() {
         {/* View mode toggle */}
         <div className="flex bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-lg overflow-hidden">
           <button
-            onClick={() => setMode('mirror')}
+            onClick={() => startTransition(() => setMode('mirror'))}
             className={`px-3 py-1.5 text-xs font-mono transition ${
               mode === 'mirror'
                 ? 'text-purple-400 bg-purple-500/10'
@@ -590,7 +626,7 @@ export default function Tracker3DPage() {
             Awareness Mirror
           </button>
           <button
-            onClick={() => setMode('timeline')}
+            onClick={() => startTransition(() => setMode('timeline'))}
             className={`px-3 py-1.5 text-xs font-mono transition ${
               mode === 'timeline'
                 ? 'text-cyan-400 bg-cyan-500/10'
@@ -703,6 +739,7 @@ export default function Tracker3DPage() {
       <AdjustmentPanel
         adjustments={adjustments}
         onChange={setAdjustments}
+        onPreview={handleFilterPreview}
         onSave={handleSave}
         onReset={handleReset}
         onCancel={handleCancel}
