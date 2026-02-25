@@ -12,9 +12,9 @@ const KEY_GAP = 0.008;       // gap between keys
 const KEY_HEIGHT = 0.025;    // key thickness (Y)
 
 // Colors — meshBasicMaterial (self-illuminated, no lighting dependency)
-const IDLE_COLOR = new THREE.Color(0x1e2050);    // dark blue idle
+const IDLE_COLOR = new THREE.Color(0x2a3590);    // visible blue idle
 const GLOW_COLOR = new THREE.Color(0x5aaaff);    // bright blue on hit
-const LABEL_COLOR = '#8ab4ff';
+const LABEL_COLOR = '#9ac0ff';
 const _tmpColor = new THREE.Color();
 
 // ── Neighbor map for glow spill ────────────────────────────────────────
@@ -94,12 +94,12 @@ function KeyMesh({
     _tmpColor.copy(IDLE_COLOR).lerp(GLOW_COLOR, totalGlow);
     matRef.current.color.copy(_tmpColor);
 
-    // Opacity: visible idle, brighter on hit
-    matRef.current.opacity = 0.5 + totalGlow * 0.4;
+    // Opacity: clearly visible idle, brighter on hit
+    matRef.current.opacity = 0.7 + totalGlow * 0.25;
 
     // Label opacity
     if (labelRef.current) {
-      labelRef.current.fillOpacity = 0.4 + totalGlow * 0.5;
+      labelRef.current.fillOpacity = 0.55 + totalGlow * 0.4;
     }
 
     // Subtle Y press displacement
@@ -122,7 +122,7 @@ function KeyMesh({
           ref={matRef}
           color={IDLE_COLOR}
           transparent
-          opacity={0.5}
+          opacity={0.7}
           depthWrite={false}
         />
       </mesh>
@@ -135,7 +135,7 @@ function KeyMesh({
           color={LABEL_COLOR}
           anchorX="center"
           anchorY="middle"
-          fillOpacity={0.4}
+          fillOpacity={0.55}
           font={undefined}
         >
           {label}
@@ -205,10 +205,13 @@ export default function FloatingKeyboard({
 
   return (
     <group position={position} rotation={rotation} scale={scale} frustumCulled={false}>
+      {/* Underglow — ambient spill from below keyboard */}
+      <pointLight position={[0, -0.15, kbdDepth / 2]} intensity={0.6} color="#4060ff" distance={4} decay={2} />
+
       {/* Base plate */}
       <mesh position={[0, -0.003, kbdDepth / 2]}>
         <boxGeometry args={[kbdWidth, 0.004, kbdDepth]} />
-        <meshBasicMaterial color="#0d0d25" transparent opacity={0.4} depthWrite={false} />
+        <meshBasicMaterial color="#151540" transparent opacity={0.55} depthWrite={false} />
       </mesh>
 
       {/* Key caps */}
