@@ -18,12 +18,16 @@ import SubstanceConfigMenu from './components/SubstanceConfigMenu';
 import SanitizeToggle from '@/components/SanitizeToggle';
 import { useSubstanceConfig } from '@/lib/tracker/hooks/useSubstanceConfig';
 import { SUBSTANCE_CONFIG, type SubstanceKey } from '@/lib/tracker/constants';
+import { useToast } from '@/components/Toast';
+import { useSession } from '@/lib/useSession';
 
 // Category definitions (before visibility filtering)
 const BODY_KEYS = new Set(['hydration', 'lions_mane', 'dynabiane', 'omegabiane', 'griffonia', 'valeriane', 'safran', 'venlafaxine', 'sertraline', 'prazepam', 'cyamemazine', 'melatonin', 'yoga', 'vitamine_c']);
 const RECREATIONAL_KEYS = new Set(['thc', 'cbd', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'cocaine', 'mmc', 'heroine']);
 
 export default function TrackerPage() {
+  const { toast } = useToast();
+  const { session, logout } = useSession();
   const [refreshKey, setRefreshKey] = useState(0);
   const [showKCalc, setShowKCalc] = useState(false);
   const [viewMode, setViewMode] = useState<'now' | 'plan'>('now');
@@ -65,9 +69,14 @@ export default function TrackerPage() {
           notes: 'via recommendation',
         }),
       });
-      if (res.ok) refresh();
+      if (res.ok) {
+        refresh();
+        toast('Logged successfully', 'success');
+      } else {
+        toast('Failed to log — try again', 'error');
+      }
     } catch {
-      // silent
+      toast('Network error — check connection', 'error');
     }
   }, []);
 
@@ -118,6 +127,24 @@ export default function TrackerPage() {
             >
               Dépendances
             </Link>
+            {session ? (
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-zinc-500 font-mono">{session.name}</span>
+                <button
+                  onClick={logout}
+                  className="text-xs px-2 py-1 rounded border border-zinc-700 text-zinc-500 hover:text-red-400 hover:border-red-500/30 transition"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="text-sm px-3 py-1.5 rounded border border-blue-500/30 text-blue-400 hover:bg-blue-500/10 transition"
+              >
+                Login
+              </Link>
+            )}
             <button
               onClick={() => setShowKCalc(!showKCalc)}
               className="text-sm px-3 py-1.5 rounded border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition"

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { TopNav, Footer } from './nav';
 import ChatWidget from '@/components/chat/ChatWidget';
 import VersionToast from '@/app/components/VersionToast';
+import { ToastProvider } from '@/components/Toast';
 
 // Routes that render in full immersive mode (no header/footer/chat)
 const IMMERSIVE_ROUTES = ['/tracker/3d'];
@@ -16,16 +17,16 @@ export default function PublicShellClient({ children }: { children: ReactNode })
   const immersive = IMMERSIVE_ROUTES.some(r => cleanPath.startsWith(r));
 
   if (immersive) {
-    return <>{children}</>;
+    return <ToastProvider>{children}</ToastProvider>;
   }
 
   return (
-    <>
+    <ToastProvider>
       <TopNav />
       <div className="pt-16">{children}</div>
       <Footer />
       <ChatWidget />
       <VersionToast />
-    </>
+    </ToastProvider>
   );
 }
