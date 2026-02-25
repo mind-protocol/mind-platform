@@ -64,9 +64,9 @@ const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<s
   cyamemazine: { amount: 25, unit: 'mg', details: { form: 'tablet' } },
   dynabiane: { amount: 1, unit: 'gélule', details: { form: 'capsule', brand: 'PiLeJe', type: 'probiotic' } },
   omegabiane: { amount: 1, unit: 'gélule', details: { form: 'capsule', brand: 'PiLeJe', type: 'omega-3' } },
-  griffonia: { amount: 200, unit: 'mg', details: { form: 'capsule', active: '5-HTP' } },
+  griffonia: { amount: 900, unit: 'mg', details: { form: 'capsule', active: '5-HTP' } },
   valeriane: { amount: 300, unit: 'mg', details: { form: 'capsule', type: 'root-extract' } },
-  safran: { amount: 30, unit: 'mg', details: { form: 'capsule', type: 'standardized-extract' } },
+  safran: { amount: 1000, unit: 'mg', details: { form: 'capsule', type: 'extract' } },
   yoga: { amount: 3, unit: 'min', details: { style: 'vinyasa', flow: false } },
 };
 
@@ -1107,7 +1107,7 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
           <div>
             <label className="text-xs text-zinc-500 block mb-1">Quick dose (5-HTP)</label>
             <div className="flex flex-wrap gap-1.5">
-              {[50, 100, 200, 400].map((mg) => (
+              {[450, 900, 1800].map((mg) => (
                 <button
                   key={mg}
                   onClick={() => setAmount(mg)}
@@ -1149,7 +1149,7 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
           <div>
             <label className="text-xs text-zinc-500 block mb-1">Quick dose</label>
             <div className="flex flex-wrap gap-1.5">
-              {[15, 20, 30].map((mg) => (
+              {[500, 1000, 2000].map((mg) => (
                 <button
                   key={mg}
                   onClick={() => setAmount(mg)}

@@ -50,9 +50,9 @@ export const DOSE_RANGES: Record<SubstanceKey, { min: number; max: number }> = {
   cyamemazine: { min: 12.5, max: 100 },
   dynabiane:   { min: 1, max: 2 },       // 1-2 gélules/jour
   omegabiane:  { min: 1, max: 3 },       // 1-3 gélules/jour
-  griffonia:   { min: 50, max: 400 },    // 50-400mg (5-HTP precursor)
+  griffonia:   { min: 450, max: 1800 },   // 900mg capsule (½, 1, or 2)
   valeriane:   { min: 100, max: 600 },   // 100-600mg (root extract)
-  safran:      { min: 15, max: 30 },     // 15-30mg (standardized extract)
+  safran:      { min: 500, max: 2000 },  // 1000mg capsule (½, 1, or 2)
   yoga:        { min: 1, max: 60 },      // 1-60 min session
 };
 
