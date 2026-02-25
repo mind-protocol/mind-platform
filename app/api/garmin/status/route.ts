@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
+import { manemusFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
-
-const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
 
 export async function GET(req: Request) {
   try {
@@ -11,12 +10,8 @@ export async function GET(req: Request) {
     if (!userId) {
       return NextResponse.json({ error: 'user_id required' }, { status: 400 });
     }
-    const res = await fetch(`${MANEMUS_URL}/garmin/auth/status/${encodeURIComponent(userId)}`, {
-      cache: 'no-store',
-      headers: { 'ngrok-skip-browser-warning': '1' },
-    });
-    const data = await res.json();
-    return NextResponse.json(data, { status: res.status });
+    const { data, status } = await manemusFetchJson(`/garmin/auth/status/${encodeURIComponent(userId)}`);
+    return NextResponse.json(data, { status });
   } catch {
     return NextResponse.json({ error: 'Service unavailable' }, { status: 502 });
   }

@@ -51,19 +51,40 @@ function timeSince(ts: string): string {
 
 export default function SubstanceCard({ refreshKey, filter }: { refreshKey: number; filter?: string[] }) {
   const [stats, setStats] = useState<StatsResponse | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     fetch('/api/tracker/stats?days=7')
       .then((r) => r.json())
       .then(setStats)
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, [refreshKey]);
 
   const todayStats = stats?.stats;
+  const filtered = filter ? SUBSTANCES.filter((s) => filter.includes(s.key)) : SUBSTANCES;
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {Array.from({ length: Math.min(filtered.length, 8) }).map((_, i) => (
+          <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-lg p-3 animate-pulse">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-2 h-2 rounded-full bg-zinc-700" />
+              <div className="h-4 w-16 bg-zinc-800 rounded" />
+            </div>
+            <div className="h-8 w-8 bg-zinc-800 rounded mt-1" />
+            <div className="h-3 w-24 bg-zinc-800 rounded mt-2" />
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-      {(filter ? SUBSTANCES.filter((s) => filter.includes(s.key)) : SUBSTANCES).map((sub) => {
+      {filtered.map((sub) => {
         const s = todayStats?.[sub.key];
         return (
           <div

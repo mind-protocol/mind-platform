@@ -480,18 +480,22 @@ const AdverseRow = memo(function AdverseRow({ entry }: { entry: AdverseEntry }) 
 export default function Timeline({ refreshKey, filter }: { refreshKey: number; filter?: string[] }) {
   const [entries, setEntries] = useState<LogEntry[]>([]);
   const [adverseEntries, setAdverseEntries] = useState<AdverseEntry[]>([]);
+  const [loading, setLoading] = useState(true);
   const { sanitized } = useSanitizeMode();
   const { toast } = useToast();
 
   useEffect(() => {
-    fetch('/api/tracker/log?days=7')
-      .then((r) => r.json())
-      .then((d) => setEntries(d.entries || []))
-      .catch(() => toast('Failed to load timeline', 'error'));
-    fetch('/api/tracker/adverse?days=7')
-      .then((r) => r.json())
-      .then((d) => setAdverseEntries(Array.isArray(d) ? d : []))
-      .catch(() => toast('Failed to load effects', 'error'));
+    setLoading(true);
+    Promise.all([
+      fetch('/api/tracker/log?days=7')
+        .then((r) => r.json())
+        .then((d) => setEntries(d.entries || []))
+        .catch(() => toast('Failed to load timeline', 'error')),
+      fetch('/api/tracker/adverse?days=7')
+        .then((r) => r.json())
+        .then((d) => setAdverseEntries(Array.isArray(d) ? d : []))
+        .catch(() => toast('Failed to load effects', 'error')),
+    ]).finally(() => setLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshKey]);
 
@@ -523,6 +527,23 @@ export default function Timeline({ refreshKey, filter }: { refreshKey: number; f
   const handleDelete = useCallback((id: string) => {
     setEntries((prev) => prev.filter((e) => e.id !== id));
   }, []);
+
+  if (loading) {
+    return (
+      <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 animate-pulse">
+        <div className="h-4 w-32 bg-zinc-800 rounded mb-4" />
+        <div className="space-y-3">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-3">
+              <div className="h-3 w-12 bg-zinc-800 rounded" />
+              <div className="w-2 h-2 rounded-full bg-zinc-700" />
+              <div className="h-3 flex-1 bg-zinc-800 rounded" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (

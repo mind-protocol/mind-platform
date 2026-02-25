@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
+import { manemusFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
-
-const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
 
 export async function POST(req: Request) {
   try {
@@ -11,14 +10,12 @@ export async function POST(req: Request) {
     if (!sender || !recipient || amount === undefined) {
       return NextResponse.json({ error: 'sender, recipient, and amount required' }, { status: 400 });
     }
-    const res = await fetch(`${MANEMUS_URL}/wallet/transfer/prepare`, {
+    const { data, status } = await manemusFetchJson('/wallet/transfer/prepare', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': '1' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ sender, recipient, amount }),
-      cache: 'no-store',
     });
-    const data = await res.json();
-    return NextResponse.json(data, { status: res.status });
+    return NextResponse.json(data, { status });
   } catch {
     return NextResponse.json({ error: 'Service unavailable' }, { status: 502 });
   }

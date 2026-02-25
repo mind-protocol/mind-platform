@@ -1,27 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getUserIdFromRequest } from '@/lib/auth';
+import { manemusFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
-
-const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const userId = await getUserIdFromRequest(req);
 
-    const res = await fetch(`${MANEMUS_URL}/chat/send`, {
+    const { data, status } = await manemusFetchJson('/chat/send', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '1',
         ...(userId ? { 'X-User-Id': userId } : {}),
       },
       body: JSON.stringify({ ...body, user_id: userId }),
-      cache: 'no-store',
     });
-    const data = await res.json();
-    return NextResponse.json(data, { status: res.status });
+    return NextResponse.json(data, { status });
   } catch {
     return NextResponse.json({ error: 'Service unavailable' }, { status: 502 });
   }
