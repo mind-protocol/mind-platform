@@ -98,6 +98,9 @@ export interface KeyState {
   lastHitTime: number; // performance.now() of last activation
 }
 
+// Module-level singleton — shared between Canvas (useFrame decay) and DOM overlay (rAF read)
+export const KEY_STATES: Map<string, KeyState> = new Map();
+
 // ── Hook ───────────────────────────────────────────────────────────────
 interface UseKeyboardReactiveOptions {
   enabled?: boolean;
@@ -131,8 +134,8 @@ export function useKeyboardReactive({
   micEnabled = false,
   decayRate = 5,
 }: UseKeyboardReactiveOptions = {}) {
-  // Key states stored in a ref (mutated in useFrame, no React re-renders)
-  const keyStatesRef = useRef<Map<string, KeyState>>(new Map());
+  // Key states stored in a ref pointing to module singleton (shared with DOM overlay)
+  const keyStatesRef = useRef<Map<string, KeyState>>(KEY_STATES);
   const [listening, setListening] = useState(false);
 
   // Audio analysis refs

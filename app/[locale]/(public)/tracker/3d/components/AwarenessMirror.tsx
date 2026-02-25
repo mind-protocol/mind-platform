@@ -13,7 +13,6 @@ import SceneControls from './SceneControls';
 import ConsciousnessCore from './ConsciousnessCore';
 import ActiveSubstanceOrb from './ActiveSubstanceOrb';
 import BiometricField from './BiometricField';
-import FloatingKeyboard from './FloatingKeyboard';
 import EnvironmentRenderer from './environments/EnvironmentRenderer';
 import { useKeyboardReactive, type KeyboardDebugStats } from '@/lib/tracker/hooks/useKeyboardReactive';
 
@@ -108,18 +107,16 @@ export default function AwarenessMirror() {
         <BiometricField awareness={awareness} />
       </group>
 
-      {/* Floating keyboard — audio-reactive AZERTY ghost */}
-      <group raycast={() => null}>
-        <FloatingKeyboard
-          keyStatesRef={keyStatesRef}
-          decayKeys={decayKeys}
-          position={[0, -0.9, 5.8]}
-          rotation={[-0.25, 0, 0]}
-          scale={3.0}
-        />
-      </group>
+      {/* Keyboard decay runner — keeps glow decay ticking in sync with R3F frame loop */}
+      <KeyDecayRunner decayKeys={decayKeys} />
     </Canvas>
   );
+}
+
+/** Runs key glow decay inside the R3F frame loop (invisible — no geometry) */
+function KeyDecayRunner({ decayKeys }: { decayKeys: (delta: number) => void }) {
+  useFrame((_, delta) => { decayKeys(delta); });
+  return null;
 }
 
 /**
