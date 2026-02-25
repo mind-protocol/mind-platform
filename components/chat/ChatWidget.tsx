@@ -86,6 +86,13 @@ const THEMES: Theme[] = [
 const THEME_MAP = new Map(THEMES.map(t => [t.key, t]));
 
 // ─── Browser TTS ─────────────────────────────────────────────────────────────
+// Pre-load voices (browsers load them asynchronously)
+let _voicesLoaded = false;
+if (typeof window !== 'undefined' && window.speechSynthesis) {
+  window.speechSynthesis.getVoices(); // Trigger initial load
+  window.speechSynthesis.onvoiceschanged = () => { _voicesLoaded = true; };
+}
+
 function speakText(text: string) {
   if (typeof window === 'undefined' || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
@@ -100,7 +107,8 @@ function speakText(text: string) {
   if (preferred) utter.voice = preferred;
   utter.rate = 1.0;
   utter.pitch = 1.0;
-  window.speechSynthesis.speak(utter);
+  // Chrome requires user gesture and may silently fail — force with a small delay
+  setTimeout(() => window.speechSynthesis.speak(utter), 50);
 }
 
 // ─── Typing Indicator ───────────────────────────────────────────────────────
