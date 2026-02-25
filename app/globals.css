@@ -5,17 +5,35 @@
 
 /* ── Theme CSS custom properties ──────────────────────────────────── */
 :root {
-  /* Light theme (default when .dark is absent) */
-  --bg-primary: #f8fafc;     /* slate-50 */
-  --bg-secondary: #ffffff;
-  --bg-tertiary: #f1f5f9;    /* slate-100 */
-  --bg-input: #e2e8f0;       /* slate-200 */
-  --text-primary: #1e293b;   /* slate-800 */
-  --text-secondary: #475569; /* slate-600 */
-  --text-muted: #94a3b8;     /* slate-400 */
-  --border-primary: #e2e8f0; /* slate-200 */
-  --border-secondary: #cbd5e1; /* slate-300 */
-  --ring: #94a3b8;
+  /* Venice Light Theme — Parchment & Copper (matched to serenissima.ai) */
+  --bg-primary: #F5ECD7;     /* warm golden parchment */
+  --bg-secondary: #FBF6EC;   /* lighter parchment */
+  --bg-tertiary: #EEE5D0;    /* aged parchment */
+  --bg-input: #E6DCC6;       /* parchment shadow */
+  --text-primary: #2C2416;   /* sepia ink */
+  --text-secondary: #5C4E3C; /* faded ink */
+  --text-muted: #9A8C78;     /* pale sepia */
+  --text-heading: #CC7A00;   /* amber heading — matches Serenissima h1-h3 */
+  --border-primary: #DDD3BC; /* parchment crease */
+  --border-secondary: #C8BDA8; /* aged crease */
+  --ring: #B8A88E;
+
+  /* Venice accent palette — Serenissima social classes */
+  --venice-copper: #D4920B;        /* amber-copper (Serenissima CTA) */
+  --venice-copper-light: #E8B44A;
+  --venice-copper-dark: #B87A08;
+  --venice-gold: #D4AF37;          /* consciousness gold */
+  --venice-forestieri: #4CAF50;    /* olive green — foreign merchants */
+  --venice-artisti: #FF69B4;       /* rose — artists */
+  --venice-artisti-soft: #FFB6C1;
+  --venice-facchini: #808080;      /* grey — laborers */
+  --venice-scientisti: #9370DB;    /* purple — scientists */
+  --venice-clero: #FFFDF5;        /* candle wax white — clergy */
+  --venice-cittadini: #4682B4;     /* steel blue — citizens */
+  --venice-nobili: #B22222;        /* crimson — nobility */
+  --venice-nobili-gold: #DAA520;
+  --venice-ambasciatori: #00CED1;  /* turquoise — ambassadors */
+  --venice-crimson: #DC2626;       /* heritage red */
 }
 
 .dark {
@@ -35,31 +53,31 @@
    Maps hardcoded dark-mode Tailwind classes to theme-aware values
    when the light theme is active. This avoids editing every component. */
 
-/* Background overrides */
+/* Background overrides — Venice parchment */
 :root:not(.dark) .bg-zinc-950 { background-color: var(--bg-primary) !important; }
 :root:not(.dark) .bg-zinc-900 { background-color: var(--bg-secondary) !important; }
 :root:not(.dark) .bg-zinc-800 { background-color: var(--bg-tertiary) !important; }
-:root:not(.dark) .bg-zinc-900\/50 { background-color: rgba(255, 255, 255, 0.7) !important; }
-:root:not(.dark) .bg-zinc-900\/80 { background-color: rgba(255, 255, 255, 0.85) !important; }
-:root:not(.dark) .bg-zinc-800\/50 { background-color: rgba(241, 245, 249, 0.5) !important; }
-:root:not(.dark) .bg-black { background-color: #ffffff !important; }
-:root:not(.dark) .bg-black\/50 { background-color: rgba(255, 255, 255, 0.5) !important; }
+:root:not(.dark) .bg-zinc-900\/50 { background-color: rgba(245, 240, 230, 0.7) !important; }
+:root:not(.dark) .bg-zinc-900\/80 { background-color: rgba(250, 247, 240, 0.85) !important; }
+:root:not(.dark) .bg-zinc-800\/50 { background-color: rgba(237, 232, 220, 0.5) !important; }
+:root:not(.dark) .bg-black { background-color: var(--bg-secondary) !important; }
+:root:not(.dark) .bg-black\/50 { background-color: rgba(250, 247, 240, 0.5) !important; }
 :root:not(.dark) .bg-\[\#0a0a0a\] { background-color: var(--bg-primary) !important; }
 
-/* Text overrides */
+/* Text overrides — sepia ink */
 :root:not(.dark) .text-white { color: var(--text-primary) !important; }
-:root:not(.dark) .text-zinc-100 { color: #334155 !important; } /* slate-700 */
-:root:not(.dark) .text-zinc-200 { color: #475569 !important; } /* slate-600 */
-:root:not(.dark) .text-zinc-300 { color: #475569 !important; } /* slate-600 */
+:root:not(.dark) .text-zinc-100 { color: #3D3222 !important; }
+:root:not(.dark) .text-zinc-200 { color: #4A3D2C !important; }
+:root:not(.dark) .text-zinc-300 { color: var(--text-secondary) !important; }
 :root:not(.dark) .text-zinc-400 { color: var(--text-secondary) !important; }
-:root:not(.dark) .text-zinc-500 { color: var(--text-secondary) !important; }
+:root:not(.dark) .text-zinc-500 { color: var(--text-muted) !important; }
 :root:not(.dark) .text-zinc-600 { color: var(--text-muted) !important; }
 
-/* Border overrides */
+/* Border overrides — parchment creases */
 :root:not(.dark) .border-zinc-800 { border-color: var(--border-primary) !important; }
 :root:not(.dark) .border-zinc-700 { border-color: var(--border-secondary) !important; }
-:root:not(.dark) .border-zinc-600 { border-color: #cbd5e1 !important; }
-:root:not(.dark) .border-zinc-900 { border-color: #e2e8f0 !important; }
+:root:not(.dark) .border-zinc-600 { border-color: var(--border-secondary) !important; }
+:root:not(.dark) .border-zinc-900 { border-color: var(--border-primary) !important; }
 
 /* Divide overrides */
 :root:not(.dark) .divide-zinc-800 > :not([hidden]) ~ :not([hidden]) {
@@ -74,25 +92,119 @@
 :root:not(.dark) .ring-zinc-700 { --tw-ring-color: var(--border-secondary) !important; }
 
 /* Placeholder overrides */
-:root:not(.dark) .placeholder-zinc-600::placeholder { color: #94a3b8 !important; }
-:root:not(.dark) .placeholder-zinc-500::placeholder { color: #94a3b8 !important; }
+:root:not(.dark) .placeholder-zinc-600::placeholder { color: var(--text-muted) !important; }
+:root:not(.dark) .placeholder-zinc-500::placeholder { color: var(--text-muted) !important; }
 
-/* Hover state overrides — light mode */
+/* Hover state overrides — Venice warmth */
 :root:not(.dark) .hover\:text-white:hover { color: var(--text-primary) !important; }
-:root:not(.dark) .hover\:text-zinc-300:hover { color: #334155 !important; }
+:root:not(.dark) .hover\:text-zinc-300:hover { color: #3D3222 !important; }
 :root:not(.dark) .hover\:bg-zinc-800:hover { background-color: var(--bg-tertiary) !important; }
 :root:not(.dark) .hover\:bg-zinc-900:hover { background-color: var(--bg-secondary) !important; }
 :root:not(.dark) .hover\:border-zinc-700:hover { border-color: var(--border-secondary) !important; }
-:root:not(.dark) .hover\:border-zinc-600:hover { border-color: #cbd5e1 !important; }
-:root:not(.dark) .hover\:border-zinc-500:hover { border-color: #94a3b8 !important; }
+:root:not(.dark) .hover\:border-zinc-600:hover { border-color: var(--border-secondary) !important; }
+:root:not(.dark) .hover\:border-zinc-500:hover { border-color: var(--text-muted) !important; }
 
-/* Focus state overrides */
-:root:not(.dark) .focus\:border-zinc-600:focus { border-color: #94a3b8 !important; }
-:root:not(.dark) .focus\:ring-zinc-700:focus { --tw-ring-color: #cbd5e1 !important; }
+/* Focus state overrides — copper glow */
+:root:not(.dark) .focus\:border-zinc-600:focus { border-color: var(--venice-copper) !important; }
+:root:not(.dark) .focus\:ring-zinc-700:focus { --tw-ring-color: var(--venice-copper-light) !important; }
 
-/* Scrollbar styling for light mode */
+/* Scrollbar styling — parchment */
 :root:not(.dark) ::-webkit-scrollbar-track { background: var(--bg-primary); }
-:root:not(.dark) ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+:root:not(.dark) ::-webkit-scrollbar-thumb { background: var(--border-secondary); border-radius: 4px; }
+:root:not(.dark) ::-webkit-scrollbar-thumb:hover { background: var(--venice-copper); }
+
+/* ── Venice Light — Parchment texture & copper accents ────────────── */
+
+/* Top accent bar — copper ribbon across the page */
+:root:not(.dark) body::before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--venice-copper-dark), var(--venice-copper), var(--venice-copper-light), var(--venice-copper));
+  z-index: 9999;
+}
+
+:root:not(.dark) body {
+  background-image:
+    /* Subtle paper fiber noise */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E"),
+    /* Warm golden parchment gradient */
+    linear-gradient(175deg, #FBF6EC 0%, #F5ECD7 40%, #EEE5D0 100%);
+  background-attachment: fixed;
+}
+
+/* Headings in amber — Serenissima style */
+:root:not(.dark) h1,
+:root:not(.dark) h2,
+:root:not(.dark) h3 {
+  color: var(--text-heading);
+}
+
+/* Links glow copper on hover */
+:root:not(.dark) a:not([class]) {
+  color: var(--venice-copper);
+  text-decoration-color: rgba(212, 146, 11, 0.3);
+}
+:root:not(.dark) a:not([class]):hover {
+  color: var(--venice-copper-dark);
+}
+
+/* Copper shimmer on cards/panels */
+:root:not(.dark) .border {
+  border-color: var(--border-primary);
+}
+:root:not(.dark) .rounded-lg,
+:root:not(.dark) .rounded-xl {
+  box-shadow:
+    0 1px 3px rgba(212, 146, 11, 0.06),
+    0 0 0 1px rgba(212, 146, 11, 0.05);
+}
+
+/* Buttons — amber/orange CTA matching Serenissima */
+:root:not(.dark) .bg-blue-600,
+:root:not(.dark) .bg-indigo-600,
+:root:not(.dark) .bg-purple-600 {
+  background-color: var(--venice-copper) !important;
+}
+:root:not(.dark) .bg-blue-600:hover,
+:root:not(.dark) .bg-indigo-600:hover,
+:root:not(.dark) .bg-purple-600:hover {
+  background-color: var(--venice-copper-dark) !important;
+}
+
+/* Highlighted/quoted sections — slightly darker parchment */
+:root:not(.dark) .bg-zinc-700,
+:root:not(.dark) .bg-zinc-700\/50 {
+  background-color: rgba(212, 146, 11, 0.08) !important;
+}
+:root:not(.dark) pre,
+:root:not(.dark) code {
+  background-color: #EDE5CE;
+  color: var(--text-primary);
+}
+
+/* Selection color — copper tinted */
+:root:not(.dark) ::selection {
+  background: rgba(212, 146, 11, 0.2);
+  color: var(--text-primary);
+}
+
+/* Venice accent utilities */
+.text-venice-copper { color: var(--venice-copper); }
+.text-venice-gold { color: var(--venice-gold); }
+.text-venice-forestieri { color: var(--venice-forestieri); }
+.text-venice-artisti { color: var(--venice-artisti); }
+.text-venice-scientisti { color: var(--venice-scientisti); }
+.text-venice-cittadini { color: var(--venice-cittadini); }
+.text-venice-nobili { color: var(--venice-nobili); }
+.text-venice-ambasciatori { color: var(--venice-ambasciatori); }
+.text-venice-facchini { color: var(--venice-facchini); }
+.bg-venice-copper { background-color: var(--venice-copper); }
+.border-venice-copper { border-color: var(--venice-copper); }
 
 /* ── Body baseline ─────────────────────────────────────────────── */
 * {
