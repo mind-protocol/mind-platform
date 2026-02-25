@@ -60,7 +60,7 @@ function getOrCreateThreadId(): string {
 export const useChatStore = create<ChatStore>((set, get) => ({
   // State
   isOpen: typeof window !== 'undefined' ? window.innerWidth >= 768 : true,
-  threadId: '',
+  threadId: typeof window !== 'undefined' ? getOrCreateThreadId() : '',
   messages: [],
   isSending: false,
   inputText: '',
@@ -97,7 +97,11 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
   sendMessage: async (content, pageUrl, screenshot) => {
     const { threadId, walletAddress, messages, pendingImage } = get();
-    if (!content.trim() || !threadId) return;
+    if (!content.trim()) return;
+    // Ensure threadId is available (lazy-init if race condition)
+    const resolvedThreadId = threadId || getOrCreateThreadId();
+    if (!resolvedThreadId) return;
+    if (!threadId) set({ threadId: resolvedThreadId });
 
     // Extract page context at send time
     let pageContext: PageContext | undefined;
@@ -125,9 +129,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          thread_id: threadId,
+          thread_id: resolvedThreadId,
           content,
-          sender_id: walletAddress || threadId,
+          sender_id: walletAddress || resolvedThreadId,
           wallet: walletAddress || undefined,
           page_url: pageUrl,
           page_context: pageContext || undefined,

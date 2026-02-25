@@ -250,8 +250,8 @@ export default function TrackerPage() {
               </button>
             </div>
 
-            {/* K Calculator (toggle, substances tab only) */}
-            {showKCalc && activeTab === 'substances' && (
+            {/* K Calculator (toggle) */}
+            {showKCalc && (
               <div className="mb-6">
                 <KCalculator />
               </div>
