@@ -18,6 +18,13 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata = {
   title: "Mind Protocol",
   description: "Persistent memory for AI agents",
+  manifest: "/manifest.json",
+  themeColor: "#f59e0b",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent" as const,
+    title: "MIND Tracker",
+  },
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
@@ -25,6 +32,10 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 
   return (
     <html lang={locale} className={`dark ${inter.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="mobile-web-app-capable" content="yes" />
+      </head>
       <body className="font-sans" suppressHydrationWarning>
         <ThemeProvider>{children}</ThemeProvider>
       </body>

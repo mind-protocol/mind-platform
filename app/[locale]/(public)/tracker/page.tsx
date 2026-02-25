@@ -10,6 +10,8 @@ import SensationLogger from './components/SensationLogger';
 import Timeline from './components/Timeline';
 import KCalculator from './components/KCalculator';
 import FoodLog from './components/FoodLog';
+import LiveBiometrics from './components/LiveBiometrics';
+import DailySummary from './components/DailySummary';
 import PlanViewToggle from './components/planning/PlanViewToggle';
 import PlanningCalendar from './components/planning/PlanningCalendar';
 import ScheduleDoseForm from './components/planning/ScheduleDoseForm';
@@ -89,76 +91,92 @@ export default function TrackerPage() {
     <main className="min-h-screen bg-zinc-950 text-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
         {/* Header */}
-        <header className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold font-mono">
-              Body Tracker
-            </h1>
-            <p className="text-zinc-500 text-sm mt-1">
-              Precision dosing &middot; Biometric correlation
-            </p>
+        <header className="mb-6 space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold font-mono">
+                Body Tracker
+              </h1>
+              <p className="text-zinc-500 text-sm mt-1 hidden sm:block">
+                Precision dosing &middot; Biometric correlation
+              </p>
+            </div>
+            <div className="flex gap-2 items-center">
+              <SubstanceConfigMenu />
+              <SanitizeToggle />
+              <ThemeToggle />
+              <PlanViewToggle mode={viewMode} onChange={setViewMode} />
+              {session ? (
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs text-zinc-500 font-mono hidden sm:inline">{session.name}</span>
+                  <button
+                    onClick={logout}
+                    className="text-xs px-2 py-1 rounded border border-zinc-700 text-zinc-500 hover:text-red-400 hover:border-red-500/30 transition"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="text-sm px-3 py-1.5 rounded border border-blue-500/30 text-blue-400 hover:bg-blue-500/10 transition"
+                >
+                  Login
+                </Link>
+              )}
+            </div>
           </div>
-          <div className="flex gap-2 items-center flex-wrap justify-end">
-            <SubstanceConfigMenu />
-            <SanitizeToggle />
-            <ThemeToggle />
-            <PlanViewToggle mode={viewMode} onChange={setViewMode} />
+
+          {/* Sub-navigation — scrollable on mobile */}
+          <nav className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
             <Link
               href="/tracker/3d"
-              className="text-sm px-3 py-1.5 rounded border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition"
+              className="flex-none text-xs px-3 py-1.5 rounded-full border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition whitespace-nowrap"
             >
               Awareness Mirror
             </Link>
             <Link
               href="/tracker/health"
-              className="text-sm px-3 py-1.5 rounded border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 transition"
+              className="flex-none text-xs px-3 py-1.5 rounded-full border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 transition whitespace-nowrap"
             >
               Health
             </Link>
             <Link
               href="/tracker/protocols"
-              className="text-sm px-3 py-1.5 rounded border border-orange-500/30 text-orange-400 hover:bg-orange-500/10 transition"
+              className="flex-none text-xs px-3 py-1.5 rounded-full border border-orange-500/30 text-orange-400 hover:bg-orange-500/10 transition whitespace-nowrap"
             >
               Protocoles
             </Link>
             <Link
               href="/tracker/dependencies"
-              className="text-sm px-3 py-1.5 rounded border border-amber-500/30 text-amber-400 hover:bg-amber-500/10 transition"
+              className="flex-none text-xs px-3 py-1.5 rounded-full border border-amber-500/30 text-amber-400 hover:bg-amber-500/10 transition whitespace-nowrap"
             >
               Dépendances
             </Link>
             <Link
               href="/tracker/settings"
-              className="text-sm px-3 py-1.5 rounded border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition"
+              className="flex-none text-xs px-3 py-1.5 rounded-full border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition whitespace-nowrap"
             >
               Settings
             </Link>
-            {session ? (
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-zinc-500 font-mono">{session.name}</span>
-                <button
-                  onClick={logout}
-                  className="text-xs px-2 py-1 rounded border border-zinc-700 text-zinc-500 hover:text-red-400 hover:border-red-500/30 transition"
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <Link
-                href="/login"
-                className="text-sm px-3 py-1.5 rounded border border-blue-500/30 text-blue-400 hover:bg-blue-500/10 transition"
-              >
-                Login
-              </Link>
-            )}
             <button
               onClick={() => setShowKCalc(!showKCalc)}
-              className="text-sm px-3 py-1.5 rounded border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition"
+              className="flex-none text-xs px-3 py-1.5 rounded-full border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition whitespace-nowrap"
             >
-              {showKCalc ? 'Hide' : 'K Calculator'}
+              {showKCalc ? 'Hide K Calc' : 'K Calculator'}
             </button>
-          </div>
+          </nav>
         </header>
+
+        {/* Live biometrics strip */}
+        <div className="mb-6">
+          <LiveBiometrics />
+        </div>
+
+        {/* Daily summary (today's logs at a glance) */}
+        <div className="mb-6">
+          <DailySummary refreshKey={refreshKey} />
+        </div>
 
         {viewMode === 'plan' ? (
           <>
