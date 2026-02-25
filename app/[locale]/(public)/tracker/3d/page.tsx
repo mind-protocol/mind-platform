@@ -6,11 +6,14 @@ import Link from 'next/link';
 import SanitizeToggle from '@/components/SanitizeToggle';
 import { useAwarenessState } from '@/lib/tracker/hooks/useAwarenessState';
 import { useCockpitState } from '@/lib/tracker/hooks/useCockpitState';
+import { useInput, type Gesture } from '@/lib/tracker/cockpit';
 import RangeSelector from './components/RangeSelector';
 import Legend from './components/Legend';
 import EnvironmentManager from '../components/EnvironmentManager';
+import SkyboxUploader from './components/SkyboxUploader';
 import { useKeyboardSound } from '@/lib/tracker/hooks/useKeyboardSound';
 import { KEYBOARD_DEBUG } from '@/lib/tracker/hooks/useKeyboardReactive';
+import type { RegionId } from './components/CockpitRegions';
 
 const TemporalScene = dynamic(
   () => import('./components/TemporalScene'),
@@ -486,6 +489,9 @@ export default function Tracker3DPage() {
   const { awareness } = useAwarenessState();
   const cockpit = useCockpitState(awareness);
 
+  // Orbital cockpit region state (3D panel system inside Canvas)
+  const [orbitalRegion, setOrbitalRegion] = useState<RegionId | null>(null);
+
   // Image adjustments
   const [adjustments, setAdjustments] = useState<ImageAdjustments>(DEFAULT_ADJUSTMENTS);
   const [savedAdjustments, setSavedAdjustments] = useState<ImageAdjustments>(DEFAULT_ADJUSTMENTS);
@@ -501,6 +507,8 @@ export default function Tracker3DPage() {
   });
   useKeyboardSound({ enabled: soundEnabled, volume: soundVolume });
 
+  const [, startTransition] = useTransition();
+
   // Auto-hide chrome + typing mode — ref-based, zero React re-renders
   // Uses data attributes on a wrapper div + CSS for opacity transitions
   const chromeRef = useRef(true);
@@ -513,6 +521,37 @@ export default function Tracker3DPage() {
   // Derived values for child props that need initial render values
   const [chromeVisible, setChromeVisible] = useState(true);
   const [typing, setTyping] = useState(false);
+
+  // ── Unified gesture handler (InputController) ─────────────────────────
+  const handleGesture = useCallback((g: Gesture) => {
+    switch (g.type) {
+      case 'SWIPE':
+        if (g.dir === 'left' || g.dir === 'right') {
+          startTransition(() => setMode(prev => prev === 'mirror' ? 'timeline' : 'mirror'));
+        } else if (g.dir === 'up') {
+          setShowDirections(prev => !prev);
+        } else if (g.dir === 'down') {
+          setShowDirections(false);
+        }
+        break;
+      case 'KEY':
+        if (g.key === 'Escape') {
+          setShowDirections(false);
+        } else if (g.key === 'D' && g.shift) {
+          setDebugPanel(prev => !prev);
+        }
+        break;
+      case 'ZOOM':
+        // Reserved for future use (e.g. scene zoom level)
+        // eslint-disable-next-line no-console
+        console.debug('[3D] ZOOM gesture, delta:', g.delta);
+        break;
+    }
+  // startTransition is stable (from useTransition), setMode/setShowDirections/setDebugPanel are stable setState
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useInput(handleGesture);
 
   useEffect(() => {
     const HIDE_DELAY = 4000;
@@ -538,15 +577,6 @@ export default function Tracker3DPage() {
       }, HIDE_DELAY);
     };
 
-    const onKey = (e: KeyboardEvent) => {
-      if (e.shiftKey && e.code === 'KeyD') {
-        setDebugPanel(prev => !prev);
-      }
-      if (e.code === 'Escape') {
-        setShowDirections(false);
-      }
-    };
-
     // Poll typing state via rAF instead of setInterval+setState
     let rafId: number;
     const pollTyping = () => {
@@ -569,13 +599,11 @@ export default function Tracker3DPage() {
 
     window.addEventListener('mousemove', show, { passive: true });
     window.addEventListener('mousedown', show, { passive: true });
-    window.addEventListener('keydown', onKey, { passive: true });
     return () => {
       clearTimeout(hideTimerRef.current);
       cancelAnimationFrame(rafId);
       window.removeEventListener('mousemove', show);
       window.removeEventListener('mousedown', show);
-      window.removeEventListener('keydown', onKey);
     };
   }, []);
 
@@ -593,12 +621,10 @@ export default function Tracker3DPage() {
     return () => { document.body.style.overflow = prev; };
   }, []);
 
-  const [, startTransition] = useTransition();
-
   const handleSave = useCallback(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(adjustments));
     startTransition(() => setSavedAdjustments({ ...adjustments }));
-  }, [adjustments]);
+  }, [adjustments, startTransition]);
 
   const handleReset = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
@@ -639,7 +665,7 @@ export default function Tracker3DPage() {
       {/* Filtered canvas wrapper */}
       <div ref={canvasWrapperRef} className="w-full h-full" style={filterStyle}>
         {mode === 'mirror' ? (
-          <AwarenessMirror />
+          <AwarenessMirror activeRegion={orbitalRegion} setActiveRegion={setOrbitalRegion} />
         ) : (
           <TemporalScene days={days} />
         )}
@@ -712,9 +738,10 @@ export default function Tracker3DPage() {
         </div>
       )}
 
-      {/* Environment manager — top right in mirror mode */}
+      {/* Environment manager + Skybox uploader — top right in mirror mode */}
       {mode === 'mirror' && (
-        <div className={`fixed top-4 right-4 z-[52] transition-opacity duration-500 ${chromeVisible ? (typing ? 'opacity-30' : 'opacity-100') : 'opacity-0 pointer-events-none'}`}>
+        <div className={`fixed top-4 right-4 z-[52] flex items-start gap-2 transition-opacity duration-500 ${chromeVisible ? (typing ? 'opacity-30' : 'opacity-100') : 'opacity-0 pointer-events-none'}`}>
+          <SkyboxUploader />
           <EnvironmentManager />
         </div>
       )}

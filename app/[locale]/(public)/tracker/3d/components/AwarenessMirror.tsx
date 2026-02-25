@@ -15,18 +15,33 @@ import ConsciousnessCore from './ConsciousnessCore';
 import ActiveSubstanceOrb from './ActiveSubstanceOrb';
 import BiometricField from './BiometricField';
 import EnvironmentRenderer from './environments/EnvironmentRenderer';
+import Skybox360 from './Skybox360';
+import { useSkybox360 } from './SkyboxUploader';
 import MusicReactiveField from './MusicReactiveField';
+import OrbitalCockpit from './OrbitalCockpit';
+import type { RegionId } from './CockpitRegions';
 import { useKeyboardReactive, type KeyboardDebugStats } from '@/lib/tracker/hooks/useKeyboardReactive';
 import { useSpotifyNowPlaying } from '@/lib/tracker/hooks/useSpotifyNowPlaying';
 import { useMusicAudioAnalysis } from '@/lib/tracker/hooks/useMusicAudioAnalysis';
 
-export default function AwarenessMirror() {
+interface AwarenessMirrorProps {
+  /** Active cockpit region (controlled from parent page) */
+  activeRegion?: RegionId | null;
+  /** Callback to change the active cockpit region */
+  setActiveRegion?: (region: RegionId | null) => void;
+}
+
+export default function AwarenessMirror({ activeRegion, setActiveRegion }: AwarenessMirrorProps = {}) {
   const { awareness, loading } = useAwarenessState();
   const { active: activeEnv } = useEnvironments();
+  const { skyboxUrl } = useSkybox360();
   const [dpr, setDpr] = useState<number>(1.5);
   const { keyStatesRef, decayKeys, debugRef, lastTypingRef, listening, startMic, stopMic } = useKeyboardReactive({ enabled: true });
   const { musicStateRef } = useSpotifyNowPlaying();
   const { stemsRef, updateStems } = useMusicAudioAnalysis(musicStateRef);
+
+  // Cockpit state for orbital panels
+  const cockpit = useCockpitState(awareness);
 
   // Determine which substances are currently active
   const activeSubstances = useMemo(() => {
@@ -65,8 +80,10 @@ export default function AwarenessMirror() {
       <color attach="background" args={[fogColor]} />
       <fog attach="fog" args={[fogColor, 25, 60]} />
 
-      {/* Environment: user capture or default night */}
-      {activeEnv ? (
+      {/* Environment priority: user 360 skybox > uploaded capture > default night */}
+      {skyboxUrl ? (
+        <Skybox360 />
+      ) : activeEnv ? (
         <EnvironmentRenderer env={activeEnv} />
       ) : (
         <Environment preset="night" />
@@ -106,6 +123,16 @@ export default function AwarenessMirror() {
         <BiometricField awareness={awareness} />
         <MusicReactiveField stemsRef={stemsRef} />
       </group>
+
+      {/* Orbital Cockpit — 3D-positioned region panels */}
+      {setActiveRegion && (
+        <OrbitalCockpit
+          awareness={awareness}
+          cockpit={cockpit}
+          activeRegion={activeRegion ?? null}
+          setActiveRegion={setActiveRegion}
+        />
+      )}
 
       {/* Frame-synced runners */}
       <KeyDecayRunner decayKeys={decayKeys} />
