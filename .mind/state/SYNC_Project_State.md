@@ -1,7 +1,7 @@
 # Project — Sync: Current State
 
 ```
-LAST_UPDATED: 2025-01-06
+LAST_UPDATED: 2026-02-25
 UPDATED_BY: Claude (groundwork agent)
 ```
 
@@ -34,6 +34,20 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 
 ## ACTIVE WORK
 
+### Messaging Bots — Telegram + WhatsApp (New)
+
+- **Area:** `lib/messaging/`, `app/api/webhooks/telegram/`, `app/api/webhooks/whatsapp/`
+- **Status:** implemented
+- **Owner:** agent
+- **Context:** Dual-channel messaging integration. Messages received on Telegram or WhatsApp are relayed to MANEMUS backend (`/chat/send`). If MANEMUS is offline, falls back to direct Claude API call. Uses Meta WhatsApp Cloud API (mind@mindprotocol.ai account). Thread IDs are prefixed per channel (`tg_` / `wa_`).
+- **Files:**
+  - `lib/messaging/chat_relay_service.ts` — Core relay logic (MANEMUS + Claude fallback)
+  - `lib/messaging/telegram_bot_api_client.ts` — Telegram Bot API client
+  - `lib/messaging/whatsapp_cloud_api_client.ts` — WhatsApp Cloud API client
+  - `app/api/webhooks/telegram/route.ts` — Telegram webhook (POST: messages, GET: setup)
+  - `app/api/webhooks/whatsapp/route.ts` — WhatsApp webhook (GET: verify, POST: messages)
+- **Env vars required:** `TELEGRAM_BOT_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_VERIFY_TOKEN`, `ANTHROPIC_API_KEY`, `NEXT_PUBLIC_BASE_URL`
+
 ### Landing Page — Manifesto-Aligned (Complete)
 
 - **Area:** `app/(public)/page.tsx`, `app/(public)/components/landing/`, `app/(public)/manifesto/`
@@ -58,6 +72,18 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 ---
 
 ## RECENT CHANGES
+
+### 2026-02-25: Telegram + WhatsApp Messaging Bots
+
+- **What:** Added dual-channel messaging integration (Telegram Bot + WhatsApp Cloud API) with MANEMUS relay and Claude API fallback.
+- **Why:** Enable Mind agent access from mobile (Android) via existing messaging apps — no app install needed.
+- **Impact:**
+  - New service: `lib/messaging/chat_relay_service.ts` — tries MANEMUS first, falls back to Claude API
+  - New Telegram integration: webhook at `/api/webhooks/telegram`, bot API client, /start command
+  - New WhatsApp integration: webhook at `/api/webhooks/whatsapp`, Meta Cloud API v21.0, read receipts
+  - Thread isolation per channel: `tg_{userId}` and `wa_{phone}` prefixes
+  - Updated `.env.mind.example` with all required env vars
+- **Setup required:** Set env vars, call `GET /api/webhooks/telegram?setup=1` to register TG webhook, configure WhatsApp webhook URL in Meta Business dashboard.
 
 ### 2025-01-06: Landing Page Redesigned — Manifesto-Aligned
 
