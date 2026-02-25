@@ -144,7 +144,7 @@ function KeyRow({
 }
 
 // ── Main component ──────────────────────────────────────────────────────
-export default function FloatingKeyboardOverlay() {
+export default function FloatingKeyboardOverlay({ typing = false }: { typing?: boolean }) {
   const keyEls = useRef<Map<string, HTMLDivElement>>(new Map());
   const labelEls = useRef<Map<string, HTMLSpanElement>>(new Map());
   const pressedRef = useRef<Set<string>>(new Set());
@@ -251,7 +251,8 @@ export default function FloatingKeyboardOverlay() {
       style={{
         transform: `translateX(-50%) perspective(1200px) rotateX(8deg) scale(${scale})`,
         transformOrigin: 'bottom center',
-        opacity: 0.92,
+        opacity: typing ? 1.0 : 0.92,
+        transition: 'opacity 300ms',
       }}
       aria-hidden="true"
     >

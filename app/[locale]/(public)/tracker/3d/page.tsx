@@ -29,6 +29,11 @@ const FloatingKeyboardOverlay = dynamic(
   { ssr: false },
 );
 
+const MusicAwarenessPanel = dynamic(
+  () => import('./components/MusicAwarenessPanel'),
+  { ssr: false },
+);
+
 type ViewMode = 'mirror' | 'timeline';
 
 // ── Image adjustment types & defaults ──────────────────────────────────
@@ -486,6 +491,15 @@ export default function Tracker3DPage() {
     };
   }, []);
 
+  // Focus Typing mode — dim HUD + boost keyboard during active typing
+  const [typing, setTyping] = useState(false);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTyping(KEYBOARD_DEBUG.isTyping);
+    }, 100);
+    return () => clearInterval(id);
+  }, []);
+
   // Load saved adjustments on mount
   useEffect(() => {
     const loaded = loadAdjustments();
@@ -539,8 +553,8 @@ export default function Tracker3DPage() {
         />
       )}
 
-      {/* Overlays — auto-hide after 3s of inactivity */}
-      <div className={`fixed top-4 left-4 flex items-center gap-3 z-[52] transition-opacity duration-500 ${chromeVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+      {/* Overlays — auto-hide after inactivity, dim during typing */}
+      <div className={`fixed top-4 left-4 flex items-center gap-3 z-[52] transition-opacity duration-500 ${chromeVisible ? (typing ? 'opacity-30' : 'opacity-100') : 'opacity-0 pointer-events-none'}`}>
         <Link
           href="/tracker"
           className="text-xs text-zinc-500 hover:text-zinc-300 transition bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-lg px-3 py-1.5"
@@ -573,9 +587,16 @@ export default function Tracker3DPage() {
         </div>
       </div>
 
+      {/* Music panel — top left, below nav */}
+      {mode === 'mirror' && (
+        <div className={`fixed top-14 left-4 z-[52] transition-opacity duration-500 ${chromeVisible ? (typing ? 'opacity-20' : 'opacity-100') : 'opacity-0 pointer-events-none'}`}>
+          <MusicAwarenessPanel chromeVisible={chromeVisible && !typing} />
+        </div>
+      )}
+
       {/* Environment manager — top right in mirror mode */}
       {mode === 'mirror' && (
-        <div className={`fixed top-4 right-4 z-[52] transition-opacity duration-500 ${chromeVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className={`fixed top-4 right-4 z-[52] transition-opacity duration-500 ${chromeVisible ? (typing ? 'opacity-30' : 'opacity-100') : 'opacity-0 pointer-events-none'}`}>
           <EnvironmentManager />
         </div>
       )}
@@ -587,9 +608,9 @@ export default function Tracker3DPage() {
         </div>
       )}
 
-      {/* Awareness HUD — shows in mirror mode */}
+      {/* Awareness HUD — shows in mirror mode, dims during typing */}
       {mode === 'mirror' && (
-        <div className={`fixed bottom-4 left-4 z-[52] transition-opacity duration-500 ${chromeVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className={`fixed bottom-4 left-4 z-[52] transition-opacity duration-500 ${chromeVisible ? (typing ? 'opacity-20' : 'opacity-100') : 'opacity-0 pointer-events-none'}`}>
           <AwarenessHUD />
         </div>
       )}
@@ -602,7 +623,7 @@ export default function Tracker3DPage() {
       )}
 
       {/* Sound toggle + Controls hint */}
-      <div className={`fixed bottom-4 right-4 z-[52] flex items-center gap-3 transition-opacity duration-500 ${chromeVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+      <div className={`fixed bottom-4 right-4 z-[52] flex items-center gap-3 transition-opacity duration-500 ${chromeVisible ? (typing ? 'opacity-20' : 'opacity-100') : 'opacity-0 pointer-events-none'}`}>
         <div className="flex items-center gap-2">
           <button
             onClick={() => {
@@ -674,7 +695,7 @@ export default function Tracker3DPage() {
       {debugPanel && <KeyboardDebugPanel />}
 
       {/* Flat keyboard overlay — silver on dark, blue on typing */}
-      {mode === 'mirror' && <FloatingKeyboardOverlay />}
+      {mode === 'mirror' && <FloatingKeyboardOverlay typing={typing} />}
     </div>
   );
 }

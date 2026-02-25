@@ -14,13 +14,18 @@ import ConsciousnessCore from './ConsciousnessCore';
 import ActiveSubstanceOrb from './ActiveSubstanceOrb';
 import BiometricField from './BiometricField';
 import EnvironmentRenderer from './environments/EnvironmentRenderer';
+import MusicReactiveField from './MusicReactiveField';
 import { useKeyboardReactive, type KeyboardDebugStats } from '@/lib/tracker/hooks/useKeyboardReactive';
+import { useSpotifyNowPlaying } from '@/lib/tracker/hooks/useSpotifyNowPlaying';
+import { useMusicAudioAnalysis } from '@/lib/tracker/hooks/useMusicAudioAnalysis';
 
 export default function AwarenessMirror() {
   const { awareness, loading } = useAwarenessState();
   const { active: activeEnv } = useEnvironments();
   const [dpr, setDpr] = useState<number>(1.5);
   const { keyStatesRef, decayKeys, debugRef, lastTypingRef, listening, startMic, stopMic } = useKeyboardReactive({ enabled: true });
+  const { musicStateRef } = useSpotifyNowPlaying();
+  const { stemsRef, updateStems } = useMusicAudioAnalysis(musicStateRef);
 
   // Determine which substances are currently active
   const activeSubstances = useMemo(() => {
@@ -105,10 +110,14 @@ export default function AwarenessMirror() {
 
         {/* Biometric environmental field */}
         <BiometricField awareness={awareness} />
+
+        {/* Music-reactive stem visualization */}
+        <MusicReactiveField stemsRef={stemsRef} />
       </group>
 
-      {/* Keyboard decay runner — keeps glow decay ticking in sync with R3F frame loop */}
+      {/* Frame-synced runners */}
       <KeyDecayRunner decayKeys={decayKeys} />
+      <MusicStemRunner updateStems={updateStems} />
     </Canvas>
   );
 }
@@ -116,6 +125,12 @@ export default function AwarenessMirror() {
 /** Runs key glow decay inside the R3F frame loop (invisible — no geometry) */
 function KeyDecayRunner({ decayKeys }: { decayKeys: (delta: number) => void }) {
   useFrame((_, delta) => { decayKeys(delta); });
+  return null;
+}
+
+/** Runs music stem analysis update inside the R3F frame loop */
+function MusicStemRunner({ updateStems }: { updateStems: () => void }) {
+  useFrame(() => { updateStems(); });
   return null;
 }
 
