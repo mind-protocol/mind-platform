@@ -4,18 +4,18 @@ import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
 import * as THREE from 'three';
-import { AZERTY_ROWS, ALL_KEY_CODES, type KeyState } from '@/lib/tracker/hooks/useKeyboardReactive';
+import { AZERTY_ROWS, type KeyState } from '@/lib/tracker/hooks/useKeyboardReactive';
 
 // ── Constants ──────────────────────────────────────────────────────────
 const KEY_UNIT = 0.09;       // base key depth (Z) in 3D units
 const KEY_GAP = 0.008;       // gap between keys
-const KEY_HEIGHT = 0.025;    // key thickness (Y) — visible chiclet
+const KEY_HEIGHT = 0.025;    // key thickness (Y)
 
-// Colors — cold, subtle, living blue (not neon gaming)
-const GLOW_COLOR = new THREE.Color(0x5aaaff);   // hit impact
-const HALO_COLOR = new THREE.Color(0x468cff);    // softer halo
-const IDLE_COLOR = new THREE.Color(0x1a1a40);    // visible idle blue
+// Colors — meshBasicMaterial (self-illuminated, no lighting dependency)
+const IDLE_COLOR = new THREE.Color(0x1e2050);    // dark blue idle
+const GLOW_COLOR = new THREE.Color(0x5aaaff);    // bright blue on hit
 const LABEL_COLOR = '#8ab4ff';
+const _tmpColor = new THREE.Color();
 
 // ── Neighbor map for glow spill ────────────────────────────────────────
 function buildNeighborMap(): Map<string, string[]> {
@@ -53,7 +53,7 @@ function buildNeighborMap(): Map<string, string[]> {
 
 const NEIGHBOR_MAP = buildNeighborMap();
 
-// ── Single Key mesh (BoxGeometry — reliable rendering) ───────────────
+// ── Single Key mesh (meshBasicMaterial — proven to render) ────────────
 function KeyMesh({
   code,
   label,
@@ -68,7 +68,7 @@ function KeyMesh({
   keyStatesRef: React.RefObject<Map<string, KeyState>>;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const matRef = useRef<THREE.MeshStandardMaterial>(null);
+  const matRef = useRef<THREE.MeshBasicMaterial>(null);
   const labelRef = useRef<{ fillOpacity: number } | null>(null);
 
   useFrame(() => {
@@ -90,15 +90,12 @@ function KeyMesh({
     const spillGlow = neighborGlow * 0.08;
     const totalGlow = Math.min(1, glow + spillGlow);
 
-    // Emissive: baseline blue glow + stronger on hit
-    matRef.current.emissive.lerpColors(HALO_COLOR, GLOW_COLOR, totalGlow);
-    matRef.current.emissiveIntensity = 0.8 + totalGlow * 2.5;
+    // Color: dark blue idle → bright blue on hit
+    _tmpColor.copy(IDLE_COLOR).lerp(GLOW_COLOR, totalGlow);
+    matRef.current.color.copy(_tmpColor);
 
-    // Base color: visible blue idle → brighter on hit
-    matRef.current.color.copy(IDLE_COLOR).lerp(GLOW_COLOR, 0.1 + totalGlow * 0.25);
-
-    // Opacity: clearly visible idle, brighter on hit
-    matRef.current.opacity = 0.4 + totalGlow * 0.45;
+    // Opacity: visible idle, brighter on hit
+    matRef.current.opacity = 0.5 + totalGlow * 0.4;
 
     // Label opacity
     if (labelRef.current) {
@@ -116,24 +113,19 @@ function KeyMesh({
 
   return (
     <group position={position}>
-      {/* Key cap — BoxGeometry (centered at half-extents) */}
       <mesh
         ref={meshRef}
         position={[width / 2, KEY_HEIGHT / 2, KEY_UNIT / 2]}
       >
         <boxGeometry args={[width * 0.94, KEY_HEIGHT, KEY_UNIT * 0.94]} />
-        <meshStandardMaterial
+        <meshBasicMaterial
           ref={matRef}
           color={IDLE_COLOR}
-          roughness={0.6}
-          metalness={0.15}
-          emissive={HALO_COLOR}
-          emissiveIntensity={0.8}
           transparent
-          opacity={0.4}
+          opacity={0.5}
+          depthWrite={false}
         />
       </mesh>
-      {/* Label */}
       {showLabel && (
         <Text
           ref={labelRef as React.Ref<never>}
@@ -167,12 +159,10 @@ export default function FloatingKeyboard({
   rotation?: [number, number, number];
   scale?: number;
 }) {
-  // Run decay in useFrame
   useFrame((_, delta) => {
     decayKeys(delta);
   });
 
-  // Build all keys with positions
   const keys = useMemo(() => {
     const result: {
       code: string;
@@ -205,7 +195,6 @@ export default function FloatingKeyboard({
     return result;
   }, []);
 
-  // Keyboard total dimensions for base plate
   const kbdWidth = useMemo(() => {
     const xs = keys.map(k => k.pos[0]);
     const ws = keys.map(k => k.width);
@@ -216,18 +205,10 @@ export default function FloatingKeyboard({
 
   return (
     <group position={position} rotation={rotation} scale={scale} frustumCulled={false}>
-      {/* Subtle base plate — dark, barely visible */}
-      <mesh position={[0, -0.002, kbdDepth / 2]}>
+      {/* Base plate */}
+      <mesh position={[0, -0.003, kbdDepth / 2]}>
         <boxGeometry args={[kbdWidth, 0.004, kbdDepth]} />
-        <meshStandardMaterial
-          color="#0a0a1e"
-          roughness={0.8}
-          metalness={0.1}
-          emissive={HALO_COLOR}
-          emissiveIntensity={0.15}
-          transparent
-          opacity={0.25}
-        />
+        <meshBasicMaterial color="#0d0d25" transparent opacity={0.4} depthWrite={false} />
       </mesh>
 
       {/* Key caps */}
@@ -241,15 +222,6 @@ export default function FloatingKeyboard({
           keyStatesRef={keyStatesRef}
         />
       ))}
-
-      {/* Underglow light — soft blue from below */}
-      <pointLight
-        position={[0, -0.15, kbdDepth / 2]}
-        color="#4488ff"
-        intensity={0.6}
-        distance={3}
-        decay={2}
-      />
     </group>
   );
 }
