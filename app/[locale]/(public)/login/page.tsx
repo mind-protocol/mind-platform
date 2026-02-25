@@ -3,8 +3,10 @@
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function LoginPage() {
+  const t = useTranslations('Auth');
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
@@ -32,7 +34,7 @@ export default function LoginPage() {
       .then(async (res) => {
         if (!res.ok) {
           const data = await res.json().catch(() => ({}));
-          throw new Error(data.error || 'Lien invalide ou expiré');
+          throw new Error(data.error || t('errorMagicLink'));
         }
         router.push('/tracker');
       })
@@ -40,18 +42,18 @@ export default function LoginPage() {
         setError(err.message);
         setLoading(false);
       });
-  }, [searchParams, router]);
+  }, [searchParams, router, t]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
 
     if (!email.trim()) {
-      setError('Veuillez entrer votre adresse email.');
+      setError(t('errorEmailRequired'));
       return;
     }
     if (!password) {
-      setError('Veuillez entrer votre mot de passe.');
+      setError(t('errorPasswordRequired'));
       return;
     }
 
@@ -66,13 +68,13 @@ export default function LoginPage() {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        setError(data.error || 'Identifiants incorrects.');
+        setError(data.error || t('errorInvalidCredentials'));
         return;
       }
 
       router.push('/tracker');
     } catch {
-      setError('Erreur réseau. Veuillez réessayer.');
+      setError(t('errorNetwork'));
     } finally {
       setLoading(false);
     }
@@ -84,10 +86,10 @@ export default function LoginPage() {
         {/* Branding */}
         <div className="text-center mb-10">
           <h1 className="text-3xl font-bold font-mono tracking-tight">
-            Mind Protocol
+            {t('brand')}
           </h1>
           <p className="text-zinc-500 text-sm mt-2">
-            Connexion à votre espace
+            {t('loginSubtitle')}
           </p>
         </div>
 
@@ -96,14 +98,14 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="email" className="block text-sm text-zinc-400 mb-2">
-                Email
+                {t('emailLabel')}
               </label>
               <input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="vous@exemple.com"
+                placeholder={t('emailPlaceholder')}
                 autoComplete="email"
                 className="w-full px-4 py-3 bg-zinc-950 border border-zinc-700 rounded text-white placeholder-zinc-600 focus:outline-none focus:border-amber-500 transition"
               />
@@ -111,21 +113,21 @@ export default function LoginPage() {
 
             <div>
               <label htmlFor="password" className="block text-sm text-zinc-400 mb-2">
-                Mot de passe
+                {t('passwordLabel')}
               </label>
               <input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Votre mot de passe"
+                placeholder={t('passwordPlaceholder')}
                 autoComplete="current-password"
                 className="w-full px-4 py-3 bg-zinc-950 border border-zinc-700 rounded text-white placeholder-zinc-600 focus:outline-none focus:border-amber-500 transition"
               />
             </div>
 
             {error && (
-              <p className="text-red-400 text-sm">{error}</p>
+              <p className="text-red-400 text-sm" role="alert">{error}</p>
             )}
 
             <button
@@ -133,7 +135,7 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full py-3 bg-amber-500 text-black font-semibold rounded hover:bg-amber-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Connexion en cours...' : 'Se connecter'}
+              {loading ? t('loginLoading') : t('loginButton')}
             </button>
           </form>
 
@@ -143,16 +145,16 @@ export default function LoginPage() {
               href="/forgot-password"
               className="text-zinc-500 hover:text-zinc-300 text-sm transition"
             >
-              Mot de passe oubli&eacute; ?
+              {t('forgotPassword')}
             </Link>
           </div>
         </div>
 
         {/* Register link */}
         <p className="text-center text-zinc-500 text-sm mt-6">
-          Pas encore de compte ?{' '}
+          {t('noAccount')}{' '}
           <Link href="/register" className="text-amber-500 hover:text-amber-400 underline">
-            S&apos;inscrire
+            {t('signUp')}
           </Link>
         </p>
       </div>
