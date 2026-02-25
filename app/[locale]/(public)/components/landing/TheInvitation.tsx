@@ -27,10 +27,16 @@ export function TheInvitation() {
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
           <Link
-            href="/manifesto"
+            href="/register"
             className="px-8 py-4 bg-amber-500 text-black font-medium rounded-lg hover:bg-amber-400 transition"
           >
             {t('manifestoCta')}
+          </Link>
+          <Link
+            href="/tracker"
+            className="px-8 py-4 bg-zinc-800 border border-zinc-700 text-white font-medium rounded-lg hover:bg-zinc-700 transition"
+          >
+            Body Tracker
           </Link>
           <Link
             href="/connectome"

@@ -30,12 +30,18 @@ export function Hero() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a
-            href="#invitation"
+          <Link
+            href="/register"
             className="px-8 py-4 bg-white text-black font-medium rounded-lg hover:bg-zinc-200 transition"
           >
             {t('joinCta')}
-          </a>
+          </Link>
+          <Link
+            href="/tracker"
+            className="px-8 py-4 bg-amber-500/10 border border-amber-500/30 text-amber-500 font-medium rounded-lg hover:bg-amber-500/20 transition"
+          >
+            {t('trackerCta') || 'Body Tracker'}
+          </Link>
           <Link
             href="/manifesto"
             className="px-8 py-4 border border-zinc-700 rounded-lg hover:border-zinc-500 hover:bg-zinc-900/50 transition"
