@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback, memo } from 'react';
 import { useSanitizeMode, isSanitized, isEffectSanitized } from '@/lib/use-sanitize';
+import { useToast } from '@/components/Toast';
 
 interface LogEntry {
   id: string;
@@ -233,6 +234,7 @@ const EntryRow = memo(function EntryRow({
   const [editIntent, setEditIntent] = useState(entry.intent);
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const { toast } = useToast();
 
   const cfg = SUB_CONFIG[entry.substance] || { color: '#71717a', icon: '💊', label: entry.substance };
   const bio = entry.biometrics_at_log;
@@ -268,8 +270,13 @@ const EntryRow = memo(function EntryRow({
         const updated = await res.json();
         onUpdate(entry.id, updated);
         setEditing(false);
+        toast('Entry updated', 'success');
+      } else {
+        toast('Failed to update', 'error');
       }
-    } catch { /* ignore */ }
+    } catch {
+      toast('Network error', 'error');
+    }
     setSaving(false);
   };
 
@@ -278,8 +285,13 @@ const EntryRow = memo(function EntryRow({
       const res = await fetch(`/api/tracker/log/${entry.id}`, { method: 'DELETE' });
       if (res.ok) {
         onDelete(entry.id);
+        toast('Entry deleted', 'info');
+      } else {
+        toast('Failed to delete', 'error');
       }
-    } catch { /* ignore */ }
+    } catch {
+      toast('Network error', 'error');
+    }
   };
 
   return (
@@ -469,16 +481,18 @@ export default function Timeline({ refreshKey, filter }: { refreshKey: number; f
   const [entries, setEntries] = useState<LogEntry[]>([]);
   const [adverseEntries, setAdverseEntries] = useState<AdverseEntry[]>([]);
   const { sanitized } = useSanitizeMode();
+  const { toast } = useToast();
 
   useEffect(() => {
     fetch('/api/tracker/log?days=7')
       .then((r) => r.json())
       .then((d) => setEntries(d.entries || []))
-      .catch(() => {});
+      .catch(() => toast('Failed to load timeline', 'error'));
     fetch('/api/tracker/adverse?days=7')
       .then((r) => r.json())
       .then((d) => setAdverseEntries(Array.isArray(d) ? d : []))
-      .catch(() => {});
+      .catch(() => toast('Failed to load effects', 'error'));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshKey]);
 
   // Build unified timeline items

@@ -63,7 +63,7 @@ const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<s
   caffeine: { amount: 150, unit: 'mg', details: { form: 'double', shots: 2, milk: true, sugar: 1, sugarType: 'blanc' } },
   ketamine: { amount: 30, unit: 'mg', details: { form: 'crystal', route: 'intranasal', estimate: 'visual' } },
   lsd: { amount: 0.5, unit: 'carton', details: { form: 'carton', ug_estimate: 100 } },
-  nicotine: { amount: 3, unit: 'puffs', details: { strength_pct: 20, mode: 'POWER', wattage: 22, resistance: 1.2, voltage_v: null, puff_duration_s: null, reaction: 'clean' } },
+  nicotine: { amount: 3, unit: 'puffs', details: { form: 'vape', strength_pct: 20, mode: 'POWER', wattage: 22, resistance: 1.2, voltage_v: null, puff_duration_s: null, reaction: 'clean' } },
   hydration: { amount: 500, unit: 'ml', details: { additives: [] } },
   melatonin: { amount: 3, unit: 'mg', details: { form: 'tablet' } },
   venlafaxine: { amount: 75, unit: 'mg', details: { form: 'capsule', release: 'extended' } },
@@ -110,6 +110,19 @@ const VAPE_REACTIONS = [
   { key: 'cough-very-strong', label: 'Cough (very strong)', icon: '💀' },
   { key: 'gag', label: 'Gag', icon: '🤢' },
   { key: 'vomit', label: 'Vomit', icon: '🤮' },
+] as const;
+
+const NICOTINE_FORMS = [
+  { key: 'vape', label: 'Vape', icon: '💨', unit: 'puffs', hasVapeDetails: true },
+  { key: 'roulee', label: 'Roulée', icon: '🚬', unit: 'cig' },
+  { key: 'industrielle', label: 'Industrielle', icon: '🚬', unit: 'cig' },
+  { key: 'cigarillo', label: 'Cigarillo', icon: '🚬', unit: 'pcs' },
+  { key: 'cigare', label: 'Cigare', icon: '🚬', unit: 'pcs' },
+  { key: 'shisha', label: 'Shisha', icon: '🫧', unit: 'session' },
+  { key: 'tabac_macher', label: 'Tabac à mâcher', icon: '🫘', unit: 'pcs' },
+  { key: 'snuff', label: 'Snuff', icon: '👃', unit: 'pincée' },
+  { key: 'patch', label: 'Patch', icon: '🩹', unit: 'mg' },
+  { key: 'gomme', label: 'Gomme', icon: '🫧', unit: 'pcs' },
 ] as const;
 
 const YOGA_STYLES = [
@@ -241,6 +254,8 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
         ? (details.form === 'spray' ? 'spray' : 'mg')
         : tab === 'cbd'
         ? (details.route === 'vaporized' ? 'chambers' : details.route === 'sublingual' ? 'gouttes' : 'comprimés')
+        : tab === 'nicotine'
+        ? (NICOTINE_FORMS.find((f) => f.key === (details.form as string))?.unit || 'puffs')
         : DEFAULTS[tab]?.unit || 'mg';
       const body: Record<string, unknown> = {
         substance: tab,
@@ -360,7 +375,7 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
         {tab !== 'yoga' && (
           <div>
             <label className="text-xs text-zinc-500 block mb-1">
-              Amount ({tab === 'ketamine' ? (details.form === 'spray' ? 'sprays' : 'mg estimate') : tab === 'cbd' ? (details.route === 'vaporized' ? 'chambers' : details.route === 'sublingual' ? 'gouttes' : 'comprimés') : DEFAULTS[tab].unit})
+              Amount ({tab === 'ketamine' ? (details.form === 'spray' ? 'sprays' : 'mg estimate') : tab === 'cbd' ? (details.route === 'vaporized' ? 'chambers' : details.route === 'sublingual' ? 'gouttes' : 'comprimés') : tab === 'nicotine' ? (NICOTINE_FORMS.find((f) => f.key === (details.form as string))?.unit || 'puffs') : DEFAULTS[tab].unit})
             </label>
             <input
               type="number"
@@ -919,128 +934,195 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
 
         {tab === 'nicotine' && (
           <div className="space-y-3 sm:col-span-2">
-            {/* Puffs quick selector */}
+            {/* Nicotine form selector */}
             <div>
-              <label className="text-xs text-zinc-500 block mb-1">Puffs</label>
-              <div className="flex gap-1.5">
-                {[1, 2, 3, 4, 5].map((n) => (
+              <label className="text-xs text-zinc-500 block mb-1">Forme</label>
+              <div className="flex flex-wrap gap-1.5">
+                {NICOTINE_FORMS.map((f) => (
                   <button
-                    key={n}
-                    onClick={() => setAmount(n)}
-                    className={`px-3 py-1.5 rounded text-sm font-mono border transition ${
-                      amount === n
+                    key={f.key}
+                    onClick={() => {
+                      const newDetails: Record<string, unknown> = { form: f.key };
+                      if (f.key === 'vape') {
+                        Object.assign(newDetails, { strength_pct: 20, mode: 'POWER', wattage: 22, resistance: 1.2, voltage_v: null, puff_duration_s: null, reaction: 'clean' });
+                        setAmount(3);
+                      } else if (f.key === 'shisha') {
+                        setAmount(1);
+                      } else if (f.key === 'patch') {
+                        setAmount(21);
+                      } else {
+                        setAmount(1);
+                      }
+                      setDetails(newDetails);
+                    }}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      (details.form as string || 'vape') === f.key
                         ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
                         : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
                     }`}
                   >
-                    {n}
+                    {f.icon} {f.label}
                   </button>
                 ))}
               </div>
             </div>
-            {/* Row 1: Wattage + Resistance */}
-            <div className="grid grid-cols-2 gap-3">
+
+            {/* Non-vape: simple quantity */}
+            {(details.form as string || 'vape') !== 'vape' && (
               <div>
-                <label className="text-xs text-zinc-500 block mb-1">Wattage (W)</label>
-                <input
-                  type="number"
-                  min={1}
-                  max={200}
-                  step={0.5}
-                  value={(details.wattage as number) ?? 22}
-                  onChange={(e) => setDetails({ ...details, wattage: Number(e.target.value) })}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-zinc-500 block mb-1">Résistance (ohm)</label>
-                <div className="flex gap-1.5 flex-wrap">
-                  {RESISTANCE_OPTIONS.map((r) => (
+                <label className="text-xs text-zinc-500 block mb-1">
+                  Quantité ({NICOTINE_FORMS.find((f) => f.key === details.form)?.unit || 'pcs'})
+                </label>
+                <div className="flex gap-1.5">
+                  {((details.form as string) === 'shisha'
+                    ? [1, 2, 3]
+                    : (details.form as string) === 'patch'
+                    ? [7, 14, 21]
+                    : [1, 2, 3, 4, 5]
+                  ).map((n) => (
                     <button
-                      key={r}
-                      onClick={() => setDetails({ ...details, resistance: r })}
-                      className={`px-2.5 py-1.5 rounded text-xs font-mono border transition ${
-                        (details.resistance as number) === r
+                      key={n}
+                      onClick={() => setAmount(n)}
+                      className={`px-3 py-1.5 rounded text-sm font-mono border transition ${
+                        amount === n
                           ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
                           : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
                       }`}
                     >
-                      {r}
+                      {(details.form as string) === 'patch' ? `${n}mg` : n}
                     </button>
                   ))}
                 </div>
               </div>
-            </div>
+            )}
 
-            {/* Row 2: Mode */}
-            <div>
-              <label className="text-xs text-zinc-500 block mb-1">Mode</label>
-              <div className="flex gap-1.5 flex-wrap">
-                {VAPE_MODES.map((m) => (
-                  <button
-                    key={m}
-                    onClick={() => setDetails({ ...details, mode: m })}
-                    className={`px-2.5 py-1.5 rounded text-xs border transition ${
-                      details.mode === m
-                        ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
-                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
-                    }`}
-                  >
-                    {m}
-                  </button>
-                ))}
-              </div>
-            </div>
+            {/* Vape-specific details */}
+            {(details.form as string || 'vape') === 'vape' && (
+              <>
+                {/* Puffs quick selector */}
+                <div>
+                  <label className="text-xs text-zinc-500 block mb-1">Puffs</label>
+                  <div className="flex gap-1.5">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <button
+                        key={n}
+                        onClick={() => setAmount(n)}
+                        className={`px-3 py-1.5 rounded text-sm font-mono border transition ${
+                          amount === n
+                            ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
+                            : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                        }`}
+                      >
+                        {n}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {/* Row 1: Wattage + Resistance */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-xs text-zinc-500 block mb-1">Wattage (W)</label>
+                    <input
+                      type="number"
+                      min={1}
+                      max={200}
+                      step={0.5}
+                      value={(details.wattage as number) ?? 22}
+                      onChange={(e) => setDetails({ ...details, wattage: Number(e.target.value) })}
+                      className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-zinc-500 block mb-1">Résistance (ohm)</label>
+                    <div className="flex gap-1.5 flex-wrap">
+                      {RESISTANCE_OPTIONS.map((r) => (
+                        <button
+                          key={r}
+                          onClick={() => setDetails({ ...details, resistance: r })}
+                          className={`px-2.5 py-1.5 rounded text-xs font-mono border transition ${
+                            (details.resistance as number) === r
+                              ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
+                              : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                          }`}
+                        >
+                          {r}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
 
-            {/* Row 3: Voltage + Puff duration (S) */}
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs text-zinc-500 block mb-1">Voltage (V)</label>
-                <input
-                  type="number"
-                  min={0}
-                  max={10}
-                  step={0.1}
-                  value={(details.voltage_v as number) ?? ''}
-                  onChange={(e) => setDetails({ ...details, voltage_v: e.target.value ? Number(e.target.value) : null })}
-                  placeholder="ex: 3.7"
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500 placeholder:text-zinc-600"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-zinc-500 block mb-1">S (sec)</label>
-                <input
-                  type="number"
-                  min={0}
-                  max={30}
-                  step={0.01}
-                  value={(details.puff_duration_s as number) ?? ''}
-                  onChange={(e) => setDetails({ ...details, puff_duration_s: e.target.value ? Number(e.target.value) : null })}
-                  placeholder="ex: 1.25"
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500 placeholder:text-zinc-600"
-                />
-              </div>
-            </div>
+                {/* Row 2: Mode */}
+                <div>
+                  <label className="text-xs text-zinc-500 block mb-1">Mode</label>
+                  <div className="flex gap-1.5 flex-wrap">
+                    {VAPE_MODES.map((m) => (
+                      <button
+                        key={m}
+                        onClick={() => setDetails({ ...details, mode: m })}
+                        className={`px-2.5 py-1.5 rounded text-xs border transition ${
+                          details.mode === m
+                            ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
+                            : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                        }`}
+                      >
+                        {m}
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-            {/* Row 4: Reaction */}
-            <div>
-              <label className="text-xs text-zinc-500 block mb-1">Reaction</label>
-              <div className="flex gap-1.5 flex-wrap">
-                {VAPE_REACTIONS.map((r) => (
-                  <button
-                    key={r.key}
-                    onClick={() => setDetails({ ...details, reaction: r.key })}
-                    className={`px-2 py-1.5 rounded text-xs border transition ${
-                      (details.reaction as string || 'clean') === r.key
-                        ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
-                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
-                    }`}
-                  >
-                    {r.icon} {r.label}
-                  </button>
-                ))}
-              </div>
-            </div>
+                {/* Row 3: Voltage + Puff duration (S) */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-xs text-zinc-500 block mb-1">Voltage (V)</label>
+                    <input
+                      type="number"
+                      min={0}
+                      max={10}
+                      step={0.1}
+                      value={(details.voltage_v as number) ?? ''}
+                      onChange={(e) => setDetails({ ...details, voltage_v: e.target.value ? Number(e.target.value) : null })}
+                      placeholder="ex: 3.7"
+                      className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500 placeholder:text-zinc-600"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-zinc-500 block mb-1">S (sec)</label>
+                    <input
+                      type="number"
+                      min={0}
+                      max={30}
+                      step={0.01}
+                      value={(details.puff_duration_s as number) ?? ''}
+                      onChange={(e) => setDetails({ ...details, puff_duration_s: e.target.value ? Number(e.target.value) : null })}
+                      placeholder="ex: 1.25"
+                      className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500 placeholder:text-zinc-600"
+                    />
+                  </div>
+                </div>
+
+                {/* Row 4: Reaction */}
+                <div>
+                  <label className="text-xs text-zinc-500 block mb-1">Reaction</label>
+                  <div className="flex gap-1.5 flex-wrap">
+                    {VAPE_REACTIONS.map((r) => (
+                      <button
+                        key={r.key}
+                        onClick={() => setDetails({ ...details, reaction: r.key })}
+                        className={`px-2 py-1.5 rounded text-xs border transition ${
+                          (details.reaction as string || 'clean') === r.key
+                            ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
+                            : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                        }`}
+                      >
+                        {r.icon} {r.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         )}
 
@@ -1359,6 +1441,10 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
 
         {tab === 'cocaine' && (
           <div className="space-y-3">
+            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+              <div className="text-xs text-red-400 font-medium mb-1">Substance dangereuse — Reduction des risques</div>
+              <div className="text-[10px] text-red-400/70">Cardiotoxique. Ne JAMAIS combiner avec opiaces (speedball) ou stimulants. Tester au reactif. Hydratation.</div>
+            </div>
             <div>
               <label className="text-xs text-zinc-500 block mb-1">Voie</label>
               <div className="flex flex-wrap gap-1.5">
@@ -1400,6 +1486,10 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
 
         {tab === 'mmc' && (
           <div className="space-y-3">
+            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+              <div className="text-xs text-red-400 font-medium mb-1">Substance dangereuse — Reduction des risques</div>
+              <div className="text-[10px] text-red-400/70">Neurotoxique + cardiotoxique. NE PAS combiner avec ISRS/IRSN (risque serotonine). Espacer les prises (min 1 mois). Hydratation + electrolytes.</div>
+            </div>
             <div>
               <label className="text-xs text-zinc-500 block mb-1">Voie</label>
               <div className="flex flex-wrap gap-1.5">
@@ -1441,6 +1531,10 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
 
         {tab === 'heroine' && (
           <div className="space-y-3">
+            <div className="bg-red-600/15 border border-red-600/40 rounded-lg p-3">
+              <div className="text-xs text-red-400 font-medium mb-1">Substance a haut risque — Naloxone recommandee</div>
+              <div className="text-[10px] text-red-400/70">Risque mortel de depression respiratoire. NE JAMAIS combiner avec benzodiazepines ou alcool. Avoir du Naloxone (Narcan) a portee. Ne jamais consommer seul.</div>
+            </div>
             <div>
               <label className="text-xs text-zinc-500 block mb-1">Voie</label>
               <div className="flex flex-wrap gap-1.5">

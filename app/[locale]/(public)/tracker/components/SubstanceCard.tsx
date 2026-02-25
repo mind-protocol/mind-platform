@@ -34,6 +34,10 @@ const SUBSTANCES = [
   { key: 'valeriane', label: 'Valér', color: '#65a30d', icon: '🌾' },
   { key: 'safran', label: 'Safran', color: '#f97316', icon: '🌸' },
   { key: 'yoga', label: 'Yoga', color: '#f472b6', icon: '🧘' },
+  { key: 'vitamine_c', label: 'VitC', color: '#fb923c', icon: '🍊' },
+  { key: 'cocaine', label: 'Coke', color: '#e2e8f0', icon: '⚠️' },
+  { key: 'mmc', label: 'MMC', color: '#22d3ee', icon: '⚠️' },
+  { key: 'heroine', label: 'Hero', color: '#78350f', icon: '🚨' },
 ] as const;
 
 function timeSince(ts: string): string {
