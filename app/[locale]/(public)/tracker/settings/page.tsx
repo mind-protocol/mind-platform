@@ -330,6 +330,21 @@ export default function SettingsPage() {
             </div>
           </Section>
 
+          {/* ── Health Profile ── */}
+          <Section
+            title="Health Profile"
+            description="Your health sheet — identity, body, allergies, conditions, medications."
+          >
+            <Link
+              href="/tracker/profile"
+              className="inline-flex items-center gap-2 text-sm px-4 py-2.5 rounded-lg border border-teal-500/30 text-teal-400 hover:bg-teal-500/10 transition"
+            >
+              <span>{'📋'}</span>
+              Fiche Santé
+              <span className="text-zinc-600 text-xs font-mono">&rarr;</span>
+            </Link>
+          </Section>
+
           {/* ── Data ── */}
           <Section
             title="Data &amp; Privacy"
