@@ -673,8 +673,8 @@ export default function Tracker3DPage() {
       {/* Keyboard Debug Panel (Shift+D) */}
       {debugPanel && <KeyboardDebugPanel />}
 
-      {/* Flat keyboard overlay — white-silver idle, blue on typing */}
-      {mode === 'mirror' && <FloatingKeyboardOverlay scale={1.1} />}
+      {/* Flat keyboard overlay — silver on dark, blue on typing */}
+      {mode === 'mirror' && <FloatingKeyboardOverlay />}
     </div>
   );
 }

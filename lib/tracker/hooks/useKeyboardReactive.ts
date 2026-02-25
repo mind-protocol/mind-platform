@@ -88,8 +88,84 @@ export const AZERTY_ROWS: KeyDef[][] = [
   ],
 ];
 
-// All key codes from layout
-export const ALL_KEY_CODES = AZERTY_ROWS.flat().map(k => k.code);
+// ── Function row ─────────────────────────────────────────────────────
+export const FUNCTION_ROW: KeyDef[] = [
+  { code: 'Escape', label: 'Esc', w: 1 },
+  { code: 'F1', label: 'F1', w: 1 },
+  { code: 'F2', label: 'F2', w: 1 },
+  { code: 'F3', label: 'F3', w: 1 },
+  { code: 'F4', label: 'F4', w: 1 },
+  { code: 'F5', label: 'F5', w: 1 },
+  { code: 'F6', label: 'F6', w: 1 },
+  { code: 'F7', label: 'F7', w: 1 },
+  { code: 'F8', label: 'F8', w: 1 },
+  { code: 'F9', label: 'F9', w: 1 },
+  { code: 'F10', label: 'F10', w: 1 },
+  { code: 'F11', label: 'F11', w: 1 },
+  { code: 'F12', label: 'F12', w: 1 },
+];
+
+// ── Numpad ───────────────────────────────────────────────────────────
+export const NUMPAD_ROWS: KeyDef[][] = [
+  [
+    { code: 'NumLock', label: 'Num', w: 1 },
+    { code: 'NumpadDivide', label: '/', w: 1 },
+    { code: 'NumpadMultiply', label: '*', w: 1 },
+    { code: 'NumpadSubtract', label: '-', w: 1 },
+  ],
+  [
+    { code: 'Numpad7', label: '7', w: 1 },
+    { code: 'Numpad8', label: '8', w: 1 },
+    { code: 'Numpad9', label: '9', w: 1 },
+    { code: 'NumpadAdd', label: '+', w: 1 },
+  ],
+  [
+    { code: 'Numpad4', label: '4', w: 1 },
+    { code: 'Numpad5', label: '5', w: 1 },
+    { code: 'Numpad6', label: '6', w: 1 },
+  ],
+  [
+    { code: 'Numpad1', label: '1', w: 1 },
+    { code: 'Numpad2', label: '2', w: 1 },
+    { code: 'Numpad3', label: '3', w: 1 },
+    { code: 'NumpadEnter', label: '↵', w: 1 },
+  ],
+  [
+    { code: 'Numpad0', label: '0', w: 2 },
+    { code: 'NumpadDecimal', label: '.', w: 1 },
+  ],
+];
+
+// ── Navigation cluster ───────────────────────────────────────────────
+export const NAV_ROW_1: KeyDef[] = [
+  { code: 'Insert', label: 'Ins', w: 1 },
+  { code: 'Home', label: 'Hm', w: 1 },
+  { code: 'PageUp', label: 'PU', w: 1 },
+];
+export const NAV_ROW_2: KeyDef[] = [
+  { code: 'Delete', label: 'Del', w: 1 },
+  { code: 'End', label: 'End', w: 1 },
+  { code: 'PageDown', label: 'PD', w: 1 },
+];
+export const ARROW_ROW_1: KeyDef[] = [
+  { code: 'ArrowUp', label: '↑', w: 1 },
+];
+export const ARROW_ROW_2: KeyDef[] = [
+  { code: 'ArrowLeft', label: '←', w: 1 },
+  { code: 'ArrowDown', label: '↓', w: 1 },
+  { code: 'ArrowRight', label: '→', w: 1 },
+];
+
+// All key codes from all sections
+export const ALL_KEY_CODES = [
+  ...AZERTY_ROWS.flat().map(k => k.code),
+  ...FUNCTION_ROW.map(k => k.code),
+  ...NUMPAD_ROWS.flat().map(k => k.code),
+  ...NAV_ROW_1.map(k => k.code),
+  ...NAV_ROW_2.map(k => k.code),
+  ...ARROW_ROW_1.map(k => k.code),
+  ...ARROW_ROW_2.map(k => k.code),
+];
 
 // ── Key state (no React re-renders — ref-based for useFrame) ──────────
 export interface KeyState {
