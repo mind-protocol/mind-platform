@@ -55,7 +55,7 @@ const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<s
   caffeine: { amount: 150, unit: 'mg', details: { form: 'double', shots: 2, milk: true, sugar: 1, sugarType: 'blanc' } },
   ketamine: { amount: 30, unit: 'mg', details: { form: 'crystal', route: 'intranasal', estimate: 'visual' } },
   lsd: { amount: 0.5, unit: 'carton', details: { form: 'carton', ug_estimate: 100 } },
-  nicotine: { amount: 5, unit: 'puffs', details: { strength_pct: 20, mode: 'POWER', wattage: 22, resistance: 1.2, voltage_v: null, puff_duration_s: null, reaction: 'clean' } },
+  nicotine: { amount: 3, unit: 'puffs', details: { strength_pct: 20, mode: 'POWER', wattage: 22, resistance: 1.2, voltage_v: null, puff_duration_s: null, reaction: 'clean' } },
   hydration: { amount: 500, unit: 'ml', details: { additives: [] } },
   melatonin: { amount: 3, unit: 'mg', details: { form: 'tablet' } },
   venlafaxine: { amount: 75, unit: 'mg', details: { form: 'capsule', release: 'extended' } },
@@ -902,6 +902,25 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
 
         {tab === 'nicotine' && (
           <div className="space-y-3 sm:col-span-2">
+            {/* Puffs quick selector */}
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Puffs</label>
+              <div className="flex gap-1.5">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <button
+                    key={n}
+                    onClick={() => setAmount(n)}
+                    className={`px-3 py-1.5 rounded text-sm font-mono border transition ${
+                      amount === n
+                        ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+            </div>
             {/* Row 1: Wattage + Resistance */}
             <div className="grid grid-cols-2 gap-3">
               <div>
