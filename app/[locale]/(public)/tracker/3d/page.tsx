@@ -486,44 +486,79 @@ export default function Tracker3DPage() {
   });
   useKeyboardSound({ enabled: soundEnabled, volume: soundVolume });
 
-  // Auto-hide chrome (overlays) after inactivity
-  const [chromeVisible, setChromeVisible] = useState(true);
+  // Auto-hide chrome + typing mode — ref-based, zero React re-renders
+  // Uses data attributes on a wrapper div + CSS for opacity transitions
+  const chromeRef = useRef(true);
+  const typingRef = useRef(false);
+  const chromeWrapperRef = useRef<HTMLDivElement>(null);
   const [debugPanel, setDebugPanel] = useState(false);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout>>();
+
+  // Derived values for child props that need initial render values
+  const [chromeVisible, setChromeVisible] = useState(true);
+  const [typing, setTyping] = useState(false);
+
   useEffect(() => {
-    const HIDE_DELAY = 4000; // 4s after last mouse activity
-    const show = () => {
-      setChromeVisible(true);
-      clearTimeout(hideTimerRef.current);
-      hideTimerRef.current = setTimeout(() => setChromeVisible(false), HIDE_DELAY);
+    const HIDE_DELAY = 4000;
+    const el = chromeWrapperRef.current;
+
+    const updateDOM = () => {
+      if (!el) return;
+      el.dataset.chrome = chromeRef.current ? '1' : '0';
+      el.dataset.typing = typingRef.current ? '1' : '0';
     };
-    // Shift+D toggles debug panel
+
+    const show = () => {
+      if (!chromeRef.current) {
+        chromeRef.current = true;
+        setChromeVisible(true);
+        updateDOM();
+      }
+      clearTimeout(hideTimerRef.current);
+      hideTimerRef.current = setTimeout(() => {
+        chromeRef.current = false;
+        setChromeVisible(false);
+        updateDOM();
+      }, HIDE_DELAY);
+    };
+
     const onKey = (e: KeyboardEvent) => {
       if (e.shiftKey && e.code === 'KeyD') {
         e.preventDefault();
         setDebugPanel(prev => !prev);
       }
     };
-    // Initial: show chrome for 8s on first load
-    hideTimerRef.current = setTimeout(() => setChromeVisible(false), 8000);
-    window.addEventListener('mousemove', show);
-    window.addEventListener('mousedown', show);
+
+    // Poll typing state via rAF instead of setInterval+setState
+    let rafId: number;
+    const pollTyping = () => {
+      const isTyping = KEYBOARD_DEBUG.isTyping;
+      if (isTyping !== typingRef.current) {
+        typingRef.current = isTyping;
+        setTyping(isTyping);
+        updateDOM();
+      }
+      rafId = requestAnimationFrame(pollTyping);
+    };
+
+    hideTimerRef.current = setTimeout(() => {
+      chromeRef.current = false;
+      setChromeVisible(false);
+      updateDOM();
+    }, 8000);
+    updateDOM();
+    rafId = requestAnimationFrame(pollTyping);
+
+    window.addEventListener('mousemove', show, { passive: true });
+    window.addEventListener('mousedown', show, { passive: true });
     window.addEventListener('keydown', onKey);
     return () => {
       clearTimeout(hideTimerRef.current);
+      cancelAnimationFrame(rafId);
       window.removeEventListener('mousemove', show);
       window.removeEventListener('mousedown', show);
       window.removeEventListener('keydown', onKey);
     };
-  }, []);
-
-  // Focus Typing mode — dim HUD + boost keyboard during active typing
-  const [typing, setTyping] = useState(false);
-  useEffect(() => {
-    const id = setInterval(() => {
-      setTyping(KEYBOARD_DEBUG.isTyping);
-    }, 100);
-    return () => clearInterval(id);
   }, []);
 
   // Load saved adjustments on mount
@@ -582,7 +617,7 @@ export default function Tracker3DPage() {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 bg-zinc-950 overflow-hidden">
+    <div ref={chromeWrapperRef} className="fixed inset-0 z-50 bg-zinc-950 overflow-hidden" data-chrome="1" data-typing="0">
       {/* Filtered canvas wrapper */}
       <div ref={canvasWrapperRef} className="w-full h-full" style={filterStyle}>
         {mode === 'mirror' ? (
