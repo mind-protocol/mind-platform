@@ -143,8 +143,9 @@ function CitizenCard({
     : null;
 
   return (
-    <div
-      className={`group relative border border-zinc-800/60 rounded-2xl bg-zinc-900/40 backdrop-blur-sm p-5 transition-all duration-700 hover:border-zinc-700/80 hover:bg-zinc-900/60 ${
+    <Link
+      href={`/citizen/${citizen.id}`}
+      className={`group relative border border-zinc-800/60 rounded-2xl bg-zinc-900/40 backdrop-blur-sm p-5 transition-all duration-700 hover:border-zinc-700/80 hover:bg-zinc-900/60 cursor-pointer block ${
         mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
       }`}
       style={{ transitionDelay: `${delay}ms` }}
@@ -221,37 +222,23 @@ function CitizenCard({
         </div>
       )}
 
-      {/* Links */}
-      {Object.keys(citizen.links).length > 0 && (
-        <div className="flex gap-3 pt-2 border-t border-zinc-800/30">
-          {Object.entries(citizen.links).map(([platform, link]) => (
-            <a
-              key={platform}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[10px] font-mono text-blue-400 hover:text-blue-300 transition"
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-      )}
-
-      {/* Orgs */}
-      {citizen.orgs.length > 0 && (
-        <div className="flex gap-1.5 mt-2">
-          {citizen.orgs.map((org) => (
-            <span
-              key={org}
-              className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-800/40 text-zinc-500 font-mono"
-            >
-              {org}
-            </span>
-          ))}
-        </div>
-      )}
-    </div>
+      {/* Orgs + link count */}
+      <div className="flex items-center gap-2 pt-2 border-t border-zinc-800/30">
+        {citizen.orgs.map((org) => (
+          <span
+            key={org}
+            className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-800/40 text-zinc-500 font-mono"
+          >
+            {org}
+          </span>
+        ))}
+        {Object.keys(citizen.links).length > 0 && (
+          <span className="text-[10px] text-zinc-600 font-mono ml-auto">
+            {Object.keys(citizen.links).length} link{Object.keys(citizen.links).length > 1 ? 's' : ''}
+          </span>
+        )}
+      </div>
+    </Link>
   );
 }
 
