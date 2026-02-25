@@ -148,24 +148,31 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
   const keyEls = useRef<Map<string, HTMLDivElement>>(new Map());
   const labelEls = useRef<Map<string, HTMLSpanElement>>(new Map());
   const pressedRef = useRef<Set<string>>(new Set());
+  const locksRef = useRef({ caps: false, num: false, scroll: false });
   const [locks, setLocks] = useState({ caps: false, num: false, scroll: false });
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+
+  // Drag + resize state
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null); // null = auto centered
+  const [userScale, setUserScale] = useState<number | null>(null); // null = auto
+  const dragging = useRef(false);
+  const dragStart = useRef({ mx: 0, my: 0, px: 0, py: 0 });
 
   // Max AZERTY row width for centering
   const maxRowUnits = useMemo(() =>
     Math.max(...AZERTY_ROWS.map(row => row.reduce((s, k) => s + k.w, 0))),
   []);
 
-  // Compute responsive scale on mount + resize
+  // Compute responsive scale on mount + resize (smaller default)
   const computeScale = useCallback(() => {
     if (!containerRef.current) return;
     const naturalW = containerRef.current.scrollWidth;
-    const viewW = window.innerWidth * 0.94;
-    const viewH = window.innerHeight * 0.55;
+    const viewW = window.innerWidth * 0.70;
+    const viewH = window.innerHeight * 0.35;
     const naturalH = containerRef.current.scrollHeight;
-    const s = Math.min(viewW / naturalW, viewH / naturalH, 1.8);
-    setScale(Math.max(0.5, s));
+    const s = Math.min(viewW / naturalW, viewH / naturalH, 0.85);
+    setScale(Math.max(0.35, s));
   }, []);
 
   useEffect(() => {
@@ -176,21 +183,26 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
   }, [computeScale]);
 
   // Direct keydown/keyup for immediate visual response + lock state
+  // Only call setLocks when modifier state actually changes (avoids re-render on every keystroke)
   useEffect(() => {
-    const updateLocks = (e: KeyboardEvent) => {
-      setLocks({
-        caps: e.getModifierState('CapsLock'),
-        num: e.getModifierState('NumLock'),
-        scroll: e.getModifierState('ScrollLock'),
-      });
+    const maybeUpdateLocks = (e: KeyboardEvent) => {
+      const caps = e.getModifierState('CapsLock');
+      const num = e.getModifierState('NumLock');
+      const scroll = e.getModifierState('ScrollLock');
+      const prev = locksRef.current;
+      if (caps !== prev.caps || num !== prev.num || scroll !== prev.scroll) {
+        const next = { caps, num, scroll };
+        locksRef.current = next;
+        setLocks(next);
+      }
     };
     const onDown = (e: KeyboardEvent) => {
       pressedRef.current.add(e.code);
-      updateLocks(e);
+      maybeUpdateLocks(e);
     };
     const onUp = (e: KeyboardEvent) => {
       pressedRef.current.delete(e.code);
-      updateLocks(e);
+      maybeUpdateLocks(e);
     };
     window.addEventListener('keydown', onDown, { passive: true });
     window.addEventListener('keyup', onUp, { passive: true });
@@ -246,26 +258,102 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
     return () => cancelAnimationFrame(rafId);
   }, []);
 
+  const effectiveScale = userScale ?? scale;
+
+  // Drag handlers
+  const onDragStart = useCallback((e: React.PointerEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dragging.current = true;
+    const rect = (e.currentTarget as HTMLElement).parentElement!.getBoundingClientRect();
+    dragStart.current = { mx: e.clientX, my: e.clientY, px: rect.left, py: rect.top };
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  }, []);
+
+  const onDragMove = useCallback((e: React.PointerEvent) => {
+    if (!dragging.current) return;
+    const dx = e.clientX - dragStart.current.mx;
+    const dy = e.clientY - dragStart.current.my;
+    setPos({ x: dragStart.current.px + dx, y: dragStart.current.py + dy });
+  }, []);
+
+  const onDragEnd = useCallback(() => { dragging.current = false; }, []);
+
+  const handleResize = useCallback((delta: number) => {
+    setUserScale(prev => {
+      const cur = prev ?? scale;
+      return Math.max(0.25, Math.min(2.0, cur + delta));
+    });
+  }, [scale]);
+
+  const handleReset = useCallback(() => {
+    setPos(null);
+    setUserScale(null);
+  }, []);
+
   return (
     <div
-      className="fixed bottom-3 left-1/2 z-[52] pointer-events-none select-none"
+      className="fixed z-[52] select-none"
       style={{
-        transform: `translateX(-50%) perspective(1200px) rotateX(8deg) scale(${scale})`,
-        transformOrigin: 'bottom center',
+        ...(pos
+          ? { left: pos.x, top: pos.y }
+          : { bottom: 12, left: '50%', transform: 'translateX(-50%)' }),
         opacity: typing ? 1.0 : 0.92,
-        transition: 'opacity 300ms',
+        transition: dragging.current ? 'none' : 'opacity 300ms',
       }}
       aria-hidden="true"
     >
+      {/* Control bar — always interactive */}
+      <div className="flex justify-end gap-1 mb-1 pointer-events-auto" style={{ opacity: 0.5, transition: 'opacity 200ms' }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = '1'; }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.5'; }}
+      >
+        <button
+          onClick={() => handleResize(-0.1)}
+          className="w-5 h-5 rounded flex items-center justify-center text-[10px] text-zinc-400 hover:text-white"
+          style={{ background: 'rgba(30,33,40,0.9)', border: '1px solid rgba(120,130,155,0.25)' }}
+          title="Shrink"
+        >−</button>
+        <button
+          onClick={() => handleResize(0.1)}
+          className="w-5 h-5 rounded flex items-center justify-center text-[10px] text-zinc-400 hover:text-white"
+          style={{ background: 'rgba(30,33,40,0.9)', border: '1px solid rgba(120,130,155,0.25)' }}
+          title="Grow"
+        >+</button>
+        <div
+          onPointerDown={onDragStart}
+          onPointerMove={onDragMove}
+          onPointerUp={onDragEnd}
+          className="w-5 h-5 rounded flex items-center justify-center text-[10px] text-zinc-400 hover:text-white cursor-grab active:cursor-grabbing"
+          style={{ background: 'rgba(30,33,40,0.9)', border: '1px solid rgba(120,130,155,0.25)', touchAction: 'none' }}
+          title="Drag to move"
+        >⠿</div>
+        {(pos || userScale) && (
+          <button
+            onClick={handleReset}
+            className="w-5 h-5 rounded flex items-center justify-center text-[10px] text-zinc-400 hover:text-white"
+            style={{ background: 'rgba(30,33,40,0.9)', border: '1px solid rgba(120,130,155,0.25)' }}
+            title="Reset position & size"
+          >↺</button>
+        )}
+      </div>
+
       <div
-        ref={containerRef}
-        className="rounded-2xl border backdrop-blur-md p-3"
+        className="pointer-events-none"
         style={{
-          background: 'rgba(5,7,12,0.88)',
-          borderColor: 'rgba(120,130,155,0.22)',
-          boxShadow: '0 18px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04)',
+          transform: `perspective(1200px) rotateX(8deg) scale(${effectiveScale})`,
+          transformOrigin: 'bottom center',
         }}
       >
+        <div
+          ref={containerRef}
+          className="rounded-2xl border backdrop-blur-md p-3"
+          style={{
+            background: 'rgba(5,7,12,0.88)',
+            borderColor: 'rgba(120,130,155,0.22)',
+            boxShadow: '0 18px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04)',
+          }}
+        >
         {/* Lock indicator LEDs — top right */}
         <div className="flex justify-end gap-3 mb-1.5 mr-1">
           {([
@@ -374,6 +462,7 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
             ))}
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

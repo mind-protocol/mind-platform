@@ -524,7 +524,6 @@ export default function Tracker3DPage() {
 
     const onKey = (e: KeyboardEvent) => {
       if (e.shiftKey && e.code === 'KeyD') {
-        e.preventDefault();
         setDebugPanel(prev => !prev);
       }
     };
@@ -551,7 +550,7 @@ export default function Tracker3DPage() {
 
     window.addEventListener('mousemove', show, { passive: true });
     window.addEventListener('mousedown', show, { passive: true });
-    window.addEventListener('keydown', onKey);
+    window.addEventListener('keydown', onKey, { passive: true });
     return () => {
       clearTimeout(hideTimerRef.current);
       cancelAnimationFrame(rafId);
