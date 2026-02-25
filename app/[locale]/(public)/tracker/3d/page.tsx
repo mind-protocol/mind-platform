@@ -171,9 +171,24 @@ function AdjustmentPanel({
     } catch { return []; }
   });
 
+  // ── rAF-throttled slider handler ─────────────────────────────────────
+  // Buffers onChange calls to one per animation frame, reducing re-renders
+  const rafRef = useRef(0);
+  const pendingRef = useRef<{ key: keyof ImageAdjustments; value: number } | null>(null);
+
   const handleSlider = (key: keyof ImageAdjustments, value: number) => {
-    onChange({ ...adjustments, [key]: value });
-    setActivePreset(null);
+    pendingRef.current = { key, value };
+    if (!rafRef.current) {
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = 0;
+        const p = pendingRef.current;
+        if (p) {
+          onChange({ ...adjustments, [p.key]: p.value });
+          setActivePreset(null);
+          pendingRef.current = null;
+        }
+      });
+    }
   };
 
   const applyPreset = (preset: { name: string; values: ImageAdjustments }) => {
@@ -664,6 +679,9 @@ export default function Tracker3DPage() {
               onChange={(e) => {
                 const v = Number(e.target.value) / 100;
                 setSoundVolume(v);
+              }}
+              onPointerUp={(e) => {
+                const v = Number((e.target as HTMLInputElement).value) / 100;
                 localStorage.setItem('kbd-sound-vol', String(v));
               }}
               className="w-12 h-0.5 bg-zinc-800 rounded-full appearance-none cursor-pointer

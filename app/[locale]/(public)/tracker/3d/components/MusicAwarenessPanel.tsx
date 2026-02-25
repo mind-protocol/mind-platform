@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useSpotifyNowPlaying, type MusicState } from '@/lib/tracker/hooks/useSpotifyNowPlaying';
+import { useLocale } from 'next-intl';
 
 // ── LRC Parser ────────────────────────────────────────────────────────────
 interface LyricLine {
@@ -117,6 +118,63 @@ function PlainLyrics({ lyrics }: { lyrics: string }) {
 export default function MusicAwarenessPanel({ chromeVisible = true }: { chromeVisible?: boolean }) {
   const { musicState, loading } = useSpotifyNowPlaying();
   const [expanded, setExpanded] = useState(false);
+  const locale = useLocale();
+
+  // ── Translation state ──────────────────────────────────────────────────
+  const [showTranslation, setShowTranslation] = useState(false);
+  const [translatedLyrics, setTranslatedLyrics] = useState<string | null>(null);
+  const [translating, setTranslating] = useState(false);
+  const translatedTrackRef = useRef<string>(''); // track what's been translated
+
+  const targetLang = locale === 'en' ? 'fr' : locale; // if locale is EN, translate to FR; otherwise use locale
+
+  const handleTranslate = useCallback(async () => {
+    if (!musicState.lyrics) return;
+
+    // Toggle off
+    if (showTranslation) {
+      setShowTranslation(false);
+      return;
+    }
+
+    // Already translated this track
+    if (translatedLyrics && translatedTrackRef.current === musicState.trackId) {
+      setShowTranslation(true);
+      return;
+    }
+
+    // Fetch translation
+    setTranslating(true);
+    try {
+      const res = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: musicState.lyrics,
+          from: 'auto',
+          to: targetLang,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setTranslatedLyrics(data.translated);
+        translatedTrackRef.current = musicState.trackId;
+        setShowTranslation(true);
+      }
+    } catch {
+      // Silent — translation is non-critical
+    } finally {
+      setTranslating(false);
+    }
+  }, [musicState.lyrics, musicState.trackId, showTranslation, translatedLyrics, targetLang]);
+
+  // Reset translation when track changes
+  useEffect(() => {
+    if (musicState.trackId !== translatedTrackRef.current) {
+      setTranslatedLyrics(null);
+      setShowTranslation(false);
+    }
+  }, [musicState.trackId]);
 
   // Track progress locally between polls for smoother progress bar
   const [localProgress, setLocalProgress] = useState(0);
@@ -266,10 +324,32 @@ export default function MusicAwarenessPanel({ chromeVisible = true }: { chromeVi
       {/* Lyrics section */}
       {musicState.lyrics && (
         <div className="border-t border-zinc-800/50 px-3 py-2.5">
-          <div className="text-[9px] uppercase tracking-wider text-zinc-600 mb-2">
-            Lyrics {musicState.lyricsSource && <span className="text-zinc-700">({musicState.lyricsSource})</span>}
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-[9px] uppercase tracking-wider text-zinc-600">
+              {showTranslation ? `Translated (${targetLang})` : 'Lyrics'}
+              {!showTranslation && musicState.lyricsSource && (
+                <span className="text-zinc-700"> ({musicState.lyricsSource})</span>
+              )}
+            </div>
+            <button
+              onClick={handleTranslate}
+              disabled={translating}
+              className={`text-[8px] font-mono px-1.5 py-0.5 rounded border transition-colors
+                ${showTranslation
+                  ? 'text-cyan-400 border-cyan-400/30 bg-cyan-400/10'
+                  : 'text-zinc-500 border-zinc-700 hover:text-zinc-300 hover:border-zinc-600'}
+                ${translating ? 'opacity-50' : ''}`}
+            >
+              {translating ? '...' : showTranslation ? `${targetLang.toUpperCase()} ✓` : `→ ${targetLang.toUpperCase()}`}
+            </button>
           </div>
-          {musicState.lyricsSynced ? (
+          {showTranslation && translatedLyrics ? (
+            musicState.lyricsSynced ? (
+              <SyncedLyrics lyrics={translatedLyrics} progressMs={localProgress} />
+            ) : (
+              <PlainLyrics lyrics={translatedLyrics} />
+            )
+          ) : musicState.lyricsSynced ? (
             <SyncedLyrics lyrics={musicState.lyrics} progressMs={localProgress} />
           ) : (
             <PlainLyrics lyrics={musicState.lyrics} />
