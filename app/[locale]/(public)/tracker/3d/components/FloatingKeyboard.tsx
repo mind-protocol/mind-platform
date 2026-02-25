@@ -11,10 +11,10 @@ const KEY_UNIT = 0.09;       // base key depth (Z) in 3D units
 const KEY_GAP = 0.008;       // gap between keys
 const KEY_HEIGHT = 0.025;    // key thickness (Y)
 
-// Colors — meshBasicMaterial (self-illuminated, no lighting dependency)
-const IDLE_COLOR = new THREE.Color(0x2a3590);    // visible blue idle
+// Colors — solid meshBasicMaterial (proven to render, no transparency)
+const IDLE_COLOR = new THREE.Color(0x2a3580);    // medium blue idle
 const GLOW_COLOR = new THREE.Color(0x5aaaff);    // bright blue on hit
-const LABEL_COLOR = '#9ac0ff';
+const LABEL_COLOR = '#b0d0ff';
 const _tmpColor = new THREE.Color();
 
 // ── Neighbor map for glow spill ────────────────────────────────────────
@@ -94,12 +94,9 @@ function KeyMesh({
     _tmpColor.copy(IDLE_COLOR).lerp(GLOW_COLOR, totalGlow);
     matRef.current.color.copy(_tmpColor);
 
-    // Opacity: clearly visible idle, brighter on hit
-    matRef.current.opacity = 0.7 + totalGlow * 0.25;
-
-    // Label opacity
+    // Label brightness follows glow
     if (labelRef.current) {
-      labelRef.current.fillOpacity = 0.55 + totalGlow * 0.4;
+      labelRef.current.fillOpacity = 0.6 + totalGlow * 0.4;
     }
 
     // Subtle Y press displacement
@@ -121,9 +118,6 @@ function KeyMesh({
         <meshBasicMaterial
           ref={matRef}
           color={IDLE_COLOR}
-          transparent
-          opacity={0.7}
-          depthWrite={false}
         />
       </mesh>
       {showLabel && (
@@ -135,7 +129,7 @@ function KeyMesh({
           color={LABEL_COLOR}
           anchorX="center"
           anchorY="middle"
-          fillOpacity={0.55}
+          fillOpacity={0.7}
           font={undefined}
         >
           {label}
@@ -211,7 +205,7 @@ export default function FloatingKeyboard({
       {/* Base plate */}
       <mesh position={[0, -0.003, kbdDepth / 2]}>
         <boxGeometry args={[kbdWidth, 0.004, kbdDepth]} />
-        <meshBasicMaterial color="#151540" transparent opacity={0.55} depthWrite={false} />
+        <meshBasicMaterial color="#151535" />
       </mesh>
 
       {/* Key caps */}
