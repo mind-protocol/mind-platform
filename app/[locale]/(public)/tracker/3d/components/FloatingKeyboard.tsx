@@ -118,6 +118,7 @@ function KeyMesh({
         <meshBasicMaterial
           ref={matRef}
           color={IDLE_COLOR}
+          toneMapped={false}
         />
       </mesh>
       {showLabel && (
@@ -198,14 +199,20 @@ export default function FloatingKeyboard({
   const kbdDepth = AZERTY_ROWS.length * (KEY_UNIT + KEY_GAP) + 0.02;
 
   return (
-    <group position={position} rotation={rotation} scale={scale} frustumCulled={false}>
+    <group position={position} rotation={rotation} scale={scale} frustumCulled={false} renderOrder={100}>
+      {/* DEBUG: bright magenta plate — confirms component mounts + renders */}
+      <mesh position={[0, 0.05, kbdDepth / 2]} renderOrder={9999}>
+        <boxGeometry args={[kbdWidth, 0.06, kbdDepth]} />
+        <meshBasicMaterial color="#ff00ff" toneMapped={false} />
+      </mesh>
+
       {/* Underglow — ambient spill from below keyboard */}
       <pointLight position={[0, -0.15, kbdDepth / 2]} intensity={0.6} color="#4060ff" distance={4} decay={2} />
 
       {/* Base plate */}
       <mesh position={[0, -0.003, kbdDepth / 2]}>
         <boxGeometry args={[kbdWidth, 0.004, kbdDepth]} />
-        <meshBasicMaterial color="#151535" />
+        <meshBasicMaterial color="#151535" toneMapped={false} />
       </mesh>
 
       {/* Key caps */}
