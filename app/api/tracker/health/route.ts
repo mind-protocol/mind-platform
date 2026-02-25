@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getUserIdFromRequest } from '@/lib/auth';
+import { manemusFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
-
-const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
 
 export async function GET(req: NextRequest) {
   try {
@@ -14,21 +13,19 @@ export async function GET(req: NextRequest) {
 
     const userId = await getUserIdFromRequest(req);
     const section = req.nextUrl.searchParams.get('section') || '';
-    const url = section
-      ? `${MANEMUS_URL}/api/medical-profile/${section}`
-      : `${MANEMUS_URL}/api/medical-profile`;
+    const path = section
+      ? `/api/medical-profile/${section}`
+      : '/api/medical-profile';
 
-    const res = await fetch(url, {
+    const { data, status } = await manemusFetchJson(path, {
       cache: 'no-store',
       headers: {
-        'ngrok-skip-browser-warning': '1',
         'Authorization': authHeader,
         'X-User-Id': userId,
       },
     });
-    const data = await res.json();
 
-    const response = NextResponse.json(data, { status: res.status });
+    const response = NextResponse.json(data, { status });
     response.headers.set('Cache-Control', 'no-store');
     return response;
   } catch {

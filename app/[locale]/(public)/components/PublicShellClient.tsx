@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { TopNav, Footer } from './nav';
 import ChatWidget from '@/components/chat/ChatWidget';
 import VersionToast from '@/app/components/VersionToast';
+import ScrollToTop from '@/components/ScrollToTop';
 import { ToastProvider } from '@/components/Toast';
 
 // Routes that render in full immersive mode (no header/footer/chat)
@@ -26,6 +27,7 @@ export default function PublicShellClient({ children }: { children: ReactNode })
       <div className="pt-16">{children}</div>
       <Footer />
       <ChatWidget />
+      <ScrollToTop />
       <VersionToast />
     </ToastProvider>
   );

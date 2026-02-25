@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { manemusFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
-
-const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
 
 export async function GET(
   _req: NextRequest,
@@ -10,9 +9,8 @@ export async function GET(
 ) {
   const { id } = await params;
   try {
-    const res = await fetch(`${MANEMUS_URL}/api/citizens/${encodeURIComponent(id)}`, {
+    const res = await manemusFetch(`/api/citizens/${encodeURIComponent(id)}`, {
       cache: 'no-store',
-      headers: { 'ngrok-skip-browser-warning': '1' },
     });
     if (!res.ok) {
       if (res.status === 404) {
