@@ -21,6 +21,11 @@ const SUBSTANCE_META: Record<string, { icon: string; label: string; color: strin
   griffonia:   { icon: '🌰', label: 'Griffonia',   color: '#a855f7' },
   valeriane:   { icon: '🌾', label: 'Valériane',   color: '#65a30d' },
   safran:      { icon: '🌸', label: 'Safran',      color: '#f97316' },
+  yoga:        { icon: '🧘', label: 'Yoga',        color: '#f472b6' },
+  vitamine_c:  { icon: '🍊', label: 'Vitamine C',  color: '#fb923c' },
+  cocaine:     { icon: '⚠️', label: 'Cocaïne',     color: '#e2e8f0' },
+  mmc:         { icon: '⚠️', label: 'MMC',          color: '#22d3ee' },
+  heroine:     { icon: '🚨', label: 'Héroïne',     color: '#78350f' },
 };
 
 const RISK_COLORS = {

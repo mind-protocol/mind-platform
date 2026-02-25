@@ -19,6 +19,11 @@ const SUBSTANCE_LABELS: Record<string, string> = {
   griffonia: 'Griffonia',
   valeriane: 'Valériane',
   safran: 'Safran',
+  yoga: 'Yoga',
+  vitamine_c: 'Vitamine C',
+  cocaine: 'Cocaïne',
+  mmc: 'MMC',
+  heroine: 'Héroïne',
 };
 
 interface Props {
