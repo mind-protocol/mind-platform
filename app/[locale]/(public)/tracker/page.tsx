@@ -12,6 +12,7 @@ import KCalculator from './components/KCalculator';
 import FoodLog from './components/FoodLog';
 import LiveBiometrics from './components/LiveBiometrics';
 import DailySummary from './components/DailySummary';
+import WelcomeOnboarding from './components/WelcomeOnboarding';
 import PlanViewToggle from './components/planning/PlanViewToggle';
 import PlanningCalendar from './components/planning/PlanningCalendar';
 import ScheduleDoseForm from './components/planning/ScheduleDoseForm';
@@ -167,6 +168,11 @@ export default function TrackerPage() {
             </button>
           </nav>
         </header>
+
+        {/* Welcome onboarding (first-time users) */}
+        <div className="mb-6">
+          <WelcomeOnboarding userName={session?.name} />
+        </div>
 
         {/* Live biometrics strip */}
         <div className="mb-6">
