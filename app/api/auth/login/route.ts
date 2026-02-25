@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { MANEMUS_URL, setSession } from '@/lib/auth';
+import { setSession } from '@/lib/auth';
+import { manemusFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,14 +16,10 @@ export async function POST(req: Request) {
       );
     }
 
-    const res = await fetch(`${MANEMUS_URL}/auth/login`, {
+    const res = await manemusFetch('/auth/login', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '1',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
-      cache: 'no-store',
     });
 
     const data = await res.json();

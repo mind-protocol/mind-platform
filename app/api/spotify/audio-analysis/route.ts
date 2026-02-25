@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
+import { manemusFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
-const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
 const DEFAULT_USER_ID = '1864364329'; // Nicolas
 
 // Cache per track (analysis is static per song)
@@ -23,13 +23,8 @@ export async function GET(req: Request) {
       return NextResponse.json(cached.data);
     }
 
-    const res = await fetch(
-      `${MANEMUS_URL}/spotify/audio-analysis/${DEFAULT_USER_ID}/${encodeURIComponent(trackId)}`,
-      {
-        cache: 'no-store',
-        headers: { 'ngrok-skip-browser-warning': '1' },
-        signal: AbortSignal.timeout(15000),
-      }
+    const res = await manemusFetch(
+      `/spotify/audio-analysis/${DEFAULT_USER_ID}/${encodeURIComponent(trackId)}`
     );
 
     if (!res.ok) {

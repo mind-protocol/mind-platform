@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
+import { manemusFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
-const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
 const DEFAULT_USER_ID = '1864364329'; // Nicolas
 
 // Simple in-memory cache (5s TTL)
@@ -16,13 +16,9 @@ export async function GET() {
       return NextResponse.json(cachedData.data);
     }
 
-    const res = await fetch(
-      `${MANEMUS_URL}/spotify/now-playing-enriched/${DEFAULT_USER_ID}`,
-      {
-        cache: 'no-store',
-        headers: { 'ngrok-skip-browser-warning': '1' },
-        signal: AbortSignal.timeout(8000),
-      }
+    const res = await manemusFetch(
+      `/spotify/now-playing-enriched/${DEFAULT_USER_ID}`,
+      { timeoutMs: 8000 }
     );
 
     if (!res.ok) {

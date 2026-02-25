@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { MANEMUS_URL, setSession } from '@/lib/auth';
+import { setSession } from '@/lib/auth';
+import { manemusFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,13 +15,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const res = await fetch(
-      `${MANEMUS_URL}/auth/magic?token=${encodeURIComponent(token)}`,
-      {
-        method: 'GET',
-        headers: { 'ngrok-skip-browser-warning': '1' },
-        cache: 'no-store',
-      },
+    const res = await manemusFetch(
+      `/auth/magic?token=${encodeURIComponent(token)}`
     );
 
     const data = await res.json();
