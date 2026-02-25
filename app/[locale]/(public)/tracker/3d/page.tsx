@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback, useRef, useTransition } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import SanitizeToggle from '@/components/SanitizeToggle';
+import { useAwarenessState } from '@/lib/tracker/hooks/useAwarenessState';
+import { useCockpitState } from '@/lib/tracker/hooks/useCockpitState';
 import RangeSelector from './components/RangeSelector';
 import Legend from './components/Legend';
 import EnvironmentManager from '../components/EnvironmentManager';
@@ -37,6 +39,11 @@ const MusicAwarenessPanel = dynamic(
 
 const DirectionMap = dynamic(
   () => import('./components/DirectionMap'),
+  { ssr: false },
+);
+
+const CockpitRegions = dynamic(
+  () => import('./components/CockpitRegions'),
   { ssr: false },
 );
 
@@ -476,6 +483,8 @@ function KeyboardDebugPanel() {
 export default function Tracker3DPage() {
   const [mode, setMode] = useState<ViewMode>('mirror');
   const [days, setDays] = useState(7);
+  const { awareness } = useAwarenessState();
+  const cockpit = useCockpitState(awareness);
 
   // Image adjustments
   const [adjustments, setAdjustments] = useState<ImageAdjustments>(DEFAULT_ADJUSTMENTS);
@@ -721,6 +730,13 @@ export default function Tracker3DPage() {
       {mode === 'mirror' && (
         <div className={`fixed bottom-4 left-4 z-[52] transition-opacity duration-500 ${chromeVisible ? (typing ? 'opacity-20' : 'opacity-100') : 'opacity-0 pointer-events-none'}`}>
           <AwarenessHUD />
+        </div>
+      )}
+
+      {/* Cockpit Regions — right side below env manager, mirror mode only */}
+      {mode === 'mirror' && (
+        <div className={`fixed bottom-14 right-4 z-[52] transition-opacity duration-500 ${chromeVisible ? (typing ? 'opacity-20' : 'opacity-100') : 'opacity-0 pointer-events-none'}`}>
+          <CockpitRegions awareness={awareness} cockpit={cockpit} visible={chromeVisible} />
         </div>
       )}
 

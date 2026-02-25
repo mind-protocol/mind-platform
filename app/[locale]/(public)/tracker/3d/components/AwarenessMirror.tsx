@@ -6,6 +6,7 @@ import { Canvas } from '@react-three/fiber';
 import { PerformanceMonitor, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 import { useAwarenessState } from '@/lib/tracker/hooks/useAwarenessState';
+import { useCockpitState } from '@/lib/tracker/hooks/useCockpitState';
 import { useEnvironments } from '@/lib/tracker/hooks/useEnvironments';
 import { SUBSTANCE_KEYS, SUBSTANCE_CONFIG, type SubstanceKey } from '@/lib/tracker/constants';
 import type { AwarenessState } from '@/lib/tracker/pharmacokinetics';
@@ -219,10 +220,12 @@ const MAX_HUD_WIDTH = 420;
 
 export function AwarenessHUD({ className }: { className?: string }) {
   const { awareness } = useAwarenessState();
+  const cockpit = useCockpitState(awareness);
   const [collapsed, setCollapsed] = useState(false);
   const [panelWidth, setPanelWidth] = useState(DEFAULT_HUD_WIDTH);
   const widthRef = useRef(DEFAULT_HUD_WIDTH);
   const resizingRef = useRef(false);
+  const [showSignals, setShowSignals] = useState(false);
 
   // Load saved width on mount
   useEffect(() => {
@@ -264,7 +267,7 @@ export function AwarenessHUD({ className }: { className?: string }) {
 
   const activeSubstances = SUBSTANCE_KEYS.filter(k => awareness.substances[k] > 0.02);
 
-  // Collapsed: just a column of glowing dots
+  // Collapsed: mode beacon + column of glowing dots
   if (collapsed) {
     return (
       <div className={`flex items-center gap-1.5 ${className || ''}`}>
@@ -276,6 +279,19 @@ export function AwarenessHUD({ className }: { className?: string }) {
           &rsaquo;
         </button>
         <div className="flex flex-col gap-1.5">
+          {/* Cockpit mode beacon */}
+          <div className="flex items-center gap-0.5" title={`${cockpit.headline} — ${cockpit.subline}`}>
+            <div
+              className="rounded-full"
+              style={{
+                width: 8, height: 8,
+                backgroundColor: cockpit.color,
+                boxShadow: `0 0 10px ${cockpit.color}80`,
+                animation: cockpit.mode === 'survival' ? 'pulse 1s infinite' : undefined,
+              }}
+            />
+            <span style={{ fontSize: 8, lineHeight: 1 }}>{cockpit.icon}</span>
+          </div>
           {/* Biometric dots */}
           {awareness.hr != null && (
             <div className="flex items-center gap-0.5" title={`HR ${awareness.hr}`}>
@@ -346,8 +362,11 @@ export function AwarenessHUD({ className }: { className?: string }) {
 
   return (
     <div
-      className={`bg-zinc-900/60 backdrop-blur-sm border border-zinc-800/50 rounded-lg p-2.5 relative ${className || ''}`}
-      style={{ width: panelWidth }}
+      className={`bg-zinc-900/60 backdrop-blur-sm border rounded-lg p-2.5 relative transition-colors duration-700 ${className || ''}`}
+      style={{
+        width: panelWidth,
+        borderColor: `${cockpit.color}30`,
+      }}
     >
       {/* Right-edge resize handle */}
       <div
@@ -357,22 +376,80 @@ export function AwarenessHUD({ className }: { className?: string }) {
       >
         <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0.5 h-8 rounded-full bg-zinc-700/0 group-hover:bg-zinc-500/60 transition-colors" />
       </div>
-      {/* Header with collapse button */}
-      <div className="flex items-center justify-between mb-2">
-        <div className="text-[9px] uppercase tracking-wider text-zinc-600">Awareness</div>
-        <div className="flex items-center gap-1">
-          <span className="text-[8px] text-zinc-800 font-mono">{panelWidth}px</span>
-          <button
-            onClick={() => setCollapsed(true)}
-            className="text-zinc-700 hover:text-zinc-400 transition text-[10px] px-1"
-            title="Collapse"
-          >
-            &lsaquo;
-          </button>
+
+      {/* ── Cockpit Mode Header ─────────────────────────────────────── */}
+      <div className="mb-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {/* Mode indicator dot */}
+            <div
+              className="rounded-full shrink-0 transition-all duration-500"
+              style={{
+                width: 10, height: 10,
+                backgroundColor: cockpit.color,
+                boxShadow: `0 0 12px ${cockpit.color}60`,
+                animation: cockpit.mode === 'survival' ? 'pulse 1s infinite' : undefined,
+              }}
+            />
+            <div>
+              <div className="text-[11px] font-bold font-mono tracking-wider" style={{ color: cockpit.color }}>
+                {cockpit.headline.toUpperCase()}
+              </div>
+              <div className="text-[9px] text-zinc-500">{cockpit.subline}</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setShowSignals(!showSignals)}
+              className="text-zinc-700 hover:text-zinc-400 transition text-[9px] px-1 font-mono"
+              title="Toggle signals"
+            >
+              {showSignals ? '−' : '+'}
+            </button>
+            <span className="text-[8px] text-zinc-800 font-mono">{panelWidth}px</span>
+            <button
+              onClick={() => setCollapsed(true)}
+              className="text-zinc-700 hover:text-zinc-400 transition text-[10px] px-1"
+              title="Collapse"
+            >
+              &lsaquo;
+            </button>
+          </div>
         </div>
+
+        {/* Next action — only when there's something to do */}
+        {cockpit.nextAction && (
+          <div
+            className="mt-1.5 px-2 py-1 rounded text-[9px] font-mono border transition-all duration-500"
+            style={{
+              borderColor: `${cockpit.color}25`,
+              backgroundColor: `${cockpit.color}08`,
+              color: cockpit.color,
+            }}
+          >
+            &rarr; {cockpit.nextAction}
+          </div>
+        )}
       </div>
 
-      {/* Biometric vitals — compact row with dots */}
+      {/* ── Signals detail (toggle) ─────────────────────────────────── */}
+      {showSignals && cockpit.signals.length > 0 && (
+        <div className="mb-2 space-y-0.5">
+          {cockpit.signals.map(sig => (
+            <div key={sig.source} className="flex items-center gap-1.5">
+              <div
+                className="w-1 h-1 rounded-full shrink-0"
+                style={{
+                  backgroundColor: sig.severity === 'alert' ? '#ef4444' : sig.severity === 'warn' ? '#f59e0b' : '#22c55e',
+                }}
+              />
+              <span className="text-[9px] text-zinc-500 font-mono">{sig.label}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* ── Biometric vitals — compact row with dots ──────────────── */}
       <div className="flex items-center gap-2.5 mb-2">
         {awareness.hr != null && (
           <span className="flex items-center gap-1 text-[10px] text-zinc-500">
@@ -416,7 +493,7 @@ export function AwarenessHUD({ className }: { className?: string }) {
         )}
       </div>
 
-      {/* Active substances — dot + label, no bars */}
+      {/* ── Active substances — dot + label ───────────────────────── */}
       {activeSubstances.length > 0 ? (
         <div className="space-y-1">
           {activeSubstances.map(key => {
@@ -446,6 +523,28 @@ export function AwarenessHUD({ className }: { className?: string }) {
         </div>
       ) : (
         <div className="text-[10px] text-zinc-700">Baseline</div>
+      )}
+
+      {/* ── Composite loads bar ─────────────────────────────────────── */}
+      {awareness.alterationDepth > 0.02 && (
+        <div className="mt-2 pt-2 border-t border-zinc-800/40">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[8px] text-zinc-600 font-mono uppercase w-14 shrink-0">Depth</span>
+            <div className="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
+              <div
+                className="h-full rounded-full transition-all duration-700"
+                style={{
+                  width: `${awareness.alterationDepth * 100}%`,
+                  backgroundColor: cockpit.color,
+                  boxShadow: `0 0 4px ${cockpit.color}40`,
+                }}
+              />
+            </div>
+            <span className="text-[8px] text-zinc-700 font-mono w-7 text-right">
+              {(awareness.alterationDepth * 100).toFixed(0)}%
+            </span>
+          </div>
+        </div>
       )}
     </div>
   );
