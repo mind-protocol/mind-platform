@@ -25,6 +25,9 @@
     "token": "Token",
     "team": "Équipe",
     "graph": "Savoir",
+    "citizens": "Citoyens",
+    "house": "La Maison",
+    "connectome": "Connectome",
     "toggleMenu": "Menu"
   },
   "Footer": {

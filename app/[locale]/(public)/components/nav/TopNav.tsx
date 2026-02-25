@@ -40,6 +40,9 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { href: '/team', key: 'team' },
       { href: '/graph', key: 'graph' },
+      { href: '/citizen', key: 'citizens' },
+      { href: '/house', key: 'house' },
+      { href: '/connectome', key: 'connectome' },
       { href: '/blog', key: 'blog' },
       { href: '/registry', key: 'registry' },
     ],
@@ -174,7 +177,13 @@ export function TopNav() {
               <NavDropdown key={group.labelKey} group={group} t={t} />
             ))}
 
-            {/* Register CTA */}
+            {/* Tracker + Register CTAs */}
+            <Link
+              href="/tracker"
+              className="px-4 py-1.5 rounded-lg bg-zinc-800/60 border border-zinc-700 text-zinc-300 text-sm font-medium hover:bg-zinc-700/60 hover:text-white transition"
+            >
+              Tracker
+            </Link>
             <Link
               href="/register"
               className="px-4 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-500 text-sm font-medium hover:bg-amber-500/20 transition"
@@ -228,10 +237,17 @@ export function TopNav() {
               />
             ))}
 
-            {/* Register CTA */}
+            {/* Tracker + Register CTAs */}
+            <Link
+              href="/tracker"
+              className="block mt-3 text-center px-4 py-2.5 rounded-lg bg-zinc-800/60 border border-zinc-700 text-zinc-300 text-sm font-medium hover:bg-zinc-700/60 transition"
+              onClick={() => setMobileOpen(false)}
+            >
+              Tracker
+            </Link>
             <Link
               href="/register"
-              className="block mt-3 text-center px-4 py-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-500 text-sm font-medium hover:bg-amber-500/20 transition"
+              className="block mt-2 text-center px-4 py-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-500 text-sm font-medium hover:bg-amber-500/20 transition"
               onClick={() => setMobileOpen(false)}
             >
               {t('register')}
