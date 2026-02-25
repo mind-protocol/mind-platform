@@ -95,11 +95,11 @@ export function clearSession(response: NextResponse): void {
 
 /**
  * Shorthand: extract the authenticated `user_id` from the request.
- * Falls back to `"nicolas"` when no valid session exists (backwards compat).
+ * Falls back to `"nlr"` when no valid session exists (backwards compat).
  */
 export async function getUserIdFromRequest(
   request: NextRequest,
 ): Promise<string> {
   const session = await getSession(request);
-  return session?.user_id ?? 'nicolas';
+  return session?.user_id ?? 'nlr';
 }
