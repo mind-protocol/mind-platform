@@ -12,6 +12,14 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Redirect if already authenticated
+  useEffect(() => {
+    fetch('/api/auth/session')
+      .then((r) => { if (r.ok) return r.json(); throw new Error(); })
+      .then((data) => { if (data?.user_id) router.replace('/tracker'); })
+      .catch(() => {});
+  }, [router]);
+
   // Auto-submit magic link if ?token= is present
   useEffect(() => {
     const token = searchParams.get('token');

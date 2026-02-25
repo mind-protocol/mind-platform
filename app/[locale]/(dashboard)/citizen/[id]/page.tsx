@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 
 // ─── Types ──────────────────────────────────────────────────────
 
-interface CitizenAvatar {
+interface CitizenAvatarData {
   type: 'photo' | 'letter';
   css_class?: string;
   photo_path?: string;
@@ -21,7 +21,7 @@ interface Citizen {
   bio: string;
   tags: string[];
   links: Record<string, { url: string; label: string }>;
-  avatar: CitizenAvatar;
+  avatar: CitizenAvatarData;
   photo?: string;
   visibility: string;
   trust_level: string;
@@ -193,6 +193,30 @@ function VitalGauge({
   );
 }
 
+function CitizenAvatar({ photoUrl, name, size = 'lg' }: { photoUrl: string | null; name: string; size?: 'sm' | 'lg' }) {
+  const [imgFailed, setImgFailed] = useState(false);
+  const dim = size === 'lg' ? 'w-24 h-24' : 'w-10 h-10';
+  const textSize = size === 'lg' ? 'text-3xl' : 'text-lg';
+
+  return (
+    <div className={`${dim} rounded-2xl overflow-hidden bg-zinc-800 border border-zinc-700/50 flex-shrink-0 flex items-center justify-center`}>
+      {photoUrl && !imgFailed ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={photoUrl}
+          alt={name}
+          className="w-full h-full object-cover"
+          onError={() => setImgFailed(true)}
+        />
+      ) : (
+        <span className={`${textSize} font-bold text-zinc-500`}>
+          {name[0]}
+        </span>
+      )}
+    </div>
+  );
+}
+
 // ─── Main Page ──────────────────────────────────────────────────
 
 export default function CitizenProfilePage() {
@@ -267,8 +291,37 @@ export default function CitizenProfilePage() {
 
   if (!citizen) {
     return (
-      <main className="min-h-screen bg-zinc-950 text-white flex items-center justify-center">
-        <div className="text-zinc-600 font-mono text-sm animate-pulse">loading...</div>
+      <main className="min-h-screen bg-zinc-950 text-white">
+        <header className="border-b border-zinc-800/50 px-4 sm:px-6 py-3">
+          <div className="h-4 w-24 bg-zinc-800 rounded animate-pulse" />
+        </header>
+        <section className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-8">
+          <div className="flex flex-col sm:flex-row items-start gap-6">
+            <div className="w-24 h-24 rounded-2xl bg-zinc-800 animate-pulse" />
+            <div className="flex-1 space-y-3">
+              <div className="h-8 w-48 bg-zinc-800 rounded animate-pulse" />
+              <div className="h-4 w-32 bg-zinc-800/60 rounded animate-pulse" />
+              <div className="flex gap-2">
+                <div className="h-5 w-16 bg-zinc-800/40 rounded-full animate-pulse" />
+                <div className="h-5 w-20 bg-zinc-800/40 rounded-full animate-pulse" />
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="max-w-4xl mx-auto px-4 sm:px-6 pb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="border border-zinc-800/60 rounded-2xl bg-zinc-900/40 p-6">
+                <div className="h-4 w-24 bg-zinc-800 rounded animate-pulse mb-4" />
+                <div className="space-y-2">
+                  <div className="h-3 w-full bg-zinc-800/40 rounded animate-pulse" />
+                  <div className="h-3 w-3/4 bg-zinc-800/40 rounded animate-pulse" />
+                  <div className="h-3 w-1/2 bg-zinc-800/40 rounded animate-pulse" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
     );
   }
@@ -303,28 +356,7 @@ export default function CitizenProfilePage() {
           }`}
         >
           {/* Avatar */}
-          <div className="w-24 h-24 rounded-2xl overflow-hidden bg-zinc-800 border border-zinc-700/50 flex-shrink-0 flex items-center justify-center">
-            {photoUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={photoUrl}
-                alt={citizen.display_name}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                  const parent = target.parentElement;
-                  if (parent) {
-                    parent.innerHTML = `<span class="text-3xl font-bold text-zinc-500">${citizen.display_name[0]}</span>`;
-                  }
-                }}
-              />
-            ) : (
-              <span className="text-3xl font-bold text-zinc-500">
-                {citizen.display_name[0]}
-              </span>
-            )}
-          </div>
+          <CitizenAvatar photoUrl={photoUrl} name={citizen.display_name} size="lg" />
 
           {/* Name + meta */}
           <div className="flex-1">

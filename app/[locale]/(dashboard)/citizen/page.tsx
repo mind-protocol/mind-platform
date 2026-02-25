@@ -87,6 +87,27 @@ const MANEMUS_URL = process.env.NEXT_PUBLIC_MANEMUS_URL || 'https://api.mindprot
 
 // ─── Components ─────────────────────────────────────────────────
 
+function SafeAvatar({ src, name, className }: { src: string | null; name: string; className?: string }) {
+  const [failed, setFailed] = useState(false);
+  return (
+    <>
+      {src && !failed ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={src}
+          alt={name}
+          className={className || 'w-full h-full object-cover'}
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        <span className="text-lg font-bold text-zinc-500">
+          {name[0]}
+        </span>
+      )}
+    </>
+  );
+}
+
 function Pulse({ color = 'blue', size = 3 }: { color?: string; size?: number }) {
   return (
     <span className="relative flex" style={{ width: size * 4, height: size * 4 }}>
@@ -160,26 +181,7 @@ function CitizenCard({
       {/* Avatar + Name */}
       <div className="flex items-start gap-4 mb-3">
         <div className="w-12 h-12 rounded-full overflow-hidden bg-zinc-800 border border-zinc-700/50 flex-shrink-0 flex items-center justify-center">
-          {photoUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={photoUrl}
-              alt={citizen.display_name}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-                const parent = target.parentElement;
-                if (parent) {
-                  parent.innerHTML = `<span class="text-lg font-bold text-zinc-500">${citizen.display_name[0]}</span>`;
-                }
-              }}
-            />
-          ) : (
-            <span className="text-lg font-bold text-zinc-500">
-              {citizen.display_name[0]}
-            </span>
-          )}
+          <SafeAvatar src={photoUrl} name={citizen.display_name} />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
