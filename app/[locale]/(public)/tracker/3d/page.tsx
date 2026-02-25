@@ -35,6 +35,11 @@ const MusicAwarenessPanel = dynamic(
   { ssr: false },
 );
 
+const DirectionMap = dynamic(
+  () => import('./components/DirectionMap'),
+  { ssr: false },
+);
+
 type ViewMode = 'mirror' | 'timeline';
 
 // ── Image adjustment types & defaults ──────────────────────────────────
@@ -493,6 +498,7 @@ export default function Tracker3DPage() {
   const typingRef = useRef(false);
   const chromeWrapperRef = useRef<HTMLDivElement>(null);
   const [debugPanel, setDebugPanel] = useState(false);
+  const [showDirections, setShowDirections] = useState(false);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   // Derived values for child props that need initial render values
@@ -526,6 +532,9 @@ export default function Tracker3DPage() {
     const onKey = (e: KeyboardEvent) => {
       if (e.shiftKey && e.code === 'KeyD') {
         setDebugPanel(prev => !prev);
+      }
+      if (e.code === 'Escape') {
+        setShowDirections(false);
       }
     };
 
@@ -673,6 +682,18 @@ export default function Tracker3DPage() {
             Timeline
           </button>
         </div>
+
+        {/* Direction Map toggle */}
+        <button
+          onClick={() => setShowDirections(!showDirections)}
+          className={`px-3 py-1.5 text-xs font-mono transition bg-zinc-900/80 backdrop-blur-sm border rounded-lg ${
+            showDirections
+              ? 'text-amber-400 border-amber-500/30 bg-amber-500/10'
+              : 'text-zinc-500 hover:text-zinc-300 border-zinc-800'
+          }`}
+        >
+          {'🧭'} Directions
+        </button>
       </div>
 
       {/* Music panel — top left, below nav */}
@@ -788,6 +809,9 @@ export default function Tracker3DPage() {
 
       {/* Flat keyboard overlay — silver on dark, blue on typing */}
       {mode === 'mirror' && <FloatingKeyboardOverlay typing={typing} />}
+
+      {/* Direction Map — constellation of priorities */}
+      <DirectionMap visible={showDirections} onClose={() => setShowDirections(false)} />
     </div>
   );
 }
