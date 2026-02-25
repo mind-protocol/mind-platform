@@ -6,6 +6,7 @@ import Recommendation from './components/Recommendation';
 import SubstanceCard from './components/SubstanceCard';
 import LogForm from './components/LogForm';
 import BiometricCorrelation from './components/BiometricCorrelation';
+import SensationLogger from './components/SensationLogger';
 import Timeline from './components/Timeline';
 import KCalculator from './components/KCalculator';
 import FoodLog from './components/FoodLog';
@@ -127,6 +128,11 @@ export default function TrackerPage() {
             {/* Recommendation */}
             <div className="mb-6">
               <Recommendation refreshKey={refreshKey} onQuickLog={quickLog} onSchedule={openSchedule} />
+            </div>
+
+            {/* Sensation / side-effect logger */}
+            <div className="mb-6">
+              <SensationLogger onLogged={refresh} />
             </div>
 
             {/* ── Category tabs ────────────────────────────────── */}

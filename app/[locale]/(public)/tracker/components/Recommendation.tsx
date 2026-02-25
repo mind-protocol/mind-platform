@@ -23,8 +23,30 @@ interface RecContext {
   last_intake: Record<string, number | null>;
 }
 
+interface SurveillanceAlert {
+  substances: string[];
+  severity: string;
+  note: string;
+}
+
+interface SurveillanceSymptom {
+  key: string;
+  label: string;
+  icon: string;
+  severity: string;
+}
+
+interface Surveillance {
+  active: boolean;
+  max_severity?: string;
+  alerts: SurveillanceAlert[];
+  symptoms: SurveillanceSymptom[];
+  adverse_effects: { key: string; label: string; icon: string }[];
+}
+
 interface RecResponse {
   recommendations: Rec[];
+  surveillance?: Surveillance;
   context: RecContext;
 }
 
@@ -92,6 +114,8 @@ export default function Recommendation({
 }) {
   const [data, setData] = useState<RecResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loggingEffect, setLoggingEffect] = useState<string | null>(null);
+  const [loggedEffects, setLoggedEffects] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     setLoading(true);
@@ -119,6 +143,7 @@ export default function Recommendation({
   const rest = data.recommendations.slice(1).filter((r) => r.priority > 0);
   const ctx = data.context;
   const bio = ctx.biometrics;
+  const surv = data.surveillance;
 
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
@@ -214,6 +239,110 @@ export default function Recommendation({
               )}
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Surveillance section — active interaction monitoring */}
+      {surv?.active && (
+        <div className={`mt-3 rounded-lg border p-3 ${
+          surv.max_severity === 'high'
+            ? 'border-red-500/40 bg-red-500/5'
+            : surv.max_severity === 'moderate'
+            ? 'border-amber-500/30 bg-amber-500/5'
+            : 'border-zinc-700 bg-zinc-800/30'
+        }`}>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-sm">
+              {surv.max_severity === 'high' ? '🚨' : surv.max_severity === 'moderate' ? '⚠️' : '👁️'}
+            </span>
+            <span className={`text-xs font-medium uppercase tracking-wider ${
+              surv.max_severity === 'high' ? 'text-red-400' : surv.max_severity === 'moderate' ? 'text-amber-400' : 'text-zinc-400'
+            }`}>
+              Surveillance active
+            </span>
+          </div>
+
+          {/* Active interaction alerts */}
+          <div className="space-y-1.5 mb-3">
+            {surv.alerts.map((alert, i) => (
+              <div key={i} className="flex items-start gap-2 text-xs">
+                <span className={`shrink-0 mt-0.5 w-1.5 h-1.5 rounded-full ${
+                  alert.severity === 'high' ? 'bg-red-400' : alert.severity === 'moderate' ? 'bg-amber-400' : 'bg-zinc-500'
+                }`} />
+                <span className="text-zinc-400">
+                  <span className="font-medium">
+                    {alert.substances.map(s => SUB_ICONS[s] || '').join(' + ')}
+                  </span>
+                  {' '}{alert.note}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Symptoms to monitor */}
+          {surv.symptoms.length > 0 && (
+            <div className="mb-3">
+              <div className="text-[10px] text-zinc-600 uppercase tracking-wider mb-1.5">
+                Symptomes a surveiller
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {surv.symptoms.map((sym) => (
+                  <span
+                    key={sym.key}
+                    className={`text-[10px] px-1.5 py-0.5 rounded border ${
+                      sym.severity === 'high'
+                        ? 'border-red-500/30 text-red-400/80 bg-red-500/5'
+                        : sym.severity === 'moderate'
+                        ? 'border-amber-500/20 text-amber-400/70 bg-amber-500/5'
+                        : 'border-zinc-700 text-zinc-500'
+                    }`}
+                  >
+                    {sym.icon} {sym.label}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Adverse effect quick-log buttons */}
+          {surv.adverse_effects.length > 0 && (
+            <div>
+              <div className="text-[10px] text-zinc-600 uppercase tracking-wider mb-1.5">
+                Signaler un effet
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {surv.adverse_effects.map((effect) => (
+                  <button
+                    key={effect.key}
+                    disabled={loggingEffect === effect.key || loggedEffects.has(effect.key)}
+                    onClick={async () => {
+                      setLoggingEffect(effect.key);
+                      try {
+                        await fetch('/api/tracker/adverse', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            effect: effect.key,
+                            severity: surv.symptoms.find(s => s.key === effect.key)?.severity || 'unknown',
+                            notes: '',
+                          }),
+                        });
+                        setLoggedEffects(prev => new Set(prev).add(effect.key));
+                      } catch { /* silent */ }
+                      setLoggingEffect(null);
+                    }}
+                    className={`text-xs px-2 py-1 rounded border transition ${
+                      loggedEffects.has(effect.key)
+                        ? 'border-red-500/40 text-red-300 bg-red-500/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-red-400 hover:border-red-500/30 hover:bg-red-500/5'
+                    }`}
+                  >
+                    {loggingEffect === effect.key ? '...' : loggedEffects.has(effect.key) ? `${effect.icon} ${effect.label} ✓` : `${effect.icon} ${effect.label}`}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
