@@ -13,6 +13,7 @@ import FoodLog from './components/FoodLog';
 import LiveBiometrics from './components/LiveBiometrics';
 import DailySummary from './components/DailySummary';
 import WelcomeOnboarding from './components/WelcomeOnboarding';
+import BackendStatus from './components/BackendStatus';
 import PlanViewToggle from './components/planning/PlanViewToggle';
 import PlanningCalendar from './components/planning/PlanningCalendar';
 import ScheduleDoseForm from './components/planning/ScheduleDoseForm';
@@ -168,6 +169,11 @@ export default function TrackerPage() {
             </button>
           </nav>
         </header>
+
+        {/* Backend status (shown only when offline/degraded) */}
+        <div className="mb-4">
+          <BackendStatus />
+        </div>
 
         {/* Welcome onboarding (first-time users) */}
         <div className="mb-6">
