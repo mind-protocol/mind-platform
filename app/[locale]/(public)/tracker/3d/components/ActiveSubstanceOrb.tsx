@@ -90,6 +90,10 @@ function OrbPosition({
     valeriane: 0.025,  // Very slow — sedative herb
     safran: 0.02,      // Very slow — steady supplement
     yoga: 0.04,        // Slow, meditative
+    vitamine_c: 0.02,  // Very slow — steady supplement
+    cocaine: 0.35,     // Very fast, frenetic
+    mmc: 0.2,          // Fast, stimulant-like
+    heroine: 0.04,     // Slow, heavy sedation
   };
 
   // Vertical offsets — psychedelics float higher, sedatives lower
@@ -113,6 +117,10 @@ function OrbPosition({
     valeriane: -1.2,    // Low — sedative
     safran: 0.1,        // Neutral — mood support
     yoga: 1.0,          // Floats up — body practice
+    vitamine_c: 0.0,    // Neutral — basic supplement
+    cocaine: 2.0,       // High up — intense stimulant
+    mmc: 1.8,           // High — stimulant/empathogen
+    heroine: -3.0,      // Very low — heavy sedation/opioid
   };
 
   useFrame((state) => {

@@ -186,6 +186,38 @@ export const PK_PROFILES: Record<SubstanceKey, PKProfile> = {
     peakIntensity: 0.5,     // Moderate — body practice, not chemical
     decayShape: 'linear',
   },
+  vitamine_c: {
+    onsetMin: 30,           // Oral absorption
+    peakMin: 120,           // ~2h to peak plasma level
+    plateauEndMin: 360,     // 6h plateau (gradual renal excretion)
+    durationMin: 720,       // ~12h total (water-soluble, steady clearance)
+    peakIntensity: 0.3,     // Subtle — nutritional support, not psychoactive
+    decayShape: 'linear',
+  },
+  cocaine: {
+    onsetMin: 2,            // Insufflation — rapid nasal absorption
+    peakMin: 15,            // Fast peak euphoria
+    plateauEndMin: 30,      // Short plateau
+    durationMin: 60,        // ~1h total (very short half-life ~40min)
+    peakIntensity: 0.95,    // Intense — powerful stimulant
+    decayShape: 'exponential',
+  },
+  mmc: {
+    onsetMin: 10,           // Oral/insufflation onset
+    peakMin: 30,            // ~30min to peak
+    plateauEndMin: 90,      // 1.5h plateau (empathogenic window)
+    durationMin: 180,       // ~3h total
+    peakIntensity: 0.85,    // Strong — stimulant + empathogen
+    decayShape: 'exponential',
+  },
+  heroine: {
+    onsetMin: 5,            // Insufflation/smoking onset
+    peakMin: 30,            // ~30min to peak
+    plateauEndMin: 120,     // 2h plateau (strong opioid agonism)
+    durationMin: 360,       // ~6h total (morphine metabolites)
+    peakIntensity: 0.95,    // Intense — powerful opioid
+    decayShape: 'exponential',
+  },
 };
 
 /**

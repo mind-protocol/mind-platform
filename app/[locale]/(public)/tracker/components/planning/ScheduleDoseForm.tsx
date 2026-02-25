@@ -23,6 +23,10 @@ const INTENTS: Record<SubstanceKey, string[]> = {
   valeriane: ['sleep', 'anxiety', 'relaxation', 'as-needed'],
   safran: ['daily', 'mood', 'anti-stress', 'cognitive'],
   yoga: ['morning', 'recovery', 'focus', 'sleep', 'stretching', 'strength'],
+  vitamine_c: ['daily', 'immunity', 'recovery', 'morning', 'pre-workout'],
+  cocaine: ['social', 'energy', 'focus'],
+  mmc: ['social', 'empathy', 'energy'],
+  heroine: ['pain', 'sedation', 'withdrawal-management'],
 };
 
 interface ScheduleDoseFormProps {

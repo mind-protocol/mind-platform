@@ -7,6 +7,7 @@ import SanitizeToggle from '@/components/SanitizeToggle';
 import DependencyOverview from './components/DependencyOverview';
 import TaperingProtocols from './components/TaperingProtocols';
 import BiometricValidation from './components/BiometricValidation';
+import InteractionMatrix from './components/InteractionMatrix';
 
 function AuthGate({ onAuth }: { onAuth: (token: string) => void }) {
   const [pass, setPass] = useState('');
@@ -61,6 +62,15 @@ function AuthGate({ onAuth }: { onAuth: (token: string) => void }) {
 function DependencyDashboard({ token }: { token: string }) {
   const { data, loading, error, refresh } = useDependencies(token, 60);
   const [selectedSubstance, setSelectedSubstance] = useState<string | null>(null);
+  const [interactions, setInteractions] = useState<{ user_substances: string[]; interactions: Array<{ a: string; b: string; severity: string; note: string }> } | null>(null);
+
+  // Fetch interaction matrix
+  useEffect(() => {
+    fetch('/api/tracker/interactions?days=60')
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => d && setInteractions(d))
+      .catch(() => {});
+  }, []);
 
   if (loading && !data) {
     return (
@@ -145,6 +155,16 @@ function DependencyDashboard({ token }: { token: string }) {
                 </span>
               )}
             </div>
+          </div>
+        )}
+
+        {/* Interaction Matrix */}
+        {interactions && interactions.user_substances.length >= 2 && (
+          <div className="mb-6">
+            <InteractionMatrix
+              userSubstances={interactions.user_substances}
+              interactions={interactions.interactions as Array<{ a: string; b: string; severity: 'low' | 'moderate' | 'high' | 'critical'; note: string }>}
+            />
           </div>
         )}
 

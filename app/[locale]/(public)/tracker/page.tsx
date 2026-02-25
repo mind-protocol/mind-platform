@@ -14,12 +14,14 @@ import PlanViewToggle from './components/planning/PlanViewToggle';
 import PlanningCalendar from './components/planning/PlanningCalendar';
 import ScheduleDoseForm from './components/planning/ScheduleDoseForm';
 import ThemeToggle from './components/ThemeToggle';
+import SubstanceConfigMenu from './components/SubstanceConfigMenu';
 import SanitizeToggle from '@/components/SanitizeToggle';
-import type { SubstanceKey } from '@/lib/tracker/constants';
+import { useSubstanceConfig } from '@/lib/tracker/hooks/useSubstanceConfig';
+import { SUBSTANCE_CONFIG, type SubstanceKey } from '@/lib/tracker/constants';
 
-// Category filters
-const BODY_SUBSTANCES = ['hydration', 'lions_mane', 'dynabiane', 'omegabiane', 'griffonia', 'valeriane', 'safran', 'venlafaxine', 'sertraline', 'prazepam', 'cyamemazine', 'melatonin', 'yoga'];
-const RECREATIONAL_SUBSTANCES = ['thc', 'cbd', 'caffeine', 'ketamine', 'lsd', 'nicotine'];
+// Category definitions (before visibility filtering)
+const BODY_KEYS = new Set(['hydration', 'lions_mane', 'dynabiane', 'omegabiane', 'griffonia', 'valeriane', 'safran', 'venlafaxine', 'sertraline', 'prazepam', 'cyamemazine', 'melatonin', 'yoga', 'vitamine_c']);
+const RECREATIONAL_KEYS = new Set(['thc', 'cbd', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'cocaine', 'mmc', 'heroine']);
 
 export default function TrackerPage() {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -32,6 +34,7 @@ export default function TrackerPage() {
     dose?: { amount: number; unit: string };
     intent?: string;
   }>({});
+  const { visibleKeys } = useSubstanceConfig();
 
   const refresh = () => setRefreshKey((k) => k + 1);
 
@@ -68,7 +71,10 @@ export default function TrackerPage() {
     }
   }, []);
 
-  const currentFilter = activeTab === 'body' ? BODY_SUBSTANCES : RECREATIONAL_SUBSTANCES;
+  // Filter visible substances by category
+  const bodySubstances = visibleKeys.filter((k) => BODY_KEYS.has(k));
+  const recreationalSubstances = visibleKeys.filter((k) => RECREATIONAL_KEYS.has(k));
+  const currentFilter = activeTab === 'body' ? bodySubstances : recreationalSubstances;
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
@@ -84,6 +90,7 @@ export default function TrackerPage() {
             </p>
           </div>
           <div className="flex gap-2 items-center flex-wrap justify-end">
+            <SubstanceConfigMenu />
             <SanitizeToggle />
             <ThemeToggle />
             <PlanViewToggle mode={viewMode} onChange={setViewMode} />

@@ -141,6 +141,10 @@ const SUB_CONFIG: Record<string, { color: string; icon: string; label: string }>
   valeriane: { color: '#65a30d', icon: '🌾', label: 'Valériane' },
   safran: { color: '#f97316', icon: '🌸', label: 'Safran' },
   yoga: { color: '#f472b6', icon: '🧘', label: 'Yoga' },
+  vitamine_c: { color: '#fb923c', icon: '🍊', label: 'Vit C' },
+  cocaine: { color: '#e2e8f0', icon: '⚠️', label: 'Cocaïne' },
+  mmc: { color: '#22d3ee', icon: '⚠️', label: 'MMC' },
+  heroine: { color: '#78350f', icon: '🚨', label: 'Héroïne' },
 };
 
 function formatTime(ts: string): string {

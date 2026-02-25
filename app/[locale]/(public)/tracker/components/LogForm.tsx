@@ -22,6 +22,10 @@ const TABS = [
   { key: 'valeriane', label: 'Valériane', color: '#65a30d', icon: '🌾' },
   { key: 'safran', label: 'Safran', color: '#f97316', icon: '🌸' },
   { key: 'yoga', label: 'Yoga', color: '#8b5cf6', icon: '🧘' },
+  { key: 'vitamine_c', label: 'Vitamine C', color: '#fb923c', icon: '🍊' },
+  { key: 'cocaine', label: 'Cocaïne', color: '#e2e8f0', icon: '⚠️' },
+  { key: 'mmc', label: 'MMC', color: '#22d3ee', icon: '⚠️' },
+  { key: 'heroine', label: 'Héroïne', color: '#78350f', icon: '🚨' },
 ] as const;
 
 type TabKey = (typeof TABS)[number]['key'];
@@ -46,6 +50,10 @@ const INTENTS: Record<string, string[]> = {
   valeriane: ['sleep', 'anxiety', 'relaxation', 'as-needed'],
   safran: ['daily', 'mood', 'anti-stress', 'cognitive'],
   yoga: ['morning', 'recovery', 'focus', 'sleep', 'stretching', 'strength'],
+  vitamine_c: ['daily', 'immunity', 'recovery', 'antioxidant', 'cold-prevention'],
+  cocaine: ['stimulation', 'social', 'work', 'craving'],
+  mmc: ['stimulation', 'social', 'craving'],
+  heroine: ['pain', 'craving', 'withdrawal'],
 };
 
 const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<string, unknown> }> = {
@@ -68,6 +76,10 @@ const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<s
   valeriane: { amount: 300, unit: 'mg', details: { form: 'capsule', type: 'root-extract' } },
   safran: { amount: 1000, unit: 'mg', details: { form: 'capsule', type: 'extract' } },
   yoga: { amount: 3, unit: 'min', details: { style: 'vinyasa', flow: false } },
+  vitamine_c: { amount: 120, unit: 'mg', details: { form: 'pilule à croquer' } },
+  cocaine: { amount: 50, unit: 'mg', details: { form: 'insufflation (ligne)' } },
+  mmc: { amount: 100, unit: 'mg', details: { form: 'insufflation' } },
+  heroine: { amount: 30, unit: 'mg', details: { form: 'insufflation' } },
 };
 
 const K_PRESETS = [
@@ -1293,6 +1305,176 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
               <div className="text-xs text-zinc-400 mb-1 font-medium">PiLeJe Omegabiane EPA/DHA</div>
               <div className="text-xs text-zinc-500">
                 Omega-3 haute concentration — neuroprotection, anti-inflammatoire, cardiovasculaire
+              </div>
+            </div>
+          </div>
+        )}
+
+        {tab === 'vitamine_c' && (
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Forme</label>
+              <div className="flex flex-wrap gap-1.5">
+                {['pilule à croquer', 'comprimé effervescent', 'gélule', 'poudre', 'injectable IV'].map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => setDetails((d) => ({ ...d, form: f }))}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      details.form === f
+                        ? 'border-orange-400/50 text-orange-400 bg-orange-400/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {f}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Quick dose</label>
+              <div className="flex flex-wrap gap-1.5">
+                {[120, 250, 500, 1000, 2000].map((mg) => (
+                  <button
+                    key={mg}
+                    onClick={() => setAmount(mg)}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      amount === mg
+                        ? 'border-orange-400/50 text-orange-400 bg-orange-400/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {mg >= 1000 ? `${mg / 1000}g` : `${mg}mg`}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-3">
+              <div className="text-xs text-zinc-400 mb-1 font-medium">Vitamine C (acide ascorbique)</div>
+              <div className="text-xs text-zinc-500">
+                Antioxydant, soutien immunitaire. Défaut: pilule à croquer 120mg. Max recommandé: 2000mg/jour.
+              </div>
+            </div>
+          </div>
+        )}
+
+        {tab === 'cocaine' && (
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Voie</label>
+              <div className="flex flex-wrap gap-1.5">
+                {['insufflation (ligne)', 'fumé (crack)', 'injectable', 'gencive'].map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => setDetails((d) => ({ ...d, form: f }))}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      details.form === f
+                        ? 'border-zinc-300/50 text-zinc-200 bg-zinc-400/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {f}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Quick dose</label>
+              <div className="flex flex-wrap gap-1.5">
+                {[20, 50, 100, 200, 500].map((mg) => (
+                  <button
+                    key={mg}
+                    onClick={() => setAmount(mg)}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      amount === mg
+                        ? 'border-zinc-300/50 text-zinc-200 bg-zinc-400/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {mg}mg
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {tab === 'mmc' && (
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Voie</label>
+              <div className="flex flex-wrap gap-1.5">
+                {['insufflation', 'oral', 'injectable'].map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => setDetails((d) => ({ ...d, form: f }))}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      details.form === f
+                        ? 'border-cyan-400/50 text-cyan-300 bg-cyan-400/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {f}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Quick dose</label>
+              <div className="flex flex-wrap gap-1.5">
+                {[50, 100, 200, 300, 500].map((mg) => (
+                  <button
+                    key={mg}
+                    onClick={() => setAmount(mg)}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      amount === mg
+                        ? 'border-cyan-400/50 text-cyan-300 bg-cyan-400/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {mg}mg
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {tab === 'heroine' && (
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Voie</label>
+              <div className="flex flex-wrap gap-1.5">
+                {['insufflation', 'fumé', 'injectable', 'sublingual'].map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => setDetails((d) => ({ ...d, form: f }))}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      details.form === f
+                        ? 'border-amber-900/50 text-amber-700 bg-amber-900/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {f}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Quick dose</label>
+              <div className="flex flex-wrap gap-1.5">
+                {[10, 30, 50, 100, 200].map((mg) => (
+                  <button
+                    key={mg}
+                    onClick={() => setAmount(mg)}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      amount === mg
+                        ? 'border-amber-900/50 text-amber-700 bg-amber-900/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {mg}mg
+                  </button>
+                ))}
               </div>
             </div>
           </div>
