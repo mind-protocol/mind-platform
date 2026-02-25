@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { SUBSTANCE_CONFIG, type SubstanceKey } from '@/lib/tracker/constants';
 
 interface InteractionEntry {
@@ -37,16 +37,23 @@ function getInteraction(
 }
 
 export default function InteractionMatrix({ userSubstances, interactions }: Props) {
+  const [selected, setSelected] = useState<InteractionEntry | null>(null);
+
   // Only show substances the user actually uses
   const subs = useMemo(() => {
     return userSubstances.filter((s) => s in SUBSTANCE_CONFIG);
   }, [userSubstances]);
 
+  // Count dangerous interactions
+  const dangerCount = useMemo(() => {
+    return interactions.filter((i) => i.severity === 'critical' || i.severity === 'high').length;
+  }, [interactions]);
+
   if (subs.length < 2) {
     return (
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 text-center">
         <p className="text-zinc-500 text-sm">
-          Matrice d'interactions disponible quand 2+ substances sont track{'\u{00E9}'}es.
+          Matrice d&apos;interactions disponible quand 2+ substances sont track{'\u{00E9}'}es.
         </p>
       </div>
     );
@@ -55,7 +62,15 @@ export default function InteractionMatrix({ userSubstances, interactions }: Prop
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 overflow-x-auto">
       <h2 className="text-sm font-semibold text-zinc-300 mb-3 flex items-center gap-2">
-        <span>{'\u{1F9EA}'}</span> Matrice d'interactions
+        <span>{'\u{1F9EA}'}</span> Matrice d&apos;interactions
+        {dangerCount > 0 && (
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/30">
+            {dangerCount} danger{dangerCount > 1 ? 's' : ''}
+          </span>
+        )}
+        <span className="text-[10px] text-zinc-600 font-normal ml-auto">
+          {interactions.length} interaction{interactions.length !== 1 ? 's' : ''} / {subs.length} substances
+        </span>
       </h2>
 
       {/* Legend */}
@@ -65,7 +80,7 @@ export default function InteractionMatrix({ userSubstances, interactions }: Prop
             {val.label}
           </span>
         ))}
-        <span className="px-2 py-0.5 rounded bg-zinc-800 text-zinc-500">Pas d'interaction connue</span>
+        <span className="px-2 py-0.5 rounded bg-zinc-800 text-zinc-500">Pas d&apos;interaction connue</span>
       </div>
 
       <div className="inline-block min-w-max">
@@ -116,12 +131,16 @@ export default function InteractionMatrix({ userSubstances, interactions }: Prop
 
                     const interaction = getInteraction(interactions, rowSub, colSub);
                     const sev = interaction ? SEVERITY_COLORS[interaction.severity] : null;
+                    const isSelected = selected && interaction &&
+                      ((selected.a === interaction.a && selected.b === interaction.b) ||
+                       (selected.a === interaction.b && selected.b === interaction.a));
 
                     return (
                       <td key={colSub} className="w-16 h-10 p-0.5">
                         {interaction ? (
                           <div
-                            className={`w-full h-full rounded ${sev!.bg} border ${sev!.border} flex items-center justify-center cursor-help transition hover:scale-110`}
+                            className={`w-full h-full rounded ${sev!.bg} border ${sev!.border} flex items-center justify-center cursor-pointer transition hover:scale-110 ${isSelected ? 'ring-2 ring-white/40 scale-110' : ''}`}
+                            onClick={() => setSelected(isSelected ? null : interaction)}
                             title={interaction.note}
                           >
                             <span className={`text-[9px] font-bold ${sev!.text}`}>
@@ -136,7 +155,7 @@ export default function InteractionMatrix({ userSubstances, interactions }: Prop
                           </div>
                         ) : (
                           <div className="w-full h-full rounded bg-zinc-800/20 flex items-center justify-center">
-                            <span className="text-zinc-700 text-[9px]">·</span>
+                            <span className="text-zinc-700 text-[9px]">{'\u{00B7}'}</span>
                           </div>
                         )}
                       </td>
@@ -149,10 +168,38 @@ export default function InteractionMatrix({ userSubstances, interactions }: Prop
         </table>
       </div>
 
-      {/* Click hint */}
-      <p className="text-[10px] text-zinc-600 mt-2">
-        Survolez une case pour voir le d{'\u{00E9}'}tail de l'interaction.
-      </p>
+      {/* Selected interaction detail */}
+      {selected && (() => {
+        const sev = SEVERITY_COLORS[selected.severity];
+        const cfgA = SUBSTANCE_CONFIG[selected.a as SubstanceKey];
+        const cfgB = SUBSTANCE_CONFIG[selected.b as SubstanceKey];
+        return (
+          <div className={`mt-3 p-3 rounded-lg border ${sev.border} ${sev.bg}`}>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="text-sm" style={{ color: cfgA?.color }}>{cfgA?.icon} {cfgA?.label || selected.a}</span>
+              <span className="text-zinc-500 text-xs">+</span>
+              <span className="text-sm" style={{ color: cfgB?.color }}>{cfgB?.icon} {cfgB?.label || selected.b}</span>
+              <span className={`text-[10px] px-2 py-0.5 rounded-full border ml-auto ${sev.border} ${sev.text}`}>
+                {sev.label}
+              </span>
+            </div>
+            <p className={`text-xs ${sev.text}`}>{selected.note}</p>
+            <button
+              onClick={() => setSelected(null)}
+              className="text-[10px] text-zinc-500 hover:text-zinc-300 mt-2 transition"
+            >
+              Fermer
+            </button>
+          </div>
+        );
+      })()}
+
+      {/* Hint */}
+      {!selected && (
+        <p className="text-[10px] text-zinc-600 mt-2">
+          Cliquez sur une case pour voir le d{'\u{00E9}'}tail de l&apos;interaction.
+        </p>
+      )}
     </div>
   );
 }
