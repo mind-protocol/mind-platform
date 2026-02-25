@@ -21,7 +21,7 @@ const TABS = [
   { key: 'griffonia', label: 'Griffonia', color: '#a855f7', icon: '🌰' },
   { key: 'valeriane', label: 'Valériane', color: '#65a30d', icon: '🌾' },
   { key: 'safran', label: 'Safran', color: '#f97316', icon: '🌸' },
-  { key: 'yoga', label: 'Yoga', color: '#f472b6', icon: '🧘' },
+  { key: 'yoga', label: 'Yoga', color: '#8b5cf6', icon: '🧘' },
 ] as const;
 
 type TabKey = (typeof TABS)[number]['key'];
