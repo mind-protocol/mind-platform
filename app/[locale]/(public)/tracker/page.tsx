@@ -162,7 +162,7 @@ export default function TrackerPage() {
               href="/tracker/profile"
               className="flex-none text-xs px-3 py-1.5 rounded-full border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition whitespace-nowrap"
             >
-              Fiche Santé
+              {t('navProfile')}
             </Link>
             <Link
               href="/tracker/settings"

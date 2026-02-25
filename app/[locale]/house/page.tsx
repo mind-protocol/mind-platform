@@ -334,7 +334,14 @@ export default function HousePage() {
             </span>
           )}
           {isOffline && (
-            <span className="text-[10px] font-mono text-zinc-600">offline</span>
+            <button
+              onClick={fetchState}
+              className="flex items-center gap-1.5 text-[10px] font-mono text-zinc-500 hover:text-zinc-300 transition"
+            >
+              <span className="text-zinc-600">offline</span>
+              <span className="text-zinc-700">&middot;</span>
+              <span className="underline">retry</span>
+            </button>
           )}
         </div>
       </header>
