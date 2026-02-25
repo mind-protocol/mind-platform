@@ -93,6 +93,7 @@ function OrbPosition({
     hydration: 0.06,
     melatonin: 0.04,   // Slow, dreamy
     venlafaxine: 0.02, // Very slow, steady
+    sertraline: 0.02,  // Very slow, steady — SSRI baseline
     prazepam: 0.035,   // Slow, calming
     cyamemazine: 0.03, // Very slow, heavy
     dynabiane: 0.02,   // Very slow — steady supplement
@@ -111,6 +112,7 @@ function OrbPosition({
     nicotine: 0,
     hydration: -0.5,
     venlafaxine: -1,
+    sertraline: -0.8,   // Slightly below neutral — SSRI baseline
     melatonin: -1.5,
     prazepam: -2,
     cyamemazine: -2.5,
@@ -495,6 +497,34 @@ function OrbShape({
             </mesh>
           </OrbSpin>
           {/* Steady-state glow */}
+          <mesh scale={scale * 1.3}>
+            <sphereGeometry args={[0.3, 10, 10]} />
+            <meshBasicMaterial color={cfg.color} transparent opacity={0.04 + intensity * 0.04} side={THREE.BackSide} />
+          </mesh>
+          <pointLight color={cfg.color} intensity={intensity * 3} distance={5} decay={2} />
+        </Float>
+      );
+
+    case 'sertraline':
+      // SSRI capsule — same form as venlafaxine with cyan teal color
+      return (
+        <Float speed={0.5} rotationIntensity={0.05} floatIntensity={0.15}>
+          <OrbSpin speed={0.1}>
+            <mesh scale={scale * 0.85} rotation={[Math.PI / 2, 0, 0]}>
+              <capsuleGeometry args={[0.2, 0.4, 8, 16]} />
+              <meshPhysicalMaterial
+                color={cfg.color}
+                emissive={cfg.color}
+                emissiveIntensity={0.3 + intensity * 0.5 + emissiveBoost}
+                metalness={0.3}
+                roughness={0.2}
+                clearcoat={1.0}
+                clearcoatRoughness={0.05}
+                transparent
+                opacity={0.6 + intensity * 0.35}
+              />
+            </mesh>
+          </OrbSpin>
           <mesh scale={scale * 1.3}>
             <sphereGeometry args={[0.3, 10, 10]} />
             <meshBasicMaterial color={cfg.color} transparent opacity={0.04 + intensity * 0.04} side={THREE.BackSide} />

@@ -14,6 +14,7 @@ const INTENTS: Record<SubstanceKey, string[]> = {
   hydration: ['baseline', 'recovery', 'pre-sleep'],
   melatonin: ['sleep', 'jet-lag', 'circadian-reset'],
   venlafaxine: ['daily', 'morning', 'evening'],
+  sertraline: ['daily', 'morning'],
   prazepam: ['anxiety', 'panic', 'sleep', 'as-needed'],
   cyamemazine: ['sleep', 'anxiety', 'as-needed'],
   dynabiane: ['daily', 'gut-brain', 'immunity', 'mood'],

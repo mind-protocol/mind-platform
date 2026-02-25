@@ -13,6 +13,7 @@ const TABS = [
   { key: 'hydration', label: 'H₂O', color: '#3b82f6', icon: '💧' },
   { key: 'melatonin', label: 'Melatonin', color: '#6366f1', icon: '🌙' },
   { key: 'venlafaxine', label: 'Venlafaxine', color: '#14b8a6', icon: '💊' },
+  { key: 'sertraline', label: 'Sertraline', color: '#06b6d4', icon: '💊' },
   { key: 'prazepam', label: 'Prazepam', color: '#94a3b8', icon: '🫧' },
   { key: 'cyamemazine', label: 'Cyamemazine', color: '#7e22ce', icon: '🌌' },
   { key: 'dynabiane', label: 'Dynabiane', color: '#10b981', icon: '🧬' },
@@ -33,6 +34,7 @@ const INTENTS: Record<string, string[]> = {
   hydration: ['baseline', 'recovery', 'pre-sleep'],
   melatonin: ['sleep', 'jet-lag', 'circadian-reset'],
   venlafaxine: ['daily', 'morning', 'evening'],
+  sertraline: ['daily', 'morning'],
   prazepam: ['anxiety', 'panic', 'sleep', 'as-needed'],
   cyamemazine: ['sleep', 'anxiety', 'as-needed'],
   dynabiane: ['daily', 'gut-brain', 'immunity', 'mood'],
@@ -51,6 +53,7 @@ const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<s
   hydration: { amount: 500, unit: 'ml', details: { additives: [] } },
   melatonin: { amount: 3, unit: 'mg', details: { form: 'tablet' } },
   venlafaxine: { amount: 75, unit: 'mg', details: { form: 'capsule', release: 'extended' } },
+  sertraline: { amount: 200, unit: 'mg', details: { form: 'tablet' } },
   prazepam: { amount: 10, unit: 'mg', details: { form: 'sublingual', route: 'sublingual' } },
   cyamemazine: { amount: 25, unit: 'mg', details: { form: 'tablet' } },
   dynabiane: { amount: 1, unit: 'gélule', details: { form: 'capsule', brand: 'PiLeJe', type: 'probiotic' } },
@@ -927,6 +930,27 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                   }`}
                 >
                   {r === 'extended' ? 'LP (Extended)' : 'Immediate'}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {tab === 'sertraline' && (
+          <div>
+            <label className="text-xs text-zinc-500 block mb-1">Quick dose</label>
+            <div className="flex flex-wrap gap-1.5">
+              {[50, 100, 150, 200].map((mg) => (
+                <button
+                  key={mg}
+                  onClick={() => setAmount(mg)}
+                  className={`px-2 py-1 rounded text-xs border transition ${
+                    amount === mg
+                      ? 'border-cyan-500/50 text-cyan-400 bg-cyan-500/15'
+                      : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                  }`}
+                >
+                  {mg}mg
                 </button>
               ))}
             </div>

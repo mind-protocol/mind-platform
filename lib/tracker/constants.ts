@@ -1,4 +1,4 @@
-export type SubstanceKey = 'thc' | 'cbd' | 'lions_mane' | 'caffeine' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'prazepam' | 'cyamemazine' | 'dynabiane' | 'omegabiane' | 'yoga';
+export type SubstanceKey = 'thc' | 'cbd' | 'lions_mane' | 'caffeine' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'sertraline' | 'prazepam' | 'cyamemazine' | 'dynabiane' | 'omegabiane' | 'yoga';
 
 export interface SubstanceConfig {
   color: string;
@@ -20,6 +20,7 @@ export const SUBSTANCE_CONFIG: Record<SubstanceKey, SubstanceConfig> = {
   hydration:   { color: '#3b82f6', icon: '\u{1F4A7}', label: 'H2O',         unit: 'ml',       geometry: 'sphere',       laneY: 10 },
   melatonin:   { color: '#6366f1', icon: '\u{1F319}', label: 'Melatonin',   unit: 'mg',       geometry: 'crescent',     laneY: 12.5 },
   venlafaxine: { color: '#14b8a6', icon: '\u{1F48A}', label: 'Venlafaxine', unit: 'mg',       geometry: 'capsule',      laneY: 15 },
+  sertraline:  { color: '#06b6d4', icon: '\u{1F48A}', label: 'Sertraline',  unit: 'mg',       geometry: 'capsule',      laneY: 16.25 },
   prazepam:    { color: '#94a3b8', icon: '\u{1FAE7}', label: 'Prazepam',    unit: 'mg',       geometry: 'disc',         laneY: 17.5 },
   cyamemazine: { color: '#7e22ce', icon: '\u{1F30C}', label: 'Cyamemazine', unit: 'mg',       geometry: 'tetrahedron',  laneY: 20 },
   dynabiane:   { color: '#10b981', icon: '\u{1F9EC}', label: 'Dynabiane',   unit: 'gélule',   geometry: 'pill',         laneY: 22.5 },
@@ -41,6 +42,7 @@ export const DOSE_RANGES: Record<SubstanceKey, { min: number; max: number }> = {
   hydration:   { min: 200, max: 1500 },
   melatonin:   { min: 0.5, max: 10 },
   venlafaxine: { min: 37.5, max: 225 },
+  sertraline:  { min: 50, max: 200 },
   prazepam:    { min: 5, max: 20 },
   cyamemazine: { min: 12.5, max: 100 },
   dynabiane:   { min: 1, max: 2 },       // 1-2 gélules/jour

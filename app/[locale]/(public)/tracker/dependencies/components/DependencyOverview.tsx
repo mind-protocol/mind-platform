@@ -13,6 +13,7 @@ const SUBSTANCE_META: Record<string, { icon: string; label: string; color: strin
   hydration:   { icon: '💧', label: 'H2O',         color: '#3b82f6' },
   melatonin:   { icon: '🌙', label: 'Mélatonine',  color: '#6366f1' },
   venlafaxine: { icon: '💊', label: 'Venlafaxine', color: '#14b8a6' },
+  sertraline:  { icon: '💊', label: 'Sertraline',  color: '#06b6d4' },
   prazepam:    { icon: '🫧', label: 'Prazépam',    color: '#94a3b8' },
   cyamemazine: { icon: '🌌', label: 'Cyamémazine', color: '#7e22ce' },
   dynabiane:   { icon: '🧬', label: 'Dynabiane',   color: '#10b981' },

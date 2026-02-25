@@ -25,6 +25,7 @@ const SUBSTANCES = [
   { key: 'hydration', label: 'H₂O', color: '#3b82f6', icon: '💧' },
   { key: 'melatonin', label: 'Mel', color: '#6366f1', icon: '🌙' },
   { key: 'venlafaxine', label: 'Ven', color: '#14b8a6', icon: '💊' },
+  { key: 'sertraline', label: 'Sert', color: '#06b6d4', icon: '💊' },
   { key: 'prazepam', label: 'Praz', color: '#94a3b8', icon: '🫧' },
   { key: 'cyamemazine', label: 'Cya', color: '#7e22ce', icon: '🌌' },
   { key: 'dynabiane', label: 'Dyna', color: '#10b981', icon: '🧬' },

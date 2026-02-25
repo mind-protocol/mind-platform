@@ -28,6 +28,7 @@ const SUB_CONFIG: Record<string, { color: string; icon: string; label: string }>
   hydration: { color: '#3b82f6', icon: '💧', label: 'H₂O' },
   melatonin: { color: '#6366f1', icon: '🌙', label: 'Mel' },
   venlafaxine: { color: '#14b8a6', icon: '💊', label: 'Ven' },
+  sertraline: { color: '#06b6d4', icon: '💊', label: 'Sert' },
   prazepam: { color: '#94a3b8', icon: '🫧', label: 'Praz' },
   cyamemazine: { color: '#7e22ce', icon: '🌌', label: 'Cya' },
   dynabiane: { color: '#10b981', icon: '🧬', label: 'Dyna' },
@@ -80,6 +81,7 @@ function doseLabel(entry: LogEntry): string {
   }
   if (substance === 'melatonin') return `${amt}mg ${dose.details?.form || 'tablet'}`;
   if (substance === 'venlafaxine') return `${amt}mg ${dose.details?.release === 'extended' ? 'LP' : ''}`.trim();
+  if (substance === 'sertraline') return `${amt}mg`;
   if (substance === 'prazepam') return `${amt}mg ${dose.details?.route || 'sublingual'}`;
   if (substance === 'cyamemazine') return `${amt}mg`;
   if (substance === 'cbd') {

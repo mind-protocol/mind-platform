@@ -12,8 +12,8 @@ const SAFETY_BADGES: Record<string, { label: string; color: string }> = {
 const SUBSTANCE_LABELS: Record<string, string> = {
   thc: 'THC', cbd: 'CBD', lions_mane: "Lion's Mane", caffeine: 'Caféine',
   ketamine: 'Kétamine', lsd: 'LSD', nicotine: 'Nicotine', hydration: 'H2O',
-  melatonin: 'Mélatonine', venlafaxine: 'Venlafaxine', prazepam: 'Prazépam',
-  cyamemazine: 'Cyamémazine',
+  melatonin: 'Mélatonine', venlafaxine: 'Venlafaxine', sertraline: 'Sertraline',
+  prazepam: 'Prazépam', cyamemazine: 'Cyamémazine',
   dynabiane: 'Dynabiane',
   omegabiane: 'Omegabiane',
 };

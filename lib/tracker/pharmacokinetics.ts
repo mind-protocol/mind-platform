@@ -110,6 +110,15 @@ export const PK_PROFILES: Record<SubstanceKey, PKProfile> = {
     decayShape: 'linear',
     steadyState: true,      // Always baseline-active once taken
   },
+  sertraline: {
+    onsetMin: 0,
+    peakMin: 0,
+    plateauEndMin: 0,
+    durationMin: 1440,      // 24 hours — steady state (t½ ~26h)
+    peakIntensity: 0.4,     // SSRI — subtle baseline modulation
+    decayShape: 'linear',
+    steadyState: true,      // Requires 2-4 weeks for full therapeutic effect
+  },
   prazepam: {
     onsetMin: 10,           // Sublingual: faster
     peakMin: 60,
@@ -267,7 +276,7 @@ export function computeAwareness(
   biometrics?: { stress?: number | null; body_battery?: number | null; hr?: number | null },
 ): AwarenessState {
   const substances: Record<string, number> = {};
-  const keys: SubstanceKey[] = ['thc', 'cbd', 'lions_mane', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'hydration', 'melatonin', 'venlafaxine', 'prazepam', 'cyamemazine', 'dynabiane', 'omegabiane'];
+  const keys: SubstanceKey[] = ['thc', 'cbd', 'lions_mane', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'hydration', 'melatonin', 'venlafaxine', 'sertraline', 'prazepam', 'cyamemazine', 'dynabiane', 'omegabiane'];
 
   for (const key of keys) {
     // Sum intensities from all recent doses of this substance
@@ -290,11 +299,11 @@ export function computeAwareness(
   const psychedelicLoad = Math.min(1, sub.lsd * 1.0 + sub.ketamine * 0.8 + sub.thc * 0.4);
   const stimulantLoad = Math.min(1, sub.nicotine + sub.caffeine * 0.7 + sub.cbd * 0.1); // Rhodiola mild stimulant
   const sedativeLoad = Math.min(1, sub.melatonin + sub.prazepam * 0.8 + sub.cyamemazine * 0.7 + sub.cbd * 0.35); // CBD + ashwagandha anxiolytic
-  const antidepressantBaseline = sub.venlafaxine;
+  const antidepressantBaseline = Math.min(1, sub.venlafaxine + sub.sertraline);
   // Adaptogenic: ashwagandha (280mg) + rhodiola (30mg) via CBD complex + lion's mane + dynabiane gut-brain
   const adaptogenicLoad = Math.min(1, sub.cbd * 0.8 + sub.lions_mane * 0.15 + sub.dynabiane * 0.1);
-  // Serotonin support: griffonia 5-HTP (50.5mg) + B6 (1.4mg) via CBD complex + venlafaxine + dynabiane gut-serotonin
-  const serotonergicSupport = Math.min(1, sub.cbd * 0.6 + sub.venlafaxine * 0.3 + sub.dynabiane * 0.1);
+  // Serotonin support: griffonia 5-HTP (50.5mg) + B6 (1.4mg) via CBD complex + venlafaxine + sertraline (SSRI) + dynabiane gut-serotonin
+  const serotonergicSupport = Math.min(1, sub.cbd * 0.6 + sub.venlafaxine * 0.3 + sub.sertraline * 0.4 + sub.dynabiane * 0.1);
   // Neuroprotective: omega-3 EPA/DHA + lion's mane NGF
   const neuroprotectiveLoad = Math.min(1, sub.omegabiane * 0.7 + sub.lions_mane * 0.3);
   const hydrationLevel = sub.hydration;
@@ -311,6 +320,7 @@ export function computeAwareness(
     sub.nicotine * 0.05 +
     sub.caffeine * 0.03 +
     sub.lions_mane * 0.02 +
+    sub.sertraline * 0.02 +
     sub.dynabiane * 0.01 +
     sub.omegabiane * 0.01
   );
