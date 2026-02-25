@@ -70,6 +70,10 @@ const SUB_COLORS: Record<string, string> = {
   valeriane: '#65a30d',
   safran: '#f97316',
   yoga: '#f472b6',
+  vitamine_c: '#fb923c',
+  cocaine: '#e2e8f0',
+  mmc: '#22d3ee',
+  heroine: '#78350f',
   none: '#52525b',
 };
 
@@ -93,6 +97,10 @@ const SUB_ICONS: Record<string, string> = {
   valeriane: '🌾',
   safran: '🌸',
   yoga: '🧘',
+  vitamine_c: '🍊',
+  cocaine: '⚠️',
+  mmc: '⚠️',
+  heroine: '🚨',
   none: '✓',
 };
 

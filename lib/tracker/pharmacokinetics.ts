@@ -333,7 +333,7 @@ export function computeAwareness(
   biometrics?: { stress?: number | null; body_battery?: number | null; hr?: number | null },
 ): AwarenessState {
   const substances: Record<string, number> = {};
-  const keys: SubstanceKey[] = ['thc', 'cbd', 'lions_mane', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'hydration', 'melatonin', 'venlafaxine', 'sertraline', 'prazepam', 'cyamemazine', 'dynabiane', 'omegabiane', 'griffonia', 'valeriane', 'safran'];
+  const keys: SubstanceKey[] = ['thc', 'cbd', 'lions_mane', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'hydration', 'melatonin', 'venlafaxine', 'sertraline', 'prazepam', 'cyamemazine', 'dynabiane', 'omegabiane', 'griffonia', 'valeriane', 'safran', 'vitamine_c', 'cocaine', 'mmc', 'heroine'];
 
   for (const key of keys) {
     // Sum intensities from all recent doses of this substance
