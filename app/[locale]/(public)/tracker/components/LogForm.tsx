@@ -46,7 +46,7 @@ const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<s
   thc: { amount: 1, unit: 'chamber', details: { strain_thc: 22, temp_c: 230 } },
   cbd: { amount: 1, unit: 'comprimé', details: { route: 'complex', form: 'tablet' } },
   lions_mane: { amount: 420, unit: 'mg', details: { form: 'capsule', mg_per_capsule: 420 } },
-  caffeine: { amount: 150, unit: 'mg', details: { form: 'espresso', shots: 2, milk: true, sugar: 1 } },
+  caffeine: { amount: 150, unit: 'mg', details: { form: 'double', shots: 2, milk: true, sugar: 1, sugarType: 'blanc' } },
   ketamine: { amount: 30, unit: 'mg', details: { form: 'crystal', route: 'intranasal', estimate: 'visual' } },
   lsd: { amount: 0.5, unit: 'carton', details: { form: 'carton', ug_estimate: 100 } },
   nicotine: { amount: 5, unit: 'puffs', details: { strength_pct: 20, mode: 'POWER', wattage: 22, resistance: 1.2, voltage_v: null, puff_duration_s: null } },
@@ -584,28 +584,45 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
 
         {tab === 'caffeine' && (
           <div className="space-y-3">
-            {/* Espresso presets */}
+            {/* Coffee variants */}
             <div>
-              <label className="text-xs text-zinc-500 block mb-1">Quick dose</label>
+              <label className="text-xs text-zinc-500 block mb-1">Variante</label>
               <div className="flex flex-wrap gap-1.5">
-                {[
-                  { shots: 1, mg: 75, label: 'Simple', desc: 'espresso' },
-                  { shots: 2, mg: 150, label: 'Double', desc: 'espresso' },
-                  { shots: 3, mg: 225, label: 'Triple', desc: 'espresso' },
-                ].map((p) => (
+                {([
+                  { key: 'espresso', label: 'Espresso', icon: '☕', mg: 75, shots: 1 },
+                  { key: 'double', label: 'Double', icon: '☕', mg: 150, shots: 2 },
+                  { key: 'triple', label: 'Triple', icon: '☕', mg: 225, shots: 3 },
+                  { key: 'americano', label: 'Americano', icon: '🇺🇸', mg: 120 },
+                  { key: 'cappuccino', label: 'Cappuccino', icon: '☁️', mg: 150 },
+                  { key: 'latte', label: 'Latte', icon: '🥛', mg: 150 },
+                  { key: 'moccachino', label: 'Moccachino', icon: '🍫', mg: 150 },
+                  { key: 'caramel', label: 'Caramel Latte', icon: '🍮', mg: 150 },
+                  { key: 'flat-white', label: 'Flat White', icon: '🤍', mg: 130 },
+                  { key: 'cortado', label: 'Cortado', icon: '🫗', mg: 75 },
+                  { key: 'noisette', label: 'Noisette', icon: '🌰', mg: 75 },
+                  { key: 'italian', label: 'Italien', icon: '🇮🇹', mg: 100 },
+                  { key: 'nitro', label: 'Nitro', icon: '🧊', mg: 215 },
+                  { key: 'turkish', label: 'Turc', icon: '🫖', mg: 200 },
+                  { key: 'vietnamese', label: 'Vietnamien', icon: '🇻🇳', mg: 200 },
+                  { key: 'bonbon', label: 'Bonbon', icon: '🍬', mg: 160 },
+                  { key: 'irish', label: 'Irish', icon: '🍀', mg: 80 },
+                  { key: 'macchiato', label: 'Macchiato', icon: '🔘', mg: 75 },
+                  { key: 'ristretto', label: 'Ristretto', icon: '⚡', mg: 65 },
+                  { key: 'lungo', label: 'Lungo', icon: '💧', mg: 90 },
+                ] as const).map((v) => (
                   <button
-                    key={p.shots}
+                    key={v.key}
                     onClick={() => {
-                      setAmount(p.mg);
-                      setDetails({ ...details, form: 'espresso', shots: p.shots });
+                      setAmount(v.mg);
+                      setDetails({ ...details, form: v.key, ...('shots' in v ? { shots: v.shots } : {}) });
                     }}
                     className={`px-2 py-1 rounded text-xs border transition ${
-                      amount === p.mg && details.form === 'espresso'
+                      details.form === v.key
                         ? 'border-amber-500/50 text-amber-300 bg-amber-500/15'
                         : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
                     }`}
                   >
-                    {p.label} <span className="text-zinc-600">· {p.mg}mg</span>
+                    {v.icon} {v.label} <span className="text-zinc-600">· {v.mg}</span>
                   </button>
                 ))}
               </div>
@@ -633,23 +650,76 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
               </div>
               <div>
                 <label className="text-xs text-zinc-500 block mb-1">Sucre</label>
-                <div className="flex gap-1.5">
-                  {[0, 1, 2].map((s) => (
+                <div className="flex items-center gap-1">
+                  {/* Minus button */}
+                  <button
+                    onClick={() => setDetails({ ...details, sugar: Math.max(0, ((details.sugar as number) || 0) - 1) })}
+                    className="w-7 h-7 rounded border border-zinc-700 text-zinc-500 hover:text-zinc-300 hover:border-zinc-600 flex items-center justify-center text-sm transition"
+                  >
+                    −
+                  </button>
+                  {/* Quick buttons */}
+                  {[0, 1, 2, 3, 4].map((s) => (
                     <button
                       key={s}
                       onClick={() => setDetails({ ...details, sugar: s })}
-                      className={`px-2 py-1.5 rounded text-sm border transition ${
+                      className={`px-1.5 py-1 rounded text-xs border transition min-w-[28px] ${
                         (details.sugar as number) === s
                           ? 'border-amber-500/50 text-amber-400 bg-amber-500/10'
                           : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
                       }`}
                     >
-                      {s === 0 ? 'Sans' : `${s}`}
+                      {s === 0 ? '∅' : s}
+                    </button>
+                  ))}
+                  {/* Plus button */}
+                  <button
+                    onClick={() => setDetails({ ...details, sugar: ((details.sugar as number) || 0) + 1 })}
+                    className="w-7 h-7 rounded border border-zinc-700 text-zinc-500 hover:text-zinc-300 hover:border-zinc-600 flex items-center justify-center text-sm transition"
+                  >
+                    +
+                  </button>
+                  {/* Show current count when > 4 */}
+                  {(details.sugar as number) > 4 && (
+                    <span className="text-xs text-amber-400 font-mono ml-1">{details.sugar as number}</span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Sugar type — only when sugar > 0 */}
+            {(details.sugar as number) > 0 && (
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">Type de sucre</label>
+                <div className="flex flex-wrap gap-1.5">
+                  {([
+                    { key: 'blanc', label: 'Blanc' },
+                    { key: 'brun', label: 'Brun' },
+                    { key: 'sucrette', label: 'Sucrette' },
+                    { key: 'coco', label: 'Fleur de coco' },
+                    { key: 'miel', label: 'Miel' },
+                    { key: 'agave', label: 'Agave' },
+                    { key: 'stevia', label: 'Stévia' },
+                    { key: 'sirop', label: 'Sirop' },
+                    { key: 'muscovado', label: 'Muscovado' },
+                    { key: 'demerara', label: 'Demerara' },
+                    { key: 'rapadura', label: 'Rapadura' },
+                  ] as const).map((st) => (
+                    <button
+                      key={st.key}
+                      onClick={() => setDetails({ ...details, sugarType: st.key })}
+                      className={`px-2 py-1 rounded text-[11px] border transition ${
+                        (details.sugarType || 'blanc') === st.key
+                          ? 'border-amber-500/40 text-amber-400 bg-amber-500/10'
+                          : 'border-zinc-800 text-zinc-600 hover:text-zinc-400 hover:border-zinc-700'
+                      }`}
+                    >
+                      {st.label}
                     </button>
                   ))}
                 </div>
               </div>
-            </div>
+            )}
           </div>
         )}
 
