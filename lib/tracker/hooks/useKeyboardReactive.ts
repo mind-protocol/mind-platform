@@ -61,7 +61,7 @@ export const AZERTY_ROWS: KeyDef[][] = [
     { code: 'Backslash', label: '*µ', w: 1 },
     // Enter spans from row above (visual only, no duplicate)
   ],
-  // Row 3: Bottom alpha
+  // Row 3: Bottom alpha (ISO layout — includes IntlBackslash + KeyM)
   [
     { code: 'ShiftLeft', label: '⇧', w: 1.25 },
     { code: 'IntlBackslash', label: '<>', w: 1 },
@@ -71,10 +71,11 @@ export const AZERTY_ROWS: KeyDef[][] = [
     { code: 'KeyV', label: 'V', w: 1 },
     { code: 'KeyB', label: 'B', w: 1 },
     { code: 'KeyN', label: 'N', w: 1 },
-    { code: 'Comma', label: ',?', w: 1 },
-    { code: 'Period', label: ';.', w: 1 },
-    { code: 'Slash', label: ':/', w: 1 },
-    { code: 'ShiftRight', label: '⇧', w: 2.75 },
+    { code: 'KeyM', label: ',?', w: 1 },
+    { code: 'Comma', label: ';.', w: 1 },
+    { code: 'Period', label: ':/', w: 1 },
+    { code: 'Slash', label: '!§', w: 1 },
+    { code: 'ShiftRight', label: '⇧', w: 1.75 },
   ],
   // Row 4: Bottom modifiers + space
   [

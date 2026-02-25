@@ -6,6 +6,11 @@ import {
   NAV_ROW_1, NAV_ROW_2, ARROW_ROW_1, ARROW_ROW_2,
   KEY_STATES, type KeyDef,
 } from '@/lib/tracker/hooks/useKeyboardReactive';
+import {
+  type AnimMode, ANIM_MODES,
+  KEYBOARD_LAYOUTS, LAYOUT_MAP, DEFAULT_LAYOUT,
+  detectLayout, loadLayout, saveLayout, loadAnimMode, saveAnimMode,
+} from '@/lib/tracker/keyboard-layouts';
 
 // ── Neighbor map for glow spill ──────────────────────────────────────────
 const ALL_ROWS = [...AZERTY_ROWS];
@@ -38,29 +43,34 @@ function buildNeighborMap(): Map<string, string[]> {
 }
 const NEIGHBOR_MAP = buildNeighborMap();
 
+// ── Key position map for RGB rainbow wave ────────────────────────────────
+const KEY_POSITIONS = new Map<string, { row: number; col: number }>();
+AZERTY_ROWS.forEach((row, ri) => {
+  let x = 0;
+  row.forEach((k) => { KEY_POSITIONS.set(k.code, { row: ri, col: x }); x += k.w; });
+});
+FUNCTION_ROW.forEach((k, i) => KEY_POSITIONS.set(k.code, { row: -1, col: i }));
+[NAV_ROW_1, NAV_ROW_2].forEach((r, ri) => r.forEach((k, ci) => KEY_POSITIONS.set(k.code, { row: ri, col: 16 + ci })));
+ARROW_ROW_1.forEach((k, ci) => KEY_POSITIONS.set(k.code, { row: 3, col: 17 + ci }));
+ARROW_ROW_2.forEach((k, ci) => KEY_POSITIONS.set(k.code, { row: 4, col: 16 + ci }));
+NUMPAD_ROWS.forEach((r, ri) => r.forEach((k, ci) => KEY_POSITIONS.set(k.code, { row: ri, col: 20 + ci })));
+
 // ── Sizing ──────────────────────────────────────────────────────────────
-const U = 42;          // base key unit (px)
-const GAP = 3;         // gap between keys
-const H = 38;          // key height
-const FN_H = 28;       // function row key height (smaller)
-const SECTION_GAP = 12; // gap between keyboard sections
+const U = 42;
+const GAP = 3;
+const H = 38;
+const FN_H = 28;
+const SECTION_GAP = 12;
 
 // ── Styles (transparent) ─────────────────────────────────────────────────
 const IDLE_BG = 'linear-gradient(180deg, rgba(50,55,68,0.36) 0%, rgba(35,40,52,0.40) 52%, rgba(22,26,36,0.44) 100%)';
-const IDLE_BORDER = 'rgba(120,130,155,0.12)';
 const IDLE_SHADOW = 'inset 0 1px 0 rgba(255,255,255,.05), inset 0 -1px 0 rgba(0,0,0,.16), 0 1px 2px rgba(0,0,0,.18)';
-const IDLE_LABEL = 'rgba(200,210,230,.55)';
 
 // ── Color palettes ──────────────────────────────────────────────────────
 type Palette = {
-  key: string;
-  name: string;
-  swatch: string;
-  tintColor: string; // r,g,b for idle border/label tinting
-  bg: (g: number) => string;
-  border: (g: number) => string;
-  shadow: (g: number) => string;
-  label: (g: number) => string;
+  key: string; name: string; swatch: string; tintColor: string;
+  bg: (g: number) => string; border: (g: number) => string;
+  shadow: (g: number) => string; label: (g: number) => string;
 };
 
 const PALETTES: Palette[] = [
@@ -152,14 +162,9 @@ const FN_F1_F4 = FUNCTION_ROW.slice(1, 5);
 const FN_F5_F8 = FUNCTION_ROW.slice(5, 9);
 const FN_F9_F12 = FUNCTION_ROW.slice(9, 13);
 
-// ── Render a row of keys (memoized to avoid re-render on control interactions) ──
+// ── Memoized key row ────────────────────────────────────────────────────
 const KeyRow = memo(function KeyRow({
-  keys,
-  keyH,
-  keyEls,
-  labelEls,
-  offsetPx = 0,
-  locks,
+  keys, keyH, keyEls, labelEls, offsetPx = 0, locks, labelOverrides,
 }: {
   keys: KeyDef[];
   keyH: number;
@@ -167,12 +172,14 @@ const KeyRow = memo(function KeyRow({
   labelEls: React.RefObject<Map<string, HTMLSpanElement>>;
   offsetPx?: number;
   locks?: { caps: boolean; num: boolean; scroll: boolean };
+  labelOverrides?: Record<string, string> | null;
 }) {
   return (
     <div className="flex" style={{ gap: GAP, paddingLeft: offsetPx }}>
       {keys.map((k) => {
         const w = k.w * U + (k.w - 1) * GAP;
-        const showLabel = k.label.length <= 5;
+        const displayLabel = labelOverrides?.[k.code] ?? k.label;
+        const showLabel = displayLabel.length <= 5 && displayLabel.length > 0;
         const hasLed = k.code === 'CapsLock' || k.code === 'NumLock';
         const ledOn = k.code === 'CapsLock' ? locks?.caps : k.code === 'NumLock' ? locks?.num : false;
         return (
@@ -180,17 +187,11 @@ const KeyRow = memo(function KeyRow({
             key={k.code}
             ref={(el) => { if (el) keyEls.current!.set(k.code, el); }}
             style={{
-              width: w,
-              height: keyH,
+              width: w, height: keyH,
               background: IDLE_BG,
-              borderWidth: 1,
-              borderStyle: 'solid',
-              borderColor: IDLE_BORDER,
-              borderRadius: 5,
-              boxShadow: IDLE_SHADOW,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              borderWidth: 1, borderStyle: 'solid', borderColor: 'rgba(120,130,155,0.12)',
+              borderRadius: 5, boxShadow: IDLE_SHADOW,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
               position: 'relative',
               transition: 'background 60ms, border-color 60ms, box-shadow 80ms, transform 60ms',
             }}
@@ -199,31 +200,23 @@ const KeyRow = memo(function KeyRow({
               <span
                 ref={(el) => { if (el) labelEls.current!.set(k.code, el); }}
                 style={{
-                  fontSize: keyH > 30 ? (k.label.length === 1 ? 13 : k.label.length <= 2 ? 10 : 8) : (k.label.length === 1 ? 10 : 8),
-                  color: IDLE_LABEL,
+                  fontSize: keyH > 30 ? (displayLabel.length === 1 ? 13 : displayLabel.length <= 2 ? 10 : 8) : (displayLabel.length === 1 ? 10 : 8),
+                  color: 'rgba(200,210,230,.55)',
                   fontFamily: 'ui-monospace, SFMono-Regular, monospace',
-                  userSelect: 'none',
-                  lineHeight: 1,
+                  userSelect: 'none', lineHeight: 1,
                   transition: 'color 60ms',
                 }}
               >
-                {k.label}
+                {displayLabel}
               </span>
             )}
             {hasLed && (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 3,
-                  right: 4,
-                  width: 4,
-                  height: 4,
-                  borderRadius: '50%',
-                  backgroundColor: ledOn ? 'rgba(120,220,255,.95)' : 'rgba(90,95,110,.35)',
-                  boxShadow: ledOn ? '0 0 8px rgba(80,180,255,.65)' : 'none',
-                  transition: 'all 200ms',
-                }}
-              />
+              <div style={{
+                position: 'absolute', top: 3, right: 4, width: 4, height: 4, borderRadius: '50%',
+                backgroundColor: ledOn ? 'rgba(120,220,255,.95)' : 'rgba(90,95,110,.35)',
+                boxShadow: ledOn ? '0 0 8px rgba(80,180,255,.65)' : 'none',
+                transition: 'all 200ms',
+              }} />
             )}
           </div>
         );
@@ -242,6 +235,17 @@ const CTRL_KEY: React.CSSProperties = {
   fontSize: 10, color: 'rgba(200,210,230,0.55)',
   cursor: 'pointer',
 };
+const ctrlHover = (e: React.MouseEvent, enter: boolean) => {
+  (e.currentTarget as HTMLElement).style.color = enter ? 'rgba(255,255,255,0.85)' : 'rgba(200,210,230,0.55)';
+};
+
+// ── Popup style ─────────────────────────────────────────────────────────
+const POPUP_STYLE: React.CSSProperties = {
+  background: 'rgba(15,18,25,0.95)',
+  border: '1px solid rgba(120,130,155,0.3)',
+  backdropFilter: 'blur(12px)',
+  boxShadow: '0 8px 32px rgba(0,0,0,.5)',
+};
 
 // ── Main component ──────────────────────────────────────────────────────
 export default function FloatingKeyboardOverlay({ typing = false }: { typing?: boolean }) {
@@ -253,7 +257,7 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 
-  // ── Ref-based position/scale (no re-render on drag/resize) ──
+  // Ref-based position/scale (no re-render)
   const outerRef = useRef<HTMLDivElement>(null);
   const scaleWrapRef = useRef<HTMLDivElement>(null);
   const posRef = useRef<{ x: number; y: number } | null>(null);
@@ -261,20 +265,47 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
   const dragging = useRef(false);
   const dragStart = useRef({ mx: 0, my: 0, px: 0, py: 0 });
 
-  // Palette state (re-render only for popup UI, KeyRow is memo'd)
+  // Palette
   const [paletteKey, setPaletteKey] = useState(DEFAULT_PALETTE);
   const paletteRef = useRef<Palette>(PALETTES[0]);
   const [showPalettes, setShowPalettes] = useState(false);
 
-  // Load palette from localStorage on mount
+  // Animation mode
+  const [animKey, setAnimKey] = useState<AnimMode>('strong');
+  const animModeRef = useRef<AnimMode>('strong');
+  const [showAnimMenu, setShowAnimMenu] = useState(false);
+
+  // Layout
+  const [layoutKey, setLayoutKey] = useState(DEFAULT_LAYOUT);
+  const [showLayoutMenu, setShowLayoutMenu] = useState(false);
+
+  // Layout labels (memoized for KeyRow memo)
+  const layoutLabels = useMemo(() => LAYOUT_MAP.get(layoutKey)?.labels ?? null, [layoutKey]);
+
+  // Load prefs + auto-detect layout on mount
   useEffect(() => {
-    const key = loadPalette();
-    setPaletteKey(key);
-    paletteRef.current = PALETTE_MAP.get(key) || PALETTES[0];
-    // Apply tint to container border
+    // Palette
+    const pk = loadPalette();
+    setPaletteKey(pk);
+    paletteRef.current = PALETTE_MAP.get(pk) || PALETTES[0];
     if (containerRef.current) {
-      const tc = paletteRef.current.tintColor;
-      containerRef.current.style.borderColor = `rgba(${tc},0.15)`;
+      containerRef.current.style.borderColor = `rgba(${paletteRef.current.tintColor},0.15)`;
+    }
+    // Animation
+    const am = loadAnimMode();
+    setAnimKey(am);
+    animModeRef.current = am;
+    // Layout
+    const saved = loadLayout();
+    setLayoutKey(saved);
+    // Auto-detect if default
+    if (saved === DEFAULT_LAYOUT) {
+      detectLayout().then(detected => {
+        if (detected && detected !== saved) {
+          setLayoutKey(detected);
+          saveLayout(detected);
+        }
+      });
     }
   }, []);
 
@@ -284,18 +315,40 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
     paletteRef.current = pal;
     savePalette(key);
     setShowPalettes(false);
-    // Update container border tint
-    if (containerRef.current) {
-      containerRef.current.style.borderColor = `rgba(${pal.tintColor},0.15)`;
+    if (containerRef.current) containerRef.current.style.borderColor = `rgba(${pal.tintColor},0.15)`;
+  }, []);
+
+  const selectAnimMode = useCallback((mode: AnimMode) => {
+    setAnimKey(mode);
+    animModeRef.current = mode;
+    saveAnimMode(mode);
+    setShowAnimMenu(false);
+  }, []);
+
+  const selectLayout = useCallback((key: string) => {
+    setLayoutKey(key);
+    saveLayout(key);
+    setShowLayoutMenu(false);
+    // Update label DOM immediately via refs
+    const labels = LAYOUT_MAP.get(key)?.labels;
+    if (labels) {
+      for (const [code, span] of labelEls.current) {
+        if (labels[code] !== undefined) span.textContent = labels[code];
+      }
     }
   }, []);
 
-  // Max AZERTY row width for centering
+  const handleAutoDetect = useCallback(async () => {
+    const detected = await detectLayout();
+    if (detected) selectLayout(detected);
+  }, [selectLayout]);
+
+  // Max row width
   const maxRowUnits = useMemo(() =>
     Math.max(...AZERTY_ROWS.map(row => row.reduce((s, k) => s + k.w, 0))),
   []);
 
-  // Compute responsive scale on mount + resize (smaller default)
+  // Responsive scale
   const computeScale = useCallback(() => {
     if (!containerRef.current) return;
     const naturalW = containerRef.current.scrollWidth;
@@ -305,7 +358,6 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
     const s = Math.min(viewW / naturalW, viewH / naturalH, 0.85);
     const next = Math.max(0.35, s);
     setScale(next);
-    // Also apply to DOM if no user override
     if (userScaleRef.current == null && scaleWrapRef.current) {
       scaleWrapRef.current.style.transform = `perspective(1200px) rotateX(8deg) scale(${next})`;
     }
@@ -317,7 +369,7 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
     return () => { clearTimeout(t); window.removeEventListener('resize', computeScale); };
   }, [computeScale]);
 
-  // Direct keydown/keyup for immediate visual response + lock state
+  // Keydown/keyup for lock state
   useEffect(() => {
     const maybeUpdateLocks = (e: KeyboardEvent) => {
       const caps = e.getModifierState('CapsLock');
@@ -330,62 +382,79 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
         setLocks(next);
       }
     };
-    const onDown = (e: KeyboardEvent) => {
-      pressedRef.current.add(e.code);
-      maybeUpdateLocks(e);
-    };
-    const onUp = (e: KeyboardEvent) => {
-      pressedRef.current.delete(e.code);
-      maybeUpdateLocks(e);
-    };
+    const onDown = (e: KeyboardEvent) => { pressedRef.current.add(e.code); maybeUpdateLocks(e); };
+    const onUp = (e: KeyboardEvent) => { pressedRef.current.delete(e.code); maybeUpdateLocks(e); };
     window.addEventListener('keydown', onDown, { passive: true });
     window.addEventListener('keyup', onUp, { passive: true });
-    return () => {
-      window.removeEventListener('keydown', onDown);
-      window.removeEventListener('keyup', onUp);
-    };
+    return () => { window.removeEventListener('keydown', onDown); window.removeEventListener('keyup', onUp); };
   }, []);
 
-  // Animation loop — glow + theme tint on idle keys
+  // ── Animation loop ────────────────────────────────────────────────────
   useEffect(() => {
     let rafId: number;
     const loop = () => {
+      const mode = animModeRef.current;
       const pal = paletteRef.current;
       const tc = pal.tintColor;
       const bdrIdle = `rgba(${tc},0.12)`;
       const lblIdle = `rgba(${tc},0.55)`;
 
-      for (const [code, el] of keyEls.current) {
-        const stateGlow = KEY_STATES.get(code)?.glow ?? 0;
-        const pressed = pressedRef.current.has(code);
+      if (mode === 'rgb') {
+        // ── RGB rainbow wave ──
+        const t = performance.now() * 0.001;
+        for (const [code, el] of keyEls.current) {
+          const pos = KEY_POSITIONS.get(code);
+          const pressed = pressedRef.current.has(code);
+          const cx = pos ? pos.col + pos.row * 3 : 0;
+          const hue = (cx * 25 + t * 60) % 360;
+          const light = pressed ? 58 : 38;
+          const sat = pressed ? 85 : 65;
+          el.style.background = `linear-gradient(180deg, hsl(${hue},${sat}%,${light+8}%) 0%, hsl(${hue},${sat}%,${light}%) 55%, hsl(${hue},${sat}%,${light-12}%) 100%)`;
+          el.style.borderColor = `hsla(${hue},70%,55%,0.30)`;
+          el.style.boxShadow = `0 0 ${pressed ? 14 : 5}px hsla(${hue},70%,50%,0.25), inset 0 1px 0 rgba(255,255,255,.12)`;
+          el.style.transform = pressed ? 'translateY(1px) scale(0.995)' : 'translateY(0)';
+          const lbl = labelEls.current.get(code);
+          if (lbl) lbl.style.color = `hsla(${(hue + 30) % 360},25%,92%,0.85)`;
+        }
+      } else {
+        // ── Palette-based modes ──
+        for (const [code, el] of keyEls.current) {
+          const stateGlow = KEY_STATES.get(code)?.glow ?? 0;
+          const pressed = pressedRef.current.has(code);
 
-        let neighborGlow = 0;
-        const neighbors = NEIGHBOR_MAP.get(code);
-        if (neighbors) {
-          for (const nc of neighbors) {
-            const ns = KEY_STATES.get(nc);
-            if (ns && ns.glow > neighborGlow) neighborGlow = ns.glow;
+          let neighborGlow = 0;
+          const neighbors = NEIGHBOR_MAP.get(code);
+          if (neighbors) {
+            for (const nc of neighbors) {
+              const ns = KEY_STATES.get(nc);
+              if (ns && ns.glow > neighborGlow) neighborGlow = ns.glow;
+            }
           }
-        }
 
-        const glow = Math.min(1, Math.max(pressed ? 0.85 : 0, stateGlow) + neighborGlow * 0.015);
-        const active = glow > 0.08;
+          let glow = Math.min(1, Math.max(pressed ? 0.85 : 0, stateGlow) + neighborGlow * 0.015);
 
-        if (active) {
-          el.style.background = pal.bg(glow);
-          el.style.borderColor = pal.border(glow);
-          el.style.boxShadow = pal.shadow(glow);
-          el.style.transform = `translateY(${(glow * 1.5).toFixed(1)}px) scale(0.995)`;
-        } else {
-          el.style.background = IDLE_BG;
-          el.style.borderColor = bdrIdle;
-          el.style.boxShadow = IDLE_SHADOW;
-          el.style.transform = 'translateY(0)';
-        }
+          // Apply animation mode
+          if (mode === 'none') glow = 0;
+          else if (mode === 'light') glow *= 0.4;
+          else if (mode === 'full') glow = Math.max(0.25, glow);
+          // 'strong' = default, no change
 
-        const label = labelEls.current.get(code);
-        if (label) {
-          label.style.color = active ? pal.label(glow) : lblIdle;
+          const active = glow > 0.08;
+
+          if (active) {
+            el.style.background = pal.bg(glow);
+            el.style.borderColor = pal.border(glow);
+            el.style.boxShadow = pal.shadow(glow);
+            el.style.transform = `translateY(${(glow * 1.5).toFixed(1)}px) scale(0.995)`;
+          } else {
+            el.style.background = IDLE_BG;
+            el.style.borderColor = bdrIdle;
+            el.style.boxShadow = IDLE_SHADOW;
+            el.style.transform = 'translateY(0)';
+          }
+
+          const lbl = labelEls.current.get(code);
+          if (lbl) lbl.style.color = active ? pal.label(glow) : lblIdle;
         }
       }
       rafId = requestAnimationFrame(loop);
@@ -394,7 +463,7 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
     return () => cancelAnimationFrame(rafId);
   }, []);
 
-  // ── Position/scale helpers (direct DOM, no re-render) ──
+  // ── Position/scale helpers ────────────────────────────────────────────
   const applyPosition = useCallback(() => {
     if (!outerRef.current) return;
     const p = posRef.current;
@@ -417,10 +486,8 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
     scaleWrapRef.current.style.transform = `perspective(1200px) rotateX(8deg) scale(${s})`;
   }, [scale]);
 
-  // Drag handlers
   const onDragStart = useCallback((e: React.PointerEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault(); e.stopPropagation();
     dragging.current = true;
     const rect = outerRef.current!.getBoundingClientRect();
     dragStart.current = { mx: e.clientX, my: e.clientY, px: rect.left, py: rect.top };
@@ -430,9 +497,7 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
 
   const onDragMove = useCallback((e: React.PointerEvent) => {
     if (!dragging.current) return;
-    const dx = e.clientX - dragStart.current.mx;
-    const dy = e.clientY - dragStart.current.my;
-    posRef.current = { x: dragStart.current.px + dx, y: dragStart.current.py + dy };
+    posRef.current = { x: dragStart.current.px + (e.clientX - dragStart.current.mx), y: dragStart.current.py + (e.clientY - dragStart.current.my) };
     applyPosition();
   }, [applyPosition]);
 
@@ -442,40 +507,39 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
   }, []);
 
   const handleResize = useCallback((delta: number) => {
-    const cur = userScaleRef.current ?? scale;
-    userScaleRef.current = Math.max(0.25, Math.min(2.0, cur + delta));
+    userScaleRef.current = Math.max(0.25, Math.min(2.0, (userScaleRef.current ?? scale) + delta));
     applyScale();
   }, [scale, applyScale]);
 
   const handleReset = useCallback(() => {
-    posRef.current = null;
-    userScaleRef.current = null;
-    applyPosition();
-    applyScale();
+    posRef.current = null; userScaleRef.current = null;
+    applyPosition(); applyScale();
   }, [applyPosition, applyScale]);
 
   const effectiveScale = userScaleRef.current ?? scale;
+
+  // Close popups on outside click
+  useEffect(() => {
+    const onClick = () => { setShowPalettes(false); setShowAnimMenu(false); setShowLayoutMenu(false); };
+    // Delay to avoid closing on the same click that opened
+    const t = setTimeout(() => document.addEventListener('click', onClick), 0);
+    return () => { clearTimeout(t); document.removeEventListener('click', onClick); };
+  }, [showPalettes, showAnimMenu, showLayoutMenu]);
+
+  const currentLayout = LAYOUT_MAP.get(layoutKey);
+  const currentAnim = ANIM_MODES.find(m => m.key === animKey);
 
   return (
     <div
       ref={outerRef}
       className="fixed z-[52] select-none"
-      style={{
-        bottom: 12,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        opacity: typing ? 1.0 : 0.92,
-        transition: 'opacity 300ms',
-      }}
+      style={{ bottom: 12, left: '50%', transform: 'translateX(-50%)', opacity: typing ? 1.0 : 0.92, transition: 'opacity 300ms' }}
       aria-hidden="true"
     >
       <div
         ref={scaleWrapRef}
         className="pointer-events-none"
-        style={{
-          transform: `perspective(1200px) rotateX(8deg) scale(${effectiveScale})`,
-          transformOrigin: 'bottom center',
-        }}
+        style={{ transform: `perspective(1200px) rotateX(8deg) scale(${effectiveScale})`, transformOrigin: 'bottom center' }}
       >
         <div
           ref={containerRef}
@@ -486,81 +550,109 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
             boxShadow: '0 18px 60px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03)',
           }}
         >
-          {/* Controls + lock indicators — inside keyboard, self-contained */}
+          {/* ── Controls row ── */}
           <div className="flex items-center justify-between mb-1.5 pointer-events-auto">
-            <div className="flex gap-1">
-              <button
-                onClick={() => handleResize(-0.1)}
-                style={CTRL_KEY}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.85)'; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(200,210,230,0.55)'; }}
-                title="Shrink"
-              >−</button>
-              <button
-                onClick={() => handleResize(0.1)}
-                style={CTRL_KEY}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.85)'; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(200,210,230,0.55)'; }}
-                title="Grow"
-              >+</button>
+            <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
+              {/* Size */}
+              <button onClick={() => handleResize(-0.1)} style={CTRL_KEY} onMouseEnter={e => ctrlHover(e, true)} onMouseLeave={e => ctrlHover(e, false)} title="Shrink">−</button>
+              <button onClick={() => handleResize(0.1)} style={CTRL_KEY} onMouseEnter={e => ctrlHover(e, true)} onMouseLeave={e => ctrlHover(e, false)} title="Grow">+</button>
+              {/* Drag */}
               <div
-                onPointerDown={onDragStart}
-                onPointerMove={onDragMove}
-                onPointerUp={onDragEnd}
+                onPointerDown={onDragStart} onPointerMove={onDragMove} onPointerUp={onDragEnd}
                 style={{ ...CTRL_KEY, cursor: 'grab', touchAction: 'none' }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.85)'; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(200,210,230,0.55)'; }}
-                title="Drag to move"
+                onMouseEnter={e => ctrlHover(e, true)} onMouseLeave={e => ctrlHover(e, false)} title="Drag to move"
               >⠿</div>
-              <button
-                onClick={handleReset}
-                style={CTRL_KEY}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.85)'; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(200,210,230,0.55)'; }}
-                title="Reset position & size"
-              >↺</button>
+              {/* Reset */}
+              <button onClick={handleReset} style={CTRL_KEY} onMouseEnter={e => ctrlHover(e, true)} onMouseLeave={e => ctrlHover(e, false)} title="Reset">↺</button>
+
               {/* Palette picker */}
               <div className="relative">
-                <button
-                  onClick={() => setShowPalettes(v => !v)}
-                  style={CTRL_KEY}
-                  title="Color palette"
-                >
-                  <span
-                    style={{
-                      display: 'inline-block', width: 8, height: 8, borderRadius: '50%',
-                      background: PALETTE_MAP.get(paletteKey)?.swatch || '#5588ff',
-                    }}
-                  />
+                <button onClick={() => { setShowPalettes(v => !v); setShowAnimMenu(false); setShowLayoutMenu(false); }} style={CTRL_KEY} title="Color palette">
+                  <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: PALETTE_MAP.get(paletteKey)?.swatch || '#5588ff' }} />
                 </button>
                 {showPalettes && (
-                  <div
-                    className="absolute bottom-full left-0 mb-1 rounded-lg p-2 pointer-events-auto"
-                    style={{
-                      background: 'rgba(15,18,25,0.95)',
-                      border: '1px solid rgba(120,130,155,0.3)',
-                      backdropFilter: 'blur(12px)',
-                      boxShadow: '0 8px 32px rgba(0,0,0,.5)',
-                    }}
-                  >
+                  <div className="absolute bottom-full left-0 mb-1 rounded-lg p-2 pointer-events-auto" style={POPUP_STYLE}>
                     <div className="grid grid-cols-5 gap-1.5" style={{ width: 130 }}>
-                      {PALETTES.map((p) => (
+                      {PALETTES.map(p => (
                         <button
-                          key={p.key}
-                          onClick={() => selectPalette(p.key)}
-                          title={p.name}
+                          key={p.key} onClick={() => selectPalette(p.key)} title={p.name}
                           style={{
-                            width: 22, height: 22, borderRadius: 6,
-                            background: p.swatch,
-                            border: paletteKey === p.key
-                              ? '2px solid rgba(255,255,255,0.9)'
-                              : '1px solid rgba(255,255,255,0.15)',
-                            cursor: 'pointer',
-                            transition: 'transform 100ms, border-color 100ms',
+                            width: 22, height: 22, borderRadius: 6, background: p.swatch,
+                            border: paletteKey === p.key ? '2px solid rgba(255,255,255,0.9)' : '1px solid rgba(255,255,255,0.15)',
+                            cursor: 'pointer', transition: 'transform 100ms',
                           }}
-                          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1.2)'; }}
-                          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
+                          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1.2)'; }}
+                          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
                         />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Animation mode */}
+              <div className="relative">
+                <button
+                  onClick={() => { setShowAnimMenu(v => !v); setShowPalettes(false); setShowLayoutMenu(false); }}
+                  style={CTRL_KEY} title={`Animation: ${currentAnim?.label}`}
+                  onMouseEnter={e => ctrlHover(e, true)} onMouseLeave={e => ctrlHover(e, false)}
+                >{currentAnim?.icon || '●'}</button>
+                {showAnimMenu && (
+                  <div className="absolute bottom-full left-0 mb-1 rounded-lg p-1.5 pointer-events-auto" style={POPUP_STYLE}>
+                    <div className="flex flex-col gap-0.5" style={{ width: 100 }}>
+                      {ANIM_MODES.map(m => (
+                        <button
+                          key={m.key}
+                          onClick={() => selectAnimMode(m.key)}
+                          className="flex items-center gap-2 px-2 py-1 rounded text-left"
+                          style={{
+                            fontSize: 10, cursor: 'pointer',
+                            color: animKey === m.key ? 'rgba(255,255,255,0.95)' : 'rgba(200,210,230,0.6)',
+                            background: animKey === m.key ? 'rgba(100,130,255,0.2)' : 'transparent',
+                          }}
+                        >
+                          <span>{m.icon}</span>
+                          <span>{m.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Layout selector */}
+              <div className="relative">
+                <button
+                  onClick={() => { setShowLayoutMenu(v => !v); setShowPalettes(false); setShowAnimMenu(false); }}
+                  style={{ ...CTRL_KEY, width: 28 }} title={`Layout: ${currentLayout?.name}`}
+                  onMouseEnter={e => ctrlHover(e, true)} onMouseLeave={e => ctrlHover(e, false)}
+                >
+                  <span style={{ fontSize: 12, lineHeight: 1 }}>{currentLayout?.flag || '🇫🇷'}</span>
+                </button>
+                {showLayoutMenu && (
+                  <div className="absolute bottom-full left-0 mb-1 rounded-lg p-1.5 pointer-events-auto" style={POPUP_STYLE}>
+                    <div className="flex flex-col gap-0.5" style={{ width: 130 }}>
+                      <button
+                        onClick={handleAutoDetect}
+                        className="flex items-center gap-2 px-2 py-1 rounded text-left"
+                        style={{ fontSize: 10, color: 'rgba(160,200,255,0.8)', cursor: 'pointer', background: 'transparent' }}
+                      >
+                        <span>🔍</span><span>Auto-detect</span>
+                      </button>
+                      {KEYBOARD_LAYOUTS.map(l => (
+                        <button
+                          key={l.key}
+                          onClick={() => selectLayout(l.key)}
+                          className="flex items-center gap-2 px-2 py-1 rounded text-left"
+                          style={{
+                            fontSize: 10, cursor: 'pointer',
+                            color: layoutKey === l.key ? 'rgba(255,255,255,0.95)' : 'rgba(200,210,230,0.6)',
+                            background: layoutKey === l.key ? 'rgba(100,130,255,0.2)' : 'transparent',
+                          }}
+                        >
+                          <span style={{ fontSize: 12 }}>{l.flag}</span>
+                          <span>{l.name}</span>
+                        </button>
                       ))}
                     </div>
                   </div>
@@ -568,7 +660,7 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
               </div>
             </div>
 
-            {/* Lock indicator LEDs */}
+            {/* Lock LEDs */}
             <div className="flex gap-3 mr-1">
               {([
                 { on: locks.caps, label: 'CAPS' },
@@ -576,17 +668,11 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
                 { on: locks.scroll, label: 'SCRL' },
               ] as const).map(({ on, label }) => (
                 <div key={label} className="flex items-center gap-1.5" style={{ fontSize: 9 }}>
-                  <span
-                    style={{
-                      display: 'inline-block',
-                      width: 5,
-                      height: 5,
-                      borderRadius: '50%',
-                      backgroundColor: on ? 'rgba(120,220,255,.95)' : 'rgba(90,95,110,.35)',
-                      boxShadow: on ? '0 0 8px rgba(80,180,255,.65)' : 'none',
-                      transition: 'all 200ms',
-                    }}
-                  />
+                  <span style={{
+                    display: 'inline-block', width: 5, height: 5, borderRadius: '50%',
+                    backgroundColor: on ? 'rgba(120,220,255,.95)' : 'rgba(90,95,110,.35)',
+                    boxShadow: on ? '0 0 8px rgba(80,180,255,.65)' : 'none', transition: 'all 200ms',
+                  }} />
                   <span style={{ color: on ? 'rgba(190,220,255,.9)' : 'rgba(120,130,150,.5)', fontFamily: 'ui-monospace, monospace', transition: 'color 200ms' }}>
                     {label}
                   </span>
@@ -595,10 +681,10 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
             </div>
           </div>
 
+          {/* ── Keyboard sections ── */}
           <div className="flex" style={{ gap: SECTION_GAP }}>
-            {/* ── Main keyboard section ── */}
+            {/* Main section */}
             <div className="flex flex-col" style={{ gap: GAP }}>
-              {/* Function row */}
               <div className="flex" style={{ gap: GAP, marginBottom: 6 }}>
                 <KeyRow keys={FN_ESC} keyH={FN_H} keyEls={keyEls} labelEls={labelEls} />
                 <div style={{ width: U * 0.5 }} />
@@ -608,26 +694,20 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
                 <div style={{ width: U * 0.3 }} />
                 <KeyRow keys={FN_F9_F12} keyH={FN_H} keyEls={keyEls} labelEls={labelEls} />
               </div>
-
-              {/* AZERTY rows */}
               {AZERTY_ROWS.map((row, rowIdx) => {
                 const rowUnits = row.reduce((s, k) => s + k.w, 0);
                 const offsetPx = ((maxRowUnits - rowUnits) / 2) * U;
                 return (
                   <KeyRow
-                    key={rowIdx}
-                    keys={row}
-                    keyH={H}
-                    keyEls={keyEls}
-                    labelEls={labelEls}
-                    offsetPx={offsetPx}
-                    locks={locks}
+                    key={rowIdx} keys={row} keyH={H}
+                    keyEls={keyEls} labelEls={labelEls}
+                    offsetPx={offsetPx} locks={locks}
+                    labelOverrides={layoutLabels}
                   />
                 );
               })}
             </div>
-
-            {/* ── Navigation cluster ── */}
+            {/* Navigation */}
             <div className="flex flex-col" style={{ gap: GAP, paddingTop: FN_H + 6 + GAP }}>
               <KeyRow keys={NAV_ROW_1} keyH={H} keyEls={keyEls} labelEls={labelEls} />
               <KeyRow keys={NAV_ROW_2} keyH={H} keyEls={keyEls} labelEls={labelEls} />
@@ -637,18 +717,10 @@ export default function FloatingKeyboardOverlay({ typing = false }: { typing?: b
               </div>
               <KeyRow keys={ARROW_ROW_2} keyH={H} keyEls={keyEls} labelEls={labelEls} />
             </div>
-
-            {/* ── Numpad ── */}
+            {/* Numpad */}
             <div className="flex flex-col" style={{ gap: GAP, paddingTop: FN_H + 6 + GAP }}>
               {NUMPAD_ROWS.map((row, rowIdx) => (
-                <KeyRow
-                  key={rowIdx}
-                  keys={row}
-                  keyH={H}
-                  keyEls={keyEls}
-                  labelEls={labelEls}
-                  locks={locks}
-                />
+                <KeyRow key={rowIdx} keys={row} keyH={H} keyEls={keyEls} labelEls={labelEls} locks={locks} />
               ))}
             </div>
           </div>
