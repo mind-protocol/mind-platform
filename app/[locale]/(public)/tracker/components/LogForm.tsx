@@ -3,13 +3,13 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 
 const TABS = [
+  { key: 'nicotine', label: 'Nicotine', color: '#f59e0b', icon: '💨' },
+  { key: 'caffeine', label: 'Caffeine', color: '#d97706', icon: '☕' },
   { key: 'thc', label: 'THC', color: '#22c55e', icon: '🌿' },
   { key: 'cbd', label: 'CBD Complex', color: '#84cc16', icon: '🌱' },
   { key: 'lions_mane', label: "Lion's Mane", color: '#b45309', icon: '🦁' },
-  { key: 'caffeine', label: 'Caffeine', color: '#d97706', icon: '☕' },
   { key: 'ketamine', label: 'Ketamine', color: '#8b5cf6', icon: '💎' },
   { key: 'lsd', label: 'LSD', color: '#ec4899', icon: '🔮' },
-  { key: 'nicotine', label: 'Nicotine', color: '#f59e0b', icon: '💨' },
   { key: 'hydration', label: 'H₂O', color: '#3b82f6', icon: '💧' },
   { key: 'melatonin', label: 'Melatonin', color: '#6366f1', icon: '🌙' },
   { key: 'venlafaxine', label: 'Venlafaxine', color: '#14b8a6', icon: '💊' },
