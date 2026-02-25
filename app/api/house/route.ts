@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
+import { manemusFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
-
-const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
 
 let cache: { data: unknown; timestamp: number } | null = null;
 const CACHE_TTL = 5_000; // 5s cache for near-real-time
@@ -13,12 +12,10 @@ export async function GET() {
   }
 
   try {
-    const res = await fetch(`${MANEMUS_URL}/house/state`, {
+    const { data } = await manemusFetchJson('/house/state', {
       cache: 'no-store',
-      headers: { 'ngrok-skip-browser-warning': '1' },
+      timeoutMs: 8_000,
     });
-    if (!res.ok) throw new Error(`${res.status}`);
-    const data = await res.json();
     cache = { data, timestamp: Date.now() };
     return NextResponse.json(data);
   } catch {
