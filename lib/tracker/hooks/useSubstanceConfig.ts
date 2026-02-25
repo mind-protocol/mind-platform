@@ -46,11 +46,27 @@ export function useSubstanceConfig() {
 
   const isEnabled = useCallback((key: SubstanceKey) => enabledSet.has(key), [enabledSet]);
 
+  const resetToDefaults = useCallback(() => {
+    const defaults = new Set(SUBSTANCE_KEYS.filter((k) => !SUBSTANCE_CONFIG[k].hidden));
+    setEnabledSet(defaults);
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch { /* ignore */ }
+  }, []);
+
   /** Only the visible substance keys (respecting user config) */
   const visibleKeys = SUBSTANCE_KEYS.filter((k) => enabledSet.has(k));
 
   /** All hidden substances (for the config panel) */
   const hiddenSubstances = SUBSTANCE_KEYS.filter((k) => SUBSTANCE_CONFIG[k].hidden);
 
-  return { enabledSet, visibleKeys, hiddenSubstances, toggle, isEnabled };
+  return {
+    enabledSet,
+    visibleKeys,
+    hiddenSubstances,
+    toggle,
+    toggleSubstance: toggle,
+    isEnabled,
+    resetToDefaults,
+  };
 }

@@ -127,6 +127,12 @@ export default function TrackerPage() {
             >
               Dépendances
             </Link>
+            <Link
+              href="/tracker/settings"
+              className="text-sm px-3 py-1.5 rounded border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition"
+            >
+              Settings
+            </Link>
             {session ? (
               <div className="flex items-center gap-1.5">
                 <span className="text-xs text-zinc-500 font-mono">{session.name}</span>
