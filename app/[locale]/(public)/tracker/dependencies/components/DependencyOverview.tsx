@@ -18,6 +18,9 @@ const SUBSTANCE_META: Record<string, { icon: string; label: string; color: strin
   cyamemazine: { icon: '🌌', label: 'Cyamémazine', color: '#7e22ce' },
   dynabiane:   { icon: '🧬', label: 'Dynabiane',   color: '#10b981' },
   omegabiane:  { icon: '🐟', label: 'Omegabiane',  color: '#0ea5e9' },
+  griffonia:   { icon: '🌰', label: 'Griffonia',   color: '#a855f7' },
+  valeriane:   { icon: '🌾', label: 'Valériane',   color: '#65a30d' },
+  safran:      { icon: '🌸', label: 'Safran',      color: '#f97316' },
 };
 
 const RISK_COLORS = {

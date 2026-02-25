@@ -153,6 +153,31 @@ export const PK_PROFILES: Record<SubstanceKey, PKProfile> = {
     decayShape: 'linear',
     steadyState: true,
   },
+  griffonia: {
+    onsetMin: 30,           // 5-HTP oral absorption
+    peakMin: 90,            // ~1.5h to peak serotonin effect
+    plateauEndMin: 240,     // 4h plateau
+    durationMin: 480,       // ~8h (5-HTP half-life ~4-6h)
+    peakIntensity: 0.35,    // Moderate — serotonin precursor, felt subtly
+    decayShape: 'linear',
+  },
+  valeriane: {
+    onsetMin: 20,           // Oral absorption
+    peakMin: 60,            // ~1h to peak sedative effect
+    plateauEndMin: 180,     // 3h plateau
+    durationMin: 360,       // ~6h (valerian GABA modulation)
+    peakIntensity: 0.4,     // Moderate — noticeable calming/sedation
+    decayShape: 'linear',
+  },
+  safran: {
+    onsetMin: 0,
+    peakMin: 0,
+    plateauEndMin: 0,
+    durationMin: 1440,      // 24h — daily supplement, steady state
+    peakIntensity: 0.2,     // Subtle — mood support, cumulative
+    decayShape: 'linear',
+    steadyState: true,      // Requires 4-6 weeks for full antidepressant effect
+  },
   yoga: {
     onsetMin: 0,
     peakMin: 5,
@@ -276,7 +301,7 @@ export function computeAwareness(
   biometrics?: { stress?: number | null; body_battery?: number | null; hr?: number | null },
 ): AwarenessState {
   const substances: Record<string, number> = {};
-  const keys: SubstanceKey[] = ['thc', 'cbd', 'lions_mane', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'hydration', 'melatonin', 'venlafaxine', 'sertraline', 'prazepam', 'cyamemazine', 'dynabiane', 'omegabiane'];
+  const keys: SubstanceKey[] = ['thc', 'cbd', 'lions_mane', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'hydration', 'melatonin', 'venlafaxine', 'sertraline', 'prazepam', 'cyamemazine', 'dynabiane', 'omegabiane', 'griffonia', 'valeriane', 'safran'];
 
   for (const key of keys) {
     // Sum intensities from all recent doses of this substance
@@ -298,12 +323,12 @@ export function computeAwareness(
   // Composite loads
   const psychedelicLoad = Math.min(1, sub.lsd * 1.0 + sub.ketamine * 0.8 + sub.thc * 0.4);
   const stimulantLoad = Math.min(1, sub.nicotine + sub.caffeine * 0.7 + sub.cbd * 0.1); // Rhodiola mild stimulant
-  const sedativeLoad = Math.min(1, sub.melatonin + sub.prazepam * 0.8 + sub.cyamemazine * 0.7 + sub.cbd * 0.35); // CBD + ashwagandha anxiolytic
-  const antidepressantBaseline = Math.min(1, sub.venlafaxine + sub.sertraline);
+  const sedativeLoad = Math.min(1, sub.melatonin + sub.prazepam * 0.8 + sub.cyamemazine * 0.7 + sub.cbd * 0.35 + sub.valeriane * 0.6); // CBD + ashwagandha anxiolytic + valerian GABA
+  const antidepressantBaseline = Math.min(1, sub.venlafaxine + sub.sertraline + sub.safran * 0.3); // Saffron has mild antidepressant properties
   // Adaptogenic: ashwagandha (280mg) + rhodiola (30mg) via CBD complex + lion's mane + dynabiane gut-brain
   const adaptogenicLoad = Math.min(1, sub.cbd * 0.8 + sub.lions_mane * 0.15 + sub.dynabiane * 0.1);
-  // Serotonin support: griffonia 5-HTP (50.5mg) + B6 (1.4mg) via CBD complex + venlafaxine + sertraline (SSRI) + dynabiane gut-serotonin
-  const serotonergicSupport = Math.min(1, sub.cbd * 0.6 + sub.venlafaxine * 0.3 + sub.sertraline * 0.4 + sub.dynabiane * 0.1);
+  // Serotonin support: griffonia 5-HTP (direct precursor) + CBD complex + venlafaxine + sertraline (SSRI) + safran (serotonin reuptake) + dynabiane gut-serotonin
+  const serotonergicSupport = Math.min(1, sub.griffonia * 0.7 + sub.cbd * 0.6 + sub.venlafaxine * 0.3 + sub.sertraline * 0.4 + sub.safran * 0.3 + sub.dynabiane * 0.1);
   // Neuroprotective: omega-3 EPA/DHA + lion's mane NGF
   const neuroprotectiveLoad = Math.min(1, sub.omegabiane * 0.7 + sub.lions_mane * 0.3);
   const hydrationLevel = sub.hydration;
@@ -322,7 +347,10 @@ export function computeAwareness(
     sub.lions_mane * 0.02 +
     sub.sertraline * 0.02 +
     sub.dynabiane * 0.01 +
-    sub.omegabiane * 0.01
+    sub.omegabiane * 0.01 +
+    sub.griffonia * 0.03 +
+    sub.valeriane * 0.04 +
+    sub.safran * 0.01
   );
 
   // Find dominant

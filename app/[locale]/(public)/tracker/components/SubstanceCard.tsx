@@ -30,6 +30,9 @@ const SUBSTANCES = [
   { key: 'cyamemazine', label: 'Cya', color: '#7e22ce', icon: '🌌' },
   { key: 'dynabiane', label: 'Dyna', color: '#10b981', icon: '🧬' },
   { key: 'omegabiane', label: 'Omega', color: '#0ea5e9', icon: '🐟' },
+  { key: 'griffonia', label: 'Griff', color: '#a855f7', icon: '🌰' },
+  { key: 'valeriane', label: 'Valér', color: '#65a30d', icon: '🌾' },
+  { key: 'safran', label: 'Safran', color: '#f97316', icon: '🌸' },
   { key: 'yoga', label: 'Yoga', color: '#f472b6', icon: '🧘' },
 ] as const;
 

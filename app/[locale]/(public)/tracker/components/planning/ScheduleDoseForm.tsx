@@ -19,6 +19,9 @@ const INTENTS: Record<SubstanceKey, string[]> = {
   cyamemazine: ['sleep', 'anxiety', 'as-needed'],
   dynabiane: ['daily', 'gut-brain', 'immunity', 'mood'],
   omegabiane: ['daily', 'neuroprotection', 'anti-inflammatory', 'cardiovascular'],
+  griffonia: ['daily', 'mood', 'sleep', 'serotonin-support', 'anxiety'],
+  valeriane: ['sleep', 'anxiety', 'relaxation', 'as-needed'],
+  safran: ['daily', 'mood', 'anti-stress', 'cognitive'],
   yoga: ['morning', 'recovery', 'focus', 'sleep', 'stretching', 'strength'],
 };
 

@@ -16,6 +16,9 @@ const SUBSTANCE_LABELS: Record<string, string> = {
   prazepam: 'Prazépam', cyamemazine: 'Cyamémazine',
   dynabiane: 'Dynabiane',
   omegabiane: 'Omegabiane',
+  griffonia: 'Griffonia',
+  valeriane: 'Valériane',
+  safran: 'Safran',
 };
 
 interface Props {

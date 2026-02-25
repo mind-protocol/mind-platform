@@ -38,6 +38,9 @@ const SUB_COLORS: Record<string, string> = {
   cyamemazine: '#7e22ce',
   dynabiane: '#10b981',
   omegabiane: '#0ea5e9',
+  griffonia: '#a855f7',
+  valeriane: '#65a30d',
+  safran: '#f97316',
   yoga: '#f472b6',
 };
 
@@ -57,6 +60,9 @@ const SUB_ICONS: Record<string, string> = {
   cyamemazine: '🌌',
   dynabiane: '🧬',
   omegabiane: '🐟',
+  griffonia: '🌰',
+  valeriane: '🌾',
+  safran: '🌸',
   yoga: '🧘',
 };
 

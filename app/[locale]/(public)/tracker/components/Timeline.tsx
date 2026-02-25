@@ -33,6 +33,9 @@ const SUB_CONFIG: Record<string, { color: string; icon: string; label: string }>
   cyamemazine: { color: '#7e22ce', icon: '🌌', label: 'Cya' },
   dynabiane: { color: '#10b981', icon: '🧬', label: 'Dyna' },
   omegabiane: { color: '#0ea5e9', icon: '🐟', label: 'Omega' },
+  griffonia: { color: '#a855f7', icon: '🌰', label: 'Griffonia' },
+  valeriane: { color: '#65a30d', icon: '🌾', label: 'Valériane' },
+  safran: { color: '#f97316', icon: '🌸', label: 'Safran' },
   yoga: { color: '#f472b6', icon: '🧘', label: 'Yoga' },
 };
 
@@ -96,6 +99,9 @@ function doseLabel(entry: LogEntry): string {
   }
   if (substance === 'dynabiane') return `${amt} gélule${amt > 1 ? 's' : ''}`;
   if (substance === 'omegabiane') return `${amt} gélule${amt > 1 ? 's' : ''}`;
+  if (substance === 'griffonia') return `${amt}mg 5-HTP`;
+  if (substance === 'valeriane') return `${amt}mg`;
+  if (substance === 'safran') return `${amt}mg`;
   if (substance === 'yoga') {
     const style = dose.details?.style as string || '';
     return `${amt}min ${style}`;

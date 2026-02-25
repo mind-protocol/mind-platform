@@ -480,6 +480,12 @@ export default function SubstanceMarker({ substance, position, amount, entry }: 
         return <PrazepamMarker scale={scale} hovered={hovered} color={cfg.color} />;
       case 'cyamemazine':
         return <CyamemazineMarker scale={scale} hovered={hovered} color={cfg.color} />;
+      case 'griffonia':
+        return <VenlafaxineMarker scale={scale} hovered={hovered} color={cfg.color} />;
+      case 'valeriane':
+        return <VenlafaxineMarker scale={scale} hovered={hovered} color={cfg.color} />;
+      case 'safran':
+        return <VenlafaxineMarker scale={scale} hovered={hovered} color={cfg.color} />;
     }
   };
 

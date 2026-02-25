@@ -1,4 +1,4 @@
-export type SubstanceKey = 'thc' | 'cbd' | 'lions_mane' | 'caffeine' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'sertraline' | 'prazepam' | 'cyamemazine' | 'dynabiane' | 'omegabiane' | 'yoga';
+export type SubstanceKey = 'thc' | 'cbd' | 'lions_mane' | 'caffeine' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'sertraline' | 'prazepam' | 'cyamemazine' | 'dynabiane' | 'omegabiane' | 'griffonia' | 'valeriane' | 'safran' | 'yoga';
 
 export interface SubstanceConfig {
   color: string;
@@ -25,7 +25,10 @@ export const SUBSTANCE_CONFIG: Record<SubstanceKey, SubstanceConfig> = {
   cyamemazine: { color: '#7e22ce', icon: '\u{1F30C}', label: 'Cyamemazine', unit: 'mg',       geometry: 'tetrahedron',  laneY: 20 },
   dynabiane:   { color: '#10b981', icon: '\u{1F9EC}', label: 'Dynabiane',   unit: 'gélule',   geometry: 'pill',         laneY: 22.5 },
   omegabiane:  { color: '#0ea5e9', icon: '\u{1F41F}', label: 'Omegabiane',  unit: 'gélule',   geometry: 'droplet',      laneY: 25 },
-  yoga:        { color: '#f472b6', icon: '\u{1F9D8}', label: 'Yoga',        unit: 'min',      geometry: 'sphere',       laneY: 27.5 },
+  griffonia:   { color: '#a855f7', icon: '\u{1F330}', label: 'Griffonia',   unit: 'mg',       geometry: 'pill',         laneY: 26.25 },
+  valeriane:   { color: '#65a30d', icon: '\u{1F33E}', label: 'Valériane',   unit: 'mg',       geometry: 'pill',         laneY: 27.5 },
+  safran:      { color: '#f97316', icon: '\u{1F338}', label: 'Safran',      unit: 'mg',       geometry: 'pill',         laneY: 28.75 },
+  yoga:        { color: '#f472b6', icon: '\u{1F9D8}', label: 'Yoga',        unit: 'min',      geometry: 'sphere',       laneY: 30 },
 };
 
 export const SUBSTANCE_KEYS = Object.keys(SUBSTANCE_CONFIG) as SubstanceKey[];
@@ -47,6 +50,9 @@ export const DOSE_RANGES: Record<SubstanceKey, { min: number; max: number }> = {
   cyamemazine: { min: 12.5, max: 100 },
   dynabiane:   { min: 1, max: 2 },       // 1-2 gélules/jour
   omegabiane:  { min: 1, max: 3 },       // 1-3 gélules/jour
+  griffonia:   { min: 50, max: 400 },    // 50-400mg (5-HTP precursor)
+  valeriane:   { min: 100, max: 600 },   // 100-600mg (root extract)
+  safran:      { min: 15, max: 30 },     // 15-30mg (standardized extract)
   yoga:        { min: 1, max: 60 },      // 1-60 min session
 };
 

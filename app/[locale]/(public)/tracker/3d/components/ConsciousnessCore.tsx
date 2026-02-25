@@ -45,6 +45,9 @@ export default function ConsciousnessCore({ awareness }: CoreProps) {
     if (s.venlafaxine > 0.05) c.lerp(new THREE.Color('#14b8a6'), s.venlafaxine * 0.2);
     if (s.sertraline > 0.05) c.lerp(new THREE.Color('#06b6d4'), s.sertraline * 0.2);
     if (s.cyamemazine > 0.05) c.lerp(new THREE.Color('#7e22ce'), s.cyamemazine * 0.4);
+    if (s.griffonia > 0.05) c.lerp(new THREE.Color('#a855f7'), s.griffonia * 0.2);
+    if (s.valeriane > 0.05) c.lerp(new THREE.Color('#65a30d'), s.valeriane * 0.25);
+    if (s.safran > 0.05) c.lerp(new THREE.Color('#f97316'), s.safran * 0.15);
 
     return c;
   }, [awareness.substances]);
