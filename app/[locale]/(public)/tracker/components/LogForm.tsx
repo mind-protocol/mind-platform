@@ -60,7 +60,7 @@ const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<s
   melatonin: { amount: 3, unit: 'mg', details: { form: 'tablet' } },
   venlafaxine: { amount: 75, unit: 'mg', details: { form: 'capsule', release: 'extended' } },
   sertraline: { amount: 200, unit: 'mg', details: { form: 'tablet' } },
-  prazepam: { amount: 10, unit: 'mg', details: { form: 'sublingual', route: 'sublingual' } },
+  prazepam: { amount: 10, unit: 'gouttes', details: { form: 'solution', route: 'sublingual', concentration: '1mg/goutte' } },
   cyamemazine: { amount: 25, unit: 'mg', details: { form: 'tablet' } },
   dynabiane: { amount: 1, unit: 'gélule', details: { form: 'capsule', brand: 'PiLeJe', type: 'probiotic' } },
   omegabiane: { amount: 1, unit: 'gélule', details: { form: 'capsule', brand: 'PiLeJe', type: 'omega-3' } },
@@ -228,7 +228,7 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
       const unit = tab === 'ketamine'
         ? (details.form === 'spray' ? 'spray' : 'mg')
         : tab === 'cbd'
-        ? (details.route === 'vaporized' ? 'chambers' : 'mg')
+        ? (details.route === 'vaporized' ? 'chambers' : details.route === 'sublingual' ? 'gouttes' : 'comprimés')
         : DEFAULTS[tab]?.unit || 'mg';
       const body: Record<string, unknown> = {
         substance: tab,
@@ -348,7 +348,7 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
         {tab !== 'yoga' && (
           <div>
             <label className="text-xs text-zinc-500 block mb-1">
-              Amount ({tab === 'ketamine' ? (details.form === 'spray' ? 'sprays' : 'mg estimate') : tab === 'cbd' ? (details.route === 'vaporized' ? 'chambers' : 'mg') : DEFAULTS[tab].unit})
+              Amount ({tab === 'ketamine' ? (details.form === 'spray' ? 'sprays' : 'mg estimate') : tab === 'cbd' ? (details.route === 'vaporized' ? 'chambers' : details.route === 'sublingual' ? 'gouttes' : 'comprimés') : DEFAULTS[tab].unit})
             </label>
             <input
               type="number"
@@ -424,7 +424,7 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                         setAmount(1);
                       } else if (r.key === 'sublingual') {
                         setDetails({ ...details, route: 'sublingual', cbd_pct: (details.cbd_pct as number) || 20 });
-                        setAmount(20);
+                        setAmount(5);
                       } else {
                         setDetails({ ...details, route: 'vaporized', cbd_pct: (details.cbd_pct as number) || 7, temp_c: 230 });
                         setAmount(1);
@@ -510,10 +510,7 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                     {[10, 20, 30, 40].map((pct) => (
                       <button
                         key={pct}
-                        onClick={() => {
-                          setDetails({ ...details, cbd_pct: pct });
-                          setAmount(pct);
-                        }}
+                        onClick={() => setDetails({ ...details, cbd_pct: pct })}
                         className={`px-2 py-1 rounded text-xs border transition ${
                           (details.cbd_pct as number) === pct
                             ? 'border-lime-500/50 text-lime-300 bg-lime-500/15'
@@ -525,25 +522,33 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                     ))}
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="text-xs text-zinc-500 block mb-1">Dose (mg)</label>
-                    <input
-                      type="number"
-                      value={amount}
-                      onChange={(e) => setAmount(Number(e.target.value))}
-                      className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
-                    />
+                <div>
+                  <label className="text-xs text-zinc-500 block mb-1">Gouttes</label>
+                  <div className="flex flex-wrap gap-1.5 mb-2">
+                    {[3, 5, 8, 10, 15].map((g) => (
+                      <button
+                        key={g}
+                        onClick={() => setAmount(g)}
+                        className={`px-2 py-1 rounded text-xs border transition ${
+                          amount === g
+                            ? 'border-lime-500/50 text-lime-300 bg-lime-500/15'
+                            : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                        }`}
+                      >
+                        {g} gttes
+                      </button>
+                    ))}
                   </div>
-                  <div>
-                    <label className="text-xs text-zinc-500 block mb-1">Gouttes</label>
-                    <input
-                      type="number"
-                      value={(details.drops as number) || 5}
-                      onChange={(e) => setDetails({ ...details, drops: Number(e.target.value) })}
-                      className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
-                    />
-                  </div>
+                  <input
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(Number(e.target.value))}
+                    min={1}
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                  />
+                </div>
+                <div className="text-[10px] text-zinc-600">
+                  {amount} goutte{amount > 1 ? 's' : ''} &times; huile CBD {(details.cbd_pct as number) || 20}% — voie sublinguale
                 </div>
               </>
             )}
@@ -1207,22 +1212,30 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
         )}
 
         {tab === 'prazepam' && (
-          <div>
-            <label className="text-xs text-zinc-500 block mb-1">Route</label>
-            <div className="flex gap-2">
-              {(['sublingual', 'oral'] as const).map((r) => (
-                <button
-                  key={r}
-                  onClick={() => setDetails({ ...details, route: r })}
-                  className={`px-3 py-1.5 rounded text-sm border transition ${
-                    details.route === r
-                      ? 'border-slate-400/50 text-slate-300 bg-slate-500/10'
-                      : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
-                  }`}
-                >
-                  {r === 'sublingual' ? '👅 Sublingual' : '💊 Oral'}
-                </button>
-              ))}
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Quick dose (gouttes sublinguales)</label>
+              <div className="flex flex-wrap gap-1.5">
+                {[5, 10, 15, 20, 30, 40].map((g) => (
+                  <button
+                    key={g}
+                    onClick={() => setAmount(g)}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      amount === g
+                        ? 'border-slate-400/50 text-slate-300 bg-slate-500/10'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {g} gttes
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-3">
+              <div className="text-xs text-zinc-400 mb-1 font-medium">Lysanxia (prazepam) solution buvable</div>
+              <div className="text-xs text-zinc-500">
+                1 goutte = 1mg prazepam — voie sublinguale. Max: 40 gouttes/jour.
+              </div>
             </div>
           </div>
         )}

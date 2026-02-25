@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Float, MeshDistortMaterial, MeshWobbleMaterial, MeshTransmissionMaterial, Html } from '@react-three/drei';
 import * as THREE from 'three';
@@ -23,7 +23,6 @@ interface OrbProps {
  */
 export default function ActiveSubstanceOrb({ substance, intensity, orbitIndex, totalActive }: OrbProps) {
   const groupRef = useRef<THREE.Group>(null);
-  const [hovered, setHovered] = useState(false);
   const cfg = SUBSTANCE_CONFIG[substance];
 
   // Don't render if intensity is negligible
@@ -33,13 +32,9 @@ export default function ActiveSubstanceOrb({ substance, intensity, orbitIndex, t
   const baseRadius = 4 + intensity * 2;
 
   return (
-    <group
-      ref={groupRef}
-      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); }}
-      onPointerOut={() => setHovered(false)}
-    >
+    <group ref={groupRef}>
       <OrbPosition angle={angle} radius={baseRadius} substance={substance} intensity={intensity}>
-        <OrbShape substance={substance} intensity={intensity} hovered={hovered} />
+        <OrbShape substance={substance} intensity={intensity} />
 
         {/* Orbit trail — faint ring showing the path */}
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]}>
@@ -47,19 +42,12 @@ export default function ActiveSubstanceOrb({ substance, intensity, orbitIndex, t
           <meshBasicMaterial color={cfg.color} transparent opacity={0.15 * intensity} />
         </mesh>
 
-        {/* Intensity label on hover */}
-        {hovered && (
-          <Html distanceFactor={12} style={{ pointerEvents: 'none' }}>
-            <div className="bg-zinc-900/95 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white whitespace-nowrap shadow-xl backdrop-blur-sm">
-              <div className="font-medium" style={{ color: cfg.color }}>
-                {cfg.icon} {cfg.label}
-              </div>
-              <div className="text-zinc-400 mt-0.5">
-                Intensity: {(intensity * 100).toFixed(0)}%
-              </div>
-            </div>
-          </Html>
-        )}
+        {/* Permanent label — no pointer events needed */}
+        <Html distanceFactor={14} style={{ pointerEvents: 'none' }}>
+          <div className="text-[9px] whitespace-nowrap font-mono opacity-70" style={{ color: cfg.color, textShadow: '0 0 4px rgba(0,0,0,0.8)' }}>
+            {cfg.icon} {(intensity * 100).toFixed(0)}%
+          </div>
+        </Html>
       </OrbPosition>
     </group>
   );
@@ -175,16 +163,12 @@ function CompoundParticle({ color, offset, scale, intensity }: { color: string; 
 function OrbShape({
   substance,
   intensity,
-  hovered,
 }: {
   substance: SubstanceKey;
   intensity: number;
-  hovered: boolean;
-  children?: React.ReactNode;
 }) {
   const cfg = SUBSTANCE_CONFIG[substance];
   const scale = 0.6 + intensity * 1.2;
-  const emissiveBoost = hovered ? 1.2 : 0;
 
   switch (substance) {
     case 'thc':
@@ -195,7 +179,7 @@ function OrbShape({
             <MeshDistortMaterial
               color={cfg.color}
               emissive={cfg.color}
-              emissiveIntensity={0.4 + intensity * 0.8 + emissiveBoost}
+              emissiveIntensity={0.4 + intensity * 0.8}
               distort={0.2 + intensity * 0.3}
               speed={1.5 + intensity * 2}
               roughness={0.4}
@@ -223,7 +207,7 @@ function OrbShape({
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.3 + intensity * 0.6 + emissiveBoost}
+                emissiveIntensity={0.3 + intensity * 0.6}
                 metalness={0.1}
                 roughness={0.5}
                 clearcoat={0.6}
@@ -254,7 +238,7 @@ function OrbShape({
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.2 + intensity * 0.4 + emissiveBoost}
+                emissiveIntensity={0.2 + intensity * 0.4}
                 metalness={0.05}
                 roughness={0.7}
                 clearcoat={0.3}
@@ -281,7 +265,7 @@ function OrbShape({
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.4 + intensity * 0.7 + emissiveBoost}
+                emissiveIntensity={0.4 + intensity * 0.7}
                 metalness={0.2}
                 roughness={0.4}
                 clearcoat={0.5}
@@ -330,7 +314,7 @@ function OrbShape({
               metalness={0.9}
               roughness={0.05}
               emissive={cfg.color}
-              emissiveIntensity={0.3 + intensity * 0.6 + emissiveBoost}
+              emissiveIntensity={0.3 + intensity * 0.6}
               transparent
               opacity={0.6 + intensity * 0.35}
             />
@@ -352,7 +336,7 @@ function OrbShape({
             <MeshWobbleMaterial
               color={cfg.color}
               emissive={cfg.color}
-              emissiveIntensity={0.4 + intensity * 0.8 + emissiveBoost}
+              emissiveIntensity={0.4 + intensity * 0.8}
               factor={0.3 + intensity * 0.6}
               speed={1 + intensity * 3}
               metalness={0.7}
@@ -394,7 +378,7 @@ function OrbShape({
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.5 + intensity * 0.7 + emissiveBoost}
+                emissiveIntensity={0.5 + intensity * 0.7}
                 metalness={0.3}
                 roughness={0.3}
                 transparent
@@ -434,7 +418,7 @@ function OrbShape({
             <MeshDistortMaterial
               color={cfg.color}
               emissive={cfg.color}
-              emissiveIntensity={0.5 + emissiveBoost}
+              emissiveIntensity={0.5}
               distort={0.3}
               speed={2}
               transparent
@@ -454,7 +438,7 @@ function OrbShape({
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.4 + intensity * 0.6 + emissiveBoost}
+                emissiveIntensity={0.4 + intensity * 0.6}
                 metalness={0.1}
                 roughness={0.6}
                 transparent
@@ -492,7 +476,7 @@ function OrbShape({
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.3 + intensity * 0.5 + emissiveBoost}
+                emissiveIntensity={0.3 + intensity * 0.5}
                 metalness={0.3}
                 roughness={0.2}
                 clearcoat={1.0}
@@ -521,7 +505,7 @@ function OrbShape({
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.3 + intensity * 0.5 + emissiveBoost}
+                emissiveIntensity={0.3 + intensity * 0.5}
                 metalness={0.3}
                 roughness={0.2}
                 clearcoat={1.0}
@@ -548,7 +532,7 @@ function OrbShape({
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.3 + intensity * 0.5 + emissiveBoost}
+                emissiveIntensity={0.3 + intensity * 0.5}
                 metalness={0.05}
                 roughness={0.5}
                 transparent
@@ -574,7 +558,7 @@ function OrbShape({
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.3 + intensity * 0.6 + emissiveBoost}
+                emissiveIntensity={0.3 + intensity * 0.6}
                 metalness={0.6}
                 roughness={0.15}
                 clearcoat={0.7}
@@ -606,7 +590,7 @@ function OrbShape({
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.2 + intensity * 0.4 + emissiveBoost}
+                emissiveIntensity={0.2 + intensity * 0.4}
                 metalness={0.05}
                 roughness={0.6}
                 clearcoat={0.4}
@@ -633,7 +617,7 @@ function OrbShape({
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.25 + intensity * 0.5 + emissiveBoost}
+                emissiveIntensity={0.25 + intensity * 0.5}
                 metalness={0.15}
                 roughness={0.3}
                 clearcoat={0.8}
@@ -660,7 +644,7 @@ function OrbShape({
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.3 + intensity * 0.5 + emissiveBoost}
+                emissiveIntensity={0.3 + intensity * 0.5}
                 metalness={0.2}
                 roughness={0.4}
                 clearcoat={0.6}
@@ -687,7 +671,7 @@ function OrbShape({
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.25 + intensity * 0.45 + emissiveBoost}
+                emissiveIntensity={0.25 + intensity * 0.45}
                 metalness={0.1}
                 roughness={0.6}
                 clearcoat={0.4}
@@ -714,7 +698,7 @@ function OrbShape({
               <meshPhysicalMaterial
                 color={cfg.color}
                 emissive={cfg.color}
-                emissiveIntensity={0.3 + intensity * 0.5 + emissiveBoost}
+                emissiveIntensity={0.3 + intensity * 0.5}
                 metalness={0.15}
                 roughness={0.35}
                 clearcoat={0.7}

@@ -87,31 +87,22 @@ export default function AwarenessMirror() {
 
       <SceneControls />
 
-      {/* Core consciousness sphere — no pointer interaction, skip raycasting */}
+      {/* All scene objects — disable raycasting to eliminate canvas INP delay */}
       <group raycast={() => null}>
         <ConsciousnessCore awareness={awareness} />
-      </group>
 
-      {/* Orbiting active substance orbs — interactive (hover tooltip) */}
-      {activeSubstances.map((sub, i) => (
-        <ActiveSubstanceOrb
-          key={sub}
-          substance={sub}
-          intensity={awareness.substances[sub]}
-          orbitIndex={i}
-          totalActive={activeSubstances.length}
-        />
-      ))}
+        {activeSubstances.map((sub, i) => (
+          <ActiveSubstanceOrb
+            key={sub}
+            substance={sub}
+            intensity={awareness.substances[sub]}
+            orbitIndex={i}
+            totalActive={activeSubstances.length}
+          />
+        ))}
 
-      {/* Non-interactive scene elements — skip raycasting */}
-      <group raycast={() => null}>
-        {/* Cursor glow — attention probe */}
         <CursorGlow awareness={awareness} />
-
-        {/* Biometric environmental field */}
         <BiometricField awareness={awareness} />
-
-        {/* Music-reactive stem visualization */}
         <MusicReactiveField stemsRef={stemsRef} />
       </group>
 
