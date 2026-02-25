@@ -184,6 +184,29 @@ function ChatInput() {
   );
 }
 
+// ─── Size persistence ────────────────────────────────────────────────────────
+const SIZE_KEY = 'chat-panel-size';
+const DEFAULT_W = 420;
+const DEFAULT_H_PCT = 90;
+const MIN_W = 300;
+const MAX_W = 800;
+const MIN_H = 300;
+
+function loadSize(): { w: number; h: number } {
+  try {
+    const raw = localStorage.getItem(SIZE_KEY);
+    if (raw) {
+      const { w, h } = JSON.parse(raw);
+      return { w: Math.max(MIN_W, Math.min(MAX_W, w)), h: Math.max(MIN_H, h) };
+    }
+  } catch { /* noop */ }
+  return { w: DEFAULT_W, h: 0 };
+}
+
+function saveSize(w: number, h: number) {
+  try { localStorage.setItem(SIZE_KEY, JSON.stringify({ w, h })); } catch { /* noop */ }
+}
+
 // ─── Main Widget ────────────────────────────────────────────────────────────
 export default function ChatWidget() {
   const {
@@ -201,34 +224,40 @@ export default function ChatWidget() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Resize state
+  const [size, setSize] = useState<{ w: number; h: number }>({ w: DEFAULT_W, h: 0 });
+  const resizing = useRef(false);
+  const resizeStart = useRef({ mx: 0, my: 0, w: 0, h: 0 });
+
+  useEffect(() => {
+    setSize(loadSize());
+  }, []);
+
   // Init thread on mount
   useEffect(() => {
     initThread();
   }, [initThread]);
 
-  // Detect if waiting for response (any user message in 'sent' state)
+  // Detect if waiting for response
   const isWaiting = messages.some((m) => m.role === 'user' && m.status === 'sent');
 
   // Polling
   useEffect(() => {
     if (!threadId) return;
-
-    // Initial poll
     pollMessages();
-
-    // Poll faster when actively waiting for a response
     const interval = isWaiting ? 1500 : isOpen ? 3000 : 15000;
     pollRef.current = setInterval(pollMessages, interval);
-
-    return () => {
-      if (pollRef.current) clearInterval(pollRef.current);
-    };
+    return () => { if (pollRef.current) clearInterval(pollRef.current); };
   }, [threadId, isOpen, isWaiting, pollMessages]);
 
-  // Auto-scroll
+  // Auto-scroll on new messages and on open
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    if (isOpen) {
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 50);
+    }
+  }, [messages, isOpen]);
 
   // TTS handler
   const handleTTS = useCallback(async (text: string) => {
@@ -245,10 +274,40 @@ export default function ChatWidget() {
           audio.play().catch(() => {});
         }
       }
-    } catch {
-      // TTS failed silently
+    } catch { /* TTS failed silently */ }
+  }, []);
+
+  // Resize handlers (drag from top-left corner)
+  const onResizeStart = useCallback((e: React.PointerEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    resizing.current = true;
+    const panel = (e.currentTarget as HTMLElement).closest('[data-chat-panel]') as HTMLElement;
+    resizeStart.current = {
+      mx: e.clientX, my: e.clientY,
+      w: panel?.offsetWidth || size.w,
+      h: panel?.offsetHeight || size.h,
+    };
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  }, [size]);
+
+  const onResizeMove = useCallback((e: React.PointerEvent) => {
+    if (!resizing.current) return;
+    const dw = resizeStart.current.mx - e.clientX;
+    const dh = resizeStart.current.my - e.clientY;
+    const newW = Math.max(MIN_W, Math.min(MAX_W, resizeStart.current.w + dw));
+    const newH = Math.max(MIN_H, Math.min(window.innerHeight - 24, resizeStart.current.h + dh));
+    setSize({ w: newW, h: newH });
+  }, []);
+
+  const onResizeEnd = useCallback(() => {
+    if (resizing.current) {
+      resizing.current = false;
+      setSize(prev => { saveSize(prev.w, prev.h); return prev; });
     }
   }, []);
+
+  const panelH = size.h > 0 ? `${size.h}px` : `${DEFAULT_H_PCT}vh`;
 
   return (
     <>
@@ -272,7 +331,30 @@ export default function ChatWidget() {
 
       {/* Chat panel */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-[60] w-[22rem] sm:w-96 h-[32rem] flex flex-col rounded-2xl border border-zinc-700/50 bg-zinc-900/95 backdrop-blur-xl shadow-2xl shadow-black/40">
+        <div
+          data-chat-panel
+          className="fixed bottom-3 right-3 z-[60] flex flex-col rounded-2xl border border-zinc-700/50 bg-zinc-900/95 backdrop-blur-xl shadow-2xl shadow-black/40"
+          style={{
+            width: `min(${size.w}px, calc(100vw - 12px))`,
+            height: `min(${panelH}, calc(100vh - 12px))`,
+          }}
+        >
+          {/* Resize handle — top-left corner */}
+          <div
+            onPointerDown={onResizeStart}
+            onPointerMove={onResizeMove}
+            onPointerUp={onResizeEnd}
+            className="absolute -top-1 -left-1 w-6 h-6 cursor-nwse-resize z-10 flex items-end justify-end pr-1 pb-1"
+            style={{ touchAction: 'none' }}
+            title="Drag to resize"
+          >
+            <svg width="8" height="8" viewBox="0 0 8 8" className="text-zinc-500 opacity-40 hover:opacity-100 transition-opacity">
+              <path d="M0 8 L8 0" stroke="currentColor" strokeWidth="1.5" fill="none" />
+              <path d="M0 5 L5 0" stroke="currentColor" strokeWidth="1.5" fill="none" />
+              <path d="M0 2 L2 0" stroke="currentColor" strokeWidth="1.5" fill="none" />
+            </svg>
+          </div>
+
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-700/50">
             <div className="flex items-center gap-2">

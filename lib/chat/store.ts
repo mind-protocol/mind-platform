@@ -53,7 +53,7 @@ function getOrCreateThreadId(): string {
 
 export const useChatStore = create<ChatStore>((set, get) => ({
   // State
-  isOpen: false,
+  isOpen: true,
   threadId: '',
   messages: [],
   isSending: false,
