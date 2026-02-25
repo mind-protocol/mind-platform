@@ -14,6 +14,7 @@ import LiveBiometrics from './components/LiveBiometrics';
 import DailySummary from './components/DailySummary';
 import WelcomeOnboarding from './components/WelcomeOnboarding';
 import BackendStatus from './components/BackendStatus';
+import KeyboardShortcuts from './components/KeyboardShortcuts';
 import PlanViewToggle from './components/planning/PlanViewToggle';
 import PlanningCalendar from './components/planning/PlanningCalendar';
 import ScheduleDoseForm from './components/planning/ScheduleDoseForm';
@@ -21,7 +22,7 @@ import ThemeToggle from './components/ThemeToggle';
 import SubstanceConfigMenu from './components/SubstanceConfigMenu';
 import SanitizeToggle from '@/components/SanitizeToggle';
 import { useSubstanceConfig } from '@/lib/tracker/hooks/useSubstanceConfig';
-import { SUBSTANCE_CONFIG, type SubstanceKey } from '@/lib/tracker/constants';
+import { type SubstanceKey } from '@/lib/tracker/constants';
 import { useToast } from '@/components/Toast';
 import { useSession } from '@/lib/useSession';
 
@@ -293,6 +294,9 @@ export default function TrackerPage() {
           onClose={() => setShowScheduleForm(false)}
         />
       )}
+
+      {/* Keyboard shortcuts (press ? for help) */}
+      <KeyboardShortcuts onTabSwitch={setActiveTab} onRefresh={refresh} />
     </main>
   );
 }
