@@ -222,7 +222,7 @@ function CursorGlow({ awareness }: { awareness: AwarenessState }) {
 
 /** Mini Awareness HUD — glowing dots with collapse, resizable */
 const HUD_WIDTH_KEY = 'awareness-hud-width';
-const DEFAULT_HUD_WIDTH = 200;
+const DEFAULT_HUD_WIDTH = 250;
 const MIN_HUD_WIDTH = 120;
 const MAX_HUD_WIDTH = 420;
 
@@ -287,40 +287,46 @@ export function AwarenessHUD({ className }: { className?: string }) {
         <div className="flex flex-col gap-1.5">
           {/* Biometric dots */}
           {awareness.hr != null && (
-            <div
-              className="rounded-full animate-pulse"
-              style={{
-                width: 6, height: 6,
-                backgroundColor: '#ef4444',
-                boxShadow: '0 0 6px #ef444480',
-              }}
-              title={`HR ${awareness.hr}`}
-            />
+            <div className="flex items-center gap-0.5" title={`HR ${awareness.hr}`}>
+              <div
+                className="rounded-full animate-pulse"
+                style={{
+                  width: 6, height: 6,
+                  backgroundColor: '#ef4444',
+                  boxShadow: '0 0 6px #ef444480',
+                }}
+              />
+              <span style={{ fontSize: 8, lineHeight: 1 }}>❤️</span>
+            </div>
           )}
           {awareness.stress != null && (
-            <div
-              className="rounded-full"
-              style={{
-                width: 5 + (awareness.stress / 100) * 4,
-                height: 5 + (awareness.stress / 100) * 4,
-                backgroundColor: awareness.stress > 50 ? '#ef4444' : '#a1a1aa',
-                boxShadow: awareness.stress > 50 ? '0 0 8px #ef444480' : '0 0 4px #a1a1aa40',
-                filter: `blur(${awareness.stress > 70 ? 0.5 : 0}px)`,
-              }}
-              title={`Stress ${awareness.stress}`}
-            />
+            <div className="flex items-center gap-0.5" title={`Stress ${awareness.stress}`}>
+              <div
+                className="rounded-full"
+                style={{
+                  width: 5 + (awareness.stress / 100) * 4,
+                  height: 5 + (awareness.stress / 100) * 4,
+                  backgroundColor: awareness.stress > 50 ? '#ef4444' : '#a1a1aa',
+                  boxShadow: awareness.stress > 50 ? '0 0 8px #ef444480' : '0 0 4px #a1a1aa40',
+                  filter: `blur(${awareness.stress > 70 ? 0.5 : 0}px)`,
+                }}
+              />
+              <span style={{ fontSize: 8, lineHeight: 1 }}>⚡</span>
+            </div>
           )}
           {awareness.bodyBattery != null && (
-            <div
-              className="rounded-full"
-              style={{
-                width: 4 + (awareness.bodyBattery / 100) * 5,
-                height: 4 + (awareness.bodyBattery / 100) * 5,
-                backgroundColor: awareness.bodyBattery < 30 ? '#f59e0b' : '#22d3ee',
-                boxShadow: `0 0 ${4 + (awareness.bodyBattery / 100) * 8}px ${awareness.bodyBattery < 30 ? '#f59e0b60' : '#22d3ee60'}`,
-              }}
-              title={`BB ${awareness.bodyBattery}`}
-            />
+            <div className="flex items-center gap-0.5" title={`BB ${awareness.bodyBattery}`}>
+              <div
+                className="rounded-full"
+                style={{
+                  width: 4 + (awareness.bodyBattery / 100) * 5,
+                  height: 4 + (awareness.bodyBattery / 100) * 5,
+                  backgroundColor: awareness.bodyBattery < 30 ? '#f59e0b' : '#22d3ee',
+                  boxShadow: `0 0 ${4 + (awareness.bodyBattery / 100) * 8}px ${awareness.bodyBattery < 30 ? '#f59e0b60' : '#22d3ee60'}`,
+                }}
+              />
+              <span style={{ fontSize: 8, lineHeight: 1 }}>🔋</span>
+            </div>
           )}
           {/* Substance dots */}
           {activeSubstances.map(key => {
@@ -328,17 +334,18 @@ export function AwarenessHUD({ className }: { className?: string }) {
             const intensity = awareness.substances[key];
             const size = 4 + intensity * 7;
             return (
-              <div
-                key={key}
-                className="rounded-full transition-all duration-500"
-                style={{
-                  width: size, height: size,
-                  backgroundColor: cfg.color,
-                  boxShadow: `0 0 ${4 + intensity * 12}px ${cfg.color}80`,
-                  filter: `blur(${intensity > 0.5 ? 0.5 : 0}px)`,
-                }}
-                title={`${cfg.label} ${(intensity * 100).toFixed(0)}%`}
-              />
+              <div key={key} className="flex items-center gap-0.5" title={`${cfg.label} ${(intensity * 100).toFixed(0)}%`}>
+                <div
+                  className="rounded-full transition-all duration-500"
+                  style={{
+                    width: size, height: size,
+                    backgroundColor: cfg.color,
+                    boxShadow: `0 0 ${4 + intensity * 12}px ${cfg.color}80`,
+                    filter: `blur(${intensity > 0.5 ? 0.5 : 0}px)`,
+                  }}
+                />
+                <span style={{ fontSize: 8, lineHeight: 1 }}>{cfg.icon}</span>
+              </div>
             );
           })}
         </div>
@@ -382,6 +389,7 @@ export function AwarenessHUD({ className }: { className?: string }) {
               className="inline-block w-1.5 h-1.5 rounded-full animate-pulse"
               style={{ backgroundColor: '#ef4444', boxShadow: '0 0 4px #ef444480' }}
             />
+            <span style={{ fontSize: 9 }}>❤️</span>
             {awareness.hr}
           </span>
         )}
@@ -396,6 +404,7 @@ export function AwarenessHUD({ className }: { className?: string }) {
                 boxShadow: awareness.stress > 50 ? '0 0 6px #ef444460' : 'none',
               }}
             />
+            <span style={{ fontSize: 9 }}>⚡</span>
             {awareness.stress}
           </span>
         )}
@@ -410,6 +419,7 @@ export function AwarenessHUD({ className }: { className?: string }) {
                 boxShadow: `0 0 ${3 + (awareness.bodyBattery / 100) * 6}px ${awareness.bodyBattery < 30 ? '#f59e0b50' : '#22d3ee50'}`,
               }}
             />
+            <span style={{ fontSize: 9 }}>🔋</span>
             {awareness.bodyBattery}
           </span>
         )}
@@ -434,6 +444,7 @@ export function AwarenessHUD({ className }: { className?: string }) {
                     filter: intensity > 0.6 ? `blur(0.5px)` : 'none',
                   }}
                 />
+                <span className="text-[10px]">{cfg.icon}</span>
                 <span className="text-[10px] text-zinc-500">{cfg.label}</span>
                 <span className="text-[9px] text-zinc-700 font-mono ml-auto">
                   {(intensity * 100).toFixed(0)}%
