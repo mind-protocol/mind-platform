@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useHealthAuth, useHealthProfile, useGrowthData } from '@/lib/tracker/hooks/useHealthProfile';
+import SanitizeToggle from '@/components/SanitizeToggle';
 import ProfileHeader from './components/ProfileHeader';
 import CurrentMedications from './components/CurrentMedications';
 import CurrentPathologies from './components/CurrentPathologies';
@@ -73,7 +74,9 @@ function HealthDashboard({ token }: { token: string }) {
         {/* Header */}
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-teal-400">Dossier Médical</h1>
-          <button
+          <div className="flex gap-2 items-center">
+            <SanitizeToggle />
+            <button
             onClick={() => {
               sessionStorage.removeItem('health_access_token');
               window.location.reload();
@@ -82,6 +85,7 @@ function HealthDashboard({ token }: { token: string }) {
           >
             Verrouiller
           </button>
+          </div>
         </div>
 
         {/* Profile header */}

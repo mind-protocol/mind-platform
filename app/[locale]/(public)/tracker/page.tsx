@@ -14,6 +14,7 @@ import PlanViewToggle from './components/planning/PlanViewToggle';
 import PlanningCalendar from './components/planning/PlanningCalendar';
 import ScheduleDoseForm from './components/planning/ScheduleDoseForm';
 import ThemeToggle from './components/ThemeToggle';
+import SanitizeToggle from '@/components/SanitizeToggle';
 import type { SubstanceKey } from '@/lib/tracker/constants';
 
 // Category filters
@@ -83,6 +84,7 @@ export default function TrackerPage() {
             </p>
           </div>
           <div className="flex gap-2 items-center flex-wrap justify-end">
+            <SanitizeToggle />
             <ThemeToggle />
             <PlanViewToggle mode={viewMode} onChange={setViewMode} />
             <Link

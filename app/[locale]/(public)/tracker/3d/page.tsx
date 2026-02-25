@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef, useTransition } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import SanitizeToggle from '@/components/SanitizeToggle';
 import RangeSelector from './components/RangeSelector';
 import Legend from './components/Legend';
 import EnvironmentManager from '../components/EnvironmentManager';
@@ -646,6 +647,8 @@ export default function Tracker3DPage() {
         >
           &larr; Tracker
         </Link>
+
+        <SanitizeToggle />
 
         {/* View mode toggle */}
         <div className="flex bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-lg overflow-hidden">

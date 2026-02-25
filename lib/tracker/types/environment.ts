@@ -1,5 +1,11 @@
 export type EnvironmentType = 'panorama' | 'mesh' | 'splat';
 
+export interface EnvironmentGeo {
+  lat: number;
+  lng: number;
+  location_name?: string;
+}
+
 export interface EnvironmentCapture {
   id: string;
   ts: string;
@@ -11,4 +17,5 @@ export interface EnvironmentCapture {
   active: boolean;
   source: string;
   notes: string;
+  geo?: EnvironmentGeo;
 }

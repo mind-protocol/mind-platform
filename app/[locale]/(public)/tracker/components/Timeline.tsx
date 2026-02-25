@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback, memo } from 'react';
+import { useSanitizeMode, isSanitized, isEffectSanitized } from '@/lib/use-sanitize';
 
 interface LogEntry {
   id: string;
@@ -16,6 +17,109 @@ interface LogEntry {
     ans_mode: string;
   } | null;
 }
+
+interface AdverseEntry {
+  id: string;
+  ts: string;
+  type: 'adverse_effect';
+  effect: string;
+  severity: string;
+  notes: string;
+  biometrics_at_log: {
+    hr: number | null;
+    stress: number | null;
+    body_battery: number | null;
+    ans_mode: string;
+  } | null;
+}
+
+type TimelineItem =
+  | { kind: 'substance'; data: LogEntry }
+  | { kind: 'adverse'; data: AdverseEntry };
+
+const ADVERSE_CONFIG: Record<string, { color: string; icon: string; label: string }> = {
+  // Gastrointestinal
+  nausea: { color: '#facc15', icon: '🤢', label: 'Nausée' },
+  retching: { color: '#f97316', icon: '😫', label: 'Haut-le-coeur' },
+  vomiting: { color: '#ef4444', icon: '🤮', label: 'Vomissement' },
+  vomiting_blood: { color: '#ef4444', icon: '🩸', label: 'Vomissement sang' },
+  vomiting_bile: { color: '#f97316', icon: '🟡', label: 'Vomissement bile' },
+  vomiting_food: { color: '#f97316', icon: '🍽️', label: 'Vomissement nourriture' },
+  vomiting_dry: { color: '#f97316', icon: '😖', label: 'Vomissement à vide' },
+  diarrhea: { color: '#f97316', icon: '🚽', label: 'Diarrhée' },
+  stomach_pain: { color: '#f97316', icon: '🫄', label: 'Douleur abdominale' },
+  flatulence: { color: '#facc15', icon: '💨', label: 'Flatulences' },
+  bloating: { color: '#facc15', icon: '🫧', label: 'Gaz / ballonnements' },
+  acid_reflux: { color: '#f97316', icon: '🔥', label: 'Remontées acides' },
+  epigastric_pain: { color: '#f97316', icon: '🎯', label: 'Douleur épigastrique' },
+  liver_pain: { color: '#f97316', icon: '🫁', label: 'Douleur foie' },
+  subcostal_pain_left: { color: '#f97316', icon: '◀️', label: 'Sous-costal gauche' },
+  // ORL
+  cough_wet: { color: '#facc15', icon: '💦', label: 'Toux grasse' },
+  cough_dry: { color: '#facc15', icon: '😤', label: 'Toux sèche' },
+  throat_irritation: { color: '#facc15', icon: '🔴', label: 'Gorge irritée' },
+  nasal_irritation: { color: '#facc15', icon: '👃', label: 'Nez irrité' },
+  nasal_congestion_both: { color: '#facc15', icon: '🤧', label: 'Nez bouché (2 narines)' },
+  nasal_congestion_one: { color: '#facc15', icon: '😤', label: 'Nez bouché (1 narine)' },
+  nasal_congestion_fluid: { color: '#facc15', icon: '💧', label: 'Nez qui coule' },
+  nosebleed: { color: '#f97316', icon: '🩸', label: 'Saignement de nez' },
+  tinnitus: { color: '#f97316', icon: '🔔', label: 'Acouphènes' },
+  // Respiratory
+  breathing_shallow: { color: '#f97316', icon: '🫁', label: 'Respiration superficielle' },
+  breathing_blocked: { color: '#ef4444', icon: '🚫', label: 'Respiration bloquée' },
+  breathing_panting: { color: '#ef4444', icon: '💨', label: 'Respiration haletante' },
+  respiratory_slow: { color: '#ef4444', icon: '🐢', label: 'Respiration lente' },
+  hyperventilation: { color: '#ef4444', icon: '🌬️', label: 'Hyperventilation' },
+  chest_tightness: { color: '#ef4444', icon: '🫀', label: 'Oppression thoracique' },
+  // Neurological
+  headache: { color: '#facc15', icon: '🤕', label: 'Céphalée' },
+  migraine: { color: '#f97316', icon: '⚡', label: 'Migraine' },
+  dizziness: { color: '#f97316', icon: '💫', label: 'Vertiges' },
+  tremors_general: { color: '#f97316', icon: '🫨', label: 'Tremblements' },
+  tremors: { color: '#f97316', icon: '🫨', label: 'Tremblements' },
+  numbness: { color: '#f97316', icon: '🧊', label: 'Engourdissement' },
+  brain_fog: { color: '#facc15', icon: '🌫️', label: 'Brouillard mental' },
+  visual_disturbance: { color: '#f97316', icon: '👁️', label: 'Troubles visuels' },
+  // Cardiovascular
+  tachycardia: { color: '#ef4444', icon: '💓', label: 'Tachycardie' },
+  palpitations: { color: '#f97316', icon: '💗', label: 'Palpitations' },
+  hypotension: { color: '#f97316', icon: '⬇️', label: 'Vertige orthostatique' },
+  chest_pain: { color: '#ef4444', icon: '❤️‍🩹', label: 'Douleur thoracique' },
+  // Thermoregulation
+  hot_flash: { color: '#facc15', icon: '🥵', label: 'Bouffée de chaleur' },
+  cold_flash: { color: '#facc15', icon: '🥶', label: 'Frisson' },
+  sweating: { color: '#f97316', icon: '💦', label: 'Sueurs' },
+  hyperthermia: { color: '#ef4444', icon: '🌡️', label: 'Fièvre' },
+  night_sweats: { color: '#f97316', icon: '🌙', label: 'Sueurs nocturnes' },
+  // Psychological
+  anxiety_spike: { color: '#f97316', icon: '😰', label: 'Anxiété' },
+  panic_attack: { color: '#ef4444', icon: '🚨', label: 'Attaque de panique' },
+  mood_crash: { color: '#f97316', icon: '📉', label: "Chute d'humeur" },
+  agitation: { color: '#f97316', icon: '⚡', label: 'Agitation' },
+  confusion: { color: '#ef4444', icon: '🌀', label: 'Confusion' },
+  depersonalization: { color: '#f97316', icon: '👤', label: 'Dépersonnalisation' },
+  irritability: { color: '#facc15', icon: '😤', label: 'Irritabilité' },
+  insomnia: { color: '#f97316', icon: '🌃', label: 'Insomnie' },
+  fatigue_sudden: { color: '#facc15', icon: '🔋', label: 'Fatigue soudaine' },
+  // Musculoskeletal
+  myoclonus: { color: '#f97316', icon: '💪', label: 'Contractions' },
+  ataxia: { color: '#f97316', icon: '🥴', label: "Perte d'équilibre" },
+  muscle_tension: { color: '#f97316', icon: '🔗', label: 'Tensions' },
+  jaw_clenching: { color: '#f97316', icon: '😬', label: 'Serrement mâchoire' },
+  back_pain: { color: '#facc15', icon: '🔙', label: 'Douleur dorsale' },
+  joint_pain: { color: '#facc15', icon: '🦴', label: 'Douleur articulaire' },
+  excessive_sedation: { color: '#f97316', icon: '😴', label: 'Somnolence' },
+  // Cutaneous / Ocular
+  rash: { color: '#f97316', icon: '🔴', label: 'Éruption cutanée' },
+  itching: { color: '#facc15', icon: '🩹', label: 'Démangeaisons' },
+  dry_eyes: { color: '#facc15', icon: '👁️', label: 'Yeux secs' },
+  pupil_dilation: { color: '#f97316', icon: '⭕', label: 'Mydriase' },
+  // Urogenital
+  frequent_urination: { color: '#facc15', icon: '🚿', label: 'Pollakiurie' },
+  urinary_retention: { color: '#f97316', icon: '⏸️', label: 'Rétention urinaire' },
+  libido_change: { color: '#facc15', icon: '💜', label: 'Changement libido' },
+  anorgasmia: { color: '#f97316', icon: '⬜', label: 'Anorgasmie' },
+};
 
 const SUB_CONFIG: Record<string, { color: string; icon: string; label: string }> = {
   thc: { color: '#22c55e', icon: '🌿', label: 'THC' },
@@ -330,25 +434,68 @@ const EntryRow = memo(function EntryRow({
   );
 });
 
+// ── Adverse effect row ─────────────────────────────────────────────────
+const AdverseRow = memo(function AdverseRow({ entry }: { entry: AdverseEntry }) {
+  const cfg = ADVERSE_CONFIG[entry.effect] || { color: '#ef4444', icon: '⚠️', label: entry.effect };
+  const sevColor = entry.severity === 'severe' ? '#ef4444' : entry.severity === 'moderate' ? '#f97316' : '#facc15';
+
+  return (
+    <div className="flex items-center gap-3 px-2 py-1.5 rounded bg-red-500/5 border border-red-500/10">
+      <span className="text-xs text-zinc-500 font-mono w-12 shrink-0">
+        {formatTime(entry.ts)}
+      </span>
+      <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: sevColor }} />
+      <span className="text-sm">
+        <span style={{ color: cfg.color }} className="font-medium">
+          {cfg.icon} {cfg.label}
+        </span>
+        <span className="text-zinc-500 ml-1.5 text-xs" style={{ color: sevColor }}>
+          {entry.severity}
+        </span>
+        {entry.notes && (
+          <span className="text-zinc-600 ml-1.5 text-xs">— {entry.notes}</span>
+        )}
+      </span>
+    </div>
+  );
+});
+
 // ── Main Timeline ──────────────────────────────────────────────────────
 export default function Timeline({ refreshKey, filter }: { refreshKey: number; filter?: string[] }) {
   const [entries, setEntries] = useState<LogEntry[]>([]);
+  const [adverseEntries, setAdverseEntries] = useState<AdverseEntry[]>([]);
+  const { sanitized } = useSanitizeMode();
 
   useEffect(() => {
     fetch('/api/tracker/log?days=7')
       .then((r) => r.json())
       .then((d) => setEntries(d.entries || []))
       .catch(() => {});
+    fetch('/api/tracker/adverse?days=7')
+      .then((r) => r.json())
+      .then((d) => setAdverseEntries(Array.isArray(d) ? d : []))
+      .catch(() => {});
   }, [refreshKey]);
 
-  const filtered = filter ? entries.filter((e) => filter.includes(e.substance)) : entries;
+  // Build unified timeline items
+  const items: TimelineItem[] = [];
+  const filteredSubs = filter ? entries.filter((e) => filter.includes(e.substance)) : entries;
+  for (const e of filteredSubs) {
+    if (sanitized && isSanitized(e.substance)) continue;
+    items.push({ kind: 'substance', data: e });
+  }
+  for (const e of adverseEntries) {
+    if (sanitized && isEffectSanitized(e.effect)) continue;
+    items.push({ kind: 'adverse', data: e });
+  }
+  items.sort((a, b) => b.data.ts.localeCompare(a.data.ts));
 
   // Group by date
-  const grouped: Record<string, LogEntry[]> = {};
-  for (const e of filtered) {
-    const dateKey = formatDate(e.ts);
+  const grouped: Record<string, TimelineItem[]> = {};
+  for (const item of items) {
+    const dateKey = formatDate(item.data.ts);
     if (!grouped[dateKey]) grouped[dateKey] = [];
-    grouped[dateKey].push(e);
+    grouped[dateKey].push(item);
   }
 
   const handleUpdate = useCallback((id: string, data: Partial<LogEntry>) => {
@@ -359,32 +506,39 @@ export default function Timeline({ refreshKey, filter }: { refreshKey: number; f
     setEntries((prev) => prev.filter((e) => e.id !== id));
   }, []);
 
-  if (filtered.length === 0) {
+  if (items.length === 0) {
     return (
       <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-6 text-center text-zinc-500 text-sm">
-        No entries yet. Log your first substance above.
+        {sanitized ? 'Aucune entrée visible en mode privé.' : 'No entries yet. Log your first substance above.'}
       </div>
     );
   }
 
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
-      <h3 className="text-sm font-medium text-zinc-400 mb-4">Timeline (7 days)</h3>
+      <h3 className="text-sm font-medium text-zinc-400 mb-4">
+        Timeline (7 days)
+        {sanitized && <span className="text-amber-400/60 ml-2 text-xs">🙈 mode privé</span>}
+      </h3>
 
-      {Object.entries(grouped).map(([date, dayEntries]) => (
+      {Object.entries(grouped).map(([date, dayItems]) => (
         <div key={date} className="mb-4 last:mb-0">
           <div className="text-xs text-zinc-600 uppercase tracking-wider mb-2 border-b border-zinc-800 pb-1">
             {date}
           </div>
           <div className="space-y-1.5">
-            {dayEntries.map((entry) => (
-              <EntryRow
-                key={entry.id}
-                entry={entry}
-                onUpdate={handleUpdate}
-                onDelete={handleDelete}
-              />
-            ))}
+            {dayItems.map((item) =>
+              item.kind === 'substance' ? (
+                <EntryRow
+                  key={item.data.id}
+                  entry={item.data}
+                  onUpdate={handleUpdate}
+                  onDelete={handleDelete}
+                />
+              ) : (
+                <AdverseRow key={item.data.id} entry={item.data as AdverseEntry} />
+              )
+            )}
           </div>
         </div>
       ))}

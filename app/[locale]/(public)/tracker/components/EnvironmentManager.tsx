@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useEnvironments } from '@/lib/tracker/hooks/useEnvironments';
 import type { EnvironmentCapture } from '@/lib/tracker/types/environment';
 
@@ -16,34 +16,95 @@ function formatSize(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)}MB`;
 }
 
+/** Get browser geolocation as a promise. */
+function getGeolocation(): Promise<{ latitude: number; longitude: number } | null> {
+  return new Promise((resolve) => {
+    if (!navigator.geolocation) {
+      resolve(null);
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => resolve({ latitude: pos.coords.latitude, longitude: pos.coords.longitude }),
+      () => resolve(null),
+      { timeout: 8000, maximumAge: 60000 },
+    );
+  });
+}
+
 export default function EnvironmentManager() {
-  const { environments, active, loading, upload, setActive, remove } = useEnvironments();
+  const { environments, active, loading, upload, setActive, remove, suggestName } = useEnvironments();
   const [expanded, setExpanded] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const handleFile = async (file: File) => {
+  // Pre-upload naming state
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [pendingName, setPendingName] = useState('');
+  const [pendingGeo, setPendingGeo] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [pendingLocationName, setPendingLocationName] = useState('');
+  const [suggesting, setSuggesting] = useState(false);
+
+  // When a file is selected, get geolocation + suggest name
+  const prepareFile = useCallback(async (file: File) => {
+    setPendingFile(file);
+    setPendingName(file.name.replace(/\.[^.]+$/, ''));
+    setSuggesting(true);
+
+    // Get geolocation in parallel with name suggestion
+    const geo = await getGeolocation();
+    setPendingGeo(geo);
+
+    const suggestion = await suggestName(file, geo ?? undefined);
+    if (suggestion) {
+      setPendingName(suggestion.suggested_name);
+      if (suggestion.location_hint) {
+        // Extract short location from the hint
+        const parts = suggestion.location_hint.split(',').slice(0, 2);
+        setPendingLocationName(parts.join(',').trim());
+      }
+    }
+    setSuggesting(false);
+  }, [suggestName]);
+
+  const confirmUpload = useCallback(async () => {
+    if (!pendingFile) return;
     setUploading(true);
     try {
-      await upload(file, file.name.replace(/\.[^.]+$/, ''), 'manual', '', true);
+      const geo = pendingGeo
+        ? { ...pendingGeo, location_name: pendingLocationName || undefined }
+        : undefined;
+      await upload(pendingFile, pendingName, 'manual', '', true, geo);
     } catch (e) {
       console.error('Upload failed:', e);
     } finally {
       setUploading(false);
+      setPendingFile(null);
+      setPendingName('');
+      setPendingGeo(null);
+      setPendingLocationName('');
     }
-  };
+  }, [pendingFile, pendingName, pendingGeo, pendingLocationName, upload]);
+
+  const cancelUpload = useCallback(() => {
+    setPendingFile(null);
+    setPendingName('');
+    setPendingGeo(null);
+    setPendingLocationName('');
+  }, []);
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
     const file = e.dataTransfer.files[0];
-    if (file) handleFile(file);
+    if (file) prepareFile(file);
   };
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) handleFile(file);
+    if (file) prepareFile(file);
+    // Reset input so same file can be re-selected
+    if (fileRef.current) fileRef.current.value = '';
   };
 
   if (!expanded) {
@@ -68,35 +129,74 @@ export default function EnvironmentManager() {
         </button>
       </div>
 
-      {/* Upload zone */}
-      <div
-        onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-        onDragLeave={() => setDragOver(false)}
-        onDrop={handleDrop}
-        onClick={() => fileRef.current?.click()}
-        className={`mx-2 mt-2 p-3 border-2 border-dashed rounded-lg cursor-pointer text-center transition ${
-          dragOver
-            ? 'border-purple-500 bg-purple-500/10'
-            : 'border-zinc-700 hover:border-zinc-500'
-        }`}
-      >
-        <input
-          ref={fileRef}
-          type="file"
-          className="hidden"
-          accept=".jpg,.jpeg,.png,.hdr,.exr,.webp,.glb,.gltf,.ply,.splat,.spz"
-          onChange={handleFileInput}
-        />
-        {uploading ? (
-          <div className="text-xs text-purple-400 animate-pulse">Uploading...</div>
-        ) : (
+      {/* Pre-upload naming panel */}
+      {pendingFile ? (
+        <div className="mx-2 mt-2 p-3 border border-zinc-700 rounded-lg space-y-2">
+          <div className="text-[10px] text-zinc-500 uppercase tracking-wider">Name this environment</div>
+          {suggesting ? (
+            <div className="text-xs text-purple-400 animate-pulse">Getting suggestion...</div>
+          ) : (
+            <>
+              <input
+                type="text"
+                value={pendingName}
+                onChange={(e) => setPendingName(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') confirmUpload(); }}
+                className="w-full bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-xs text-zinc-200 focus:border-purple-500 focus:outline-none"
+                autoFocus
+                placeholder="Environment name..."
+              />
+              {pendingGeo && (
+                <div className="text-[10px] text-zinc-500 flex items-center gap-1">
+                  <span className="text-green-400">&#x25CF;</span>
+                  {pendingLocationName || `${pendingGeo.latitude.toFixed(4)}, ${pendingGeo.longitude.toFixed(4)}`}
+                </div>
+              )}
+              <div className="flex gap-1.5">
+                <button
+                  onClick={confirmUpload}
+                  disabled={uploading || !pendingName.trim()}
+                  className="flex-1 bg-purple-600 hover:bg-purple-500 disabled:bg-zinc-700 disabled:text-zinc-500 text-white text-xs rounded px-2 py-1 transition"
+                >
+                  {uploading ? 'Uploading...' : 'Upload'}
+                </button>
+                <button
+                  onClick={cancelUpload}
+                  className="text-xs text-zinc-500 hover:text-zinc-300 px-2 py-1 transition"
+                >
+                  Cancel
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      ) : (
+        /* Upload drop zone */
+        <div
+          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={handleDrop}
+          onClick={() => fileRef.current?.click()}
+          className={`mx-2 mt-2 p-3 border-2 border-dashed rounded-lg cursor-pointer text-center transition ${
+            dragOver
+              ? 'border-purple-500 bg-purple-500/10'
+              : 'border-zinc-700 hover:border-zinc-500'
+          }`}
+        >
+          <input
+            ref={fileRef}
+            type="file"
+            className="hidden"
+            accept=".jpg,.jpeg,.png,.hdr,.exr,.webp,.glb,.gltf,.ply,.splat,.spz"
+            onChange={handleFileInput}
+          />
           <div className="text-xs text-zinc-500">
             Drop panorama, mesh, or splat file
             <br />
             <span className="text-zinc-600">jpg / png / glb / ply / splat</span>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Environment list */}
       <div className="p-2 space-y-1">
@@ -163,6 +263,7 @@ function EnvironmentRow({
   onRemove: () => void;
 }) {
   const badge = TYPE_BADGES[env.type] || TYPE_BADGES.panorama;
+  const locationLabel = env.geo?.location_name;
 
   return (
     <div
@@ -178,9 +279,19 @@ function EnvironmentRow({
       </span>
       <div className="flex-1 min-w-0">
         <div className="text-xs text-zinc-300 truncate">{env.name}</div>
-        <div className="flex items-center gap-2 mt-0.5">
+        <div className="flex items-center gap-2 mt-0.5 flex-wrap">
           <span className={`text-[9px] px-1 rounded ${badge.color}`}>{badge.label}</span>
           <span className="text-[9px] text-zinc-600">{formatSize(env.size_bytes)}</span>
+          {locationLabel && (
+            <span className="text-[9px] px-1 rounded text-amber-400 bg-amber-500/10 truncate max-w-[100px]" title={locationLabel}>
+              {locationLabel}
+            </span>
+          )}
+          {env.geo && !locationLabel && (
+            <span className="text-[9px] text-zinc-600" title={`${env.geo.lat.toFixed(4)}, ${env.geo.lng.toFixed(4)}`}>
+              &#x25CF; geo
+            </span>
+          )}
         </div>
       </div>
       <div className="flex items-center gap-1">

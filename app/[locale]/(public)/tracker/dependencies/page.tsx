@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useDependencies } from '@/lib/tracker/hooks/useDependencies';
+import SanitizeToggle from '@/components/SanitizeToggle';
 import DependencyOverview from './components/DependencyOverview';
 import TaperingProtocols from './components/TaperingProtocols';
 import BiometricValidation from './components/BiometricValidation';
@@ -97,6 +98,7 @@ function DependencyDashboard({ token }: { token: string }) {
             </p>
           </div>
           <div className="flex gap-2 items-center">
+            <SanitizeToggle />
             <Link
               href="/tracker"
               className="text-sm px-3 py-1.5 rounded border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition"

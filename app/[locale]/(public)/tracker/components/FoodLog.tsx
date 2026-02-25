@@ -419,10 +419,20 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
                     </div>
                   </button>
 
-                  {/* Expanded: show items */}
-                  {isExpanded && e.items.length > 0 && (
+                  {/* Expanded: show photo + items */}
+                  {isExpanded && (
                     <div className="ml-12 mt-1 mb-2 border-l-2 border-orange-500/20 pl-3 space-y-1">
-                      {e.items.map((item, idx) => (
+                      {e.photo && (
+                        <div className="mb-2">
+                          <img
+                            src={`/api/tracker/food/photo/${e.photo}`}
+                            alt={e.description}
+                            className="max-w-full max-h-48 rounded-lg object-contain border border-zinc-700"
+                            loading="lazy"
+                          />
+                        </div>
+                      )}
+                      {e.items.length > 0 && e.items.map((item, idx) => (
                         <div key={idx} className="flex justify-between text-xs text-zinc-400">
                           <span>{item.quantity} {item.unit} {item.name}</span>
                           <span className="font-mono text-zinc-500">

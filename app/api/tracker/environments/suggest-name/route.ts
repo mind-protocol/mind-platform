@@ -1,23 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getUserIdFromRequest } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
 
+/**
+ * Proxy for environment name suggestion.
+ * POST /api/tracker/environments/suggest-name
+ *   -> proxies to MANEMUS_URL/api/tracker/environments/suggest-name
+ */
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const userId = await getUserIdFromRequest(req);
-
-    const res = await fetch(`${MANEMUS_URL}/chat/send`, {
+    const formData = await req.formData();
+    const res = await fetch(`${MANEMUS_URL}/api/tracker/environments/suggest-name`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '1',
-        ...(userId ? { 'X-User-Id': userId } : {}),
-      },
-      body: JSON.stringify({ ...body, user_id: userId }),
+      headers: { 'ngrok-skip-browser-warning': '1' },
+      body: formData,
       cache: 'no-store',
     });
     const data = await res.json();
