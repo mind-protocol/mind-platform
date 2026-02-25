@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getUserIdFromRequest } from '@/lib/auth';
 
 const MANEMUS_URL = process.env.MANEMUS_URL || 'http://localhost:8765';
 
@@ -6,6 +7,7 @@ export async function GET(req: NextRequest) {
   const auth = req.headers.get('authorization');
   if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
+  const userId = await getUserIdFromRequest(req);
   const days = req.nextUrl.searchParams.get('days') || '60';
   const url = `${MANEMUS_URL}/api/tracker/dependencies?days=${days}`;
 
@@ -14,6 +16,7 @@ export async function GET(req: NextRequest) {
       headers: {
         'Authorization': auth,
         'ngrok-skip-browser-warning': 'true',
+        'X-User-Id': userId,
       },
       cache: 'no-store',
     });

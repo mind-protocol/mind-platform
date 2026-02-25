@@ -3,6 +3,98 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Theme CSS custom properties ──────────────────────────────────── */
+:root {
+  /* Light theme (default when .dark is absent) */
+  --bg-primary: #f8fafc;     /* slate-50 */
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;    /* slate-100 */
+  --bg-input: #e2e8f0;       /* slate-200 */
+  --text-primary: #1e293b;   /* slate-800 */
+  --text-secondary: #475569; /* slate-600 */
+  --text-muted: #94a3b8;     /* slate-400 */
+  --border-primary: #e2e8f0; /* slate-200 */
+  --border-secondary: #cbd5e1; /* slate-300 */
+  --ring: #94a3b8;
+}
+
+.dark {
+  --bg-primary: #09090b;     /* zinc-950 */
+  --bg-secondary: #18181b;   /* zinc-900 */
+  --bg-tertiary: #27272a;    /* zinc-800 */
+  --bg-input: #3f3f46;       /* zinc-700 */
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa; /* zinc-400 */
+  --text-muted: #52525b;     /* zinc-600 */
+  --border-primary: #27272a; /* zinc-800 */
+  --border-secondary: #3f3f46; /* zinc-700 */
+  --ring: #52525b;
+}
+
+/* ── Theme override layer ─────────────────────────────────────────
+   Maps hardcoded dark-mode Tailwind classes to theme-aware values
+   when the light theme is active. This avoids editing every component. */
+
+/* Background overrides */
+:root:not(.dark) .bg-zinc-950 { background-color: var(--bg-primary) !important; }
+:root:not(.dark) .bg-zinc-900 { background-color: var(--bg-secondary) !important; }
+:root:not(.dark) .bg-zinc-800 { background-color: var(--bg-tertiary) !important; }
+:root:not(.dark) .bg-zinc-900\/50 { background-color: rgba(255, 255, 255, 0.7) !important; }
+:root:not(.dark) .bg-zinc-900\/80 { background-color: rgba(255, 255, 255, 0.85) !important; }
+:root:not(.dark) .bg-zinc-800\/50 { background-color: rgba(241, 245, 249, 0.5) !important; }
+:root:not(.dark) .bg-black { background-color: #ffffff !important; }
+:root:not(.dark) .bg-black\/50 { background-color: rgba(255, 255, 255, 0.5) !important; }
+:root:not(.dark) .bg-\[\#0a0a0a\] { background-color: var(--bg-primary) !important; }
+
+/* Text overrides */
+:root:not(.dark) .text-white { color: var(--text-primary) !important; }
+:root:not(.dark) .text-zinc-100 { color: #334155 !important; } /* slate-700 */
+:root:not(.dark) .text-zinc-200 { color: #475569 !important; } /* slate-600 */
+:root:not(.dark) .text-zinc-300 { color: #475569 !important; } /* slate-600 */
+:root:not(.dark) .text-zinc-400 { color: var(--text-secondary) !important; }
+:root:not(.dark) .text-zinc-500 { color: var(--text-secondary) !important; }
+:root:not(.dark) .text-zinc-600 { color: var(--text-muted) !important; }
+
+/* Border overrides */
+:root:not(.dark) .border-zinc-800 { border-color: var(--border-primary) !important; }
+:root:not(.dark) .border-zinc-700 { border-color: var(--border-secondary) !important; }
+:root:not(.dark) .border-zinc-600 { border-color: #cbd5e1 !important; }
+:root:not(.dark) .border-zinc-900 { border-color: #e2e8f0 !important; }
+
+/* Divide overrides */
+:root:not(.dark) .divide-zinc-800 > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--border-primary) !important;
+}
+:root:not(.dark) .divide-zinc-700 > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--border-secondary) !important;
+}
+
+/* Ring overrides */
+:root:not(.dark) .ring-zinc-800 { --tw-ring-color: var(--border-primary) !important; }
+:root:not(.dark) .ring-zinc-700 { --tw-ring-color: var(--border-secondary) !important; }
+
+/* Placeholder overrides */
+:root:not(.dark) .placeholder-zinc-600::placeholder { color: #94a3b8 !important; }
+:root:not(.dark) .placeholder-zinc-500::placeholder { color: #94a3b8 !important; }
+
+/* Hover state overrides — light mode */
+:root:not(.dark) .hover\:text-white:hover { color: var(--text-primary) !important; }
+:root:not(.dark) .hover\:text-zinc-300:hover { color: #334155 !important; }
+:root:not(.dark) .hover\:bg-zinc-800:hover { background-color: var(--bg-tertiary) !important; }
+:root:not(.dark) .hover\:bg-zinc-900:hover { background-color: var(--bg-secondary) !important; }
+:root:not(.dark) .hover\:border-zinc-700:hover { border-color: var(--border-secondary) !important; }
+:root:not(.dark) .hover\:border-zinc-600:hover { border-color: #cbd5e1 !important; }
+:root:not(.dark) .hover\:border-zinc-500:hover { border-color: #94a3b8 !important; }
+
+/* Focus state overrides */
+:root:not(.dark) .focus\:border-zinc-600:focus { border-color: #94a3b8 !important; }
+:root:not(.dark) .focus\:ring-zinc-700:focus { --tw-ring-color: #cbd5e1 !important; }
+
+/* Scrollbar styling for light mode */
+:root:not(.dark) ::-webkit-scrollbar-track { background: var(--bg-primary); }
+:root:not(.dark) ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+/* ── Body baseline ─────────────────────────────────────────────── */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -16,10 +108,11 @@ html {
 body {
   min-height: 100%;
   font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #0a0a0a;
-  color: #ffffff;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Connectome pages need overflow hidden */
@@ -40,4 +133,12 @@ body {
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* ── Smooth theme transitions ──────────────────────────────────── */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
 }

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getUserIdFromRequest } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,12 +10,17 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const userId = await getUserIdFromRequest(req);
     const { id } = await params;
     const body = await req.json();
     const res = await fetch(`${MANEMUS_URL}/api/tracker/plan/${id}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': '1' },
-      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '1',
+        'X-User-Id': userId,
+      },
+      body: JSON.stringify({ ...body, user_id: userId }),
       cache: 'no-store',
     });
     const data = await res.json();

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getUserIdFromRequest } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -6,11 +7,15 @@ const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ng
 
 export async function GET(req: NextRequest) {
   try {
+    const userId = await getUserIdFromRequest(req);
     const params = req.nextUrl.searchParams.toString();
     const url = `${MANEMUS_URL}/api/tracker/plan${params ? `?${params}` : ''}`;
     const res = await fetch(url, {
       cache: 'no-store',
-      headers: { 'ngrok-skip-browser-warning': '1' },
+      headers: {
+        'ngrok-skip-browser-warning': '1',
+        'X-User-Id': userId,
+      },
     });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
@@ -21,11 +26,16 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    const userId = await getUserIdFromRequest(req);
     const body = await req.json();
     const res = await fetch(`${MANEMUS_URL}/api/tracker/plan`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': '1' },
-      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '1',
+        'X-User-Id': userId,
+      },
+      body: JSON.stringify({ ...body, user_id: userId }),
       cache: 'no-store',
     });
     const data = await res.json();

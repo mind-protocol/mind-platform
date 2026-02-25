@@ -15,6 +15,52 @@ interface SensationItem {
   icon: string;
 }
 
+const SYMPTOM_TOOLTIPS: Record<string, string> = {
+  // Serotonin
+  agitation: "Nervosité excessive, incapacité à rester immobile, besoin de bouger constamment",
+  tremors: "Tremblements involontaires des mains, doigts ou membres — fins et rapides",
+  sweating: "Transpiration excessive sans effort physique, sueurs froides ou chaudes",
+  diarrhea: "Selles fréquentes et liquides, urgence intestinale",
+  tachycardia: "Coeur qui bat vite (>100 bpm au repos) — vérifiable au poignet ou sur la Garmin",
+  hyperthermia: "Température corporelle élevée (>38°C), sensation de chaleur interne intense",
+  confusion: "Difficulté à penser clairement, désorientation, pensées désorganisées",
+  myoclonus: "Contractions musculaires brusques et involontaires — sursauts, spasmes",
+  // GABA/sedation
+  excessive_sedation: "Somnolence anormale, difficulté à garder les yeux ouverts, envie irrésistible de dormir",
+  respiratory_slow: "Respiration anormalement lente (<12/min), pauses entre les respirations",
+  ataxia: "Perte d'équilibre, démarche instable, impression d'ébriété sans alcool",
+  hypotension: "Vertige en se levant rapidement, vision qui noircit brièvement, tête qui tourne",
+  // Gastrointestinal
+  nausea: "Envie de vomir sans vomir, malaise gastrique, estomac retourné",
+  retching: "Haut-le-coeur — contractions abdominales réflexes sans vomissement effectif",
+  vomiting: "Vomissement effectif — expulsion du contenu gastrique",
+  stomach_pain: "Douleur ou crampe dans le ventre, sensation de brûlure ou pression abdominale",
+  // Respiratory
+  breathing_shallow: "Respiration haute et superficielle — seul le haut du thorax bouge, souffle court",
+  breathing_blocked: "Sensation de ne pas pouvoir inspirer à fond, blocage respiratoire, oppression",
+  breathing_panting: "Respiration rapide et courte comme après un sprint, essoufflement au repos",
+  hyperventilation: "Respiration excessive et rapide, fourmillements aux extrémités, tête légère",
+  chest_tightness: "Pression ou serrement dans la poitrine, sensation de poids sur le sternum",
+  // Neurological
+  headache: "Douleur dans la tête — pression, pulsation ou serrement, localisée ou diffuse",
+  dizziness: "Sensation de vertige, pièce qui tourne, instabilité même assis",
+  tremors_general: "Tremblements des mains ou du corps, fins ou grossiers, au repos ou en mouvement",
+  numbness: "Engourdissement, fourmillements, perte de sensibilité dans les extrémités (doigts, orteils, lèvres)",
+  brain_fog: "Brouillard mental — difficulté à se concentrer, pensées ralenties, impression de coton",
+  visual_disturbance: "Troubles visuels — vision floue, halos, points lumineux, difficultés de mise au point",
+  // Cardiovascular
+  palpitations: "Conscience anormale des battements du coeur — sensation de coeur qui saute ou bat fort",
+  // Thermoregulation
+  hot_flash: "Bouffée de chaleur soudaine, rougeur du visage, sensation de brûlure interne",
+  cold_flash: "Frisson soudain, chair de poule, sensation de froid intense sans raison externe",
+  // Psychological
+  anxiety_spike: "Montée d'anxiété brutale — oppression, pensées catastrophiques, besoin de fuir",
+  mood_crash: "Chute d'humeur soudaine — tristesse, irritabilité ou vide émotionnel inattendu",
+  fatigue_sudden: "Fatigue brutale, comme si l'énergie était coupée d'un coup",
+  // Musculoskeletal
+  muscle_tension: "Tensions musculaires — raideur dans la nuque, épaules, mâchoire ou dos",
+};
+
 const SENSATION_CATEGORIES: SensationCategory[] = [
   {
     key: 'gastrointestinal',
@@ -215,6 +261,7 @@ export default function SensationLogger({ onLogged }: { onLogged: () => void }) 
                     <div key={item.key} className="flex flex-col items-start gap-0.5">
                       <button
                         onClick={() => toggleEffect(item.key)}
+                        title={SYMPTOM_TOOLTIPS[item.key] || item.label}
                         className={`text-xs px-2 py-1 rounded border transition ${severityColor}`}
                       >
                         {item.icon} {item.label}

@@ -3,6 +3,7 @@ import "./globals.css";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { getLocale } from "next-intl/server";
 import type { ReactNode } from "react";
+import { ThemeProvider } from "@/lib/theme";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,8 +24,10 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const locale = await getLocale();
 
   return (
-    <html lang={locale} className={`${inter.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
-      <body className="font-sans" suppressHydrationWarning>{children}</body>
+    <html lang={locale} className={`dark ${inter.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+      <body className="font-sans" suppressHydrationWarning>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

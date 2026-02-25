@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useChatStore, type ChatMessage } from '@/lib/chat/store';
 import { usePathname } from 'next/navigation';
+import { capturePageScreenshot, fileToBase64 } from '@/lib/page-context';
 
 // ─── Preferences persistence ─────────────────────────────────────────────────
 const PREFS_KEY = 'chat-prefs';
@@ -168,6 +169,17 @@ function MessageBubble({
           border: '1px solid rgba(255,255,255,0.06)',
         }}
       >
+        {/* Image attachment (user messages only) */}
+        {isUser && msg.image && (
+          <div className="mb-1.5">
+            <img
+              src={msg.image}
+              alt="Attached image"
+              className="max-w-full max-h-48 rounded-lg object-contain"
+              style={{ border: '1px solid rgba(255,255,255,0.08)' }}
+            />
+          </div>
+        )}
         <p className="whitespace-pre-wrap break-words">{msg.content}</p>
         <div className="flex items-center justify-end gap-1 mt-0.5">
           <span className="text-[10px] opacity-50">
@@ -375,18 +387,57 @@ function OptionsMenu({
   );
 }
 
+// ─── Image Preview ──────────────────────────────────────────────────────────
+function ImagePreview({ src, onRemove }: { src: string; onRemove: () => void }) {
+  return (
+    <div className="relative inline-block mx-3 mt-2 mb-1">
+      <img
+        src={src}
+        alt="Attachment preview"
+        className="max-h-24 max-w-[200px] rounded-lg object-contain"
+        style={{ border: '1px solid rgba(255,255,255,0.1)' }}
+      />
+      <button
+        onClick={onRemove}
+        className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-zinc-700 hover:bg-red-500 text-zinc-300 hover:text-white flex items-center justify-center transition-colors"
+        title="Remove image"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3">
+          <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z" />
+        </svg>
+      </button>
+    </div>
+  );
+}
+
 // ─── Chat Input ─────────────────────────────────────────────────────────────
 function ChatInput({ prefs, onPrefsChange }: { prefs: ChatPrefs; onPrefsChange: (p: ChatPrefs) => void }) {
-  const { inputText, setInputText, sendMessage, isSending } = useChatStore();
+  const { inputText, setInputText, sendMessage, isSending, pendingImage, setPendingImage } = useChatStore();
   const pathname = usePathname();
   const inputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [showOptions, setShowOptions] = useState(false);
+  const [isCapturing, setIsCapturing] = useState(false);
+  const [showAttachMenu, setShowAttachMenu] = useState(false);
+  const attachMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close attach menu on outside click
+  useEffect(() => {
+    if (!showAttachMenu) return;
+    const handler = (e: MouseEvent) => {
+      if (attachMenuRef.current && !attachMenuRef.current.contains(e.target as Node)) {
+        setShowAttachMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [showAttachMenu]);
 
   const handleSend = useCallback(() => {
-    if (!inputText.trim() || isSending) return;
+    if ((!inputText.trim() && !pendingImage) || isSending) return;
     const pageUrl = typeof window !== 'undefined' ? window.location.href : pathname;
-    sendMessage(inputText.trim(), pageUrl);
-  }, [inputText, isSending, sendMessage, pathname]);
+    sendMessage(inputText.trim() || '(image)', pageUrl);
+  }, [inputText, isSending, sendMessage, pathname, pendingImage]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -406,47 +457,159 @@ function ChatInput({ prefs, onPrefsChange }: { prefs: ChatPrefs; onPrefsChange: 
     [sendMessage, pathname]
   );
 
+  const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    // Validate: images only, max 5MB
+    if (!file.type.startsWith('image/')) return;
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image must be under 5MB');
+      return;
+    }
+    try {
+      const base64 = await fileToBase64(file);
+      setPendingImage(base64);
+    } catch {
+      console.warn('Failed to read image file');
+    }
+    // Reset file input so the same file can be selected again
+    if (fileInputRef.current) fileInputRef.current.value = '';
+    setShowAttachMenu(false);
+  }, [setPendingImage]);
+
+  const handleScreenshot = useCallback(async () => {
+    setIsCapturing(true);
+    setShowAttachMenu(false);
+    try {
+      const dataUrl = await capturePageScreenshot();
+      if (dataUrl) {
+        setPendingImage(dataUrl);
+      }
+    } catch {
+      console.warn('Screenshot capture failed');
+    }
+    setIsCapturing(false);
+  }, [setPendingImage]);
+
   useEffect(() => { inputRef.current?.focus(); }, []);
 
   return (
-    <div className="relative flex items-center gap-1.5 border-t border-zinc-700/50 px-3 py-2">
-      <MicButton onTranscript={handleTranscript} mode={prefs.voiceMode} />
-      <input
-        ref={inputRef}
-        type="text"
-        value={inputText}
-        onChange={(e) => setInputText(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Message MIND..."
-        className="flex-1 bg-transparent text-sm text-zinc-100 placeholder:text-zinc-500 outline-none"
-        disabled={isSending}
-      />
-      <button
-        onClick={handleSend}
-        disabled={!inputText.trim() || isSending}
-        className="p-1.5 rounded-full text-amber-500 hover:bg-amber-500/10 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-          <path d="M3.105 3.342a.75.75 0 0 1 .826-.14l13.5 6.75a.75.75 0 0 1 0 1.342l-13.5 6.75a.75.75 0 0 1-1.053-.869l1.672-5.357a.75.75 0 0 1 .573-.524L9.75 10l-4.627-1.294a.75.75 0 0 1-.573-.524L2.878 2.825a.75.75 0 0 1 .227-.483Z" />
-        </svg>
-      </button>
-      {/* Options "..." button */}
-      <button
-        onClick={() => setShowOptions(v => !v)}
-        className="p-1.5 rounded-full text-zinc-500 hover:text-zinc-200 transition-colors"
-        title="Options"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-          <path d="M3 10a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM8.5 10a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM15.5 8.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
-        </svg>
-      </button>
-      {showOptions && (
-        <OptionsMenu
-          prefs={prefs}
-          onChange={(p) => { onPrefsChange(p); }}
-          onClose={() => setShowOptions(false)}
-        />
+    <div className="border-t border-zinc-700/50">
+      {/* Image preview row */}
+      {pendingImage && (
+        <ImagePreview src={pendingImage} onRemove={() => setPendingImage(null)} />
       )}
+
+      {/* Input row */}
+      <div className="relative flex items-center gap-1.5 px-3 py-2">
+        <MicButton onTranscript={handleTranscript} mode={prefs.voiceMode} />
+
+        {/* Attachment button (camera/image) */}
+        <div className="relative">
+          <button
+            onClick={() => setShowAttachMenu(v => !v)}
+            disabled={isCapturing}
+            className={`p-1.5 rounded-full transition-colors ${
+              pendingImage
+                ? 'text-amber-400 hover:text-amber-300'
+                : isCapturing
+                ? 'text-amber-500 animate-pulse'
+                : 'text-zinc-400 hover:text-zinc-200'
+            }`}
+            title="Attach image or screenshot"
+          >
+            {/* Camera icon */}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+              <path fillRule="evenodd" d="M1 8a2 2 0 0 1 2-2h.93a2 2 0 0 0 1.664-.89l.812-1.22A2 2 0 0 1 8.07 3h3.86a2 2 0 0 1 1.664.89l.812 1.22A2 2 0 0 0 16.07 6H17a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8Zm13.5 3a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM10 14a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clipRule="evenodd" />
+            </svg>
+          </button>
+
+          {/* Attachment dropdown menu */}
+          {showAttachMenu && (
+            <div
+              ref={attachMenuRef}
+              className="absolute bottom-full left-0 mb-2 w-48 rounded-xl p-1 z-50"
+              style={{
+                background: 'rgba(15,15,20,0.97)',
+                border: '1px solid rgba(120,130,155,0.25)',
+                backdropFilter: 'blur(16px)',
+                boxShadow: '0 12px 40px rgba(0,0,0,.6)',
+              }}
+            >
+              {/* Upload image */}
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs text-zinc-300 hover:bg-zinc-800 transition-colors"
+              >
+                {/* Photo icon */}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 text-zinc-400">
+                  <path fillRule="evenodd" d="M1 5.25A2.25 2.25 0 0 1 3.25 3h13.5A2.25 2.25 0 0 1 19 5.25v9.5A2.25 2.25 0 0 1 16.75 17H3.25A2.25 2.25 0 0 1 1 14.75v-9.5Zm1.5 5.81v3.69c0 .414.336.75.75.75h13.5a.75.75 0 0 0 .75-.75v-2.69l-2.22-2.219a.75.75 0 0 0-1.06 0l-1.91 1.909-4.97-4.969a.75.75 0 0 0-1.06 0L2.5 11.06ZM12.75 7a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5Z" clipRule="evenodd" />
+                </svg>
+                Upload image
+              </button>
+              {/* Capture screenshot */}
+              <button
+                onClick={handleScreenshot}
+                disabled={isCapturing}
+                className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs text-zinc-300 hover:bg-zinc-800 transition-colors disabled:opacity-50"
+              >
+                {/* Screen capture icon */}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 text-zinc-400">
+                  <path d="M15.993 1.385a1.87 1.87 0 0 1 2.622 2.622l-4.03 5.31a2.333 2.333 0 0 1-.396.406 1.14 1.14 0 0 1-.104.071l-1.746.872.376-1.903a1.12 1.12 0 0 1 .033-.118c.04-.122.1-.24.178-.345l3.067-6.915Z" />
+                  <path d="M2.5 4A1.5 1.5 0 0 0 1 5.5v9A1.5 1.5 0 0 0 2.5 16h15a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 17.5 4h-3.563l-.468 1.054A3 3 0 0 0 17.5 5h0a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-15a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8.585l.468-1.054A3 3 0 0 0 2.5 4Z" />
+                </svg>
+                {isCapturing ? 'Capturing...' : 'Capture visible area'}
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Hidden file input */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileSelect}
+          className="hidden"
+        />
+
+        <input
+          ref={inputRef}
+          type="text"
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Message MIND..."
+          className="flex-1 bg-transparent text-sm text-zinc-100 placeholder:text-zinc-500 outline-none"
+          disabled={isSending}
+        />
+        <button
+          onClick={handleSend}
+          disabled={(!inputText.trim() && !pendingImage) || isSending}
+          className="p-1.5 rounded-full text-amber-500 hover:bg-amber-500/10 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+            <path d="M3.105 3.342a.75.75 0 0 1 .826-.14l13.5 6.75a.75.75 0 0 1 0 1.342l-13.5 6.75a.75.75 0 0 1-1.053-.869l1.672-5.357a.75.75 0 0 1 .573-.524L9.75 10l-4.627-1.294a.75.75 0 0 1-.573-.524L2.878 2.825a.75.75 0 0 1 .227-.483Z" />
+          </svg>
+        </button>
+        {/* Options "..." button */}
+        <button
+          onClick={() => setShowOptions(v => !v)}
+          className="p-1.5 rounded-full text-zinc-500 hover:text-zinc-200 transition-colors"
+          title="Options"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+            <path d="M3 10a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM8.5 10a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM15.5 8.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
+          </svg>
+        </button>
+        {showOptions && (
+          <OptionsMenu
+            prefs={prefs}
+            onChange={(p) => { onPrefsChange(p); }}
+            onClose={() => setShowOptions(false)}
+          />
+        )}
+      </div>
     </div>
   );
 }

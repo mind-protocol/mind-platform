@@ -85,7 +85,7 @@ function doseLabel(entry: LogEntry): string {
   if (substance === 'melatonin') return `${amt}mg ${dose.details?.form || 'tablet'}`;
   if (substance === 'venlafaxine') return `${amt}mg ${dose.details?.release === 'extended' ? 'LP' : ''}`.trim();
   if (substance === 'sertraline') return `${amt}mg`;
-  if (substance === 'prazepam') return `${amt}mg ${dose.details?.route || 'sublingual'}`;
+  if (substance === 'prazepam') return `${amt} goutte${amt > 1 ? 's' : ''} sublingual`;
   if (substance === 'cyamemazine') return `${amt}mg`;
   if (substance === 'cbd') {
     if (dose.details?.route === 'vaporized') return `${amt} chamber${amt > 1 ? 's' : ''} CBD`;

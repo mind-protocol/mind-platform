@@ -21,7 +21,7 @@ export const SUBSTANCE_CONFIG: Record<SubstanceKey, SubstanceConfig> = {
   melatonin:   { color: '#6366f1', icon: '\u{1F319}', label: 'Melatonin',   unit: 'mg',       geometry: 'crescent',     laneY: 12.5 },
   venlafaxine: { color: '#14b8a6', icon: '\u{1F48A}', label: 'Venlafaxine', unit: 'mg',       geometry: 'capsule',      laneY: 15 },
   sertraline:  { color: '#06b6d4', icon: '\u{1F48A}', label: 'Sertraline',  unit: 'mg',       geometry: 'capsule',      laneY: 16.25 },
-  prazepam:    { color: '#94a3b8', icon: '\u{1FAE7}', label: 'Prazepam',    unit: 'mg',       geometry: 'disc',         laneY: 17.5 },
+  prazepam:    { color: '#94a3b8', icon: '\u{1FAE7}', label: 'Prazepam',    unit: 'gouttes',  geometry: 'droplet',      laneY: 17.5 },
   cyamemazine: { color: '#7e22ce', icon: '\u{1F30C}', label: 'Cyamemazine', unit: 'mg',       geometry: 'tetrahedron',  laneY: 20 },
   dynabiane:   { color: '#10b981', icon: '\u{1F9EC}', label: 'Dynabiane',   unit: 'gélule',   geometry: 'pill',         laneY: 22.5 },
   omegabiane:  { color: '#0ea5e9', icon: '\u{1F41F}', label: 'Omegabiane',  unit: 'gélule',   geometry: 'droplet',      laneY: 25 },
@@ -46,7 +46,7 @@ export const DOSE_RANGES: Record<SubstanceKey, { min: number; max: number }> = {
   melatonin:   { min: 0.5, max: 10 },
   venlafaxine: { min: 37.5, max: 225 },
   sertraline:  { min: 50, max: 200 },
-  prazepam:    { min: 5, max: 20 },
+  prazepam:    { min: 5, max: 40 },    // 5-40 gouttes sublinguales (1 goutte = 1mg)
   cyamemazine: { min: 12.5, max: 100 },
   dynabiane:   { min: 1, max: 2 },       // 1-2 gélules/jour
   omegabiane:  { min: 1, max: 3 },       // 1-3 gélules/jour

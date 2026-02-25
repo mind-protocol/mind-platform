@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { extractPageContext, type PageContext } from '@/lib/page-context';
 
 export interface ChatMessage {
   role: 'user' | 'assistant';
@@ -11,6 +12,8 @@ export interface ChatMessage {
   wallet?: string;
   /** Read status: sending → sent → responded */
   status?: 'sending' | 'sent' | 'responded';
+  /** Base64 image attached to the message (user only) */
+  image?: string;
 }
 
 interface ChatState {
@@ -24,6 +27,8 @@ interface ChatState {
   connectionStatus: 'connected' | 'disconnected' | 'error';
   /** Timestamp of last received message — used for incremental polling */
   lastPollTimestamp: string | null;
+  /** Pending image attachment (base64 data URL) */
+  pendingImage: string | null;
 }
 
 interface ChatActions {
@@ -31,6 +36,7 @@ interface ChatActions {
   setOpen: (open: boolean) => void;
   setInputText: (text: string) => void;
   setWalletAddress: (addr: string | null) => void;
+  setPendingImage: (img: string | null) => void;
   initThread: () => void;
   sendMessage: (content: string, pageUrl?: string, screenshot?: string) => Promise<void>;
   pollMessages: () => Promise<void>;
@@ -62,6 +68,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   walletAddress: null,
   connectionStatus: 'connected',
   lastPollTimestamp: null,
+  pendingImage: null,
 
   // Actions
   toggleChat: () => {
@@ -81,14 +88,25 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
   setWalletAddress: (addr) => set({ walletAddress: addr }),
 
+  setPendingImage: (img) => set({ pendingImage: img }),
+
   initThread: () => {
     const threadId = getOrCreateThreadId();
     set({ threadId });
   },
 
   sendMessage: async (content, pageUrl, screenshot) => {
-    const { threadId, walletAddress, messages } = get();
+    const { threadId, walletAddress, messages, pendingImage } = get();
     if (!content.trim() || !threadId) return;
+
+    // Extract page context at send time
+    let pageContext: PageContext | undefined;
+    try {
+      pageContext = extractPageContext();
+    } catch { /* context extraction should never block sending */ }
+
+    // Resolve image: explicit screenshot param > pending image attachment
+    const imageToSend = screenshot || pendingImage || undefined;
 
     const optimisticMsg: ChatMessage = {
       role: 'user',
@@ -97,9 +115,10 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       message_id: `local_${Date.now()}`,
       page_url: pageUrl,
       status: 'sending',
+      image: imageToSend || undefined,
     };
 
-    set({ isSending: true, messages: [...messages, optimisticMsg], inputText: '' });
+    set({ isSending: true, messages: [...messages, optimisticMsg], inputText: '', pendingImage: null });
 
     try {
       const res = await fetch('/api/chat/send', {
@@ -111,7 +130,8 @@ export const useChatStore = create<ChatStore>((set, get) => ({
           sender_id: walletAddress || threadId,
           wallet: walletAddress || undefined,
           page_url: pageUrl,
-          screenshot: screenshot || undefined,
+          page_context: pageContext || undefined,
+          screenshot: imageToSend || undefined,
         }),
       });
 

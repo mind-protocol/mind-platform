@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getUserIdFromRequest } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,6 +12,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const userId = await getUserIdFromRequest(req);
     const section = req.nextUrl.searchParams.get('section') || '';
     const url = section
       ? `${MANEMUS_URL}/api/medical-profile/${section}`
@@ -21,6 +23,7 @@ export async function GET(req: NextRequest) {
       headers: {
         'ngrok-skip-browser-warning': '1',
         'Authorization': authHeader,
+        'X-User-Id': userId,
       },
     });
     const data = await res.json();

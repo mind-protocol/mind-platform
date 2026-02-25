@@ -1,59 +1,64 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
-export default function RegisterPage() {
+export default function LoginPage() {
   const router = useRouter();
-  const [name, setName] = useState('');
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Auto-submit magic link if ?token= is present
+  useEffect(() => {
+    const token = searchParams.get('token');
+    if (!token) return;
+
+    setLoading(true);
+    setError('');
+
+    fetch(`/api/auth/magic?token=${encodeURIComponent(token)}`)
+      .then(async (res) => {
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || 'Lien invalide ou expiré');
+        }
+        router.push('/tracker');
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [searchParams, router]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
 
-    if (!name.trim()) {
-      setError('Veuillez entrer votre nom.');
-      return;
-    }
     if (!email.trim()) {
       setError('Veuillez entrer votre adresse email.');
       return;
     }
     if (!password) {
-      setError('Veuillez choisir un mot de passe.');
-      return;
-    }
-    if (password.length < 8) {
-      setError('Le mot de passe doit contenir au moins 8 caractères.');
-      return;
-    }
-    if (password !== passwordConfirm) {
-      setError('Les mots de passe ne correspondent pas.');
+      setError('Veuillez entrer votre mot de passe.');
       return;
     }
 
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/register', {
+      const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: name.trim(),
-          email: email.trim(),
-          password,
-        }),
+        body: JSON.stringify({ email: email.trim(), password }),
       });
 
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        setError(data.error || 'Erreur lors de la création du compte.');
+        setError(data.error || 'Identifiants incorrects.');
         return;
       }
 
@@ -74,28 +79,13 @@ export default function RegisterPage() {
             Mind Protocol
           </h1>
           <p className="text-zinc-500 text-sm mt-2">
-            Créer votre compte
+            Connexion à votre espace
           </p>
         </div>
 
         {/* Card */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label htmlFor="name" className="block text-sm text-zinc-400 mb-2">
-                Nom
-              </label>
-              <input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Votre nom"
-                autoComplete="name"
-                className="w-full px-4 py-3 bg-zinc-950 border border-zinc-700 rounded text-white placeholder-zinc-600 focus:outline-none focus:border-amber-500 transition"
-              />
-            </div>
-
             <div>
               <label htmlFor="email" className="block text-sm text-zinc-400 mb-2">
                 Email
@@ -120,23 +110,8 @@ export default function RegisterPage() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="8 caractères minimum"
-                autoComplete="new-password"
-                className="w-full px-4 py-3 bg-zinc-950 border border-zinc-700 rounded text-white placeholder-zinc-600 focus:outline-none focus:border-amber-500 transition"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="passwordConfirm" className="block text-sm text-zinc-400 mb-2">
-                Confirmer le mot de passe
-              </label>
-              <input
-                id="passwordConfirm"
-                type="password"
-                value={passwordConfirm}
-                onChange={(e) => setPasswordConfirm(e.target.value)}
-                placeholder="Confirmer votre mot de passe"
-                autoComplete="new-password"
+                placeholder="Votre mot de passe"
+                autoComplete="current-password"
                 className="w-full px-4 py-3 bg-zinc-950 border border-zinc-700 rounded text-white placeholder-zinc-600 focus:outline-none focus:border-amber-500 transition"
               />
             </div>
@@ -150,16 +125,16 @@ export default function RegisterPage() {
               disabled={loading}
               className="w-full py-3 bg-amber-500 text-black font-semibold rounded hover:bg-amber-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Création en cours...' : 'Créer mon compte'}
+              {loading ? 'Connexion en cours...' : 'Se connecter'}
             </button>
           </form>
         </div>
 
-        {/* Login link */}
+        {/* Register link */}
         <p className="text-center text-zinc-500 text-sm mt-6">
-          Déjà un compte ?{' '}
-          <Link href="/login" className="text-amber-500 hover:text-amber-400 underline">
-            Se connecter
+          Pas encore de compte ?{' '}
+          <Link href="/register" className="text-amber-500 hover:text-amber-400 underline">
+            S&apos;inscrire
           </Link>
         </p>
       </div>

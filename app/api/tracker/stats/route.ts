@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getUserIdFromRequest } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -6,11 +7,15 @@ const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ng
 
 export async function GET(req: NextRequest) {
   try {
+    const userId = await getUserIdFromRequest(req);
     const params = req.nextUrl.searchParams.toString();
     const url = `${MANEMUS_URL}/api/tracker/stats${params ? `?${params}` : ''}`;
     const res = await fetch(url, {
       cache: 'no-store',
-      headers: { 'ngrok-skip-browser-warning': '1' },
+      headers: {
+        'ngrok-skip-browser-warning': '1',
+        'X-User-Id': userId,
+      },
     });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
