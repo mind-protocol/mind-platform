@@ -46,19 +46,21 @@ const FN_H = 28;       // function row key height (smaller)
 const SECTION_GAP = 12; // gap between keyboard sections
 
 // ── Styles ──────────────────────────────────────────────────────────────
-const IDLE_BG = 'linear-gradient(180deg, rgba(60,65,80,0.92), rgba(38,42,55,0.96))';
-const IDLE_BORDER = 'rgba(150,160,185,0.20)';
-const IDLE_SHADOW = 'inset 0 1px 0 rgba(180,190,210,.10), 0 1px 2px rgba(0,0,0,.5)';
-const IDLE_LABEL = '#8a95ab';
+// 3-stop silver gradient for idle keys (more depth/dimension)
+const IDLE_BG = 'linear-gradient(180deg, rgba(92,98,112,0.96) 0%, rgba(63,68,80,0.98) 52%, rgba(38,42,52,1) 100%)';
+const IDLE_BORDER = 'rgba(180,190,215,0.16)';
+const IDLE_SHADOW = 'inset 0 1px 0 rgba(255,255,255,.10), inset 0 -1px 0 rgba(0,0,0,.35), 0 1px 2px rgba(0,0,0,.4)';
+const IDLE_LABEL = 'rgba(225,232,245,.88)';
 
+// 3-stop blue gradient for active keys
 const ACTIVE_BG = (g: number) =>
-  `linear-gradient(180deg, rgba(80,140,230,${(0.7 + g * 0.3).toFixed(2)}), rgba(50,100,200,${(0.6 + g * 0.3).toFixed(2)}))`;
+  `linear-gradient(180deg, rgba(130,170,255,${(0.85 + g * 0.10).toFixed(2)}) 0%, rgba(85,125,235,${(0.85 + g * 0.10).toFixed(2)}) 55%, rgba(45,78,175,${(0.90 + g * 0.08).toFixed(2)}) 100%)`;
 const ACTIVE_BORDER = (g: number) =>
-  `rgba(100,170,255,${(0.5 + g * 0.4).toFixed(2)})`;
+  `rgba(150,190,255,${(0.35 + g * 0.30).toFixed(2)})`;
 const ACTIVE_SHADOW = (g: number) =>
-  `inset 0 1px 0 rgba(200,220,255,.25), 0 0 ${(6 + g * 12).toFixed(0)}px rgba(90,170,255,.35), 0 0 ${(16 + g * 16).toFixed(0)}px rgba(90,170,255,.15)`;
+  `0 0 0 1px rgba(110,160,255,${(0.15 + g * 0.15).toFixed(2)}), 0 0 ${(10 + g * 14).toFixed(0)}px rgba(75,130,255,.35), inset 0 1px 0 rgba(255,255,255,.25)`;
 const ACTIVE_LABEL = (g: number) =>
-  `rgba(210,230,255,${(0.7 + g * 0.3).toFixed(2)})`;
+  `rgba(245,250,255,${(0.85 + g * 0.15).toFixed(2)})`;
 
 // ── Render a row of keys ────────────────────────────────────────────────
 function KeyRow({
@@ -67,21 +69,22 @@ function KeyRow({
   keyEls,
   labelEls,
   offsetPx = 0,
-  capsLock,
+  locks,
 }: {
   keys: KeyDef[];
   keyH: number;
   keyEls: React.RefObject<Map<string, HTMLDivElement>>;
   labelEls: React.RefObject<Map<string, HTMLSpanElement>>;
   offsetPx?: number;
-  capsLock?: boolean;
+  locks?: { caps: boolean; num: boolean; scroll: boolean };
 }) {
   return (
     <div className="flex" style={{ gap: GAP, paddingLeft: offsetPx }}>
       {keys.map((k) => {
         const w = k.w * U + (k.w - 1) * GAP;
         const showLabel = k.label.length <= 5;
-        const isCaps = k.code === 'CapsLock';
+        const hasLed = k.code === 'CapsLock' || k.code === 'NumLock';
+        const ledOn = k.code === 'CapsLock' ? locks?.caps : k.code === 'NumLock' ? locks?.num : false;
         return (
           <div
             key={k.code}
@@ -117,8 +120,8 @@ function KeyRow({
                 {k.label}
               </span>
             )}
-            {/* Caps Lock LED indicator */}
-            {isCaps && (
+            {/* Lock LED indicator (CapsLock / NumLock) */}
+            {hasLed && (
               <div
                 style={{
                   position: 'absolute',
@@ -127,8 +130,8 @@ function KeyRow({
                   width: 4,
                   height: 4,
                   borderRadius: '50%',
-                  backgroundColor: capsLock ? '#4ade80' : 'rgba(100,110,130,0.3)',
-                  boxShadow: capsLock ? '0 0 6px #4ade80' : 'none',
+                  backgroundColor: ledOn ? 'rgba(120,220,255,.95)' : 'rgba(90,95,110,.35)',
+                  boxShadow: ledOn ? '0 0 8px rgba(80,180,255,.65)' : 'none',
                   transition: 'all 200ms',
                 }}
               />
@@ -145,7 +148,7 @@ export default function FloatingKeyboardOverlay() {
   const keyEls = useRef<Map<string, HTMLDivElement>>(new Map());
   const labelEls = useRef<Map<string, HTMLSpanElement>>(new Map());
   const pressedRef = useRef<Set<string>>(new Set());
-  const [capsLock, setCapsLock] = useState(false);
+  const [locks, setLocks] = useState({ caps: false, num: false, scroll: false });
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 
@@ -172,26 +175,28 @@ export default function FloatingKeyboardOverlay() {
     return () => { clearTimeout(t); window.removeEventListener('resize', computeScale); };
   }, [computeScale]);
 
-  // Direct keydown/keyup for immediate visual response
+  // Direct keydown/keyup for immediate visual response + lock state
   useEffect(() => {
+    const updateLocks = (e: KeyboardEvent) => {
+      setLocks({
+        caps: e.getModifierState('CapsLock'),
+        num: e.getModifierState('NumLock'),
+        scroll: e.getModifierState('ScrollLock'),
+      });
+    };
     const onDown = (e: KeyboardEvent) => {
       pressedRef.current.add(e.code);
-      if (e.code === 'CapsLock') setCapsLock(prev => !prev);
+      updateLocks(e);
     };
     const onUp = (e: KeyboardEvent) => {
       pressedRef.current.delete(e.code);
-    };
-    // Detect initial caps lock state
-    const onKeyCheck = (e: KeyboardEvent) => {
-      setCapsLock(e.getModifierState('CapsLock'));
+      updateLocks(e);
     };
     window.addEventListener('keydown', onDown, { passive: true });
     window.addEventListener('keyup', onUp, { passive: true });
-    window.addEventListener('keydown', onKeyCheck, { passive: true });
     return () => {
       window.removeEventListener('keydown', onDown);
       window.removeEventListener('keyup', onUp);
-      window.removeEventListener('keydown', onKeyCheck);
     };
   }, []);
 
@@ -221,7 +226,7 @@ export default function FloatingKeyboardOverlay() {
           el.style.background = ACTIVE_BG(glow);
           el.style.borderColor = ACTIVE_BORDER(glow);
           el.style.boxShadow = ACTIVE_SHADOW(glow);
-          el.style.transform = `translateY(${(glow * 1.5).toFixed(1)}px)`;
+          el.style.transform = `translateY(${(glow * 1.5).toFixed(1)}px) scale(0.995)`;
         } else {
           el.style.background = IDLE_BG;
           el.style.borderColor = IDLE_BORDER;
@@ -240,9 +245,6 @@ export default function FloatingKeyboardOverlay() {
     return () => cancelAnimationFrame(rafId);
   }, []);
 
-  // Numpad total width for alignment
-  const numpadW = 4 * U + 3 * GAP;
-
   return (
     <div
       className="fixed bottom-3 left-1/2 z-[52] pointer-events-none select-none"
@@ -255,9 +257,39 @@ export default function FloatingKeyboardOverlay() {
     >
       <div
         ref={containerRef}
-        className="rounded-xl border border-zinc-700/30 bg-zinc-950/90 backdrop-blur-sm p-3"
-        style={{ boxShadow: '0 -2px 30px rgba(0,0,0,.5), 0 8px 40px rgba(0,0,0,.6)' }}
+        className="rounded-2xl border backdrop-blur-md p-3"
+        style={{
+          background: 'rgba(5,7,12,0.88)',
+          borderColor: 'rgba(120,130,155,0.22)',
+          boxShadow: '0 18px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04)',
+        }}
       >
+        {/* Lock indicator LEDs — top right */}
+        <div className="flex justify-end gap-3 mb-1.5 mr-1">
+          {([
+            { on: locks.caps, label: 'CAPS' },
+            { on: locks.num, label: 'NUM' },
+            { on: locks.scroll, label: 'SCRL' },
+          ] as const).map(({ on, label }) => (
+            <div key={label} className="flex items-center gap-1.5" style={{ fontSize: 9 }}>
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: 5,
+                  height: 5,
+                  borderRadius: '50%',
+                  backgroundColor: on ? 'rgba(120,220,255,.95)' : 'rgba(90,95,110,.35)',
+                  boxShadow: on ? '0 0 8px rgba(80,180,255,.65)' : 'none',
+                  transition: 'all 200ms',
+                }}
+              />
+              <span style={{ color: on ? 'rgba(190,220,255,.9)' : 'rgba(120,130,150,.5)', fontFamily: 'ui-monospace, monospace', transition: 'color 200ms' }}>
+                {label}
+              </span>
+            </div>
+          ))}
+        </div>
+
         <div className="flex" style={{ gap: SECTION_GAP }}>
           {/* ── Main keyboard section ── */}
           <div className="flex flex-col" style={{ gap: GAP }}>
@@ -308,7 +340,7 @@ export default function FloatingKeyboardOverlay() {
                   keyEls={keyEls}
                   labelEls={labelEls}
                   offsetPx={offsetPx}
-                  capsLock={capsLock}
+                  locks={locks}
                 />
               );
             })}
@@ -335,6 +367,7 @@ export default function FloatingKeyboardOverlay() {
                 keyH={H}
                 keyEls={keyEls}
                 labelEls={labelEls}
+                locks={locks}
               />
             ))}
           </div>
