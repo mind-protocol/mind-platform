@@ -10,6 +10,7 @@ import BiometricCorrelation from './components/BiometricCorrelation';
 import SensationLogger from './components/SensationLogger';
 import Timeline from './components/Timeline';
 import KCalculator from './components/KCalculator';
+import Practices from './components/Practices';
 import FoodLog from './components/FoodLog';
 import LiveBiometrics from './components/LiveBiometrics';
 import DailySummary from './components/DailySummary';
@@ -38,7 +39,7 @@ export default function TrackerPage() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [showKCalc, setShowKCalc] = useState(true);
   const [viewMode, setViewMode] = useState<'now' | 'plan'>('now');
-  const [activeTab, setActiveTab] = useState<'body' | 'substances'>('body');
+  const [activeTab, setActiveTab] = useState<'body' | 'substances' | 'practices'>('body');
   const [showScheduleForm, setShowScheduleForm] = useState(false);
   const [scheduleDefaults, setScheduleDefaults] = useState<{
     substance?: SubstanceKey;
@@ -248,34 +249,54 @@ export default function TrackerPage() {
                   {t('tabSubstancesDesc')}
                 </span>
               </button>
+              <button
+                onClick={() => setActiveTab('practices')}
+                className={`flex-1 py-3 px-4 rounded-lg text-sm font-medium transition border ${
+                  activeTab === 'practices'
+                    ? 'border-purple-500/40 bg-purple-500/10 text-purple-400'
+                    : 'border-zinc-800 bg-zinc-900 text-zinc-500 hover:text-zinc-300 hover:border-zinc-700'
+                }`}
+              >
+                <span className="text-lg mr-2">🧘</span>
+                Practices
+                <span className="block text-[10px] text-zinc-600 mt-0.5 font-normal">
+                  Yoga, respiration, méditation
+                </span>
+              </button>
             </div>
 
-            {/* K Calculator (toggle) */}
-            {showKCalc && (
-              <div className="mb-6">
-                <KCalculator />
-              </div>
+            {activeTab === 'practices' ? (
+              <Practices refreshKey={refreshKey} />
+            ) : (
+              <>
+                {/* K Calculator (toggle) */}
+                {showKCalc && (
+                  <div className="mb-6">
+                    <KCalculator />
+                  </div>
+                )}
+
+                {/* Summary cards */}
+                <SubstanceCard refreshKey={refreshKey} filter={currentFilter} />
+
+                {/* Body tab: food log above substance log */}
+                {activeTab === 'body' && (
+                  <div className="mt-6">
+                    <FoodLog refreshKey={refreshKey} />
+                  </div>
+                )}
+
+                {/* Log form (filtered by tab) */}
+                <div className="mt-6">
+                  <LogForm onLogged={refresh} filter={currentFilter} />
+                </div>
+
+                {/* Timeline (filtered by tab) */}
+                <div className="mt-6">
+                  <Timeline refreshKey={refreshKey} filter={currentFilter} />
+                </div>
+              </>
             )}
-
-            {/* Summary cards */}
-            <SubstanceCard refreshKey={refreshKey} filter={currentFilter} />
-
-            {/* Body tab: food log above substance log */}
-            {activeTab === 'body' && (
-              <div className="mt-6">
-                <FoodLog refreshKey={refreshKey} />
-              </div>
-            )}
-
-            {/* Log form (filtered by tab) */}
-            <div className="mt-6">
-              <LogForm onLogged={refresh} filter={currentFilter} />
-            </div>
-
-            {/* Timeline (filtered by tab) */}
-            <div className="mt-6">
-              <Timeline refreshKey={refreshKey} filter={currentFilter} />
-            </div>
           </>
         )}
 
