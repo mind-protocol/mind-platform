@@ -5,14 +5,19 @@ import type { VoicePhase, VoiceCallConfig, VoiceServerMessage } from './types';
 import { AudioPlayback } from './AudioPlayback';
 
 const VOICE_WS_ENV = process.env.NEXT_PUBLIC_VOICE_WS_URL || '';
+const MANEMUS_URL = process.env.NEXT_PUBLIC_MANEMUS_URL || 'https://api.mindprotocol.ai';
 
 function resolveWsUrl(): string {
+  // Explicit override (e.g. Cloudflare tunnel for testing)
   if (VOICE_WS_ENV) return VOICE_WS_ENV;
-  if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-    return 'ws://localhost:8766/voice/ws';
+  if (typeof window !== 'undefined') {
+    if (window.location.hostname === 'localhost') {
+      return 'ws://localhost:8766/voice/ws';
+    }
+    // Production: derive WSS from Manemus API host (nginx proxies /voice/ws → uvicorn)
+    const host = MANEMUS_URL.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    return `wss://${host}/voice/ws`;
   }
-  // Production: must set NEXT_PUBLIC_VOICE_WS_URL env var
-  console.warn('[VoiceCall] No NEXT_PUBLIC_VOICE_WS_URL set, falling back to localhost');
   return 'ws://localhost:8766/voice/ws';
 }
 const DEFAULT_VAD_THRESHOLD = 0.015;
