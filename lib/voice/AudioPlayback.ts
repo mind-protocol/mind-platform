@@ -15,6 +15,7 @@ export class AudioPlayback {
   private pendingChunks: ArrayBuffer[] = [];
   private sourceOpen = false;
   private ended = false;
+  private playbackEndResolve: (() => void) | null = null;
 
   /** Get the AnalyserNode for 3D visualization */
   getAnalyser(): AnalyserNode | null {
@@ -49,6 +50,7 @@ export class AudioPlayback {
     this.ended = false;
     this.sourceOpen = false;
     this.sourceBuffer = null;
+    this.playbackEndResolve = null;
 
     // Resume AudioContext if suspended (browser policy)
     if (this.ctx?.state === 'suspended') {
@@ -84,8 +86,49 @@ export class AudioPlayback {
     this.flushPending();
   }
 
+  /**
+   * Returns a promise that resolves when the audio element finishes playing.
+   * Call after endStream() to wait for full playback before transitioning state.
+   */
+  waitForPlaybackEnd(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      if (!this.audioEl) { resolve(); return; }
+
+      // If audio already ended or paused with nothing to play
+      if (this.audioEl.ended || (this.audioEl.paused && this.ended && this.pendingChunks.length === 0)) {
+        resolve();
+        return;
+      }
+
+      this.playbackEndResolve = resolve;
+
+      // Listen for the 'ended' event from the audio element
+      this.audioEl.addEventListener('ended', () => {
+        if (this.playbackEndResolve) {
+          this.playbackEndResolve();
+          this.playbackEndResolve = null;
+        }
+      }, { once: true });
+
+      // Safety timeout: resolve after 60s max to prevent hanging
+      setTimeout(() => {
+        if (this.playbackEndResolve) {
+          console.warn('[AudioPlayback] Playback timeout — forcing resolve');
+          this.playbackEndResolve();
+          this.playbackEndResolve = null;
+        }
+      }, 60000);
+    });
+  }
+
   /** Stop playback immediately */
   stop() {
+    // Resolve any pending playback wait
+    if (this.playbackEndResolve) {
+      this.playbackEndResolve();
+      this.playbackEndResolve = null;
+    }
+
     if (this.audioEl) {
       this.audioEl.pause();
       this.audioEl.currentTime = 0;

@@ -11,8 +11,9 @@ function resolveWsUrl(): string {
   if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
     return 'ws://localhost:8766/voice/ws';
   }
-  // Production: Cloudflare tunnel to local voice server
-  return 'wss://naples-strap-ads-expanded.trycloudflare.com/voice/ws';
+  // Production: must set NEXT_PUBLIC_VOICE_WS_URL env var
+  console.warn('[VoiceCall] No NEXT_PUBLIC_VOICE_WS_URL set, falling back to localhost');
+  return 'ws://localhost:8766/voice/ws';
 }
 const DEFAULT_VAD_THRESHOLD = 0.015;
 const DEFAULT_VAD_SILENCE_MS = 600;
@@ -52,6 +53,9 @@ export function useVoiceCall(config?: VoiceCallConfig): UseVoiceCallReturn {
   const playbackRef = useRef<AudioPlayback | null>(null);
   const responseAccRef = useRef('');
   const phaseRef = useRef<VoicePhase>('idle');
+
+  // Anti-double guard
+  const connectingRef = useRef(false);
 
   // VAD state
   const vadRafRef = useRef(0);
@@ -194,7 +198,8 @@ export function useVoiceCall(config?: VoiceCallConfig): UseVoiceCallReturn {
 
       switch (msg.type) {
         case 'state':
-          if (msg.phase) {
+          if (msg.phase && msg.phase !== 'listening') {
+            // Server-driven phase changes (except listening — we handle that after playback)
             setPhase(msg.phase as VoicePhase);
           }
           break;
@@ -222,8 +227,17 @@ export function useVoiceCall(config?: VoiceCallConfig): UseVoiceCallReturn {
         }
 
         case 'audio_end': {
-          // Signal end of MP3 stream
-          playbackRef.current?.endStream();
+          // Signal end of MP3 stream, then wait for playback to finish
+          const playback = playbackRef.current;
+          if (playback) {
+            playback.endStream();
+            // Wait for audio element to finish playing before going back to listening
+            playback.waitForPlaybackEnd().then(() => {
+              setPhase('listening');
+            });
+          } else {
+            setPhase('listening');
+          }
           break;
         }
       }
@@ -232,14 +246,41 @@ export function useVoiceCall(config?: VoiceCallConfig): UseVoiceCallReturn {
     }
   }, []);
 
+  // ── Cleanup existing connection ───────────────────────────────────
+  const cleanupConnection = useCallback(() => {
+    cancelAnimationFrame(vadRafRef.current);
+    recorderRef.current?.stop();
+    recorderRef.current = null;
+
+    streamRef.current?.getTracks().forEach(t => t.stop());
+    streamRef.current = null;
+
+    audioCtxRef.current?.close();
+    audioCtxRef.current = null;
+    analyserRef.current = null;
+
+    wsRef.current?.close();
+    wsRef.current = null;
+
+    playbackRef.current?.stop();
+
+    isSpeakingRef.current = false;
+    silenceStartRef.current = 0;
+  }, []);
+
   // ── Start call ─────────────────────────────────────────────────────
   const start = useCallback(async () => {
-    console.log('[VoiceCall] start() called, isActive:', isActive);
-    if (isActive) return;
+    // Anti-double: reject if already active or connecting
+    if (isActive || connectingRef.current) return;
+    // Guard: close any zombie WS
+    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+      wsRef.current.close();
+      wsRef.current = null;
+    }
+    connectingRef.current = true;
 
     try {
       // Request microphone
-      console.log('[VoiceCall] Requesting microphone...');
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: true,
@@ -248,7 +289,6 @@ export function useVoiceCall(config?: VoiceCallConfig): UseVoiceCallReturn {
         },
       });
       streamRef.current = stream;
-      console.log('[VoiceCall] Mic acquired, connecting WebSocket to', wsUrl);
 
       // Set up mic AnalyserNode for VAD
       const audioCtx = new AudioContext();
@@ -274,6 +314,7 @@ export function useVoiceCall(config?: VoiceCallConfig): UseVoiceCallReturn {
       ws.onmessage = handleWsMessage;
       ws.onerror = () => console.error('[VoiceCall] WebSocket error');
       ws.onclose = () => {
+        connectingRef.current = false;
         setIsActive(false);
         setPhase('idle');
       };
@@ -290,44 +331,27 @@ export function useVoiceCall(config?: VoiceCallConfig): UseVoiceCallReturn {
       setResponseText('');
       responseAccRef.current = '';
 
-      console.log('[VoiceCall] Connected! Starting VAD...');
+      connectingRef.current = false;
       // Start client-side VAD loop
       startVAD();
 
     } catch (err) {
       console.error('[VoiceCall] Failed to start:', err);
-      streamRef.current?.getTracks().forEach(t => t.stop());
-      audioCtxRef.current?.close();
-      wsRef.current?.close();
-      playbackRef.current?.cleanup();
+      cleanupConnection();
+      connectingRef.current = false;
       setIsActive(false);
       setPhase('idle');
+      throw err; // Re-throw so VoiceCallControls can show the error
     }
-  }, [isActive, wsUrl, handleWsMessage, startVAD]);
+  }, [isActive, wsUrl, handleWsMessage, startVAD, cleanupConnection]);
 
   // ── Stop call ──────────────────────────────────────────────────────
   const stop = useCallback(() => {
-    cancelAnimationFrame(vadRafRef.current);
-    recorderRef.current?.stop();
-    recorderRef.current = null;
-
-    streamRef.current?.getTracks().forEach(t => t.stop());
-    streamRef.current = null;
-
-    audioCtxRef.current?.close();
-    audioCtxRef.current = null;
-    analyserRef.current = null;
-
-    wsRef.current?.close();
-    wsRef.current = null;
-
-    playbackRef.current?.stop();
-
-    isSpeakingRef.current = false;
-    silenceStartRef.current = 0;
+    cleanupConnection();
+    connectingRef.current = false;
     setIsActive(false);
     setPhase('idle');
-  }, []);
+  }, [cleanupConnection]);
 
   return {
     start,
