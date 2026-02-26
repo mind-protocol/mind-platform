@@ -13,6 +13,7 @@ import EnvironmentManager from '../components/EnvironmentManager';
 import SkyboxUploader from './components/SkyboxUploader';
 import { useKeyboardSound } from '@/lib/tracker/hooks/useKeyboardSound';
 import { KEYBOARD_DEBUG } from '@/lib/tracker/hooks/useKeyboardReactive';
+import { useVoiceCall } from '@/lib/voice';
 import type { RegionId } from './components/CockpitRegions';
 
 const TemporalScene = dynamic(
@@ -47,6 +48,11 @@ const DirectionMap = dynamic(
 
 const CockpitRegions = dynamic(
   () => import('./components/CockpitRegions'),
+  { ssr: false },
+);
+
+const VoiceCallControls = dynamic(
+  () => import('./components/VoiceCallControls'),
   { ssr: false },
 );
 
@@ -492,6 +498,9 @@ export default function Tracker3DPage() {
   // Orbital cockpit region state (3D panel system inside Canvas)
   const [orbitalRegion, setOrbitalRegion] = useState<RegionId | null>(null);
 
+  // Voice call — Manemus live conversation
+  const voiceCall = useVoiceCall();
+
   // Image adjustments
   const [adjustments, setAdjustments] = useState<ImageAdjustments>(DEFAULT_ADJUSTMENTS);
   const [savedAdjustments, setSavedAdjustments] = useState<ImageAdjustments>(DEFAULT_ADJUSTMENTS);
@@ -665,7 +674,13 @@ export default function Tracker3DPage() {
       {/* Filtered canvas wrapper */}
       <div ref={canvasWrapperRef} className="w-full h-full" style={filterStyle}>
         {mode === 'mirror' ? (
-          <AwarenessMirror activeRegion={orbitalRegion} setActiveRegion={setOrbitalRegion} />
+          <AwarenessMirror
+            activeRegion={orbitalRegion}
+            setActiveRegion={setOrbitalRegion}
+            voiceAnalyser={voiceCall.manemusAnalyser}
+            voicePhase={voiceCall.phase}
+            voiceActive={voiceCall.isActive}
+          />
         ) : (
           <TemporalScene days={days} />
         )}
@@ -772,6 +787,20 @@ export default function Tracker3DPage() {
         <div className={`fixed bottom-4 left-4 z-[52] transition-opacity duration-500 ${chromeVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <Legend />
         </div>
+      )}
+
+      {/* Voice Call Controls — bottom center */}
+      {mode === 'mirror' && (
+        <VoiceCallControls
+          isActive={voiceCall.isActive}
+          phase={voiceCall.phase}
+          transcript={voiceCall.transcript}
+          responseText={voiceCall.responseText}
+          onStart={voiceCall.start}
+          onStop={voiceCall.stop}
+          chromeVisible={chromeVisible}
+          typing={typing}
+        />
       )}
 
       {/* Sound toggle + Controls hint */}
