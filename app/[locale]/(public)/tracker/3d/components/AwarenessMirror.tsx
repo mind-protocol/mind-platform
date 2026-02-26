@@ -3,7 +3,7 @@
 import { useRef, useState, useMemo, useCallback, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Canvas } from '@react-three/fiber';
-import { PerformanceMonitor, Environment } from '@react-three/drei';
+import { PerformanceMonitor } from '@react-three/drei';
 import * as THREE from 'three';
 import { useAwarenessState } from '@/lib/tracker/hooks/useAwarenessState';
 import { useCockpitState } from '@/lib/tracker/hooks/useCockpitState';
@@ -16,7 +16,6 @@ import ActiveSubstanceOrb from './ActiveSubstanceOrb';
 import BiometricField from './BiometricField';
 import EnvironmentRenderer from './environments/EnvironmentRenderer';
 import Skybox360 from './Skybox360';
-import { useSkybox360 } from './SkyboxUploader';
 import MusicReactiveField from './MusicReactiveField';
 import OrbitalCockpit from './OrbitalCockpit';
 import type { RegionId } from './CockpitRegions';
@@ -34,7 +33,6 @@ interface AwarenessMirrorProps {
 export default function AwarenessMirror({ activeRegion, setActiveRegion }: AwarenessMirrorProps = {}) {
   const { awareness, loading } = useAwarenessState();
   const { active: activeEnv } = useEnvironments();
-  const { skyboxUrl } = useSkybox360();
   const [dpr, setDpr] = useState<number>(1.5);
   const { keyStatesRef, decayKeys, debugRef, lastTypingRef, listening, startMic, stopMic } = useKeyboardReactive({ enabled: true });
   const { musicStateRef } = useSpotifyNowPlaying();
@@ -80,13 +78,10 @@ export default function AwarenessMirror({ activeRegion, setActiveRegion }: Aware
       <color attach="background" args={[fogColor]} />
       <fog attach="fog" args={[fogColor, 25, 60]} />
 
-      {/* Environment priority: user 360 skybox > uploaded capture > default night */}
-      {skyboxUrl ? (
-        <Skybox360 />
-      ) : activeEnv ? (
+      {/* Environment: 360 skybox (default: yoga room, or user-uploaded) */}
+      <Skybox360 />
+      {activeEnv && (
         <EnvironmentRenderer env={activeEnv} />
-      ) : (
-        <Environment preset="night" />
       )}
 
       {/* Base ambient — state-dependent */}

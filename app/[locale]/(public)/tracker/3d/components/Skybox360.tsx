@@ -5,12 +5,14 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { useSkybox360 } from './SkyboxUploader';
 
+/** Default skybox: Nicolas's yoga room */
+const DEFAULT_SKYBOX = '/skybox-default.jpg';
+
 /**
- * R3F component: renders a user-uploaded 360 equirectangular photo
+ * R3F component: renders a 360 equirectangular photo
  * as the scene background and environment map.
  *
- * Reads from localStorage via the useSkybox360 hook.
- * Falls back gracefully (renders nothing) when no skybox is set.
+ * Priority: user-uploaded skybox > default yoga room skybox.
  *
  * Includes a subtle dark veil sphere so consciousness orbs and
  * substance particles remain visible against bright panoramas.
@@ -20,50 +22,29 @@ export default function Skybox360() {
   const { scene } = useThree();
   const textureRef = useRef<THREE.Texture | null>(null);
 
+  // Use uploaded skybox if available, otherwise default
+  const activeUrl = skyboxUrl || DEFAULT_SKYBOX;
+
   useEffect(() => {
-    if (!skyboxUrl) {
-      // Clean up any previous texture
-      if (textureRef.current) {
-        textureRef.current.dispose();
-        textureRef.current = null;
-      }
-      scene.background = null;
-      scene.environment = null;
-      return;
-    }
-
-    // Detect HDR/EXR from data URL mime type or fallback to standard loader
-    const isHDR = /^data:image\/(hdr|x-hdr|vnd\.radiance)/i.test(skyboxUrl) ||
-                  /^data:application\/octet-stream/i.test(skyboxUrl);
-
-    if (isHDR) {
-      // HDR data URLs are unlikely but handle gracefully — fall through to standard
-      loadStandard(skyboxUrl);
-    } else {
-      loadStandard(skyboxUrl);
-    }
-
-    function loadStandard(url: string) {
-      const loader = new THREE.TextureLoader();
-      loader.load(
-        url,
-        (texture) => {
-          // Dispose previous texture
-          if (textureRef.current) {
-            textureRef.current.dispose();
-          }
-          texture.mapping = THREE.EquirectangularReflectionMapping;
-          texture.colorSpace = THREE.SRGBColorSpace;
-          scene.background = texture;
-          scene.environment = texture;
-          textureRef.current = texture;
-        },
-        undefined,
-        (err) => {
-          console.warn('[Skybox360] Failed to load skybox texture:', err);
-        },
-      );
-    }
+    const loader = new THREE.TextureLoader();
+    loader.load(
+      activeUrl,
+      (texture) => {
+        // Dispose previous texture
+        if (textureRef.current) {
+          textureRef.current.dispose();
+        }
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        texture.colorSpace = THREE.SRGBColorSpace;
+        scene.background = texture;
+        scene.environment = texture;
+        textureRef.current = texture;
+      },
+      undefined,
+      (err) => {
+        console.warn('[Skybox360] Failed to load skybox texture:', err);
+      },
+    );
 
     return () => {
       if (textureRef.current) {
@@ -73,10 +54,7 @@ export default function Skybox360() {
       scene.background = null;
       scene.environment = null;
     };
-  }, [skyboxUrl, scene]);
-
-  // No skybox set — render nothing
-  if (!skyboxUrl) return null;
+  }, [activeUrl, scene]);
 
   // Dark veil sphere — dims the skybox so scene elements remain visible
   return (
@@ -85,7 +63,7 @@ export default function Skybox360() {
       <meshBasicMaterial
         color="#000000"
         transparent
-        opacity={0.15}
+        opacity={0.35}
         side={THREE.BackSide}
         depthWrite={false}
       />
