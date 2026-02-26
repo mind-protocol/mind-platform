@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 // ─── Practice Types ────────────────────────────────────────────────────
 
-type PracticeCategory = 'yoga' | 'breathwork' | 'meditation' | 'movement';
+type PracticeCategory = 'yoga' | 'breathwork' | 'meditation' | 'movement' | 'selfcare';
 
 interface Practice {
   id: string;
@@ -249,6 +249,82 @@ const PRACTICES: Practice[] = [
     intensity: 0.2,
     icon: '🚶',
   },
+  // ── Self-Care ──
+  {
+    id: 'cold-shower',
+    name: 'Douche Froide',
+    category: 'selfcare',
+    style: 'cold_exposure',
+    duration_min: 5,
+    description: 'Exposition au froid. Activation sympathique, noradrénaline, résilience. Progressif : extrémités d\'abord.',
+    when: { bb_min: 20, time_of_day: 'morning', intent: ['performance'] },
+    ans_target: 'sympathetic',
+    intensity: 0.7,
+    icon: '🥶',
+    poses: [
+      { name: 'Pieds & jambes', duration_sec: 30, cue: 'Eau froide sur les pieds, monter progressivement aux jambes' },
+      { name: 'Bras & mains', duration_sec: 30, cue: 'Bras tendus sous l\'eau froide, respiration contrôlée' },
+      { name: 'Torse & dos', duration_sec: 60, cue: 'Eau sur le torse, expir long. Accepter le froid.' },
+      { name: 'Tête & nuque', duration_sec: 30, cue: 'Eau froide sur la nuque et le crâne. Rester calme.' },
+      { name: 'Immersion complète', duration_sec: 120, cue: 'Corps entier sous l\'eau froide. Respiration Wim Hof : lente et profonde.' },
+    ],
+  },
+  {
+    id: 'hot-shower',
+    name: 'Douche Chaude',
+    category: 'selfcare',
+    style: 'hot_exposure',
+    duration_min: 10,
+    description: 'Relaxation musculaire, vasodilatation, activation parasympathique. Détente profonde.',
+    when: { time_of_day: 'any', intent: ['recovery', 'coping'] },
+    ans_target: 'parasympathetic',
+    intensity: 0.1,
+    icon: '🚿',
+    poses: [
+      { name: 'Eau chaude — nuque & épaules', duration_sec: 180, cue: 'Jet sur les trapèzes, laisser les épaules descendre' },
+      { name: 'Eau chaude — dos', duration_sec: 180, cue: 'Eau chaude le long de la colonne, respiration lente' },
+      { name: 'Étirements sous l\'eau', duration_sec: 120, cue: 'Rotation cervicales, flexion latérale, ouverture thoracique' },
+      { name: 'Rinçage tiède', duration_sec: 60, cue: 'Baisser la température graduellement. Retour au calme.' },
+    ],
+  },
+  {
+    id: 'skin-hydration',
+    name: 'Hydratation Peau',
+    category: 'selfcare',
+    style: 'skin_care',
+    duration_min: 5,
+    description: 'Application de crème hydratante corps entier. Soin de la barrière cutanée, massage léger.',
+    when: { time_of_day: 'any', intent: ['recovery'] },
+    ans_target: 'parasympathetic',
+    intensity: 0.05,
+    icon: '🧴',
+    poses: [
+      { name: 'Jambes & pieds', duration_sec: 60, cue: 'Mouvements circulaires, des chevilles vers les cuisses' },
+      { name: 'Bras & mains', duration_sec: 60, cue: 'Des poignets vers les épaules, insister sur les coudes' },
+      { name: 'Torse & ventre', duration_sec: 60, cue: 'Massage circulaire sur le ventre (sens horaire), poitrine' },
+      { name: 'Dos (accessible)', duration_sec: 30, cue: 'Bas du dos, flancs, nuque' },
+      { name: 'Visage & cou', duration_sec: 60, cue: 'Crème visage, mouvements vers le haut. Cou et décolleté.' },
+    ],
+  },
+  {
+    id: 'body-drying',
+    name: 'Séchage Cheveux & Corps',
+    category: 'selfcare',
+    style: 'body_drying',
+    duration_min: 10,
+    description: 'Séchage complet. Défaut : force forte, température froide. Adapter selon les besoins.',
+    when: { time_of_day: 'any', intent: ['recovery'] },
+    ans_target: 'balanced',
+    intensity: 0.1,
+    icon: '💨',
+    poses: [
+      { name: 'Cheveux — racines', duration_sec: 180, cue: 'Force forte, air froid (défaut). Sécher les racines en soulevant les mèches.' },
+      { name: 'Cheveux — longueurs', duration_sec: 120, cue: 'Force forte, air froid. Brosser en séchant, du haut vers les pointes.' },
+      { name: 'Corps — torse & dos', duration_sec: 90, cue: 'Force forte, air froid. Sécher les zones humides restantes.' },
+      { name: 'Corps — jambes & pieds', duration_sec: 60, cue: 'Force forte, air froid. Insister entre les orteils.' },
+      { name: 'Finition', duration_sec: 60, cue: 'Vérifier que tout est sec. Passer en force faible pour le confort final.' },
+    ],
+  },
 ];
 
 // ─── Component ─────────────────────────────────────────────────────────
@@ -397,6 +473,7 @@ export default function Practices({ refreshKey }: PracticesProps) {
     breathwork: { label: 'Respiration', icon: '🌬️', color: 'text-cyan-400 border-cyan-500/30' },
     meditation: { label: 'Méditation', icon: '🪷', color: 'text-indigo-400 border-indigo-500/30' },
     movement: { label: 'Mouvement', icon: '🚶', color: 'text-green-400 border-green-500/30' },
+    selfcare: { label: 'Soin', icon: '🧴', color: 'text-rose-400 border-rose-500/30' },
   };
 
   // ── Active Session View ──
@@ -552,7 +629,7 @@ export default function Practices({ refreshKey }: PracticesProps) {
                 ? `${cfg.color} bg-opacity-10`
                 : 'text-zinc-600 border-zinc-800 hover:text-zinc-400'
             }`}
-            style={filter === key ? { backgroundColor: `${cfg.color.includes('amber') ? '#f59e0b' : cfg.color.includes('purple') ? '#a855f7' : cfg.color.includes('cyan') ? '#06b6d4' : cfg.color.includes('indigo') ? '#818cf8' : cfg.color.includes('green') ? '#22c55e' : '#71717a'}10` } : undefined}
+            style={filter === key ? { backgroundColor: `${cfg.color.includes('amber') ? '#f59e0b' : cfg.color.includes('purple') ? '#a855f7' : cfg.color.includes('cyan') ? '#06b6d4' : cfg.color.includes('indigo') ? '#818cf8' : cfg.color.includes('green') ? '#22c55e' : cfg.color.includes('rose') ? '#f43f5e' : '#71717a'}10` } : undefined}
           >
             <span>{cfg.icon}</span>
             <span>{cfg.label}</span>
