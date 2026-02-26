@@ -16,8 +16,8 @@ export async function GET(
     const { path } = await params;
     const subpath = path.join('/');
 
-    // Sanitize: only allow expected subpaths (panoramas/, meshes/, splats/)
-    const allowed = /^(panoramas|meshes|splats)\/[^/]+$/;
+    // Sanitize: only allow expected subpaths (panoramas/, meshes/, splats/, audio/)
+    const allowed = /^(panoramas|meshes|splats|audio)\/[^/]+$/;
     if (!allowed.test(subpath)) {
       return NextResponse.json({ error: 'Invalid path' }, { status: 400 });
     }

@@ -6,6 +6,7 @@ import PanoramaEnvironment from './PanoramaEnvironment';
 import MeshEnvironment from './MeshEnvironment';
 
 const SplatEnvironment = lazy(() => import('./SplatEnvironment'));
+const CompositeEnvironment = lazy(() => import('./CompositeEnvironment'));
 
 interface Props {
   env: EnvironmentCapture;
@@ -26,6 +27,12 @@ export default function EnvironmentRenderer({ env }: Props) {
           <SplatEnvironment url={env.url} />
         </Suspense>
       );
+    case 'composite':
+      return env.composite ? (
+        <Suspense fallback={null}>
+          <CompositeEnvironment data={env.composite} />
+        </Suspense>
+      ) : null;
     default:
       return null;
   }

@@ -56,6 +56,11 @@ const VoiceCallControls = dynamic(
   { ssr: false },
 );
 
+const CaptureWizard = dynamic(
+  () => import('./components/CaptureWizard'),
+  { ssr: false },
+);
+
 type ViewMode = 'mirror' | 'timeline';
 
 // ── Image adjustment types & defaults ──────────────────────────────────
@@ -501,6 +506,9 @@ export default function Tracker3DPage() {
   // Voice call — Manemus live conversation
   const voiceCall = useVoiceCall();
 
+  // Capture wizard (Scan Room)
+  const [showCaptureWizard, setShowCaptureWizard] = useState(false);
+
   // Image adjustments
   const [adjustments, setAdjustments] = useState<ImageAdjustments>(DEFAULT_ADJUSTMENTS);
   const [savedAdjustments, setSavedAdjustments] = useState<ImageAdjustments>(DEFAULT_ADJUSTMENTS);
@@ -757,6 +765,13 @@ export default function Tracker3DPage() {
       {mode === 'mirror' && (
         <div className={`fixed top-4 right-4 z-[52] flex items-start gap-2 transition-opacity duration-500 ${chromeVisible ? (typing ? 'opacity-30' : 'opacity-100') : 'opacity-0 pointer-events-none'}`}>
           <SkyboxUploader />
+          <button
+            onClick={() => setShowCaptureWizard(true)}
+            className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-lg px-3 py-1.5 text-xs text-zinc-400 hover:text-white hover:border-purple-500/50 transition flex items-center gap-1.5"
+          >
+            <span>📱</span>
+            <span>Scan Room</span>
+          </button>
           <EnvironmentManager />
         </div>
       )}
@@ -884,6 +899,17 @@ export default function Tracker3DPage() {
 
       {/* Direction Map — constellation of priorities */}
       <DirectionMap visible={showDirections} onClose={() => setShowDirections(false)} />
+
+      {/* Capture Wizard — Scan Room (Scaniverse + Quest 3 + Audio) */}
+      {showCaptureWizard && (
+        <CaptureWizard
+          onClose={() => setShowCaptureWizard(false)}
+          onComplete={() => {
+            setShowCaptureWizard(false);
+            window.location.reload();
+          }}
+        />
+      )}
     </div>
   );
 }

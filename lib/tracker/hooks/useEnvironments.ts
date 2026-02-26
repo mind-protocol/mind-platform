@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { EnvironmentCapture } from '../types/environment';
+import { EnvironmentCapture, CompositeEnvironmentData } from '../types/environment';
 
 /**
  * Resolve backend file URLs to frontend proxy URLs.
@@ -29,8 +29,18 @@ export function useEnvironments() {
       if (!res.ok) throw new Error('Failed to fetch environments');
       const json = await res.json();
       const raw: EnvironmentCapture[] = json.environments || [];
-      // Resolve all file URLs through the proxy
-      const data = raw.map((e) => ({ ...e, url: resolveUrl(e.url) }));
+      // Resolve all file URLs through the proxy (including composite sub-URLs)
+      const data = raw.map((e) => {
+        const resolved: EnvironmentCapture = { ...e, url: resolveUrl(e.url) };
+        if (e.composite) {
+          const c: CompositeEnvironmentData = { ...e.composite };
+          if (c.splat_url) c.splat_url = resolveUrl(c.splat_url);
+          if (c.mesh_url) c.mesh_url = resolveUrl(c.mesh_url);
+          if (c.audio_url) c.audio_url = resolveUrl(c.audio_url);
+          resolved.composite = c;
+        }
+        return resolved;
+      });
       setEnvironments(data);
       setActiveEnv(data.find((e) => e.active) ?? null);
     } catch {

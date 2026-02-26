@@ -8,6 +8,7 @@ const TYPE_BADGES: Record<string, { label: string; color: string }> = {
   panorama: { label: 'Panorama', color: 'text-blue-400 bg-blue-500/10' },
   mesh: { label: '3D Mesh', color: 'text-green-400 bg-green-500/10' },
   splat: { label: 'Splat', color: 'text-purple-400 bg-purple-500/10' },
+  composite: { label: 'Composite', color: 'text-amber-400 bg-amber-500/10' },
 };
 
 function formatSize(bytes: number) {
@@ -275,7 +276,7 @@ function EnvironmentRow({
       onClick={() => !isActive && onActivate()}
     >
       <span className="text-sm">
-        {env.type === 'panorama' ? '🖼️' : env.type === 'mesh' ? '🧊' : '✨'}
+        {env.type === 'panorama' ? '🖼️' : env.type === 'mesh' ? '🧊' : env.type === 'composite' ? '🏠' : '✨'}
       </span>
       <div className="flex-1 min-w-0">
         <div className="text-xs text-zinc-300 truncate">{env.name}</div>
