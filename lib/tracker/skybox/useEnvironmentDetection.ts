@@ -185,7 +185,6 @@ function buildProfile(
 
   // ── Skybox mode ─────────────────────────────────────────────────
   const isDaytime = sun.altitude > 0;
-  const isNight = sun.phase === 'night';
 
   let skyboxMode: SkyboxMode;
 
@@ -193,10 +192,9 @@ function buildProfile(
     skyboxMode = 'procedural-day';
   } else if (isOutdoor && !isDaytime) {
     skyboxMode = 'procedural-night';
-  } else if (isNight && !cam.isAvailable) {
-    // No camera, nighttime → assume night sky
-    skyboxMode = 'procedural-night';
   } else {
+    // Without camera confirmation of outdoor, default to indoor (yoga room).
+    // Night or day doesn't matter — we can't know if user is outside.
     skyboxMode = 'indoor-default';
   }
 
@@ -206,7 +204,7 @@ function buildProfile(
     // Bright → thin veil, dark → heavier veil
     veilOpacity = 0.12 + (1 - cam.luminance) * 0.35;
   } else if (skyboxMode === 'procedural-night') {
-    veilOpacity = 0.15; // night sky should be visible
+    veilOpacity = 0.15;
   }
 
   // ── Sky shader parameters ───────────────────────────────────────
