@@ -34,9 +34,32 @@ interface AdverseEntry {
   } | null;
 }
 
+interface FoodItem {
+  name: string;
+  quantity: number;
+  unit: string;
+  cal: number;
+  protein_g: number;
+  fat_g: number;
+  carbs_g: number;
+}
+
+interface FoodEntry {
+  id: string;
+  ts: string;
+  description: string;
+  meal_type: string;
+  items: FoodItem[];
+  totals: { cal: number; protein_g: number; fat_g: number; carbs_g: number };
+  notes: string;
+  photo?: string;
+  estimation_source?: string;
+}
+
 type TimelineItem =
   | { kind: 'substance'; data: LogEntry }
-  | { kind: 'adverse'; data: AdverseEntry };
+  | { kind: 'adverse'; data: AdverseEntry }
+  | { kind: 'food'; data: FoodEntry };
 
 const ADVERSE_CONFIG: Record<string, { color: string; icon: string; label: string }> = {
   // Gastrointestinal
@@ -450,6 +473,83 @@ const EntryRow = memo(function EntryRow({
   );
 });
 
+// ── Meal icons ──────────────────────────────────────────────────────────
+const MEAL_ICONS: Record<string, string> = {
+  breakfast: '🌅',
+  lunch: '🌞',
+  dinner: '🌙',
+  snack: '🍿',
+  other: '🍽️',
+};
+
+// ── Food entry row ──────────────────────────────────────────────────────
+const FoodRow = memo(function FoodRow({ entry }: { entry: FoodEntry }) {
+  const [expanded, setExpanded] = useState(false);
+  const icon = MEAL_ICONS[entry.meal_type] || '🍽️';
+  const cal = entry.totals?.cal || 0;
+
+  return (
+    <div>
+      <button
+        onClick={() => setExpanded((p) => !p)}
+        className="w-full flex items-center gap-3 px-2 py-1.5 rounded hover:bg-zinc-800/50 transition text-left"
+      >
+        <span className="text-xs text-zinc-500 font-mono w-12 shrink-0">
+          {formatTime(entry.ts)}
+        </span>
+        <div
+          className="w-2 h-2 rounded-full shrink-0"
+          style={{ backgroundColor: '#f97316' }}
+        />
+        <span className="text-sm">
+          <span style={{ color: '#f97316' }} className="font-medium">
+            {icon} {entry.meal_type}
+          </span>
+          <span className="text-zinc-400 ml-1.5 truncate">
+            — {entry.description}
+          </span>
+        </span>
+        <span className="ml-auto text-xs font-mono text-orange-400 shrink-0">
+          {cal} cal
+        </span>
+      </button>
+
+      {expanded && (
+        <div className="ml-16 pl-3 border-l border-orange-500/20 text-xs text-zinc-500 py-1 space-y-1">
+          {entry.photo && (
+            <div className="mb-2">
+              <img
+                src={`/api/tracker/food/photo/${entry.photo}`}
+                alt={entry.description}
+                className="max-w-full max-h-32 rounded-lg object-contain border border-zinc-700"
+                loading="lazy"
+              />
+            </div>
+          )}
+          {entry.items.length > 0 && entry.items.map((item, idx) => (
+            <div key={idx} className="flex justify-between">
+              <span className="text-zinc-400">{item.quantity} {item.unit} {item.name}</span>
+              <span className="font-mono text-zinc-600">
+                {item.cal}cal · {item.protein_g}p · {item.fat_g}f · {item.carbs_g}c
+              </span>
+            </div>
+          ))}
+          <div className="flex justify-between text-orange-400/70 font-medium pt-1 border-t border-zinc-800">
+            <span>Total</span>
+            <span className="font-mono">
+              {entry.totals.cal}cal · {entry.totals.protein_g}p · {entry.totals.fat_g}f · {entry.totals.carbs_g}c
+            </span>
+          </div>
+          {entry.estimation_source === 'vision' && (
+            <div className="text-[10px] text-zinc-600 mt-1">via GPT-4o vision</div>
+          )}
+          {entry.notes && <div className="text-zinc-400 mt-1">{entry.notes}</div>}
+        </div>
+      )}
+    </div>
+  );
+});
+
 // ── Adverse effect row ─────────────────────────────────────────────────
 const AdverseRow = memo(function AdverseRow({ entry }: { entry: AdverseEntry }) {
   const cfg = ADVERSE_CONFIG[entry.effect] || { color: '#ef4444', icon: '⚠️', label: entry.effect };
@@ -480,6 +580,7 @@ const AdverseRow = memo(function AdverseRow({ entry }: { entry: AdverseEntry }) 
 export default function Timeline({ refreshKey, filter }: { refreshKey: number; filter?: string[] }) {
   const [entries, setEntries] = useState<LogEntry[]>([]);
   const [adverseEntries, setAdverseEntries] = useState<AdverseEntry[]>([]);
+  const [foodEntries, setFoodEntries] = useState<FoodEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const { sanitized } = useSanitizeMode();
   const { toast } = useToast();
@@ -495,6 +596,10 @@ export default function Timeline({ refreshKey, filter }: { refreshKey: number; f
         .then((r) => r.json())
         .then((d) => setAdverseEntries(Array.isArray(d) ? d : []))
         .catch(() => toast('Failed to load effects', 'error')),
+      fetch('/api/tracker/food?days=7')
+        .then((r) => r.json())
+        .then((d) => setFoodEntries(d.entries || []))
+        .catch(() => {}),
     ]).finally(() => setLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshKey]);
@@ -509,6 +614,9 @@ export default function Timeline({ refreshKey, filter }: { refreshKey: number; f
   for (const e of adverseEntries) {
     if (sanitized && isEffectSanitized(e.effect)) continue;
     items.push({ kind: 'adverse', data: e });
+  }
+  for (const e of foodEntries) {
+    items.push({ kind: 'food', data: e });
   }
   items.sort((a, b) => b.data.ts.localeCompare(a.data.ts));
 
@@ -574,6 +682,8 @@ export default function Timeline({ refreshKey, filter }: { refreshKey: number; f
                   onUpdate={handleUpdate}
                   onDelete={handleDelete}
                 />
+              ) : item.kind === 'food' ? (
+                <FoodRow key={item.data.id} entry={item.data as FoodEntry} />
               ) : (
                 <AdverseRow key={item.data.id} entry={item.data as AdverseEntry} />
               )
