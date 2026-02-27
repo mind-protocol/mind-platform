@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { useToast } from '@/components/Toast';
 import { useEnvironments } from '@/lib/tracker/hooks/useEnvironments';
 import type { EnvironmentCapture } from '@/lib/tracker/types/environment';
@@ -34,6 +35,7 @@ function getGeolocation(): Promise<{ latitude: number; longitude: number } | nul
 }
 
 export default function EnvironmentManager() {
+  const t = useTranslations('Tracker');
   const { toast } = useToast();
   const { environments, active, loading, upload, setActive, remove, suggestName } = useEnvironments();
   const [expanded, setExpanded] = useState(false);
@@ -79,7 +81,7 @@ export default function EnvironmentManager() {
         : undefined;
       await upload(pendingFile, pendingName, 'manual', '', true, geo);
     } catch (e) {
-      console.error('Upload failed:', e);
+      /* upload failed — non-critical */
     } finally {
       setUploading(false);
       setPendingFile(null);
@@ -126,7 +128,7 @@ export default function EnvironmentManager() {
     <div className="bg-zinc-900/90 backdrop-blur-md border border-zinc-800 rounded-xl w-72 max-h-[400px] overflow-y-auto">
       {/* Header */}
       <div className="flex items-center justify-between px-3 py-2 border-b border-zinc-800">
-        <span className="text-xs font-mono text-zinc-400 uppercase tracking-wider">Environments</span>
+        <span className="text-xs font-mono text-zinc-400 uppercase tracking-wider">{t('environmentsLabel')}</span>
         <button onClick={() => setExpanded(false)} className="text-zinc-600 hover:text-white text-sm">
           ✕
         </button>
@@ -135,9 +137,9 @@ export default function EnvironmentManager() {
       {/* Pre-upload naming panel */}
       {pendingFile ? (
         <div className="mx-2 mt-2 p-3 border border-zinc-700 rounded-lg space-y-2">
-          <div className="text-[10px] text-zinc-500 uppercase tracking-wider">Name this environment</div>
+          <div className="text-[10px] text-zinc-500 uppercase tracking-wider">{t('nameThisEnv')}</div>
           {suggesting ? (
-            <div className="text-xs text-purple-400 animate-pulse">Getting suggestion...</div>
+            <div className="text-xs text-purple-400 animate-pulse">{t('gettingSuggestion')}</div>
           ) : (
             <>
               <input
@@ -147,7 +149,7 @@ export default function EnvironmentManager() {
                 onKeyDown={(e) => { if (e.key === 'Enter') confirmUpload(); }}
                 className="w-full bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-xs text-zinc-200 focus:border-purple-500 focus:outline-none"
                 autoFocus
-                placeholder="Environment name..."
+                placeholder={t('envNamePlaceholder')}
               />
               {pendingGeo && (
                 <div className="text-[10px] text-zinc-500 flex items-center gap-1">
@@ -161,13 +163,13 @@ export default function EnvironmentManager() {
                   disabled={uploading || !pendingName.trim()}
                   className="flex-1 bg-purple-600 hover:bg-purple-500 disabled:bg-zinc-700 disabled:text-zinc-500 text-white text-xs rounded px-2 py-1 transition"
                 >
-                  {uploading ? 'Uploading...' : 'Upload'}
+                  {uploading ? t('uploadingDots') : t('uploadLabel')}
                 </button>
                 <button
                   onClick={cancelUpload}
                   className="text-xs text-zinc-500 hover:text-zinc-300 px-2 py-1 transition"
                 >
-                  Cancel
+                  {t('cancelLabel')}
                 </button>
               </div>
             </>
@@ -194,9 +196,9 @@ export default function EnvironmentManager() {
             onChange={handleFileInput}
           />
           <div className="text-xs text-zinc-500">
-            Drop panorama, mesh, or splat file
+            {t('dropPanorama')}
             <br />
-            <span className="text-zinc-600">jpg / png / glb / ply / splat</span>
+            <span className="text-zinc-600">{t('panoramaFormats')}</span>
           </div>
         </div>
       )}
@@ -204,12 +206,12 @@ export default function EnvironmentManager() {
       {/* Environment list */}
       <div className="p-2 space-y-1">
         {loading && environments.length === 0 && (
-          <div className="text-xs text-zinc-600 text-center py-3">Loading...</div>
+          <div className="text-xs text-zinc-600 text-center py-3">{t('loadingDots')}</div>
         )}
 
         {!loading && environments.length === 0 && (
           <div className="text-xs text-zinc-600 text-center py-3">
-            No environments yet. Upload a 3D capture.
+            {t('noEnvsYet')}
           </div>
         )}
 
@@ -218,7 +220,7 @@ export default function EnvironmentManager() {
           onClick={() => {
             // Deactivate current — active becomes null → fallback to night
             if (active) {
-              setActive(active.id).catch(() => toast('Failed to update environment', 'error'));
+              setActive(active.id).catch(() => toast(t('failedUpdateEnv'), 'error'));
               // Actually we need a "deactivate" — PATCH active: false
               fetch(`/api/tracker/environments/${active.id}`, {
                 method: 'PATCH',
@@ -235,9 +237,9 @@ export default function EnvironmentManager() {
         >
           <span className="text-sm">🌙</span>
           <div className="flex-1 min-w-0">
-            <div className="text-xs text-zinc-300 truncate">Night (default)</div>
+            <div className="text-xs text-zinc-300 truncate">{t('nightDefault')}</div>
           </div>
-          {!active && <span className="text-[10px] text-purple-400">Active</span>}
+          {!active && <span className="text-[10px] text-purple-400">{t('activeLabel')}</span>}
         </button>
 
         {environments.map((env) => (

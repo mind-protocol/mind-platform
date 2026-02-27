@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
 type Step = 'splat' | 'mesh' | 'audio' | 'review';
 
@@ -18,11 +19,11 @@ interface Props {
   onComplete: () => void;
 }
 
-const STEPS: { key: Step; label: string; icon: string }[] = [
-  { key: 'splat', label: 'Scaniverse Scan', icon: '📱' },
-  { key: 'mesh', label: 'Quest 3 Mesh', icon: '🥽' },
-  { key: 'audio', label: 'Ambient Audio', icon: '🎤' },
-  { key: 'review', label: 'Review', icon: '✅' },
+const STEP_KEYS: { key: Step; labelKey: string; icon: string }[] = [
+  { key: 'splat', labelKey: 'scaniverseScan', icon: '📱' },
+  { key: 'mesh', labelKey: 'quest3Mesh', icon: '🥽' },
+  { key: 'audio', labelKey: 'ambientAudio', icon: '🎤' },
+  { key: 'review', labelKey: 'reviewStep', icon: '✅' },
 ];
 
 /**
@@ -33,12 +34,13 @@ const STEPS: { key: Step; label: string; icon: string }[] = [
  * 4. Review all layers and activate
  */
 export default function CaptureWizard({ onClose, onComplete }: Props) {
+  const t = useTranslations('Tracker');
   const [step, setStep] = useState<Step>('splat');
   const [layers, setLayers] = useState<CapturedLayers>({});
   const [uploading, setUploading] = useState(false);
   const [name, setName] = useState('');
 
-  const stepIndex = STEPS.findIndex((s) => s.key === step);
+  const stepIndex = STEP_KEYS.findIndex((s) => s.key === step);
 
   const canProceed = useCallback(() => {
     switch (step) {
@@ -50,16 +52,16 @@ export default function CaptureWizard({ onClose, onComplete }: Props) {
   }, [step, layers]);
 
   const nextStep = useCallback(() => {
-    const idx = STEPS.findIndex((s) => s.key === step);
-    if (idx < STEPS.length - 1) {
-      setStep(STEPS[idx + 1].key);
+    const idx = STEP_KEYS.findIndex((s) => s.key === step);
+    if (idx < STEP_KEYS.length - 1) {
+      setStep(STEP_KEYS[idx + 1].key);
     }
   }, [step]);
 
   const prevStep = useCallback(() => {
-    const idx = STEPS.findIndex((s) => s.key === step);
+    const idx = STEP_KEYS.findIndex((s) => s.key === step);
     if (idx > 0) {
-      setStep(STEPS[idx - 1].key);
+      setStep(STEP_KEYS[idx - 1].key);
     }
   }, [step]);
 
@@ -73,7 +75,7 @@ export default function CaptureWizard({ onClose, onComplete }: Props) {
       if (layers.audioBlob) {
         formData.append('audio', layers.audioBlob, 'ambient_audio.webm');
       }
-      formData.append('name', name || `Room Scan ${new Date().toLocaleDateString()}`);
+      formData.append('name', name || `${t('scanRoom')} ${new Date().toLocaleDateString()}`);
       formData.append('set_active', 'true');
       formData.append('source', 'capture_wizard');
 
@@ -85,10 +87,10 @@ export default function CaptureWizard({ onClose, onComplete }: Props) {
       if (res.ok) {
         onComplete();
       } else {
-        console.error('Composite upload failed:', await res.text());
+        /* composite upload failed — non-critical */
       }
-    } catch (err) {
-      console.error('Upload error:', err);
+    } catch {
+      /* upload error — non-critical */
     } finally {
       setUploading(false);
     }
@@ -99,7 +101,7 @@ export default function CaptureWizard({ onClose, onComplete }: Props) {
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-lg mx-4 overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3 border-b border-zinc-800">
-          <h2 className="text-sm font-mono text-zinc-300 tracking-wide">Scan Room</h2>
+          <h2 className="text-sm font-mono text-zinc-300 tracking-wide">{t('scanRoom')}</h2>
           <button onClick={onClose} className="text-zinc-600 hover:text-white text-lg transition">
             ✕
           </button>
@@ -107,7 +109,7 @@ export default function CaptureWizard({ onClose, onComplete }: Props) {
 
         {/* Step indicator */}
         <div className="flex items-center gap-1 px-5 py-3 border-b border-zinc-800/50">
-          {STEPS.map((s, i) => (
+          {STEP_KEYS.map((s, i) => (
             <div key={s.key} className="flex items-center gap-1">
               <button
                 onClick={() => i <= stepIndex && setStep(s.key)}
@@ -120,9 +122,9 @@ export default function CaptureWizard({ onClose, onComplete }: Props) {
                 }`}
               >
                 <span>{s.icon}</span>
-                <span className="hidden sm:inline">{s.label}</span>
+                <span className="hidden sm:inline">{t(s.labelKey)}</span>
               </button>
-              {i < STEPS.length - 1 && (
+              {i < STEP_KEYS.length - 1 && (
                 <span className="text-zinc-700 text-xs">{'>'}</span>
               )}
             </div>
@@ -164,14 +166,14 @@ export default function CaptureWizard({ onClose, onComplete }: Props) {
             disabled={stepIndex === 0}
             className="text-xs text-zinc-500 hover:text-zinc-300 disabled:opacity-30 disabled:cursor-default transition"
           >
-            Back
+            {t('backBtn')}
           </button>
           {step !== 'review' ? (
             <button
               onClick={nextStep}
               className="px-4 py-1.5 text-xs font-medium rounded-lg bg-purple-600 hover:bg-purple-500 text-white transition disabled:opacity-40"
             >
-              {step === 'audio' ? 'Review' : 'Next'}
+              {step === 'audio' ? t('reviewStep') : t('nextBtn')}
             </button>
           ) : (
             <button
@@ -179,7 +181,7 @@ export default function CaptureWizard({ onClose, onComplete }: Props) {
               disabled={uploading || (!layers.splatFile && !layers.audioBlob)}
               className="px-4 py-1.5 text-xs font-medium rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white transition disabled:opacity-40 disabled:cursor-default"
             >
-              {uploading ? 'Uploading...' : 'Activate'}
+              {uploading ? t('uploadingDots') : t('activateEnv')}
             </button>
           )}
         </div>
@@ -197,6 +199,7 @@ function SplatUploadStep({
   file?: File;
   onFileSelected: (f: File) => void;
 }) {
+  const t = useTranslations('Tracker');
   const fileRef = useRef<HTMLInputElement>(null);
   const [dragOver, setDragOver] = useState(false);
 
@@ -210,9 +213,9 @@ function SplatUploadStep({
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="text-sm text-zinc-200 font-medium">Upload Gaussian Splat</h3>
+        <h3 className="text-sm text-zinc-200 font-medium">{t('uploadGaussianSplat')}</h3>
         <p className="text-xs text-zinc-500 mt-1">
-          Open <strong className="text-zinc-300">Scaniverse</strong> on your Android phone, scan your room (2-5 minutes), then export as <strong className="text-zinc-300">.PLY</strong> file.
+          {t('scaniverseExportDesc')}
         </p>
       </div>
 
@@ -229,7 +232,7 @@ function SplatUploadStep({
             onClick={() => fileRef.current?.click()}
             className="text-[10px] text-zinc-500 hover:text-zinc-300 transition"
           >
-            Replace
+            {t('replaceFile')}
           </button>
         </div>
       ) : (
@@ -251,10 +254,10 @@ function SplatUploadStep({
         >
           <div className="text-3xl mb-2">📱</div>
           <div className="text-xs text-zinc-400">
-            Drop .PLY file here or click to browse
+            {t('dropPlyFile')}
           </div>
           <div className="text-[10px] text-zinc-600 mt-1">
-            Accepts .ply, .splat, .spz (up to 250MB)
+            {t('acceptsPly')}
           </div>
         </div>
       )}
@@ -272,12 +275,12 @@ function SplatUploadStep({
       />
 
       <div className="p-3 bg-zinc-800/50 rounded-lg">
-        <div className="text-[10px] text-zinc-500 uppercase tracking-wider mb-2">How to export from Scaniverse</div>
+        <div className="text-[10px] text-zinc-500 uppercase tracking-wider mb-2">{t('howToExport')}</div>
         <ol className="text-xs text-zinc-400 space-y-1 list-decimal list-inside">
-          <li>Open scan in Scaniverse</li>
-          <li>Tap Share &gt; Export 3D Model</li>
-          <li>Select <strong className="text-zinc-200">PLY</strong> format</li>
-          <li>Transfer to computer or upload directly</li>
+          <li>{t('exportStep1')}</li>
+          <li>{t('exportStep2')}</li>
+          <li>{t('exportStep3')}</li>
+          <li>{t('exportStep4')}</li>
         </ol>
       </div>
     </div>
@@ -287,6 +290,7 @@ function SplatUploadStep({
 // ─── Step 2: Quest 3 Mesh Capture ─────────────────────────────────────
 
 function MeshCaptureStep() {
+  const t = useTranslations('Tracker');
   const xrUrl = typeof window !== 'undefined'
     ? `${window.location.origin}/en/tracker/3d/xr`
     : '/en/tracker/3d/xr';
@@ -294,16 +298,15 @@ function MeshCaptureStep() {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="text-sm text-zinc-200 font-medium">Quest 3 Mesh Detection</h3>
+        <h3 className="text-sm text-zinc-200 font-medium">{t('quest3MeshDetection')}</h3>
         <p className="text-xs text-zinc-500 mt-1">
-          Open this URL in your Quest 3 browser to capture room geometry.
-          The mesh provides collision detection and spatial structure.
+          {t('quest3MeshDesc')}
         </p>
       </div>
 
       {/* URL to open on Quest 3 */}
       <div className="p-3 bg-zinc-800 border border-zinc-700 rounded-lg">
-        <div className="text-[10px] text-zinc-500 uppercase tracking-wider mb-1">Open on Quest 3</div>
+        <div className="text-[10px] text-zinc-500 uppercase tracking-wider mb-1">{t('openOnQuest3')}</div>
         <div className="flex items-center gap-2">
           <code className="flex-1 text-xs text-purple-300 font-mono break-all">
             {xrUrl}
@@ -312,24 +315,24 @@ function MeshCaptureStep() {
             onClick={() => navigator.clipboard.writeText(xrUrl)}
             className="text-xs text-zinc-500 hover:text-zinc-300 px-2 py-1 border border-zinc-700 rounded transition shrink-0"
           >
-            Copy
+            {t('copyLabel')}
           </button>
         </div>
       </div>
 
       <div className="p-3 bg-zinc-800/50 rounded-lg">
-        <div className="text-[10px] text-zinc-500 uppercase tracking-wider mb-2">Instructions</div>
+        <div className="text-[10px] text-zinc-500 uppercase tracking-wider mb-2">{t('quest3Instructions')}</div>
         <ol className="text-xs text-zinc-400 space-y-1 list-decimal list-inside">
-          <li>Open URL in Quest 3 browser</li>
-          <li>Tap <strong className="text-purple-300">Enter AR</strong></li>
-          <li>Look around — surfaces appear as colored wireframes</li>
-          <li>Tap <strong className="text-emerald-300">Capture Mesh</strong></li>
-          <li>Mesh auto-uploads to your environment library</li>
+          <li>{t('quest3InstStep1')}</li>
+          <li>{t('quest3InstStep2', { btn: '' })}<strong className="text-purple-300">{t('enterAR')}</strong></li>
+          <li>{t('quest3InstStep3')}</li>
+          <li>{t('quest3InstStep4', { btn: '' })}<strong className="text-emerald-300">{t('captureMesh')}</strong></li>
+          <li>{t('quest3InstStep5')}</li>
         </ol>
       </div>
 
       <div className="text-[10px] text-zinc-600 text-center">
-        This step is optional — skip if you don&apos;t have a Quest 3
+        {t('quest3Optional')}
       </div>
     </div>
   );
@@ -344,6 +347,7 @@ function AudioRecordStep({
   audioBlob?: Blob;
   onRecorded: (blob: Blob, url: string) => void;
 }) {
+  const t = useTranslations('Tracker');
   const [recording, setRecording] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [error, setError] = useState<string>('');
@@ -393,7 +397,7 @@ function AudioRecordStep({
         });
       }, 1000);
     } catch (err) {
-      setError('Microphone access denied');
+      setError(t('micDenied'));
     }
   }, [onRecorded]);
 
@@ -415,10 +419,9 @@ function AudioRecordStep({
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="text-sm text-zinc-200 font-medium">Ambient Audio</h3>
+        <h3 className="text-sm text-zinc-200 font-medium">{t('ambientAudioTitle')}</h3>
         <p className="text-xs text-zinc-500 mt-1">
-          Record 30 seconds of ambient room sound. This creates spatial audio
-          that plays when you enter your environment in the Awareness Mirror.
+          {t('ambientAudioDesc')}
         </p>
       </div>
 
@@ -445,7 +448,7 @@ function AudioRecordStep({
               onClick={stopRecording}
               className="px-4 py-1.5 text-xs rounded-lg bg-red-600 hover:bg-red-500 text-white transition"
             >
-              Stop Recording
+              {t('stopRecording')}
             </button>
           </>
         ) : audioBlob ? (
@@ -455,7 +458,7 @@ function AudioRecordStep({
               <span className="text-2xl">🔊</span>
             </div>
             <div className="text-xs text-emerald-400">
-              Audio captured ({(audioBlob.size / 1024).toFixed(0)} KB)
+              {t('audioCaptured', { size: (audioBlob.size / 1024).toFixed(0) })}
             </div>
             {previewUrl && (
               <audio ref={audioRef} src={previewUrl} controls className="w-full max-w-xs h-8" />
@@ -464,7 +467,7 @@ function AudioRecordStep({
               onClick={startRecording}
               className="text-xs text-zinc-500 hover:text-zinc-300 transition"
             >
-              Re-record
+              {t('reRecord')}
             </button>
           </>
         ) : (
@@ -477,7 +480,7 @@ function AudioRecordStep({
               <span className="text-2xl">🎤</span>
             </button>
             <div className="text-xs text-zinc-500">
-              Tap to record 30s of ambient sound
+              {t('tapToRecord')}
             </div>
           </>
         )}
@@ -486,7 +489,7 @@ function AudioRecordStep({
       </div>
 
       <div className="text-[10px] text-zinc-600 text-center">
-        This step is optional — skip if you prefer no ambient audio
+        {t('audioOptional')}
       </div>
     </div>
   );
@@ -507,6 +510,7 @@ function ReviewStep({
   uploading: boolean;
   onFinalize: () => void;
 }) {
+  const t = useTranslations('Tracker');
   const layerCount =
     (layers.splatFile ? 1 : 0) +
     (layers.meshUploaded ? 1 : 0) +
@@ -515,15 +519,15 @@ function ReviewStep({
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="text-sm text-zinc-200 font-medium">Review Composite Environment</h3>
+        <h3 className="text-sm text-zinc-200 font-medium">{t('reviewComposite')}</h3>
         <p className="text-xs text-zinc-500 mt-1">
-          {layerCount} layer{layerCount !== 1 ? 's' : ''} captured. Name your environment and activate it.
+          {t('layersCaptured', { count: layerCount })}
         </p>
       </div>
 
       {/* Name input */}
       <div>
-        <label className="text-[10px] text-zinc-500 uppercase tracking-wider">Name</label>
+        <label className="text-[10px] text-zinc-500 uppercase tracking-wider">{t('nameLabel')}</label>
         <input
           type="text"
           value={name}
@@ -537,19 +541,19 @@ function ReviewStep({
       <div className="space-y-2">
         <LayerRow
           icon="✨"
-          label="Gaussian Splat"
+          label={t('gaussianSplat')}
           status={layers.splatFile ? `${layers.splatFile.name} (${(layers.splatFile.size / (1024 * 1024)).toFixed(1)} MB)` : undefined}
           color="purple"
         />
         <LayerRow
           icon="🧊"
-          label="WebXR Mesh"
+          label={t('webxrMesh')}
           status={layers.meshUploaded ? (layers.meshName || 'Captured') : undefined}
           color="blue"
         />
         <LayerRow
           icon="🔊"
-          label="Ambient Audio"
+          label={t('ambientAudio')}
           status={layers.audioBlob ? `${(layers.audioBlob.size / 1024).toFixed(0)} KB` : undefined}
           color="emerald"
         />
@@ -557,7 +561,7 @@ function ReviewStep({
 
       {layerCount === 0 && (
         <div className="text-xs text-amber-400 bg-amber-500/10 rounded-lg p-3">
-          No layers captured. Go back and add at least one layer.
+          {t('noLayersCaptured')}
         </div>
       )}
     </div>
@@ -575,6 +579,7 @@ function LayerRow({
   status?: string;
   color: string;
 }) {
+  const t = useTranslations('Tracker');
   const present = !!status;
   return (
     <div
@@ -594,7 +599,7 @@ function LayerRow({
         )}
       </div>
       <span className={`text-[10px] ${present ? `text-${color}-400` : 'text-zinc-700'}`}>
-        {present ? 'Ready' : 'Skipped'}
+        {present ? t('readyStatus') : t('skippedStatus')}
       </span>
     </div>
   );

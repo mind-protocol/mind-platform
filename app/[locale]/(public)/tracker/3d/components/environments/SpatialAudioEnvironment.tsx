@@ -63,7 +63,7 @@ export default function SpatialAudioEnvironment({ url, volume = 0.6, loop = true
       gainRef.current = null;
     }
     if (ctxRef.current) {
-      ctxRef.current.close().catch(() => { console.error('Failed to close AudioContext'); });
+      ctxRef.current.close().catch(() => { /* AudioContext close failed */ });
       ctxRef.current = null;
     }
   }, []);
@@ -115,7 +115,7 @@ export default function SpatialAudioEnvironment({ url, volume = 0.6, loop = true
 
         source.start(0);
       } catch (err) {
-        console.warn('[SpatialAudioEnvironment] Failed to load audio:', err);
+        /* spatial audio load failed — non-critical */
       }
     }
 

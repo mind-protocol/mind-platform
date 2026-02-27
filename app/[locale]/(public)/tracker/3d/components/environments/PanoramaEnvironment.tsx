@@ -30,7 +30,7 @@ export default function PanoramaEnvironment({ url }: Props) {
           scene.environment = texture;
         });
       }).catch(() => {
-        console.warn('[PanoramaEnvironment] HDR loader not available, falling back to TextureLoader');
+        /* HDR loader not available — falling back to TextureLoader */
         loadStandard();
       });
     } else {
@@ -48,7 +48,7 @@ export default function PanoramaEnvironment({ url }: Props) {
           scene.environment = texture;
         },
         undefined,
-        (err) => console.warn('[PanoramaEnvironment] Failed to load:', err),
+        () => { /* panorama load failed — non-critical */ },
       );
     }
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 
 // ─── Types ────────────────────────────────────────────────────────────
 
@@ -177,6 +178,7 @@ export default function DirectionMap({
   visible: boolean;
   onClose: () => void;
 }) {
+  const t = useTranslations('Tracker');
   const [selected, setSelected] = useState<string | null>(null);
   const [directions, setDirections] = useState<Direction[]>(DIRECTIONS);
   const [animateIn, setAnimateIn] = useState(false);
@@ -210,9 +212,9 @@ export default function DirectionMap({
       {/* Title */}
       <div className={`absolute top-6 left-1/2 -translate-x-1/2 z-10 text-center transition-all duration-700 ${animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
         <h2 className="text-lg font-mono font-bold text-white tracking-wider">
-          DIRECTION MAP
+          {t('directionMap')}
         </h2>
-        <p className="text-xs text-zinc-500 mt-1">Constellation des priorités</p>
+        <p className="text-xs text-zinc-500 mt-1">{t('constellationDesc')}</p>
       </div>
 
       {/* Close button */}

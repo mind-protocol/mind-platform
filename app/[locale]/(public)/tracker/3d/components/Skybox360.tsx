@@ -87,7 +87,7 @@ function TextureSkybox({
         textureRef.current = texture;
       },
       undefined,
-      (err) => console.warn('[Skybox360] Failed to load texture:', err),
+      () => { /* skybox texture load failed — non-critical */ },
     );
 
     return () => {

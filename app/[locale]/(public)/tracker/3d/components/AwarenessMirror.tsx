@@ -24,6 +24,7 @@ import type { VoicePhase } from '@/lib/voice/types';
 import { useKeyboardReactive, type KeyboardDebugStats } from '@/lib/tracker/hooks/useKeyboardReactive';
 import { useSpotifyNowPlaying } from '@/lib/tracker/hooks/useSpotifyNowPlaying';
 import { useMusicAudioAnalysis } from '@/lib/tracker/hooks/useMusicAudioAnalysis';
+import { useTranslations } from 'next-intl';
 
 interface AwarenessMirrorProps {
   /** Active cockpit region (controlled from parent page) */
@@ -39,6 +40,7 @@ interface AwarenessMirrorProps {
 }
 
 export default function AwarenessMirror({ activeRegion, setActiveRegion, voiceAnalyser, voicePhase, voiceActive }: AwarenessMirrorProps = {}) {
+  const t = useTranslations('Tracker');
   const { awareness, loading } = useAwarenessState();
   const { active: activeEnv } = useEnvironments();
   const [dpr, setDpr] = useState<number>(1.5);
@@ -69,7 +71,7 @@ export default function AwarenessMirror({ activeRegion, setActiveRegion, voiceAn
     return (
       <div className="w-full h-full flex items-center justify-center">
         <div className="text-zinc-600 text-sm font-mono animate-pulse">
-          Initializing awareness mirror...
+          {t('initializingMirror')}
         </div>
       </div>
     );
@@ -254,6 +256,7 @@ const MIN_HUD_WIDTH = 120;
 const MAX_HUD_WIDTH = 420;
 
 export function AwarenessHUD({ className }: { className?: string }) {
+  const t = useTranslations('Tracker');
   const { awareness } = useAwarenessState();
   const cockpit = useCockpitState(awareness);
   const [collapsed, setCollapsed] = useState(false);
@@ -557,7 +560,7 @@ export function AwarenessHUD({ className }: { className?: string }) {
           })}
         </div>
       ) : (
-        <div className="text-[10px] text-zinc-700">Baseline</div>
+        <div className="text-[10px] text-zinc-700">{t('baselineState')}</div>
       )}
 
       {/* ── Composite loads bar ─────────────────────────────────────── */}

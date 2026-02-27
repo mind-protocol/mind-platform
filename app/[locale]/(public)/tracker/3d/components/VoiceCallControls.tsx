@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import type { VoicePhase } from '@/lib/voice/types';
 
 interface VoiceCallControlsProps {
@@ -14,12 +15,13 @@ interface VoiceCallControlsProps {
   typing: boolean;
 }
 
-const PHASE_LABELS: Record<VoicePhase, string> = {
+// Phase label keys — resolved via useTranslations inside the component
+const PHASE_LABEL_KEYS: Record<VoicePhase, string> = {
   idle: '',
-  connecting: 'Connecting...',
-  listening: 'Listening',
-  processing: 'Processing...',
-  speaking: 'Manemus speaks',
+  connecting: 'voiceConnecting',
+  listening: 'voiceListening',
+  processing: 'voiceProcessing',
+  speaking: 'voiceSpeaking',
 };
 
 const PHASE_COLORS: Record<VoicePhase, string> = {
@@ -40,6 +42,7 @@ export default function VoiceCallControls({
   chromeVisible,
   typing,
 }: VoiceCallControlsProps) {
+  const t = useTranslations('Tracker');
   const phaseColor = PHASE_COLORS[phase];
   const [error, setError] = useState<string | null>(null);
   const [starting, setStarting] = useState(false);
@@ -51,7 +54,7 @@ export default function VoiceCallControls({
       await onStart();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Unknown error';
-      console.error('[VoiceCall] Start failed:', msg);
+      /* voice call start failed — error displayed in UI */
       setError(msg);
     } finally {
       setStarting(false);
@@ -97,7 +100,7 @@ export default function VoiceCallControls({
             className="text-[10px] font-mono uppercase tracking-wider"
             style={{ color: phaseColor }}
           >
-            {PHASE_LABELS[phase]}
+            {PHASE_LABEL_KEYS[phase] ? t(PHASE_LABEL_KEYS[phase]) : ''}
           </span>
         )}
 
@@ -112,7 +115,7 @@ export default function VoiceCallControls({
                 ? 'bg-red-500/20 border-red-500/50 hover:bg-red-500/30 text-red-400'
                 : 'bg-amber-500/10 border-amber-500/30 hover:bg-amber-500/20 text-amber-400 hover:border-amber-500/50'
           }`}
-          title={starting ? 'Connecting...' : isActive ? 'End call' : 'Start voice call'}
+          title={starting ? t('voiceConnecting') : isActive ? t('voiceEndCall') : t('voiceStartCall')}
         >
           {isActive ? (
             // Stop icon

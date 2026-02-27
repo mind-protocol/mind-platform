@@ -56,7 +56,7 @@ export default function EnvironmentSkybox({ url, opacity = 1, asEnvironment = tr
       },
       undefined,
       (err) => {
-        console.warn('[EnvironmentSkybox] Failed to load panorama:', err);
+        /* panorama load failed — non-critical */
       },
     );
 

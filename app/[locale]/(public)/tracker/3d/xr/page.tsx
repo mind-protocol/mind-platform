@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, Suspense } from 'react';
+import { useTranslations } from 'next-intl';
 import { Canvas } from '@react-three/fiber';
 import { createXRStore, XR, XROrigin } from '@react-three/xr';
 import XRMeshCapture from '../components/environments/XRMeshCapture';
@@ -20,6 +21,7 @@ const xrStore = createXRStore({
  * Access: /tracker/3d/xr (open in Quest 3 browser)
  */
 export default function XRPage() {
+  const t = useTranslations('Tracker');
   const [captureRequested, setCaptureRequested] = useState(false);
   const [captured, setCaptured] = useState(false);
   const [capturing, setCapturing] = useState(false);
@@ -48,7 +50,7 @@ export default function XRPage() {
       await xrStore.enterAR();
       setSessionActive(true);
     } catch (err) {
-      console.error('Failed to enter AR:', err);
+      /* AR session start failed — non-critical */
     }
   }, []);
 
@@ -59,7 +61,7 @@ export default function XRPage() {
         <div className="flex items-center gap-3">
           <span className="text-sm font-mono text-zinc-400">Mind Protocol</span>
           <span className="text-xs text-zinc-600">|</span>
-          <span className="text-xs text-purple-400">XR Mesh Capture</span>
+          <span className="text-xs text-purple-400">{t('xrMeshCapture')}</span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -72,7 +74,7 @@ export default function XRPage() {
                 : 'border-zinc-700 text-zinc-500'
             }`}
           >
-            {meshVisible ? 'Mesh ON' : 'Mesh OFF'}
+            {meshVisible ? t('meshOn') : t('meshOff')}
           </button>
 
           {/* Enter AR button */}
@@ -81,7 +83,7 @@ export default function XRPage() {
               onClick={enterAR}
               className="px-4 py-1.5 text-xs font-medium rounded-lg bg-purple-600 hover:bg-purple-500 text-white transition"
             >
-              Enter AR
+              {t('enterAR')}
             </button>
           )}
 
@@ -98,7 +100,7 @@ export default function XRPage() {
                     : 'bg-emerald-600 hover:bg-emerald-500 text-white'
               }`}
             >
-              {captured ? 'Captured!' : capturing ? 'Exporting...' : 'Capture Mesh'}
+              {captured ? t('capturedBang') : capturing ? t('exportingDots') : t('captureMesh')}
             </button>
           )}
         </div>
@@ -109,22 +111,21 @@ export default function XRPage() {
         <div className="fixed inset-0 flex items-center justify-center z-40">
           <div className="text-center space-y-6 max-w-md px-6">
             <div className="text-4xl">🥽</div>
-            <h1 className="text-xl font-light tracking-wide">Quest 3 Mesh Capture</h1>
+            <h1 className="text-xl font-light tracking-wide">{t('quest3Title')}</h1>
             <p className="text-sm text-zinc-400 leading-relaxed">
-              Scan your room with Quest 3 mesh detection.
-              Walls, floors, tables, and furniture will be detected and exported as a 3D model.
+              {t('xrScanDesc')}
             </p>
             <div className="space-y-2 text-xs text-zinc-500">
-              <p>1. Tap <strong className="text-purple-400">Enter AR</strong> to start mesh detection</p>
-              <p>2. Look around your room — surfaces appear as colored wireframes</p>
-              <p>3. Tap <strong className="text-emerald-400">Capture Mesh</strong> when ready</p>
-              <p>4. Mesh uploads to your Awareness Mirror automatically</p>
+              <p>1. {t('xrStep1', { btn: '' })}<strong className="text-purple-400">{t('enterAR')}</strong></p>
+              <p>2. {t('xrStep2')}</p>
+              <p>3. {t('xrStep3', { btn: '' })}<strong className="text-emerald-400">{t('captureMesh')}</strong></p>
+              <p>4. {t('xrStep4')}</p>
             </div>
             <button
               onClick={enterAR}
               className="px-8 py-3 text-sm font-medium rounded-xl bg-purple-600 hover:bg-purple-500 text-white transition-all hover:scale-105"
             >
-              Enter AR
+              {t('enterAR')}
             </button>
           </div>
         </div>

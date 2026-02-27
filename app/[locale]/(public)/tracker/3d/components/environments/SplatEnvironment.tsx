@@ -39,9 +39,7 @@ export default function SplatEnvironment({ url }: Props) {
         scene.add(splat);
         splatRef.current = splat;
       } catch {
-        console.warn(
-          '[SplatEnvironment] @lumaai/luma-web not available. Install with: npm install @lumaai/luma-web',
-        );
+        /* @lumaai/luma-web not available — splat rendering disabled */
       }
     }
 

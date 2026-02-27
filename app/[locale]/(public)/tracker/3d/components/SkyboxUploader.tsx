@@ -43,7 +43,7 @@ export function useSkybox360() {
       if (url) localStorage.setItem(SKYBOX_KEY, url);
       else localStorage.removeItem(SKYBOX_KEY);
     } catch (e) {
-      console.warn('[useSkybox360] localStorage error:', e);
+      /* localStorage error — non-critical */
     }
     notify(url);
   }, []);
