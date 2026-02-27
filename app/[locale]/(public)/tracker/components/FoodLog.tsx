@@ -76,12 +76,12 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
 
   const fetchData = useCallback(() => {
     fetch('/api/tracker/food?days=7')
-      .then((r) => r.json())
-      .then((d) => { if (d.entries) setEntries(d.entries); })
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d?.entries) setEntries(d.entries); })
       .catch(() => {});
     fetch('/api/tracker/food-stats?days=1')
-      .then((r) => r.json())
-      .then((d) => { if (d.today) setTodayStats(d.today); })
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d?.today) setTodayStats(d.today); })
       .catch(() => {});
   }, []);
 

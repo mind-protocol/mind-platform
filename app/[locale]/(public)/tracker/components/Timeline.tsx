@@ -589,16 +589,16 @@ export default function Timeline({ refreshKey, filter }: { refreshKey: number; f
     setLoading(true);
     Promise.all([
       fetch('/api/tracker/log?days=7')
-        .then((r) => r.json())
-        .then((d) => setEntries(d.entries || []))
+        .then((r) => r.ok ? r.json() : null)
+        .then((d) => setEntries(d?.entries || []))
         .catch(() => toast('Failed to load timeline', 'error')),
       fetch('/api/tracker/adverse?days=7')
-        .then((r) => r.json())
+        .then((r) => r.ok ? r.json() : null)
         .then((d) => setAdverseEntries(Array.isArray(d) ? d : []))
         .catch(() => toast('Failed to load effects', 'error')),
       fetch('/api/tracker/food?days=7')
-        .then((r) => r.json())
-        .then((d) => setFoodEntries(d.entries || []))
+        .then((r) => r.ok ? r.json() : null)
+        .then((d) => setFoodEntries(d?.entries || []))
         .catch(() => {}),
     ]).finally(() => setLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps

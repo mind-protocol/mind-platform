@@ -329,15 +329,15 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
 
         setNotes('');
       } else if (res.status === 422) {
-        const data = await res.json();
-        if (data.warning?.type === 'aberrant_dose') {
+        const data = await res.json().catch(() => null);
+        if (data?.warning?.type === 'aberrant_dose') {
           setDoseWarning(data.warning);
         } else {
-          setFeedback(data.warning?.message || 'Validation error');
+          setFeedback(data?.warning?.message || 'Validation error');
         }
       } else {
-        const err = await res.json();
-        setFeedback(err.error || 'Failed');
+        const err = await res.json().catch(() => null);
+        setFeedback(err?.error || 'Failed');
       }
     } catch {
       setFeedback('Network error');

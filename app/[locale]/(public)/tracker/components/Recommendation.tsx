@@ -174,9 +174,9 @@ export default function Recommendation({
   useEffect(() => {
     setLoading(true);
     fetch('/api/tracker/recommend')
-      .then((r) => r.json())
+      .then((r) => r.ok ? r.json() : null)
       .then((d) => {
-        if (d.recommendations) setData(d);
+        if (d?.recommendations) setData(d);
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -374,7 +374,7 @@ export default function Recommendation({
                     onClick={async () => {
                       setLoggingEffect(effect.key);
                       try {
-                        await fetch('/api/tracker/adverse', {
+                        const res = await fetch('/api/tracker/adverse', {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify({
@@ -383,8 +383,10 @@ export default function Recommendation({
                             notes: '',
                           }),
                         });
-                        setLoggedEffects(prev => new Set(prev).add(effect.key));
-                      } catch { /* silent */ }
+                        if (res.ok) {
+                          setLoggedEffects(prev => new Set(prev).add(effect.key));
+                        }
+                      } catch { /* network error — button stays enabled for retry */ }
                       setLoggingEffect(null);
                     }}
                     className={`text-xs px-2 py-1 rounded border transition ${

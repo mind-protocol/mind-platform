@@ -44,6 +44,7 @@ export default function PlanningCalendar() {
     const fetchPast = async () => {
       try {
         const res = await fetch('/api/tracker/log?days=1');
+        if (!res.ok) return;
         const data = await res.json();
         const entries = data.entries || [];
         const intakes: IntakeEvent[] = entries.map((e: { ts: string; substance: string; dose: { amount: number } }) => ({

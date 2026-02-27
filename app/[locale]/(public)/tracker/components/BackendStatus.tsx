@@ -15,6 +15,7 @@ export default function BackendStatus() {
       try {
         const res = await fetch('/api/house');
         if (!mounted) return;
+        if (!res.ok) { setStatus('offline'); return; }
         const data = await res.json();
         if (data.offline) {
           setStatus('offline');

@@ -63,6 +63,7 @@ export default function LiveBiometrics() {
   const fetchData = useCallback(async () => {
     try {
       const res = await fetch('/api/house');
+      if (!res.ok) { setFresh(false); return; }
       const json: HouseState = await res.json();
       setData(json);
       // Data is fresh if timestamp is < 60s old
