@@ -19,12 +19,15 @@ export const metadata = {
   title: "Mind Protocol",
   description: "Persistent memory for AI agents",
   manifest: "/manifest.json",
-  themeColor: "#f59e0b",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent" as const,
     title: "MIND Tracker",
   },
+};
+
+export const viewport = {
+  themeColor: "#f59e0b",
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
