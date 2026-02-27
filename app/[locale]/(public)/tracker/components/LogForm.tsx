@@ -61,7 +61,7 @@ const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<s
   cbd: { amount: 1, unit: 'comprimé', details: { route: 'complex', form: 'tablet', reaction: 'clean' } },
   lions_mane: { amount: 420, unit: 'mg', details: { form: 'capsule', mg_per_capsule: 420 } },
   caffeine: { amount: 150, unit: 'mg', details: { form: 'double', shots: 2, milk: true, sugar: 1, sugarType: 'blanc' } },
-  ketamine: { amount: 30, unit: 'mg', details: { form: 'crystal', route: 'intranasal', estimate: 'visual' } },
+  ketamine: { amount: 1, unit: 'ml', details: { form: 'liquid', route: 'oral', crystal_mg: 1000, water_ml: 10 } },
   lsd: { amount: 0.5, unit: 'carton', details: { form: 'carton', ug_estimate: 100 } },
   nicotine: { amount: 3, unit: 'puffs', details: { form: 'vape', strength_pct: 20, mode: 'POWER', wattage: 22, resistance: 1.2, voltage_v: null, puff_duration_s: null, reaction: 'clean' } },
   hydration: { amount: 500, unit: 'ml', details: { additives: [] } },
@@ -88,6 +88,12 @@ const K_PRESETS = [
   { mg: 50, label: 'Moderate', desc: 'medium line' },
   { mg: 80, label: 'Strong', desc: 'fat line' },
   { mg: 120, label: 'Deep', desc: 'heavy dose' },
+];
+
+const K_LIQUID_PRESETS = [
+  { ml: 1, label: 'Micro-boost', desc: '100mg', intent: 'micro-boost' },
+  { ml: 4, label: 'Dissociation', desc: '400mg', intent: 'dissociation' },
+  { ml: 8, label: 'Dissolution', desc: '800mg', intent: 'identity-dissolution' },
 ];
 
 const LSD_PRESETS = [
@@ -251,7 +257,7 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
     setDoseWarning(null);
     try {
       const unit = tab === 'ketamine'
-        ? (details.form === 'spray' ? 'spray' : 'mg')
+        ? (details.form === 'liquid' ? 'ml' : details.form === 'spray' ? 'spray' : 'mg')
         : tab === 'cbd'
         ? (details.route === 'vaporized' ? 'chambers' : details.route === 'sublingual' ? 'gouttes' : 'comprimés')
         : tab === 'nicotine'
@@ -375,12 +381,12 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
         {tab !== 'yoga' && (
           <div>
             <label className="text-xs text-zinc-500 block mb-1">
-              Amount ({tab === 'ketamine' ? (details.form === 'spray' ? 'sprays' : 'mg estimate') : tab === 'cbd' ? (details.route === 'vaporized' ? 'chambers' : details.route === 'sublingual' ? 'gouttes' : 'comprimés') : tab === 'nicotine' ? (NICOTINE_FORMS.find((f) => f.key === (details.form as string))?.unit || 'puffs') : DEFAULTS[tab].unit})
+              Amount ({tab === 'ketamine' ? (details.form === 'liquid' ? 'ml' : details.form === 'spray' ? 'sprays' : 'mg estimate') : tab === 'cbd' ? (details.route === 'vaporized' ? 'chambers' : details.route === 'sublingual' ? 'gouttes' : 'comprimés') : tab === 'nicotine' ? (NICOTINE_FORMS.find((f) => f.key === (details.form as string))?.unit || 'puffs') : DEFAULTS[tab].unit})
             </label>
             <input
               type="number"
               min={0}
-              step={tab === 'hydration' ? 50 : tab === 'ketamine' && details.form !== 'spray' ? 5 : 1}
+              step={tab === 'hydration' ? 50 : tab === 'ketamine' ? (details.form === 'liquid' ? 1 : details.form === 'spray' ? 1 : 5) : 1}
               value={amount}
               onChange={(e) => setAmount(Number(e.target.value))}
               className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
@@ -813,23 +819,24 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
 
         {tab === 'ketamine' && (
           <div className="space-y-3">
-            {/* Form toggle: crystal vs spray */}
+            {/* Form toggle: liquid vs crystal vs spray */}
             <div>
               <label className="text-xs text-zinc-500 block mb-1">Form</label>
               <div className="flex gap-2">
-                {(['crystal', 'spray'] as const).map((f) => (
+                {(['liquid', 'crystal', 'spray'] as const).map((f) => (
                   <button
                     key={f}
                     onClick={() => {
-                      const isCrystal = f === 'crystal';
-                      setDetails({
-                        ...details,
-                        form: f,
-                        route: 'intranasal',
-                        estimate: isCrystal ? 'visual' : undefined,
-                      });
-                      if (isCrystal && amount < 5) setAmount(30);
-                      if (!isCrystal && amount > 20) setAmount(3);
+                      if (f === 'liquid') {
+                        setDetails({ ...details, form: 'liquid', route: 'oral', crystal_mg: 1000, water_ml: 10 });
+                        if (amount > 20) setAmount(1);
+                      } else if (f === 'crystal') {
+                        setDetails({ ...details, form: 'crystal', route: 'intranasal', estimate: 'visual' });
+                        if (amount < 5) setAmount(30);
+                      } else {
+                        setDetails({ ...details, form: 'spray', route: 'intranasal' });
+                        if (amount > 20) setAmount(3);
+                      }
                     }}
                     className={`px-3 py-1.5 rounded text-sm border transition ${
                       details.form === f
@@ -837,11 +844,72 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                         : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
                     }`}
                   >
-                    {f === 'crystal' ? '💎 Crystal' : '🔬 Spray'}
+                    {f === 'liquid' ? '💧 Liquide' : f === 'crystal' ? '💎 Crystal' : '🔬 Spray'}
                   </button>
                 ))}
               </div>
             </div>
+
+            {/* Liquid: presets + concentration */}
+            {details.form === 'liquid' && (() => {
+              const crystalMg = (details.crystal_mg as number) || 1000;
+              const waterMl = (details.water_ml as number) || 10;
+              const mgPerMl = waterMl > 0 ? crystalMg / waterMl : 0;
+              return (
+                <>
+                  <div>
+                    <label className="text-xs text-zinc-500 block mb-1">Quick dose</label>
+                    <div className="flex flex-wrap gap-1.5">
+                      {K_LIQUID_PRESETS.map((p) => (
+                        <button
+                          key={p.ml}
+                          onClick={() => {
+                            setAmount(p.ml);
+                            setIntent(p.intent);
+                          }}
+                          className={`px-2 py-1 rounded text-xs border transition ${
+                            amount === p.ml
+                              ? 'border-purple-500/50 text-purple-300 bg-purple-500/15'
+                              : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                          }`}
+                        >
+                          {p.ml}ml <span className="text-zinc-600">· {p.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="bg-zinc-800/50 rounded-lg p-2 text-center">
+                    <span className="text-xs text-zinc-500">Concentration: </span>
+                    <span className="text-sm font-mono text-purple-300 font-bold">{mgPerMl.toFixed(0)} mg/ml</span>
+                    <span className="text-xs text-zinc-500 ml-2">= </span>
+                    <span className="text-sm font-mono text-purple-400">{(mgPerMl * amount).toFixed(0)} mg</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="text-xs text-zinc-500 block mb-1">Cristal (mg)</label>
+                      <input
+                        type="number"
+                        min={0}
+                        value={crystalMg}
+                        onChange={(e) => setDetails({ ...details, crystal_mg: Number(e.target.value) })}
+                        className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-zinc-500 block mb-1">Eau (ml)</label>
+                      <input
+                        type="number"
+                        min={0.1}
+                        step={0.5}
+                        value={waterMl}
+                        onChange={(e) => setDetails({ ...details, water_ml: Number(e.target.value) })}
+                        className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                      />
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
 
             {/* Crystal: quick presets */}
             {details.form === 'crystal' && (
