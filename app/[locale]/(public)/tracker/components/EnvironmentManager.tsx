@@ -80,8 +80,8 @@ export default function EnvironmentManager() {
         ? { ...pendingGeo, location_name: pendingLocationName || undefined }
         : undefined;
       await upload(pendingFile, pendingName, 'manual', '', true, geo);
-    } catch (e) {
-      /* upload failed — non-critical */
+    } catch {
+      toast(t('uploadFailed'), 'error');
     } finally {
       setUploading(false);
       setPendingFile(null);

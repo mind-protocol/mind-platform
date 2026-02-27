@@ -29,6 +29,10 @@ export async function POST(req: NextRequest) {
   try {
     const userId = auth.user_id;
     const body = await req.json();
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
+    }
+
     const { data, status } = await manemusFetchJson('/api/tracker/plan', {
       method: 'POST',
       headers: {

@@ -8,6 +8,14 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
+    const { email, password, name } = body || {};
+    if (!email || typeof email !== 'string' || !password || typeof password !== 'string') {
+      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
+    }
+    if (!name || typeof name !== 'string') {
+      return NextResponse.json({ error: 'Name is required' }, { status: 400 });
+    }
+
     const res = await manemusFetch('/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

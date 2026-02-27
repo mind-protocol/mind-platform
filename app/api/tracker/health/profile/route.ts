@@ -27,6 +27,9 @@ export async function PUT(req: NextRequest) {
   try {
     const userId = auth.user_id;
     const body = await req.json();
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
+    }
     const res = await manemusFetch('/api/health-profile', {
       method: 'PUT',
       headers: {

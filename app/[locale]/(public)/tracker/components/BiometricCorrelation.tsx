@@ -110,8 +110,8 @@ export default function BiometricCorrelation({ refreshKey }: { refreshKey: numbe
     ctx.scale(dpr, dpr);
 
     const pad = { top: 10, right: 10, bottom: 30, left: 40 };
-    const cw = w - pad.left - pad.right;
-    const ch = h - pad.top - pad.bottom;
+    const cw = Math.max(1, w - pad.left - pad.right);
+    const ch = Math.max(1, h - pad.top - pad.bottom);
 
     ctx.clearRect(0, 0, w, h);
 

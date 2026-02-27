@@ -220,24 +220,22 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
   const [mindAnalyzing, setMindAnalyzing] = useState(false);
   const [analysisCollapsed, setAnalysisCollapsed] = useState(false);
 
-  // Yoga timer effect
+  // Yoga timer effect — always return cleanup to prevent interval leak on unmount
   useEffect(() => {
-    if (yogaTimerRunning && yogaTimerRemaining > 0) {
-      timerInterval.current = setInterval(() => {
-        setYogaTimerRemaining((prev) => {
-          if (prev <= 1) {
-            setYogaTimerRunning(false);
-            setYogaSessionDone(true);
-            if (timerInterval.current) clearInterval(timerInterval.current);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-      return () => {
-        if (timerInterval.current) clearInterval(timerInterval.current);
-      };
-    }
+    if (!yogaTimerRunning || yogaTimerRemaining <= 0) return;
+    const interval = setInterval(() => {
+      setYogaTimerRemaining((prev) => {
+        if (prev <= 1) {
+          setYogaTimerRunning(false);
+          setYogaSessionDone(true);
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    timerInterval.current = interval;
+    return () => clearInterval(interval);
   }, [yogaTimerRunning, yogaTimerRemaining]);
 
   const switchTab = useCallback((key: TabKey) => {
@@ -355,7 +353,7 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
     }
   };
 
-  const currentTab = TABS.find((t) => t.key === tab)!;
+  const currentTab = TABS.find((t) => t.key === tab) ?? TABS[0];
 
   return (
     <div

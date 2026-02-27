@@ -14,6 +14,9 @@ export async function POST(
   const { id } = await params;
   try {
     const body = await req.json();
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
+    }
     const { data, status } = await manemusFetchJson(`/sign/${id}/execute`, {
       method: 'POST',
       headers: {

@@ -366,7 +366,7 @@ const EntryRow = memo(function EntryRow({
                 </div>
               )}
               <div className="text-zinc-600">
-                {JSON.stringify(entry.dose.details)}
+                {entry.dose.details ? JSON.stringify(entry.dose.details) : ''}
               </div>
               <button
                 onClick={(e) => { e.stopPropagation(); startEdit(); }}
