@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useConnectomeStore } from '@/app/connectome/lib/zustand_connectome_state_store_with_atomic_commit_actions';
-import type { FlowEvent, PlaybackMode, PlaybackSpeed } from '@/app/connectome/lib/zustand_connectome_state_store_with_atomic_commit_actions';
+import { useConnectomeStore } from '@/app/[locale]/connectome/lib/zustand_connectome_state_store_with_atomic_commit_actions';
+import type { FlowEvent, PlaybackMode, PlaybackSpeed } from '@/app/[locale]/connectome/lib/zustand_connectome_state_store_with_atomic_commit_actions';
 
 function resetStore() {
   useConnectomeStore.setState({

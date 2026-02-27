@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
 
-import { fetchCitizens, fetchOrgs } from '@/app/(public)/registry/lib/api';
+import { fetchCitizens, fetchOrgs } from '@/app/[locale]/(public)/registry/lib/api';
 
 describe('fetchCitizens', () => {
   beforeEach(() => {

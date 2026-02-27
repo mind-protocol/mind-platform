@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
   initialize_connectome_runtime,
   dispatch_runtime_command,
-} from '@/app/connectome/lib/next_step_gate_and_realtime_playback_runtime_engine';
-import { useConnectomeStore } from '@/app/connectome/lib/zustand_connectome_state_store_with_atomic_commit_actions';
+} from '@/app/[locale]/connectome/lib/next_step_gate_and_realtime_playback_runtime_engine';
+import { useConnectomeStore } from '@/app/[locale]/connectome/lib/zustand_connectome_state_store_with_atomic_commit_actions';
 
 // Mock global fetch
 const mockFetch = vi.fn();

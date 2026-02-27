@@ -10,7 +10,7 @@ import {
   ENERGY_COLORS,
   getEnergyBucket,
   formatEnergy,
-} from '@/app/connectome/lib/connectome_system_map_node_edge_manifest';
+} from '@/app/[locale]/connectome/lib/connectome_system_map_node_edge_manifest';
 
 describe('getEnergyBucket', () => {
   it('classifies low energy (< 0.25)', () => {
