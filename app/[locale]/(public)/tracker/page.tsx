@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo, lazy, Suspense, memo } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Recommendation from './components/Recommendation';
@@ -9,7 +9,6 @@ import LogForm from './components/LogForm';
 import BiometricCorrelation from './components/BiometricCorrelation';
 import SensationLogger from './components/SensationLogger';
 import Timeline from './components/Timeline';
-import Practices from './components/Practices';
 import FoodLog from './components/FoodLog';
 import LiveBiometrics from './components/LiveBiometrics';
 import DailySummary from './components/DailySummary';
@@ -22,6 +21,18 @@ import ScheduleDoseForm from './components/planning/ScheduleDoseForm';
 import ThemeToggle from './components/ThemeToggle';
 import SubstanceConfigMenu from './components/SubstanceConfigMenu';
 import SanitizeToggle from '@/components/SanitizeToggle';
+
+const Practices = lazy(() => import('./components/Practices'));
+const PracticesFallback = memo(() => (
+  <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-8 animate-pulse">
+    <div className="h-6 w-48 bg-zinc-800 rounded mb-4" />
+    <div className="space-y-3">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={i} className="h-16 bg-zinc-800/50 rounded-lg" />
+      ))}
+    </div>
+  </div>
+));
 import { useSubstanceConfig } from '@/lib/tracker/hooks/useSubstanceConfig';
 import { type SubstanceKey } from '@/lib/tracker/constants';
 import { useToast } from '@/components/Toast';
@@ -46,7 +57,7 @@ export default function TrackerPage() {
   }>({});
   const { visibleKeys } = useSubstanceConfig();
 
-  const refresh = () => setRefreshKey((k) => k + 1);
+  const refresh = useCallback(() => setRefreshKey((k) => k + 1), []);
 
   const openSchedule = useCallback((substance: string, details: Record<string, unknown>) => {
     setScheduleDefaults({
@@ -86,9 +97,9 @@ export default function TrackerPage() {
     }
   }, []);
 
-  // Filter visible substances by category
-  const bodySubstances = visibleKeys.filter((k) => BODY_KEYS.has(k));
-  const recreationalSubstances = visibleKeys.filter((k) => RECREATIONAL_KEYS.has(k));
+  // Filter visible substances by category (memoized to prevent child re-renders)
+  const bodySubstances = useMemo(() => visibleKeys.filter((k) => BODY_KEYS.has(k)), [visibleKeys]);
+  const recreationalSubstances = useMemo(() => visibleKeys.filter((k) => RECREATIONAL_KEYS.has(k)), [visibleKeys]);
   const currentFilter = activeTab === 'body' ? bodySubstances : recreationalSubstances;
 
   return (
@@ -258,7 +269,9 @@ export default function TrackerPage() {
             </div>
 
             {activeTab === 'practices' ? (
-              <Practices refreshKey={refreshKey} />
+              <Suspense fallback={<PracticesFallback />}>
+                <Practices refreshKey={refreshKey} />
+              </Suspense>
             ) : (
               <>
                 {/* Summary cards */}
