@@ -19,8 +19,8 @@ export default function DailySummary({ refreshKey }: { refreshKey: number }) {
 
   useEffect(() => {
     fetch('/api/tracker/stats?days=1')
-      .then((r) => r.json())
-      .then(setData)
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d) setData(d); })
       .catch(() => toast('Failed to load daily summary', 'error'));
   }, [refreshKey]);
 

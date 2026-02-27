@@ -58,8 +58,8 @@ export default function SubstanceCard({ refreshKey, filter }: { refreshKey: numb
   useEffect(() => {
     setLoading(true);
     fetch('/api/tracker/stats?days=7')
-      .then((r) => r.json())
-      .then(setStats)
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d) setStats(d); })
       .catch(() => toast('Failed to load substance stats', 'error'))
       .finally(() => setLoading(false));
   }, [refreshKey]);

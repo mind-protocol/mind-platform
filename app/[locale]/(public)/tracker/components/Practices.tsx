@@ -950,8 +950,9 @@ export default function Practices({ refreshKey }: PracticesProps) {
   // Fetch current biometrics for recommendations
   useEffect(() => {
     fetch('/api/tracker/correlation?days=0.01')
-      .then(r => r.json())
+      .then(r => r.ok ? r.json() : null)
       .then(d => {
+        if (!d) return;
         const ts = d.timeseries || [];
         if (ts.length > 0) {
           const latest = ts[ts.length - 1];

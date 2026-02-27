@@ -83,8 +83,9 @@ export default function BiometricCorrelation({ refreshKey }: { refreshKey: numbe
 
   useEffect(() => {
     fetch(`/api/tracker/correlation?days=${range}`)
-      .then((r) => r.json())
+      .then((r) => r.ok ? r.json() : null)
       .then((d) => {
+        if (!d) { setData({ timeseries: [], events: [] }); return; }
         if (d.timeseries && d.events) setData(d);
         else setData({ timeseries: [], events: [] });
       })

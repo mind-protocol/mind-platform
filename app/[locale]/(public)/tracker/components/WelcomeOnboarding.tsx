@@ -16,8 +16,9 @@ export default function WelcomeOnboarding({ userName }: Props) {
     // Show only if never dismissed AND no existing data (truly new user)
     if (typeof window !== 'undefined' && !localStorage.getItem(ONBOARDING_KEY)) {
       fetch('/api/tracker/log?days=1')
-        .then((r) => r.json())
+        .then((r) => r.ok ? r.json() : null)
         .then((d) => {
+          if (!d) { setVisible(true); return; }
           // If user already has entries, auto-dismiss
           if (d.entries && d.entries.length > 0) {
             localStorage.setItem(ONBOARDING_KEY, 'true');
