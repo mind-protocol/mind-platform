@@ -40,6 +40,23 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body className="font-sans" suppressHydrationWarning>
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function(){
+            var ow=console.warn,oe=console.error;
+            var skip=[
+              'DEPRECATED','Default export is deprecated',
+              'DialogContent','DialogTitle','aria-describedby',
+              'Phantom was registered','SES Removing',
+              'solflare-detect','AdUnit'
+            ];
+            function f(orig){return function(){
+              var s=arguments[0];
+              if(typeof s==='string'&&skip.some(function(k){return s.indexOf(k)!==-1}))return;
+              return orig.apply(console,arguments);
+            }}
+            console.warn=f(ow);console.error=f(oe);
+          })();
+        `}} />
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
