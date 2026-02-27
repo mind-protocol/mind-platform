@@ -222,6 +222,8 @@
     "tabBodyDesc": "水、食物、维生素、药物",
     "tabSubstances": "物质",
     "tabSubstancesDesc": "THC、CBD、咖啡、K、LSD、尼古丁",
+    "tabPractices": "练习",
+    "tabPracticesDesc": "瑜伽、呼吸、冥想",
     "logSuccess": "记录成功",
     "logFailed": "记录失败 — 请重试",
     "networkError": "网络错误 — 请检查连接"

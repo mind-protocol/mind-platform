@@ -94,14 +94,16 @@ export default function SettingsPage() {
         const res = await fetch('/api/auth/session');
         if (res.ok) {
           // Session is valid — check linked accounts
-          const [garminRes, spotifyRes] = await Promise.allSettled([
-            fetch('/api/garmin/status'),
+          const uid = encodeURIComponent(session?.user_id || '');
+          const [garminRes, spotifyRes, gmailRes] = await Promise.allSettled([
+            fetch(`/api/garmin/status?user_id=${uid}`),
             fetch('/api/spotify/status'),
+            fetch(`/api/gmail/status?user_id=${uid}`),
           ]);
           setLinked({
             garmin: garminRes.status === 'fulfilled' && garminRes.value.ok,
             spotify: spotifyRes.status === 'fulfilled' && spotifyRes.value.ok,
-            gmail: false, // TODO: add gmail status check
+            gmail: gmailRes.status === 'fulfilled' && gmailRes.value.ok,
           });
         }
       } catch {
@@ -236,6 +238,29 @@ export default function SettingsPage() {
                     <Link
                       href="/link/spotify"
                       className="text-xs px-3 py-1.5 rounded border border-green-500/30 text-green-400 hover:bg-green-500/10 transition"
+                    >
+                      Link
+                    </Link>
+                  )}
+                </div>
+                <div className="flex items-center justify-between py-2">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-base">&#x2709;</span>
+                    <div>
+                      <span className="text-sm text-zinc-300">Gmail</span>
+                      <span className="block text-[10px] text-zinc-600 font-mono">
+                        Email context and notifications
+                      </span>
+                    </div>
+                  </div>
+                  {linked.gmail ? (
+                    <span className="text-xs px-2 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-mono">
+                      linked
+                    </span>
+                  ) : (
+                    <Link
+                      href="/link/gmail"
+                      className="text-xs px-3 py-1.5 rounded border border-red-500/30 text-red-400 hover:bg-red-500/10 transition"
                     >
                       Link
                     </Link>

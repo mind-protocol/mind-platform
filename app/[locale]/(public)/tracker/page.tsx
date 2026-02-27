@@ -250,9 +250,9 @@ export default function TrackerPage() {
                 }`}
               >
                 <span className="text-lg mr-2">🧘</span>
-                Practices
+                {t('tabPractices')}
                 <span className="block text-[10px] text-zinc-600 mt-0.5 font-normal">
-                  Yoga, respiration, méditation
+                  {t('tabPracticesDesc')}
                 </span>
               </button>
             </div>

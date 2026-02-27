@@ -222,6 +222,8 @@
     "tabBodyDesc": "Вода, еда, витамины, лекарства",
     "tabSubstances": "Субстанции",
     "tabSubstancesDesc": "THC, CBD, Кофе, K, LSD, Никотин",
+    "tabPractices": "Практики",
+    "tabPracticesDesc": "Йога, дыхание, медитация",
     "logSuccess": "Записано успешно",
     "logFailed": "Ошибка записи — попробуйте снова",
     "networkError": "Ошибка сети — проверьте подключение"

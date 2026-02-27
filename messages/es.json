@@ -222,6 +222,8 @@
     "tabBodyDesc": "Agua, comida, vitaminas, medicamentos",
     "tabSubstances": "Sustancias",
     "tabSubstancesDesc": "THC, CBD, Café, K, LSD, Nicotina",
+    "tabPractices": "Prácticas",
+    "tabPracticesDesc": "Yoga, respiración, meditación",
     "logSuccess": "Registrado con éxito",
     "logFailed": "Error al registrar — inténtalo de nuevo",
     "networkError": "Error de red — verifica la conexión"
