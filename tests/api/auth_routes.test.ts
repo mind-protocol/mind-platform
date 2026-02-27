@@ -1,6 +1,27 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // ---------------------------------------------------------------------------
+// Shared mock classes (defined before vi.mock so they can be referenced)
+// ---------------------------------------------------------------------------
+
+class MockNextResponse {
+  _data: unknown;
+  _status: number;
+  cookies: { set: ReturnType<typeof vi.fn> };
+  constructor(data: unknown, status: number) {
+    this._data = data;
+    this._status = status;
+    this.cookies = { set: vi.fn() };
+  }
+  async json() { return this._data; }
+  get status() { return this._status; }
+
+  static json(data: unknown, init?: { status?: number }) {
+    return new MockNextResponse(data, init?.status ?? 200);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Mocks
 // ---------------------------------------------------------------------------
 
@@ -18,6 +39,7 @@ vi.mock('@/lib/auth', () => ({
   setSession: mockSetSession,
   clearSession: mockClearSession,
   getUserIdFromRequest: vi.fn(),
+  requireSession: vi.fn(),
 }));
 
 vi.mock('next/server', () => {
@@ -34,18 +56,7 @@ vi.mock('next/server', () => {
 
   return {
     NextRequest: MockNextRequest,
-    NextResponse: {
-      json: (data: unknown, init?: { status?: number }) => {
-        const resp = {
-          _data: data,
-          _status: init?.status ?? 200,
-          cookies: { set: vi.fn() },
-          async json() { return data; },
-          get status() { return this._status; },
-        };
-        return resp;
-      },
-    },
+    NextResponse: MockNextResponse,
   };
 });
 

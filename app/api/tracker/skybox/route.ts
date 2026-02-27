@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { requireSession } from '@/lib/auth';
 import { manemusFetch, manemusFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
@@ -13,6 +14,9 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const auth = await requireSession(req);
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const formData = await req.formData();
     const res = await manemusFetch('/api/tracker/skybox', {

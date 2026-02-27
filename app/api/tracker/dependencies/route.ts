@@ -1,18 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getUserIdFromRequest } from '@/lib/auth';
+import { requireSession } from '@/lib/auth';
 import { manemusFetch } from '@/lib/api-fetch';
 
 export async function GET(req: NextRequest) {
-  const auth = req.headers.get('authorization');
-  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const authResult = await requireSession(req);
+  if (authResult instanceof NextResponse) return authResult;
 
-  const userId = await getUserIdFromRequest(req);
+  const userId = authResult.user_id;
   const days = req.nextUrl.searchParams.get('days') || '60';
 
   try {
     const res = await manemusFetch(`/api/tracker/dependencies?days=${days}`, {
       headers: {
-        'Authorization': auth,
         'X-User-Id': userId,
       },
     });

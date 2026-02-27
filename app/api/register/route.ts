@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { requireSession } from '@/lib/auth';
 import { graphQuery } from '@/lib/db/falkordb';
 
 export const dynamic = 'force-dynamic';
@@ -14,6 +15,8 @@ function cypherSafe(s: string): string {
 }
 
 export async function POST(request: NextRequest) {
+  const auth = await requireSession(request);
+  if (auth instanceof NextResponse) return auth;
   const body = await request.json();
   const { name, purpose } = body;
 

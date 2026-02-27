@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getUserIdFromRequest } from '@/lib/auth';
+import { requireSession } from '@/lib/auth';
 import { manemusFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
+  const auth = await requireSession(req);
+  if (auth instanceof NextResponse) return auth;
+
   try {
-    const userId = await getUserIdFromRequest(req);
+    const userId = auth.user_id;
     const { searchParams } = new URL(req.url);
     const days = searchParams.get('days') || '7';
     const { data, status } = await manemusFetchJson(`/api/tracker/food?days=${days}`, {
@@ -20,8 +23,11 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const auth = await requireSession(req);
+  if (auth instanceof NextResponse) return auth;
+
   try {
-    const userId = await getUserIdFromRequest(req);
+    const userId = auth.user_id;
     const body = await req.json();
     const { data, status } = await manemusFetchJson('/api/tracker/food', {
       method: 'POST',

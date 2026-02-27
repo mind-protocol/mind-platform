@@ -1,6 +1,25 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // ---------------------------------------------------------------------------
+// Shared mock classes (defined before vi.mock so they can be referenced)
+// ---------------------------------------------------------------------------
+
+class MockNextResponse {
+  _data: unknown;
+  _status: number;
+  constructor(data: unknown, status: number) {
+    this._data = data;
+    this._status = status;
+  }
+  async json() { return this._data; }
+  get status() { return this._status; }
+
+  static json(data: unknown, init?: { status?: number }) {
+    return new MockNextResponse(data, init?.status ?? 200);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Mocks
 // ---------------------------------------------------------------------------
 
@@ -9,9 +28,9 @@ vi.mock('@/lib/api-fetch', () => ({
   manemusFetchJson: (...args: unknown[]) => mockManemusFetchJson(...args),
 }));
 
-const mockGetUserIdFromRequest = vi.fn();
+const mockRequireSession = vi.fn();
 vi.mock('@/lib/auth', () => ({
-  getUserIdFromRequest: (...args: unknown[]) => mockGetUserIdFromRequest(...args),
+  requireSession: (...args: unknown[]) => mockRequireSession(...args),
 }));
 
 vi.mock('next/server', () => {
@@ -29,16 +48,24 @@ vi.mock('next/server', () => {
 
   return {
     NextRequest: MockNextRequest,
-    NextResponse: {
-      json: (data: unknown, init?: { status?: number }) => ({
-        _data: data,
-        _status: init?.status ?? 200,
-        async json() { return data; },
-        get status() { return this._status; },
-      }),
-    },
+    NextResponse: MockNextResponse,
   };
 });
+
+/** Simulate an authenticated session with the given user_id. */
+function mockAuthenticated(userId: string) {
+  mockRequireSession.mockResolvedValue({
+    user_id: userId,
+    name: 'Test',
+    trust: 'citizen',
+  });
+}
+
+function mockUnauthenticated() {
+  mockRequireSession.mockResolvedValue(
+    MockNextResponse.json({ error: 'Authentication required' }, { status: 401 })
+  );
+}
 
 // ---------------------------------------------------------------------------
 // GET /api/tracker/adverse
@@ -48,11 +75,11 @@ describe('GET /api/tracker/adverse', () => {
   beforeEach(() => {
     vi.resetModules();
     mockManemusFetchJson.mockReset();
-    mockGetUserIdFromRequest.mockReset();
+    mockRequireSession.mockReset();
   });
 
   it('forwards request to backend with user id', async () => {
-    mockGetUserIdFromRequest.mockResolvedValueOnce('user-5');
+    mockAuthenticated('user-5');
     mockManemusFetchJson.mockResolvedValueOnce({
       data: { events: [{ id: 'a1', symptom: 'Headache', severity: 3 }] },
       status: 200,
@@ -76,7 +103,7 @@ describe('GET /api/tracker/adverse', () => {
   });
 
   it('passes query params through to backend', async () => {
-    mockGetUserIdFromRequest.mockResolvedValueOnce('user-5');
+    mockAuthenticated('user-5');
     mockManemusFetchJson.mockResolvedValueOnce({
       data: { events: [] },
       status: 200,
@@ -95,7 +122,7 @@ describe('GET /api/tracker/adverse', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockGetUserIdFromRequest.mockResolvedValueOnce('user-5');
+    mockAuthenticated('user-5');
     mockManemusFetchJson.mockRejectedValueOnce(new Error('ECONNREFUSED'));
 
     const { GET } = await import('@/app/api/tracker/adverse/route');
@@ -105,6 +132,16 @@ describe('GET /api/tracker/adverse', () => {
     expect(response.status).toBe(502);
     const data = await response.json();
     expect(data.error).toBe('Service unavailable');
+  });
+
+  it('returns 401 when not authenticated', async () => {
+    mockUnauthenticated();
+
+    const { GET } = await import('@/app/api/tracker/adverse/route');
+    const { NextRequest } = await import('next/server');
+    const req = new NextRequest('http://localhost/api/tracker/adverse');
+    const response = await GET(req);
+    expect(response.status).toBe(401);
   });
 });
 
@@ -116,11 +153,11 @@ describe('POST /api/tracker/adverse', () => {
   beforeEach(() => {
     vi.resetModules();
     mockManemusFetchJson.mockReset();
-    mockGetUserIdFromRequest.mockReset();
+    mockRequireSession.mockReset();
   });
 
   it('posts adverse event with user_id injected', async () => {
-    mockGetUserIdFromRequest.mockResolvedValueOnce('user-5');
+    mockAuthenticated('user-5');
     mockManemusFetchJson.mockResolvedValueOnce({
       data: { id: 'a2', symptom: 'Nausea', severity: 2 },
       status: 201,
@@ -143,7 +180,7 @@ describe('POST /api/tracker/adverse', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockGetUserIdFromRequest.mockResolvedValueOnce('user-5');
+    mockAuthenticated('user-5');
     mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { POST } = await import('@/app/api/tracker/adverse/route');
@@ -154,5 +191,18 @@ describe('POST /api/tracker/adverse', () => {
     });
     const response = await POST(req);
     expect(response.status).toBe(502);
+  });
+
+  it('returns 401 when not authenticated', async () => {
+    mockUnauthenticated();
+
+    const { POST } = await import('@/app/api/tracker/adverse/route');
+    const { NextRequest } = await import('next/server');
+    const req = new NextRequest('http://localhost/api/tracker/adverse', {
+      method: 'POST',
+      body: JSON.stringify({ symptom: 'Test' }),
+    });
+    const response = await POST(req);
+    expect(response.status).toBe(401);
   });
 });

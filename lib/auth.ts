@@ -103,3 +103,27 @@ export async function getUserIdFromRequest(
   const session = await getSession(request);
   return session?.user_id ?? 'nlr';
 }
+
+/**
+ * Require a valid session. Returns the session payload on success, or a
+ * `NextResponse` with 401 status when the user is not authenticated.
+ *
+ * Usage in route handlers:
+ * ```ts
+ * const auth = await requireSession(request);
+ * if (auth instanceof NextResponse) return auth;
+ * // auth is SessionPayload
+ * ```
+ */
+export async function requireSession(
+  request: NextRequest,
+): Promise<SessionPayload | NextResponse> {
+  const session = await getSession(request);
+  if (!session) {
+    return NextResponse.json(
+      { error: 'Authentication required' },
+      { status: 401 },
+    );
+  }
+  return session;
+}

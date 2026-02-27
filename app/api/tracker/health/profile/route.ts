@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getUserIdFromRequest } from '@/lib/auth';
+import { requireSession } from '@/lib/auth';
 import { manemusFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
+  const auth = await requireSession(req);
+  if (auth instanceof NextResponse) return auth;
+
   try {
-    const userId = await getUserIdFromRequest(req);
+    const userId = auth.user_id;
     const res = await manemusFetch('/api/health-profile', {
       headers: { 'X-User-Id': userId },
     });
@@ -18,8 +21,11 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
+  const auth = await requireSession(req);
+  if (auth instanceof NextResponse) return auth;
+
   try {
-    const userId = await getUserIdFromRequest(req);
+    const userId = auth.user_id;
     const body = await req.json();
     const res = await manemusFetch('/api/health-profile', {
       method: 'PUT',
