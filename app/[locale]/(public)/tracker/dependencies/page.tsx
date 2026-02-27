@@ -69,7 +69,7 @@ function DependencyDashboard({ token }: { token: string }) {
     fetch('/api/tracker/interactions?days=60')
       .then((r) => r.ok ? r.json() : null)
       .then((d) => d && setInteractions(d))
-      .catch(() => {});
+      .catch(() => { console.error('Failed to load interaction matrix'); });
   }, []);
 
   if (loading && !data) {

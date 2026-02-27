@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslations } from 'next-intl';
+import { useToast } from '@/components/Toast';
 
 interface FoodItem {
   name: string;
@@ -59,6 +60,7 @@ function formatTime(ts: string): string {
 
 export default function FoodLog({ refreshKey }: { refreshKey: number }) {
   const t = useTranslations('Tracker');
+  const { toast } = useToast();
   const [description, setDescription] = useState('');
   const [mealType, setMealType] = useState(autoMealType);
   const [notes, setNotes] = useState('');
@@ -80,11 +82,11 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
     fetch('/api/tracker/food?days=7')
       .then((r) => r.ok ? r.json() : null)
       .then((d) => { if (d?.entries) setEntries(d.entries); })
-      .catch(() => {});
+      .catch(() => toast('Failed to load food entries', 'error'));
     fetch('/api/tracker/food-stats?days=1')
       .then((r) => r.ok ? r.json() : null)
       .then((d) => { if (d?.today) setTodayStats(d.today); })
-      .catch(() => {});
+      .catch(() => toast('Failed to load food stats', 'error'));
   }, []);
 
   useEffect(() => { fetchData(); }, [fetchData, refreshKey]);

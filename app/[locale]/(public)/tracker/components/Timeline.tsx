@@ -601,7 +601,7 @@ export default function Timeline({ refreshKey, filter }: { refreshKey: number; f
       fetch('/api/tracker/food?days=7')
         .then((r) => r.ok ? r.json() : null)
         .then((d) => setFoodEntries(d?.entries || []))
-        .catch(() => {}),
+        .catch(() => toast('Failed to load food timeline', 'error')),
     ]).finally(() => setLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshKey]);

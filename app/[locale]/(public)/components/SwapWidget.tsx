@@ -34,7 +34,7 @@ export function SwapWidget() {
     }
     connection.getBalance(publicKey).then(bal => {
       setSolBalance(bal / 1e9);
-    }).catch(() => {});
+    }).catch(() => { console.error('Failed to fetch SOL balance'); });
   }, [publicKey, connection]);
 
   const fetchQuote = useCallback(async () => {

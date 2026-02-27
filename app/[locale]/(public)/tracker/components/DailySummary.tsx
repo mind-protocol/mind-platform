@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useToast } from '@/components/Toast';
 import { SUBSTANCE_CONFIG, type SubstanceKey } from '@/lib/tracker/constants';
 
 interface DayStats {
@@ -13,13 +14,14 @@ function timeStr(ts: string): string {
 }
 
 export default function DailySummary({ refreshKey }: { refreshKey: number }) {
+  const { toast } = useToast();
   const [data, setData] = useState<DayStats | null>(null);
 
   useEffect(() => {
     fetch('/api/tracker/stats?days=1')
       .then((r) => r.json())
       .then(setData)
-      .catch(() => {});
+      .catch(() => toast('Failed to load daily summary', 'error'));
   }, [refreshKey]);
 
   if (!data || data.total_entries === 0) return null;

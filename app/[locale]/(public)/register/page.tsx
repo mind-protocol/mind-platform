@@ -20,7 +20,7 @@ export default function RegisterPage() {
     fetch('/api/auth/session')
       .then((r) => { if (r.ok) return r.json(); throw new Error(); })
       .then((data) => { if (data?.user_id) router.replace('/tracker'); })
-      .catch(() => {});
+      .catch(() => { console.error('Session check failed'); });
   }, [router]);
 
   async function handleSubmit(e: React.FormEvent) {

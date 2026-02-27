@@ -53,7 +53,7 @@ export function useHealthProfile(token: string | null) {
     })
       .then(r => r.ok ? r.json() : null)
       .then(data => { if (data) setProfile(data); })
-      .catch(() => {})
+      .catch(() => { console.error('Failed to load health profile'); })
       .finally(() => setLoading(false));
   }, [token]);
 
@@ -78,7 +78,7 @@ export function useGrowthData(token: string | null) {
           setDob(data.dob || '');
         }
       })
-      .catch(() => {})
+      .catch(() => { console.error('Failed to load growth data'); })
       .finally(() => setLoading(false));
   }, [token]);
 

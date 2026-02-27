@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useToast } from '@/components/Toast';
 
 interface SubStats {
   count: number;
@@ -50,6 +51,7 @@ function timeSince(ts: string): string {
 }
 
 export default function SubstanceCard({ refreshKey, filter }: { refreshKey: number; filter?: string[] }) {
+  const { toast } = useToast();
   const [stats, setStats] = useState<StatsResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -58,7 +60,7 @@ export default function SubstanceCard({ refreshKey, filter }: { refreshKey: numb
     fetch('/api/tracker/stats?days=7')
       .then((r) => r.json())
       .then(setStats)
-      .catch(() => {})
+      .catch(() => toast('Failed to load substance stats', 'error'))
       .finally(() => setLoading(false));
   }, [refreshKey]);
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useToast } from '@/components/Toast';
 
 interface Rec {
   substance: string;
@@ -166,6 +167,7 @@ export default function Recommendation({
   onQuickLog: (substance: string, details: Record<string, unknown>) => void;
   onSchedule?: (substance: string, details: Record<string, unknown>) => void;
 }) {
+  const { toast } = useToast();
   const [data, setData] = useState<RecResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [loggingEffect, setLoggingEffect] = useState<string | null>(null);
@@ -178,7 +180,7 @@ export default function Recommendation({
       .then((d) => {
         if (d?.recommendations) setData(d);
       })
-      .catch(() => {})
+      .catch(() => toast('Failed to load recommendations', 'error'))
       .finally(() => setLoading(false));
   }, [refreshKey]);
 

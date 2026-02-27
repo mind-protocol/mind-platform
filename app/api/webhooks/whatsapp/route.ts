@@ -122,7 +122,7 @@ export async function POST(req: Request) {
         const threadId = `wa_${senderPhone}`;
 
         // Mark as read immediately
-        markWhatsAppMessageRead(msg.id).catch(() => {});
+        markWhatsAppMessageRead(msg.id).catch(() => { console.error('Failed to mark WhatsApp message as read:', msg.id); });
 
         try {
           const result = await relayChatMessage(

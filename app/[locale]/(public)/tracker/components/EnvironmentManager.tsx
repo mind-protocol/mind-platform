@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
+import { useToast } from '@/components/Toast';
 import { useEnvironments } from '@/lib/tracker/hooks/useEnvironments';
 import type { EnvironmentCapture } from '@/lib/tracker/types/environment';
 
@@ -33,6 +34,7 @@ function getGeolocation(): Promise<{ latitude: number; longitude: number } | nul
 }
 
 export default function EnvironmentManager() {
+  const { toast } = useToast();
   const { environments, active, loading, upload, setActive, remove, suggestName } = useEnvironments();
   const [expanded, setExpanded] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -216,7 +218,7 @@ export default function EnvironmentManager() {
           onClick={() => {
             // Deactivate current — active becomes null → fallback to night
             if (active) {
-              setActive(active.id).catch(() => {});
+              setActive(active.id).catch(() => toast('Failed to update environment', 'error'));
               // Actually we need a "deactivate" — PATCH active: false
               fetch(`/api/tracker/environments/${active.id}`, {
                 method: 'PATCH',
