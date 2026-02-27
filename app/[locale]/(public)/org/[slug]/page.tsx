@@ -346,7 +346,7 @@ function truncAddr(addr: string, n = 6) {
 function OverviewTab() {
   const [price, setPrice] = useState<{ mind_price_usd: number | null; mind_per_sol: number | null } | null>(null);
   useEffect(() => {
-    fetch('/api/wallet/price').then(r => r.json()).then(setPrice).catch(() => { console.error('Failed to fetch MIND price'); });
+    fetch('/api/wallet/price').then(r => r.json()).then(setPrice).catch(() => { /* price unavailable — section hidden */ });
   }, []);
 
   return (

@@ -146,7 +146,7 @@ function GarminLinkForm() {
       });
     } catch (e) {
       // Notification failure is non-fatal
-      console.error('Failed to notify:', e);
+      // Notification failure is non-fatal — link already succeeded
     }
   }
 
@@ -194,8 +194,9 @@ function GarminLinkForm() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-zinc-500 text-xs mb-1">Email</label>
+                  <label htmlFor="garmin-email" className="block text-zinc-500 text-xs mb-1">Email</label>
                   <input
+                    id="garmin-email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -207,8 +208,9 @@ function GarminLinkForm() {
                 </div>
 
                 <div>
-                  <label className="block text-zinc-500 text-xs mb-1">Password</label>
+                  <label htmlFor="garmin-password" className="block text-zinc-500 text-xs mb-1">Password</label>
                   <input
+                    id="garmin-password"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -255,12 +257,14 @@ function GarminLinkForm() {
               </p>
 
               <input
+                id="garmin-mfa"
                 type="text"
                 value={mfaCode}
                 onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, ''))}
                 required
                 maxLength={6}
                 autoComplete="one-time-code"
+                aria-label="Two-factor authentication code"
                 className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-4 text-white text-center text-2xl font-mono tracking-widest focus:border-amber-500 focus:outline-none transition"
                 placeholder="000000"
               />

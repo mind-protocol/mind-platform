@@ -19,7 +19,7 @@ export default function LoginPage() {
     fetch('/api/auth/session')
       .then((r) => { if (r.ok) return r.json(); throw new Error(); })
       .then((data) => { if (data?.user_id) router.replace('/tracker'); })
-      .catch(() => { console.error('Session check failed'); });
+      .catch(() => { /* session check failed — user stays on login page */ });
   }, [router]);
 
   // Auto-submit magic link if ?token= is present

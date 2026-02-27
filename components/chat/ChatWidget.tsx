@@ -496,7 +496,7 @@ function ChatInput({ prefs, onPrefsChange }: { prefs: ChatPrefs; onPrefsChange: 
       const base64 = await fileToBase64(file);
       setPendingImage(base64);
     } catch {
-      console.warn('Failed to read image file');
+      /* image read failed — silently ignore */
     }
     // Reset file input so the same file can be selected again
     if (fileInputRef.current) fileInputRef.current.value = '';
@@ -512,7 +512,7 @@ function ChatInput({ prefs, onPrefsChange }: { prefs: ChatPrefs; onPrefsChange: 
         setPendingImage(dataUrl);
       }
     } catch {
-      console.warn('Screenshot capture failed');
+      /* screenshot capture failed — silently ignore */
     }
     setIsCapturing(false);
   }, [setPendingImage]);
@@ -788,6 +788,7 @@ export default function ChatWidget() {
             className="absolute -top-1 -left-1 w-6 h-6 cursor-nwse-resize z-10 flex items-end justify-end pr-1 pb-1"
             style={{ touchAction: 'none' }}
             title="Drag to resize"
+            aria-label="Resize chat panel"
           >
             <svg width="8" height="8" viewBox="0 0 8 8" className="text-zinc-500 opacity-40 hover:opacity-100 transition-opacity">
               <path d="M0 8 L8 0" stroke="currentColor" strokeWidth="1.5" fill="none" />

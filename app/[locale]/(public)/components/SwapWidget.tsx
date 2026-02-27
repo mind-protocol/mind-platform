@@ -34,7 +34,7 @@ export function SwapWidget() {
     }
     connection.getBalance(publicKey).then(bal => {
       setSolBalance(bal / 1e9);
-    }).catch(() => { console.error('Failed to fetch SOL balance'); });
+    }).catch(() => { /* SOL balance fetch failed — wallet will show '...' */ });
   }, [publicKey, connection]);
 
   const fetchQuote = useCallback(async () => {
@@ -192,7 +192,7 @@ export function SwapWidget() {
 
       if (confirmation.value.err) {
         const errJson = JSON.stringify(confirmation.value.err);
-        console.error('On-chain error:', errJson, 'tx:', sig);
+        // On-chain error — user sees the error message below via setError
         throw new Error(`Transaction failed: ${errJson}. View: https://solscan.io/tx/${sig}`);
       }
 
@@ -203,7 +203,7 @@ export function SwapWidget() {
       setSolBalance(newBal / 1e9);
 
     } catch (e: any) {
-      console.error('Swap error:', e);
+      // Swap error — displayed to user via setError below
       setError(e.message || t('swapFailed'));
       setState('error');
     }
