@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useChatStore, type ChatMessage } from '@/lib/chat/store';
 import { usePathname } from 'next/navigation';
+import { useSession } from '@/lib/useSession';
 import { capturePageScreenshot, fileToBase64 } from '@/lib/page-context';
 
 // ─── Preferences persistence ─────────────────────────────────────────────────
@@ -650,6 +651,7 @@ export default function ChatWidget() {
     isOpen, toggleChat, messages, isSending, unreadCount,
     connectionStatus, initThread, pollMessages, threadId,
   } = useChatStore();
+  const { session } = useSession();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -682,14 +684,14 @@ export default function ChatWidget() {
 
   const isWaiting = messages.some((m) => m.role === 'user' && m.status === 'sent');
 
-  // Polling
+  // Polling — only when authenticated (avoids 401 console noise)
   useEffect(() => {
-    if (!threadId) return;
+    if (!threadId || !session) return;
     pollMessages();
     const interval = isWaiting ? 1500 : isOpen ? 3000 : 15000;
     pollRef.current = setInterval(pollMessages, interval);
     return () => { if (pollRef.current) clearInterval(pollRef.current); };
-  }, [threadId, isOpen, isWaiting, pollMessages]);
+  }, [threadId, session, isOpen, isWaiting, pollMessages]);
 
   // Auto-scroll on new messages and on open
   useEffect(() => {
