@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useToast } from '@/components/Toast';
 
 interface Rec {
@@ -167,6 +168,7 @@ export default function Recommendation({
   onQuickLog: (substance: string, details: Record<string, unknown>) => void;
   onSchedule?: (substance: string, details: Record<string, unknown>) => void;
 }) {
+  const t = useTranslations('Tracker');
   const { toast } = useToast();
   const [data, setData] = useState<RecResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -180,7 +182,7 @@ export default function Recommendation({
       .then((d) => {
         if (d?.recommendations) setData(d);
       })
-      .catch(() => toast('Failed to load recommendations', 'error'))
+      .catch(() => toast(t('failedLoadRecommendations'), 'error'))
       .finally(() => setLoading(false));
   }, [refreshKey]);
 

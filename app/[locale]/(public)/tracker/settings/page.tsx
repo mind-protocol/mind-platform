@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useSession } from '@/lib/useSession';
 import { useToast } from '@/components/Toast';
@@ -80,6 +81,7 @@ function Toggle({
 // ─── Main ───────────────────────────────────────────────────────
 
 export default function SettingsPage() {
+  const t = useTranslations('Tracker');
   const { session, loading: sessionLoading, logout } = useSession();
   const { toast } = useToast();
   const { visibleKeys, toggleSubstance, resetToDefaults } = useSubstanceConfig();
@@ -172,7 +174,7 @@ export default function SettingsPage() {
                   <button
                     onClick={async () => {
                       await logout();
-                      toast('Logged out', 'info');
+                      toast(t('loggedOut'), 'info');
                     }}
                     className="text-xs px-3 py-1.5 rounded border border-red-500/30 text-red-400 hover:bg-red-500/10 transition"
                   >

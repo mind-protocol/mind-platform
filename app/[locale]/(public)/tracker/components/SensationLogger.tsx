@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { useChatStore } from '@/lib/chat/store';
 
 interface SensationCategory {
@@ -423,6 +424,7 @@ const SEVERITY_OPTIONS = [
 ];
 
 export default function SensationLogger({ onLogged }: { onLogged: () => void }) {
+  const t = useTranslations('Tracker');
   const [expanded, setExpanded] = useState(false);
   const [selectedEffects, setSelectedEffects] = useState<
     Map<string, { severity: string; notes: string }>
@@ -485,7 +487,7 @@ export default function SensationLogger({ onLogged }: { onLogged: () => void }) 
       onLogged();
       setTimeout(() => setFeedback(''), 3000);
     } else {
-      setFeedback('Erreur');
+      setFeedback(t('errorGeneric'));
     }
     setSubmitting(false);
   };

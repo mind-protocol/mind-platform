@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 const ONBOARDING_KEY = 'mind_onboarding_dismissed';
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default function WelcomeOnboarding({ userName }: Props) {
+  const t = useTranslations('Tracker');
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -53,11 +55,10 @@ export default function WelcomeOnboarding({ userName }: Props) {
       {/* Content */}
       <div className="max-w-xl">
         <h2 className="text-xl font-bold mb-2">
-          {userName ? `Bienvenue, ${userName}.` : 'Bienvenue.'}
+          {userName ? t('welcomeTitle', { name: userName }) : t('welcomeDefault')}
         </h2>
         <p className="text-sm text-zinc-400 mb-5 leading-relaxed">
-          Le Body Tracker suit vos substances, nourriture, sensations et biométrie en temps réel.
-          Voici comment commencer :
+          {t('welcomeDesc')}
         </p>
 
         <div className="grid gap-3 sm:grid-cols-3 mb-5">
@@ -65,9 +66,9 @@ export default function WelcomeOnboarding({ userName }: Props) {
           <div className="flex gap-3 items-start p-3 rounded-lg bg-zinc-800/40 border border-zinc-800">
             <span className="text-amber-500 font-bold font-mono text-sm mt-0.5">1</span>
             <div>
-              <div className="text-sm font-medium text-zinc-200">Connecter Garmin</div>
+              <div className="text-sm font-medium text-zinc-200">{t('connectGarminStep')}</div>
               <div className="text-[11px] text-zinc-500 mt-0.5">
-                Fréquence cardiaque, stress, sommeil, body battery en direct.
+                {t('connectGarminDesc')}
               </div>
             </div>
           </div>
@@ -76,9 +77,9 @@ export default function WelcomeOnboarding({ userName }: Props) {
           <div className="flex gap-3 items-start p-3 rounded-lg bg-zinc-800/40 border border-zinc-800">
             <span className="text-amber-500 font-bold font-mono text-sm mt-0.5">2</span>
             <div>
-              <div className="text-sm font-medium text-zinc-200">Logger vos prises</div>
+              <div className="text-sm font-medium text-zinc-200">{t('logDosesStep')}</div>
               <div className="text-[11px] text-zinc-500 mt-0.5">
-                Cliquez sur une substance pour enregistrer une dose. La timeline apparaît en bas.
+                {t('logDosesDesc')}
               </div>
             </div>
           </div>
@@ -87,9 +88,9 @@ export default function WelcomeOnboarding({ userName }: Props) {
           <div className="flex gap-3 items-start p-3 rounded-lg bg-zinc-800/40 border border-zinc-800">
             <span className="text-amber-500 font-bold font-mono text-sm mt-0.5">3</span>
             <div>
-              <div className="text-sm font-medium text-zinc-200">Observer les corrélations</div>
+              <div className="text-sm font-medium text-zinc-200">{t('observeCorrelationsStep')}</div>
               <div className="text-[11px] text-zinc-500 mt-0.5">
-                Le graphique montre vos biométriques + prises superposées. Patterns visibles en 48h.
+                {t('observeCorrelationsDesc')}
               </div>
             </div>
           </div>
@@ -100,13 +101,13 @@ export default function WelcomeOnboarding({ userName }: Props) {
             href="/tracker/settings"
             className="px-4 py-2 rounded-lg bg-amber-500 text-black text-sm font-medium hover:bg-amber-400 transition"
           >
-            Connecter Garmin
+            {t('connectGarminStep')}
           </Link>
           <button
             onClick={dismiss}
             className="text-xs text-zinc-500 hover:text-zinc-300 transition"
           >
-            Commencer sans Garmin
+            {t('startWithoutGarmin')}
           </button>
         </div>
       </div>

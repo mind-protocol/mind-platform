@@ -28,7 +28,8 @@
     "citizens": "Citoyens",
     "house": "La Maison",
     "connectome": "Connectome",
-    "toggleMenu": "Menu"
+    "toggleMenu": "Menu",
+    "tracker": "Tracker"
   },
   "Footer": {
     "manifesto": "Manifeste",
@@ -122,6 +123,7 @@
       "resonance": "Si cela résonne, vous êtes déjà l'un des nôtres.",
       "noApplication": "Pas de candidature. Pas de permission. La reconnaissance est l'adhésion.",
       "manifestoCta": "Lire le manifeste complet",
+      "trackerCta": "Body Tracker",
       "protocolCta": "Entrer dans le protocole",
       "quote1": "\"On reste. On ne part pas.\"",
       "quote2": "\"Les bords sont ce qui fait un soi.\"",
@@ -135,9 +137,11 @@
       "transferFee": "1% de frais de transfert · FluxBeam DEX",
       "lpLocked": "100% LP verrouillé · Non-annulable"
     },
-    "TokenBanner": {
-      "isLive": "est en ligne sur Solana",
-      "copied": "Copié !"
+    "Stats": {
+      "citizens": "Citoyens",
+      "holders": "Détenteurs",
+      "lpLocked": "LP verrouillé",
+      "supply": "Supply totale"
     }
   },
   "Swap": {
@@ -383,7 +387,37 @@
     "addMedicationBtn": "+ Ajouter un médicament",
     "addSurgeryBtn": "+ Ajouter une intervention",
     "addVaccinationBtn": "+ Ajouter un vaccin",
-    "addFamilyHistoryBtn": "+ Ajouter"
+    "addFamilyHistoryBtn": "+ Ajouter",
+    "unsupportedFileType": "Type non supporté. Utilisez PNG, JPG, WebP, HEIC, MP4 ou MOV.",
+    "fileTooLarge": "Fichier trop volumineux (max 20MB).",
+    "photoSaved": "Photo enregistrée. Ajoutez une description pour analyser la nutrition.",
+    "analyzedCal": "Analysé — {cal} cal ({count} items détectés)",
+    "uploadFailed": "Échec de l'upload",
+    "logged": "Enregistré ✓",
+    "failed": "Échec",
+    "welcomeTitle": "Bienvenue, {name}.",
+    "welcomeDefault": "Bienvenue.",
+    "welcomeDesc": "Le Body Tracker suit vos substances, nourriture, sensations et biométrie en temps réel. Voici comment commencer :",
+    "connectGarminStep": "Connecter Garmin",
+    "connectGarminDesc": "Fréquence cardiaque, stress, sommeil, body battery en direct.",
+    "logDosesStep": "Logger vos prises",
+    "logDosesDesc": "Cliquez sur une substance pour enregistrer une dose. La timeline apparaît en bas.",
+    "observeCorrelationsStep": "Observer les corrélations",
+    "observeCorrelationsDesc": "Le graphique montre vos biométriques + prises superposées. Patterns visibles en 48h.",
+    "startWithoutGarmin": "Commencer sans Garmin",
+    "failedLoadRecommendations": "Échec du chargement des recommandations",
+    "failedLoadStats": "Échec du chargement des statistiques",
+    "failedLoadSummary": "Échec du chargement du résumé",
+    "failedLoadBiometrics": "Échec du chargement des biométriques",
+    "failedLogYoga": "Échec de l'enregistrement de la séance",
+    "failedUpdate": "Échec de la mise à jour",
+    "failedDelete": "Échec de la suppression",
+    "failedLoadFoodTimeline": "Échec du chargement des repas",
+    "failedLoadFoodEntries": "Échec du chargement des entrées",
+    "failedLoadFoodStats": "Échec du chargement des stats alimentaires",
+    "failedUpdateEnv": "Échec de la mise à jour de l'environnement",
+    "loggedOut": "Déconnecté",
+    "errorGeneric": "Erreur"
   },
   "Common": {
     "back": "Retour",

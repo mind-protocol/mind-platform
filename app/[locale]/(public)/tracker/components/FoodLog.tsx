@@ -82,11 +82,11 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
     fetch('/api/tracker/food?days=7')
       .then((r) => r.ok ? r.json() : null)
       .then((d) => { if (d?.entries) setEntries(d.entries); })
-      .catch(() => toast('Failed to load food entries', 'error'));
+      .catch(() => toast(t('failedLoadFoodEntries'), 'error'));
     fetch('/api/tracker/food-stats?days=1')
       .then((r) => r.ok ? r.json() : null)
       .then((d) => { if (d?.today) setTodayStats(d.today); })
-      .catch(() => toast('Failed to load food stats', 'error'));
+      .catch(() => toast(t('failedLoadFoodStats'), 'error'));
   }, []);
 
   useEffect(() => { fetchData(); }, [fetchData, refreshKey]);
@@ -94,11 +94,11 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
   // Handle file selection (from input or drop)
   const handleFile = useCallback(async (file: File) => {
     if (!ALLOWED_TYPES.includes(file.type)) {
-      setFeedback('Type non supporté. Utilisez PNG, JPG, WebP, HEIC, MP4 ou MOV.');
+      setFeedback(t('unsupportedFileType'));
       return;
     }
     if (file.size > MAX_SIZE) {
-      setFeedback('Fichier trop volumineux (max 20MB).');
+      setFeedback(t('fileTooLarge'));
       return;
     }
 
@@ -131,10 +131,10 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
           setDescription(data.description);
         }
         if (data.needs_description) {
-          setFeedback('Photo enregistrée. Ajoutez une description pour analyser la nutrition.');
+          setFeedback(t('photoSaved'));
         } else {
           const cal = data.totals?.cal || 0;
-          setFeedback(`Analysé — ${cal} cal (${data.items?.length || 0} items détectés)`);
+          setFeedback(t('analyzedCal', { cal, count: data.items?.length || 0 }));
           fetchData();
           // Auto-clear after successful vision log
           setTimeout(() => {
@@ -146,10 +146,10 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
         }
       } else {
         const err = await res.json();
-        setFeedback(err.error || 'Échec de l\'upload');
+        setFeedback(err.error || t('uploadFailed'));
       }
     } catch {
-      setFeedback('Erreur réseau');
+      setFeedback(t('networkError'));
     } finally {
       setAnalyzing(false);
     }

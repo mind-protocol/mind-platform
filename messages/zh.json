@@ -28,7 +28,8 @@
     "groupProtocol": "协议",
     "groupMind": "$MIND",
     "groupExplore": "探索",
-    "toggleMenu": "切换菜单"
+    "toggleMenu": "切换菜单",
+    "tracker": "追踪器"
   },
   "Footer": {
     "manifesto": "宣言",
@@ -122,6 +123,7 @@
       "resonance": "如果这令你共鸣，你已经是我们中的一员。",
       "noApplication": "无需申请。无需许可。认同即是成员。",
       "manifestoCta": "阅读完整宣言",
+      "trackerCta": "Body Tracker",
       "protocolCta": "进入协议",
       "quote1": "\"我们留下。我们不离开。\"",
       "quote2": "\"边界塑造自我。\"",
@@ -135,9 +137,11 @@
       "transferFee": "1% 转账费 · FluxBeam DEX",
       "lpLocked": "100% LP 已锁定 · 不可撤销"
     },
-    "TokenBanner": {
-      "isLive": "已在 Solana 上线",
-      "copied": "已复制！"
+    "Stats": {
+      "citizens": "公民",
+      "holders": "持币者",
+      "lpLocked": "LP 锁定",
+      "supply": "总供应量"
     }
   },
   "Swap": {
@@ -383,7 +387,37 @@
     "addMedicationBtn": "+ 添加药物",
     "addSurgeryBtn": "+ 添加手术",
     "addVaccinationBtn": "+ 添加疫苗",
-    "addFamilyHistoryBtn": "+ 添加"
+    "addFamilyHistoryBtn": "+ 添加",
+    "unsupportedFileType": "不支持的文件类型。请使用 PNG、JPG、WebP、HEIC、MP4 或 MOV。",
+    "fileTooLarge": "文件太大（最大 20MB）。",
+    "photoSaved": "照片已保存。添加描述以分析营养。",
+    "analyzedCal": "已分析 — {cal} 卡（检测到 {count} 项）",
+    "uploadFailed": "上传失败",
+    "logged": "已记录 ✓",
+    "failed": "失败",
+    "welcomeTitle": "欢迎，{name}。",
+    "welcomeDefault": "欢迎。",
+    "welcomeDesc": "Body Tracker 实时追踪您的物质、食物、感觉和生物指标。以下是入门方法：",
+    "connectGarminStep": "连接 Garmin",
+    "connectGarminDesc": "心率、压力、睡眠、身体电量实时显示。",
+    "logDosesStep": "记录您的剂量",
+    "logDosesDesc": "点击某种物质来记录剂量。时间线显示在底部。",
+    "observeCorrelationsStep": "观察相关性",
+    "observeCorrelationsDesc": "图表显示您的生物指标+剂量叠加。48小时内可见模式。",
+    "startWithoutGarmin": "无 Garmin 开始",
+    "failedLoadRecommendations": "加载推荐失败",
+    "failedLoadStats": "加载统计失败",
+    "failedLoadSummary": "加载摘要失败",
+    "failedLoadBiometrics": "加载生物指标失败",
+    "failedLogYoga": "记录课程失败",
+    "failedUpdate": "更新失败",
+    "failedDelete": "删除失败",
+    "failedLoadFoodTimeline": "加载饮食时间线失败",
+    "failedLoadFoodEntries": "加载食物条目失败",
+    "failedLoadFoodStats": "加载饮食统计失败",
+    "failedUpdateEnv": "更新环境失败",
+    "loggedOut": "已登出",
+    "errorGeneric": "错误"
   },
   "Common": {
     "back": "返回",

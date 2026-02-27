@@ -281,7 +281,7 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
         body: JSON.stringify(body),
       });
       if (res.ok) {
-        setFeedback('Logged ✓');
+        setFeedback(t('logged'));
         onLogged();
         setTimeout(() => setFeedback(''), 2000);
 
@@ -304,7 +304,7 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
               const analysis = await analyzeRes.json();
               setYogaAnalysis(analysis);
             }
-          } catch { /* silent */ }
+          } catch { /* analysis optional */ }
           setYogaAnalyzing(false);
         }
 
@@ -339,7 +339,7 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
         }
       } else {
         const err = await res.json().catch(() => null);
-        setFeedback(err?.error || 'Failed');
+        setFeedback(err?.error || t('failed'));
       }
     } catch {
       setFeedback(t('networkError'));

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useToast } from '@/components/Toast';
 import { SUBSTANCE_CONFIG, type SubstanceKey } from '@/lib/tracker/constants';
 
@@ -14,6 +15,7 @@ function timeStr(ts: string): string {
 }
 
 export default function DailySummary({ refreshKey }: { refreshKey: number }) {
+  const t = useTranslations('Tracker');
   const { toast } = useToast();
   const [data, setData] = useState<DayStats | null>(null);
 
@@ -21,7 +23,7 @@ export default function DailySummary({ refreshKey }: { refreshKey: number }) {
     fetch('/api/tracker/stats?days=1')
       .then((r) => r.ok ? r.json() : null)
       .then((d) => { if (d) setData(d); })
-      .catch(() => toast('Failed to load daily summary', 'error'));
+      .catch(() => toast(t('failedLoadSummary'), 'error'));
   }, [refreshKey]);
 
   if (!data || data.total_entries === 0) return null;

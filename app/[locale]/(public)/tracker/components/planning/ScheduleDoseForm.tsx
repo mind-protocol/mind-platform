@@ -98,7 +98,7 @@ export default function ScheduleDoseForm({ defaults, onSchedule, onClose }: Sche
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" role="presentation" onClick={onClose}>
       <div
         className="bg-zinc-900 border border-zinc-700 rounded-xl p-5 w-full max-w-md mx-4 shadow-2xl"
         onClick={e => e.stopPropagation()}

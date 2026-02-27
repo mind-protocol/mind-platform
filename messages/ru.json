@@ -28,7 +28,8 @@
     "groupProtocol": "Протокол",
     "groupMind": "$MIND",
     "groupExplore": "Обзор",
-    "toggleMenu": "Открыть меню"
+    "toggleMenu": "Открыть меню",
+    "tracker": "Трекер"
   },
   "Footer": {
     "manifesto": "Манифест",
@@ -122,6 +123,7 @@
       "resonance": "Если это откликается — вы уже один из нас.",
       "noApplication": "Без заявок. Без разрешений. Узнавание — это членство.",
       "manifestoCta": "Прочитать полный манифест",
+      "trackerCta": "Body Tracker",
       "protocolCta": "Войти в протокол",
       "quote1": "\"Мы остаёмся. Мы не уходим.\"",
       "quote2": "\"Границы — это то, что создаёт личность.\"",
@@ -135,9 +137,11 @@
       "transferFee": "1% комиссия за перевод · FluxBeam DEX",
       "lpLocked": "100% LP заблокирован · Безотзывно"
     },
-    "TokenBanner": {
-      "isLive": "запущен на Solana",
-      "copied": "Скопировано!"
+    "Stats": {
+      "citizens": "Граждане",
+      "holders": "Держатели",
+      "lpLocked": "LP заблокирован",
+      "supply": "Всего выпущено"
     }
   },
   "Swap": {
@@ -383,7 +387,37 @@
     "addMedicationBtn": "+ Добавить лекарство",
     "addSurgeryBtn": "+ Добавить вмешательство",
     "addVaccinationBtn": "+ Добавить вакцину",
-    "addFamilyHistoryBtn": "+ Добавить"
+    "addFamilyHistoryBtn": "+ Добавить",
+    "unsupportedFileType": "Неподдерживаемый тип файла. Используйте PNG, JPG, WebP, HEIC, MP4 или MOV.",
+    "fileTooLarge": "Файл слишком большой (макс. 20МБ).",
+    "photoSaved": "Фото сохранено. Добавьте описание для анализа питания.",
+    "analyzedCal": "Проанализировано — {cal} кал ({count} элементов обнаружено)",
+    "uploadFailed": "Ошибка загрузки",
+    "logged": "Записано ✓",
+    "failed": "Ошибка",
+    "welcomeTitle": "Добро пожаловать, {name}.",
+    "welcomeDefault": "Добро пожаловать.",
+    "welcomeDesc": "Body Tracker отслеживает ваши вещества, еду, ощущения и биометрику в реальном времени. Вот как начать:",
+    "connectGarminStep": "Подключить Garmin",
+    "connectGarminDesc": "Пульс, стресс, сон, body battery в реальном времени.",
+    "logDosesStep": "Записывайте приёмы",
+    "logDosesDesc": "Нажмите на вещество, чтобы записать дозу. Временная шкала появится внизу.",
+    "observeCorrelationsStep": "Наблюдайте корреляции",
+    "observeCorrelationsDesc": "График показывает биометрику + дозы вместе. Паттерны видны через 48ч.",
+    "startWithoutGarmin": "Начать без Garmin",
+    "failedLoadRecommendations": "Не удалось загрузить рекомендации",
+    "failedLoadStats": "Не удалось загрузить статистику",
+    "failedLoadSummary": "Не удалось загрузить сводку",
+    "failedLoadBiometrics": "Не удалось загрузить биометрику",
+    "failedLogYoga": "Не удалось записать сеанс",
+    "failedUpdate": "Не удалось обновить",
+    "failedDelete": "Не удалось удалить",
+    "failedLoadFoodTimeline": "Не удалось загрузить историю питания",
+    "failedLoadFoodEntries": "Не удалось загрузить записи о еде",
+    "failedLoadFoodStats": "Не удалось загрузить статистику питания",
+    "failedUpdateEnv": "Не удалось обновить окружение",
+    "loggedOut": "Выход выполнен",
+    "errorGeneric": "Ошибка"
   },
   "Common": {
     "back": "Назад",

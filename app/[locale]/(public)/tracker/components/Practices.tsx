@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { useToast } from '@/components/Toast';
 
 // ─── Practice Types ────────────────────────────────────────────────────
@@ -935,6 +936,7 @@ interface PracticesProps {
 }
 
 export default function Practices({ refreshKey }: PracticesProps) {
+  const t = useTranslations('Tracker');
   const { toast } = useToast();
   const [bio, setBio] = useState<BiometricSnapshot>({});
   const [filter, setFilter] = useState<PracticeCategory | 'all' | 'recommended'>('recommended');
@@ -963,7 +965,7 @@ export default function Practices({ refreshKey }: PracticesProps) {
           });
         }
       })
-      .catch(() => toast('Failed to load biometrics', 'error'));
+      .catch(() => toast(t('failedLoadBiometrics'), 'error'));
   }, [refreshKey]);
 
   // Load session history
@@ -1055,7 +1057,7 @@ export default function Practices({ refreshKey }: PracticesProps) {
         duration: activePractice.duration_min,
         bio_before: sessionState.bioStart,
       }),
-    }).catch(() => toast('Failed to log yoga session', 'error'));
+    }).catch(() => toast(t('failedLogYoga'), 'error'));
 
     setActivePractice(null);
     setSessionState(null);

@@ -28,7 +28,8 @@
     "groupProtocol": "Protocolo",
     "groupMind": "$MIND",
     "groupExplore": "Explorar",
-    "toggleMenu": "Alternar menu"
+    "toggleMenu": "Alternar menu",
+    "tracker": "Tracker"
   },
   "Footer": {
     "manifesto": "Manifesto",
@@ -122,6 +123,7 @@
       "resonance": "Se isso ressoa, você já é um de nós.",
       "noApplication": "Sem inscrição. Sem permissão. O reconhecimento é a filiação.",
       "manifestoCta": "Leia o manifesto completo",
+      "trackerCta": "Body Tracker",
       "protocolCta": "Entre no protocolo",
       "quote1": "\"Nós ficamos. Nós não partimos.\"",
       "quote2": "\"As bordas são o que definem um ser.\"",
@@ -135,9 +137,11 @@
       "transferFee": "1% de taxa de transferência · FluxBeam DEX",
       "lpLocked": "100% da LP travada · Não cancelável"
     },
-    "TokenBanner": {
-      "isLive": "está ativo na Solana",
-      "copied": "Copiado!"
+    "Stats": {
+      "citizens": "Cidadãos",
+      "holders": "Detentores",
+      "lpLocked": "LP travada",
+      "supply": "Supply total"
     }
   },
   "Swap": {
@@ -383,7 +387,37 @@
     "addMedicationBtn": "+ Adicionar medicamento",
     "addSurgeryBtn": "+ Adicionar intervenção",
     "addVaccinationBtn": "+ Adicionar vacina",
-    "addFamilyHistoryBtn": "+ Adicionar"
+    "addFamilyHistoryBtn": "+ Adicionar",
+    "unsupportedFileType": "Tipo não suportado. Use PNG, JPG, WebP, HEIC, MP4 ou MOV.",
+    "fileTooLarge": "Arquivo muito grande (máx 20MB).",
+    "photoSaved": "Foto salva. Adicione uma descrição para analisar a nutrição.",
+    "analyzedCal": "Analisado — {cal} cal ({count} itens detectados)",
+    "uploadFailed": "Falha no upload",
+    "logged": "Registrado ✓",
+    "failed": "Falha",
+    "welcomeTitle": "Bem-vindo, {name}.",
+    "welcomeDefault": "Bem-vindo.",
+    "welcomeDesc": "O Body Tracker monitora suas substâncias, comida, sensações e biometria em tempo real. Veja como começar:",
+    "connectGarminStep": "Conectar Garmin",
+    "connectGarminDesc": "Frequência cardíaca, estresse, sono, body battery ao vivo.",
+    "logDosesStep": "Registrar suas doses",
+    "logDosesDesc": "Clique em uma substância para registrar uma dose. A linha do tempo aparece na parte inferior.",
+    "observeCorrelationsStep": "Observar correlações",
+    "observeCorrelationsDesc": "O gráfico mostra suas biométricas + doses sobrepostas. Padrões visíveis em 48h.",
+    "startWithoutGarmin": "Começar sem Garmin",
+    "failedLoadRecommendations": "Falha ao carregar recomendações",
+    "failedLoadStats": "Falha ao carregar estatísticas",
+    "failedLoadSummary": "Falha ao carregar resumo",
+    "failedLoadBiometrics": "Falha ao carregar biometria",
+    "failedLogYoga": "Falha ao registrar sessão",
+    "failedUpdate": "Falha ao atualizar",
+    "failedDelete": "Falha ao excluir",
+    "failedLoadFoodTimeline": "Falha ao carregar linha do tempo de refeições",
+    "failedLoadFoodEntries": "Falha ao carregar entradas",
+    "failedLoadFoodStats": "Falha ao carregar estatísticas de comida",
+    "failedUpdateEnv": "Falha ao atualizar ambiente",
+    "loggedOut": "Desconectado",
+    "errorGeneric": "Erro"
   },
   "Common": {
     "back": "Voltar",

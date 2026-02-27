@@ -252,6 +252,7 @@ const EntryRow = memo(function EntryRow({
   onUpdate: (id: string, data: Partial<LogEntry>) => void;
   onDelete: (id: string) => void;
 }) {
+  const t = useTranslations('Tracker');
   const [expanded, setExpanded] = useState(false);
   const [editing, setEditing] = useState(false);
   const [editAmount, setEditAmount] = useState(entry.dose.amount);
@@ -296,10 +297,10 @@ const EntryRow = memo(function EntryRow({
         setEditing(false);
         toast('Entry updated', 'success');
       } else {
-        toast('Failed to update', 'error');
+        toast(t('failedUpdate'), 'error');
       }
     } catch {
-      toast('Network error', 'error');
+      toast(t('networkError'), 'error');
     }
     setSaving(false);
   };
@@ -311,10 +312,10 @@ const EntryRow = memo(function EntryRow({
         onDelete(entry.id);
         toast('Entry deleted', 'info');
       } else {
-        toast('Failed to delete', 'error');
+        toast(t('failedDelete'), 'error');
       }
     } catch {
-      toast('Network error', 'error');
+      toast(t('networkError'), 'error');
     }
   };
 
@@ -601,7 +602,7 @@ export default function Timeline({ refreshKey, filter }: { refreshKey: number; f
       fetch('/api/tracker/food?days=7')
         .then((r) => r.ok ? r.json() : null)
         .then((d) => setFoodEntries(d?.entries || []))
-        .catch(() => toast('Failed to load food timeline', 'error')),
+        .catch(() => toast(t('failedLoadFoodTimeline'), 'error')),
     ]).finally(() => setLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshKey]);

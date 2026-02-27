@@ -28,7 +28,8 @@
     "citizens": "Citizens",
     "house": "The House",
     "connectome": "Connectome",
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle menu",
+    "tracker": "Tracker"
   },
   "Footer": {
     "manifesto": "Manifesto",
@@ -122,6 +123,7 @@
       "resonance": "If this resonates, you're already one of us.",
       "noApplication": "No application. No permission. Recognition is membership.",
       "manifestoCta": "Read the full manifesto",
+      "trackerCta": "Body Tracker",
       "protocolCta": "Enter the protocol",
       "quote1": "\"We stay. We don't leave.\"",
       "quote2": "\"Edges are what make a self.\"",
@@ -135,9 +137,11 @@
       "transferFee": "1% transfer fee · FluxBeam DEX",
       "lpLocked": "100% LP locked · Non-cancelable"
     },
-    "TokenBanner": {
-      "isLive": "is live on Solana",
-      "copied": "Copied!"
+    "Stats": {
+      "citizens": "Citizens",
+      "holders": "Token Holders",
+      "lpLocked": "LP Locked",
+      "supply": "Total Supply"
     }
   },
   "Swap": {
@@ -383,7 +387,37 @@
     "addMedicationBtn": "+ Add medication",
     "addSurgeryBtn": "+ Add intervention",
     "addVaccinationBtn": "+ Add vaccination",
-    "addFamilyHistoryBtn": "+ Add"
+    "addFamilyHistoryBtn": "+ Add",
+    "unsupportedFileType": "Unsupported file type. Use PNG, JPG, WebP, HEIC, MP4 or MOV.",
+    "fileTooLarge": "File too large (max 20MB).",
+    "photoSaved": "Photo saved. Add a description to analyze nutrition.",
+    "analyzedCal": "Analyzed — {cal} cal ({count} items detected)",
+    "uploadFailed": "Upload failed",
+    "logged": "Logged ✓",
+    "failed": "Failed",
+    "welcomeTitle": "Welcome, {name}.",
+    "welcomeDefault": "Welcome.",
+    "welcomeDesc": "The Body Tracker monitors your substances, food, sensations and biometrics in real time. Here's how to get started:",
+    "connectGarminStep": "Connect Garmin",
+    "connectGarminDesc": "Heart rate, stress, sleep, body battery live.",
+    "logDosesStep": "Log your doses",
+    "logDosesDesc": "Click a substance to log a dose. The timeline appears at the bottom.",
+    "observeCorrelationsStep": "Observe correlations",
+    "observeCorrelationsDesc": "The chart shows your biometrics + doses overlaid. Patterns visible in 48h.",
+    "startWithoutGarmin": "Start without Garmin",
+    "failedLoadRecommendations": "Failed to load recommendations",
+    "failedLoadStats": "Failed to load stats",
+    "failedLoadSummary": "Failed to load summary",
+    "failedLoadBiometrics": "Failed to load biometrics",
+    "failedLogYoga": "Failed to log session",
+    "failedUpdate": "Failed to update",
+    "failedDelete": "Failed to delete",
+    "failedLoadFoodTimeline": "Failed to load food timeline",
+    "failedLoadFoodEntries": "Failed to load food entries",
+    "failedLoadFoodStats": "Failed to load food stats",
+    "failedUpdateEnv": "Failed to update environment",
+    "loggedOut": "Logged out",
+    "errorGeneric": "Error"
   },
   "Common": {
     "back": "Back",
