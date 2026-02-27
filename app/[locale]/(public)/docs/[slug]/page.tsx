@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { sanitizeHTML } from '@/lib/sanitize';
 
 export default function DocPage({ params }: { params: { slug: string } }) {
   const [doc, setDoc] = useState<{
@@ -16,7 +17,7 @@ export default function DocPage({ params }: { params: { slug: string } }) {
     fetch(`/api/docs/${params.slug}`)
       .then((r) => r.json())
       .then(setDoc)
-      .catch(console.error);
+      .catch(() => { /* doc load failed */ });
   }, [params.slug]);
 
   const handleCopy = async () => {
@@ -83,7 +84,7 @@ export default function DocPage({ params }: { params: { slug: string } }) {
             prose-th:text-white
             prose-th:border-zinc-700
             prose-td:border-zinc-800"
-          dangerouslySetInnerHTML={{ __html: doc.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHTML(doc.content) }}
         />
       </article>
     </main>

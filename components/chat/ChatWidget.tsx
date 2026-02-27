@@ -5,6 +5,7 @@ import { useChatStore, type ChatMessage } from '@/lib/chat/store';
 import { usePathname } from 'next/navigation';
 import { useSession } from '@/lib/useSession';
 import { capturePageScreenshot, fileToBase64 } from '@/lib/page-context';
+import { useToast } from '@/components/Toast';
 
 // ─── Preferences persistence ─────────────────────────────────────────────────
 const PREFS_KEY = 'chat-prefs';
@@ -200,6 +201,7 @@ function MessageBubble({
               onClick={() => onTTS(msg.content)}
               className="ml-1 opacity-40 hover:opacity-80 transition-opacity"
               title="Play audio"
+              aria-label="Play audio"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
                 <path d="M10 3.75a.75.75 0 0 0-1.264-.546L5.203 6H3.667a.75.75 0 0 0-.7.48A6.985 6.985 0 0 0 2.5 9c0 .887.165 1.737.468 2.52.111.29.39.48.7.48h1.535l3.533 2.796A.75.75 0 0 0 10 14.25V3.75ZM15.95 5.05a.75.75 0 0 0-1.06 1.061 5.5 5.5 0 0 1 0 7.778.75.75 0 0 0 1.06 1.06 7 7 0 0 0 0-9.899Z" />
@@ -312,11 +314,18 @@ function OptionsMenu({
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
+    const handleClick = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) onClose();
     };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('mousedown', handleClick);
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+      document.removeEventListener('keydown', handleKey);
+    };
   }, [onClose]);
 
   return (
@@ -422,6 +431,7 @@ function ImagePreview({ src, onRemove }: { src: string; onRemove: () => void }) 
 // ─── Chat Input ─────────────────────────────────────────────────────────────
 function ChatInput({ prefs, onPrefsChange }: { prefs: ChatPrefs; onPrefsChange: (p: ChatPrefs) => void }) {
   const { inputText, setInputText, sendMessage, isSending, pendingImage, setPendingImage } = useChatStore();
+  const { toast } = useToast();
   const pathname = usePathname();
   const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -430,16 +440,23 @@ function ChatInput({ prefs, onPrefsChange }: { prefs: ChatPrefs; onPrefsChange: 
   const [showAttachMenu, setShowAttachMenu] = useState(false);
   const attachMenuRef = useRef<HTMLDivElement>(null);
 
-  // Close attach menu on outside click
+  // Close attach menu on outside click or Escape
   useEffect(() => {
     if (!showAttachMenu) return;
-    const handler = (e: MouseEvent) => {
+    const handleClick = (e: MouseEvent) => {
       if (attachMenuRef.current && !attachMenuRef.current.contains(e.target as Node)) {
         setShowAttachMenu(false);
       }
     };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setShowAttachMenu(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+      document.removeEventListener('keydown', handleKey);
+    };
   }, [showAttachMenu]);
 
   const handleSend = useCallback(() => {
@@ -472,7 +489,7 @@ function ChatInput({ prefs, onPrefsChange }: { prefs: ChatPrefs; onPrefsChange: 
     // Validate: images only, max 5MB
     if (!file.type.startsWith('image/')) return;
     if (file.size > 5 * 1024 * 1024) {
-      alert('Image must be under 5MB');
+      toast('Image must be under 5MB', 'error');
       return;
     }
     try {
@@ -606,6 +623,7 @@ function ChatInput({ prefs, onPrefsChange }: { prefs: ChatPrefs; onPrefsChange: 
           onClick={() => setShowOptions(v => !v)}
           className="p-1.5 rounded-full text-zinc-500 hover:text-zinc-200 transition-colors"
           title="Options"
+          aria-label="Options"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
             <path d="M3 10a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM8.5 10a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM15.5 8.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />

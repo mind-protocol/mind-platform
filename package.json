@@ -29,6 +29,7 @@
     "gray-matter": "^4.0.3",
     "html2canvas": "^1.4.1",
     "ioredis": "^5.8.2",
+    "isomorphic-dompurify": "^3.0.0",
     "leaflet": "1.9",
     "next": "^14.0.0",
     "next-intl": "^4.8.2",

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPost } from '@/lib/blog';
+import { sanitizeHTML } from '@/lib/sanitize';
 
 export default async function WhyWeAirdropPage() {
   const post = await getPost('why-we-airdrop-to-compute-holders');
@@ -59,7 +60,7 @@ export default async function WhyWeAirdropPage() {
             prose-blockquote:border-amber-500/50 prose-blockquote:text-zinc-400
             prose-hr:border-zinc-800
             prose-li:text-zinc-300"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHTML(post.content) }}
         />
 
         <footer className="mt-16 pt-8 border-t border-zinc-800">

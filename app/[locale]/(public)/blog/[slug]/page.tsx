@@ -2,6 +2,7 @@ import { Link } from '@/i18n/navigation';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getPost, getAllSlugs } from '@/lib/blog';
+import { sanitizeHTML } from '@/lib/sanitize';
 
 interface Props {
   params: { slug: string };
@@ -84,7 +85,7 @@ export default async function BlogPostFallback({ params }: Props) {
             prose-pre:bg-zinc-900 prose-pre:border prose-pre:border-zinc-800
             prose-blockquote:border-amber-500/50 prose-blockquote:text-zinc-400
             prose-hr:border-zinc-800"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHTML(post.content) }}
         />
 
         <footer className="mt-16 pt-8 border-t border-zinc-800">

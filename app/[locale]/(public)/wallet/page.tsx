@@ -107,7 +107,9 @@ function BalanceSection() {
       <h2 className="text-xl font-bold mb-4">Wallet Balance</h2>
 
       <div className="flex gap-3 mb-6">
+        <label htmlFor="wallet-address" className="sr-only">Solana wallet address</label>
         <input
+          id="wallet-address"
           type="text"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
@@ -249,8 +251,9 @@ function TransferSection() {
 
       <div className="space-y-4 mb-6">
         <div>
-          <label className="text-zinc-400 text-xs mb-1 block">Sender Wallet</label>
+          <label htmlFor="transfer-sender" className="text-zinc-400 text-xs mb-1 block">Sender Wallet</label>
           <input
+            id="transfer-sender"
             type="text"
             value={sender}
             onChange={(e) => setSender(e.target.value)}
@@ -259,8 +262,9 @@ function TransferSection() {
           />
         </div>
         <div>
-          <label className="text-zinc-400 text-xs mb-1 block">Recipient Wallet</label>
+          <label htmlFor="transfer-recipient" className="text-zinc-400 text-xs mb-1 block">Recipient Wallet</label>
           <input
+            id="transfer-recipient"
             type="text"
             value={recipient}
             onChange={(e) => setRecipient(e.target.value)}
@@ -269,8 +273,9 @@ function TransferSection() {
           />
         </div>
         <div>
-          <label className="text-zinc-400 text-xs mb-1 block">Amount ($MIND)</label>
+          <label htmlFor="transfer-amount" className="text-zinc-400 text-xs mb-1 block">Amount ($MIND)</label>
           <input
+            id="transfer-amount"
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}

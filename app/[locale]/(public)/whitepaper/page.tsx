@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { sanitizeHTML } from '@/lib/sanitize';
 
 export default function WhitepaperPage() {
   const [doc, setDoc] = useState<{
@@ -16,7 +17,7 @@ export default function WhitepaperPage() {
     fetch('/api/docs/whitepaper')
       .then((r) => r.json())
       .then(setDoc)
-      .catch(console.error);
+      .catch(() => { /* whitepaper load failed */ });
   }, []);
 
   const handleCopy = async () => {
@@ -86,7 +87,7 @@ export default function WhitepaperPage() {
             prose-th:text-white
             prose-th:border-zinc-700
             prose-td:border-zinc-800"
-          dangerouslySetInnerHTML={{ __html: doc.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHTML(doc.content) }}
         />
 
         {/* Footer */}

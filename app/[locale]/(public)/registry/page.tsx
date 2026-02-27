@@ -14,6 +14,7 @@ export default function RegistryPage() {
   const [citizens, setCitizens] = useState<Citizen[]>([]);
   const [orgs, setOrgs] = useState<Org[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [counts, setCounts] = useState({ citizens: 0, orgs: 0 });
 
   useEffect(() => {
@@ -30,8 +31,8 @@ export default function RegistryPage() {
           citizens: citizensRes.count,
           orgs: orgsRes.count,
         });
-      } catch (err) {
-        console.error('Failed to load registry:', err);
+      } catch {
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -52,6 +53,12 @@ export default function RegistryPage() {
             ecosystem.
           </p>
         </header>
+
+        {error && (
+          <div className="mb-6 p-4 rounded-xl border border-red-500/30 bg-red-500/10 text-red-400 text-sm text-center">
+            Failed to load registry data. Please try again later.
+          </div>
+        )}
 
         <RegistryTabs
           active={activeTab}
