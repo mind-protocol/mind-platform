@@ -1,6 +1,8 @@
 'use client';
 
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, lazy, Suspense } from 'react';
+
+const KCalculator = lazy(() => import('./KCalculator'));
 
 const TABS = [
   { key: 'nicotine', label: 'Nicotine', color: '#f59e0b', icon: '💨' },
@@ -163,6 +165,7 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
   const [intent, setIntent] = useState('');
   const [notes, setNotes] = useState('');
   const [details, setDetails] = useState<Record<string, unknown>>(DEFAULTS.thc.details);
+  const [showKCalc, setShowKCalc] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [doseWarning, setDoseWarning] = useState<{
@@ -820,10 +823,11 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
         {tab === 'ketamine' && (
           <div className="space-y-3">
             {/* Form toggle: liquid vs crystal vs spray */}
-            <div>
-              <label className="text-xs text-zinc-500 block mb-1">Form</label>
-              <div className="flex gap-2">
-                {(['liquid', 'crystal', 'spray'] as const).map((f) => (
+            <div className="flex items-end justify-between">
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">Form</label>
+                <div className="flex gap-2">
+                  {(['liquid', 'crystal', 'spray'] as const).map((f) => (
                   <button
                     key={f}
                     onClick={() => {
@@ -847,8 +851,26 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                     {f === 'liquid' ? '💧 Liquide' : f === 'crystal' ? '💎 Crystal' : '🔬 Spray'}
                   </button>
                 ))}
+                </div>
               </div>
+              <button
+                onClick={() => setShowKCalc(!showKCalc)}
+                className={`px-2.5 py-1.5 rounded text-xs border transition shrink-0 ${
+                  showKCalc
+                    ? 'border-purple-500/50 text-purple-400 bg-purple-500/10'
+                    : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                }`}
+              >
+                🧮 Calc
+              </button>
             </div>
+
+            {/* Inline calculator (collapsible) */}
+            {showKCalc && (
+              <Suspense fallback={<div className="h-20 bg-zinc-800/50 rounded-lg animate-pulse" />}>
+                <KCalculator />
+              </Suspense>
+            )}
 
             {/* Liquid: presets + concentration */}
             {details.form === 'liquid' && (() => {

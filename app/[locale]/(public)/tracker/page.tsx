@@ -9,7 +9,6 @@ import LogForm from './components/LogForm';
 import BiometricCorrelation from './components/BiometricCorrelation';
 import SensationLogger from './components/SensationLogger';
 import Timeline from './components/Timeline';
-import KCalculator from './components/KCalculator';
 import Practices from './components/Practices';
 import FoodLog from './components/FoodLog';
 import LiveBiometrics from './components/LiveBiometrics';
@@ -37,7 +36,6 @@ export default function TrackerPage() {
   const { toast } = useToast();
   const { session, logout } = useSession();
   const [refreshKey, setRefreshKey] = useState(0);
-  const [showKCalc, setShowKCalc] = useState(true);
   const [viewMode, setViewMode] = useState<'now' | 'plan'>('now');
   const [activeTab, setActiveTab] = useState<'body' | 'substances' | 'practices'>('body');
   const [showScheduleForm, setShowScheduleForm] = useState(false);
@@ -171,12 +169,6 @@ export default function TrackerPage() {
             >
               {t('navSettings')}
             </Link>
-            <button
-              onClick={() => setShowKCalc(!showKCalc)}
-              className="flex-none text-xs px-3 py-1.5 rounded-full border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition whitespace-nowrap"
-            >
-              {showKCalc ? t('kCalcHide') : t('kCalcShow')}
-            </button>
           </nav>
         </header>
 
@@ -269,13 +261,6 @@ export default function TrackerPage() {
               <Practices refreshKey={refreshKey} />
             ) : (
               <>
-                {/* K Calculator (toggle) */}
-                {showKCalc && (
-                  <div className="mb-6">
-                    <KCalculator />
-                  </div>
-                )}
-
                 {/* Summary cards */}
                 <SubstanceCard refreshKey={refreshKey} filter={currentFilter} />
 
