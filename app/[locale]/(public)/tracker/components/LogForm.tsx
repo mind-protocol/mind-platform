@@ -932,99 +932,6 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                     </div>
                   </div>
 
-                  {/* Narine visée */}
-                  <div>
-                    <label className="text-xs text-zinc-500 block mb-1">Narine visée</label>
-                    <div className="flex gap-2">
-                      {(['gauche', 'droite', 'les deux'] as const).map((n) => (
-                        <button
-                          key={n}
-                          onClick={() => setDetails({ ...details, nostril: n })}
-                          className={`px-2.5 py-1 rounded text-xs border transition ${
-                            details.nostril === n
-                              ? 'border-purple-500/50 text-purple-300 bg-purple-500/15'
-                              : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
-                          }`}
-                        >
-                          {n === 'gauche' ? '👃 Gauche' : n === 'droite' ? 'Droite 👃' : '👃 Les deux'}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Incidents & observations */}
-                  <div>
-                    <label className="text-xs text-zinc-500 block mb-1">Observations</label>
-                    <div className="flex flex-wrap gap-2">
-                      <button
-                        onClick={() => setDetails({ ...details, nasal_drip: !details.nasal_drip })}
-                        className={`px-2.5 py-1 rounded text-xs border transition ${
-                          details.nasal_drip
-                            ? 'border-blue-500/50 text-blue-300 bg-blue-500/15'
-                            : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
-                        }`}
-                      >
-                        💧 Écoulement nez
-                      </button>
-                      <button
-                        onClick={() => setDetails({ ...details, heart_reaction: !details.heart_reaction })}
-                        className={`px-2.5 py-1 rounded text-xs border transition ${
-                          details.heart_reaction
-                            ? 'border-red-500/50 text-red-300 bg-red-500/15'
-                            : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
-                        }`}
-                      >
-                        ❤️ Palpitations
-                      </button>
-                      <button
-                        onClick={() => setDetails({ ...details, eye_accident: !details.eye_accident })}
-                        className={`px-2.5 py-1 rounded text-xs border transition ${
-                          details.eye_accident
-                            ? 'border-amber-500/50 text-amber-300 bg-amber-500/15'
-                            : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
-                        }`}
-                      >
-                        👁️ Accident oeil
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Ressenti final */}
-                  <div>
-                    <label className="text-xs text-zinc-500 block mb-1">Ressenti final</label>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => setDetails({ ...details, feeling: 'underdosed' })}
-                        className={`px-2.5 py-1 rounded text-xs border transition ${
-                          details.feeling === 'underdosed'
-                            ? 'border-blue-500/50 text-blue-300 bg-blue-500/15'
-                            : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
-                        }`}
-                      >
-                        📉 Sous-dosé
-                      </button>
-                      <button
-                        onClick={() => setDetails({ ...details, feeling: 'good' })}
-                        className={`px-2.5 py-1 rounded text-xs border transition ${
-                          details.feeling === 'good'
-                            ? 'border-emerald-500/50 text-emerald-300 bg-emerald-500/15'
-                            : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
-                        }`}
-                      >
-                        ✅ Bonne quantité
-                      </button>
-                      <button
-                        onClick={() => setDetails({ ...details, feeling: 'overdosed' })}
-                        className={`px-2.5 py-1 rounded text-xs border transition ${
-                          details.feeling === 'overdosed'
-                            ? 'border-red-500/50 text-red-300 bg-red-500/15'
-                            : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
-                        }`}
-                      >
-                        📈 Surdosé
-                      </button>
-                    </div>
-                  </div>
                 </>
               );
             })()}
@@ -1074,6 +981,105 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                   </div>
                 </div>
               </div>
+            )}
+
+            {/* Observations — shared for liquid & spray */}
+            {(details.form === 'liquid' || details.form === 'spray') && (
+              <>
+                {/* Narine visée */}
+                <div>
+                  <label className="text-xs text-zinc-500 block mb-1">Narine visée</label>
+                  <div className="flex gap-2">
+                    {(['gauche', 'droite', 'les deux'] as const).map((n) => (
+                      <button
+                        key={n}
+                        onClick={() => setDetails({ ...details, nostril: n })}
+                        className={`px-2.5 py-1 rounded text-xs border transition ${
+                          details.nostril === n
+                            ? 'border-purple-500/50 text-purple-300 bg-purple-500/15'
+                            : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                        }`}
+                      >
+                        {n === 'gauche' ? '👃 Gauche' : n === 'droite' ? 'Droite 👃' : '👃 Les deux'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Incidents & observations */}
+                <div>
+                  <label className="text-xs text-zinc-500 block mb-1">Observations</label>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setDetails({ ...details, nasal_drip: !details.nasal_drip })}
+                      className={`px-2.5 py-1 rounded text-xs border transition ${
+                        details.nasal_drip
+                          ? 'border-blue-500/50 text-blue-300 bg-blue-500/15'
+                          : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      💧 Écoulement nez
+                    </button>
+                    <button
+                      onClick={() => setDetails({ ...details, heart_reaction: !details.heart_reaction })}
+                      className={`px-2.5 py-1 rounded text-xs border transition ${
+                        details.heart_reaction
+                          ? 'border-red-500/50 text-red-300 bg-red-500/15'
+                          : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      ❤️ Palpitations
+                    </button>
+                    <button
+                      onClick={() => setDetails({ ...details, eye_accident: !details.eye_accident })}
+                      className={`px-2.5 py-1 rounded text-xs border transition ${
+                        details.eye_accident
+                          ? 'border-amber-500/50 text-amber-300 bg-amber-500/15'
+                          : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      👁️ Accident oeil
+                    </button>
+                  </div>
+                </div>
+
+                {/* Ressenti final */}
+                <div>
+                  <label className="text-xs text-zinc-500 block mb-1">Ressenti final</label>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setDetails({ ...details, feeling: 'underdosed' })}
+                      className={`px-2.5 py-1 rounded text-xs border transition ${
+                        details.feeling === 'underdosed'
+                          ? 'border-blue-500/50 text-blue-300 bg-blue-500/15'
+                          : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      📉 Sous-dosé
+                    </button>
+                    <button
+                      onClick={() => setDetails({ ...details, feeling: 'good' })}
+                      className={`px-2.5 py-1 rounded text-xs border transition ${
+                        details.feeling === 'good'
+                          ? 'border-emerald-500/50 text-emerald-300 bg-emerald-500/15'
+                          : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      ✅ Bonne quantité
+                    </button>
+                    <button
+                      onClick={() => setDetails({ ...details, feeling: 'overdosed' })}
+                      className={`px-2.5 py-1 rounded text-xs border transition ${
+                        details.feeling === 'overdosed'
+                          ? 'border-red-500/50 text-red-300 bg-red-500/15'
+                          : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      📈 Surdosé
+                    </button>
+                  </div>
+                </div>
+              </>
             )}
           </div>
         )}
