@@ -1,3 +1,4 @@
+import { createHmac, timingSafeEqual } from 'crypto';
 import { NextResponse } from 'next/server';
 import { relayChatMessage } from '@/lib/messaging/chat_relay_service';
 import {
@@ -9,6 +10,47 @@ import {
 export const dynamic = 'force-dynamic';
 
 const WHATSAPP_VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN || '';
+const WHATSAPP_APP_SECRET =
+  process.env.WHATSAPP_WEBHOOK_SECRET || process.env.WHATSAPP_APP_SECRET || '';
+
+/**
+ * Verify the X-Hub-Signature-256 HMAC header sent by Meta on every POST.
+ * Returns the parsed body on success, or null if verification fails.
+ */
+function verifyWhatsAppSignature(
+  rawBody: string,
+  signatureHeader: string | null,
+): boolean {
+  if (!WHATSAPP_APP_SECRET) {
+    console.warn(
+      '[whatsapp-webhook] WHATSAPP_WEBHOOK_SECRET / WHATSAPP_APP_SECRET not set — skipping signature verification',
+    );
+    return true;
+  }
+
+  if (!signatureHeader) {
+    return false;
+  }
+
+  // Header format: "sha256=<hex>"
+  const expected = signatureHeader.startsWith('sha256=')
+    ? signatureHeader.slice(7)
+    : signatureHeader;
+
+  const computed = createHmac('sha256', WHATSAPP_APP_SECRET)
+    .update(rawBody, 'utf8')
+    .digest('hex');
+
+  // Constant-time comparison to prevent timing attacks
+  try {
+    return timingSafeEqual(
+      Buffer.from(computed, 'hex'),
+      Buffer.from(expected, 'hex'),
+    );
+  } catch {
+    return false;
+  }
+}
 
 /**
  * GET /api/webhooks/whatsapp
@@ -32,10 +74,27 @@ export async function GET(req: Request) {
  * Receives WhatsApp messages, relays to MANEMUS/Claude, sends reply.
  */
 export async function POST(req: Request) {
-  let payload: WhatsAppWebhookPayload;
-
+  // Read raw body for HMAC verification before parsing JSON
+  let rawBody: string;
   try {
-    payload = await req.json();
+    rawBody = await req.text();
+  } catch {
+    return NextResponse.json({ error: 'Cannot read body' }, { status: 400 });
+  }
+
+  // Verify X-Hub-Signature-256 HMAC
+  const signatureHeader = req.headers.get('x-hub-signature-256');
+  if (!verifyWhatsAppSignature(rawBody, signatureHeader)) {
+    console.error('[whatsapp-webhook] Signature verification failed');
+    return NextResponse.json(
+      { error: 'Signature verification failed' },
+      { status: 401 },
+    );
+  }
+
+  let payload: WhatsAppWebhookPayload;
+  try {
+    payload = JSON.parse(rawBody);
   } catch {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }

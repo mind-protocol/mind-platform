@@ -8,6 +8,29 @@ import {
 
 export const dynamic = 'force-dynamic';
 
+const TELEGRAM_WEBHOOK_SECRET = process.env.TELEGRAM_WEBHOOK_SECRET || '';
+
+/**
+ * Verify the X-Telegram-Bot-Api-Secret-Token header.
+ * Telegram sends this header on every webhook POST when a secret_token
+ * is provided during setWebhook.
+ */
+function verifyTelegramSecret(secretHeader: string | null): boolean {
+  if (!TELEGRAM_WEBHOOK_SECRET) {
+    console.warn(
+      '[telegram-webhook] TELEGRAM_WEBHOOK_SECRET not set — skipping secret token verification',
+    );
+    return true;
+  }
+
+  if (!secretHeader) {
+    return false;
+  }
+
+  // Simple string comparison (Telegram secret is a plain token, not HMAC)
+  return secretHeader === TELEGRAM_WEBHOOK_SECRET;
+}
+
 /**
  * GET /api/webhooks/telegram?setup=1
  * Registers the webhook with Telegram. Call once after deploy.
@@ -38,6 +61,16 @@ export async function GET(req: Request) {
  * Receives Telegram updates, relays to MANEMUS/Claude, sends reply.
  */
 export async function POST(req: Request) {
+  // Verify X-Telegram-Bot-Api-Secret-Token header
+  const secretHeader = req.headers.get('x-telegram-bot-api-secret-token');
+  if (!verifyTelegramSecret(secretHeader)) {
+    console.error('[telegram-webhook] Secret token verification failed');
+    return NextResponse.json(
+      { error: 'Secret token verification failed' },
+      { status: 401 },
+    );
+  }
+
   let update: TelegramUpdate;
 
   try {
