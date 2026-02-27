@@ -45,7 +45,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             var ow=console.warn,oe=console.error;
             var skip=[
               'DEPRECATED','Default export is deprecated',
-              'DialogContent','DialogTitle','aria-describedby','Missing \x60Description\x60',
+              'DialogContent','DialogTitle','aria-describedby','Missing',
               'Phantom was registered','SES Removing',
               'solflare-detect','AdUnit','content-script'
             ];
