@@ -45,13 +45,13 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             var ow=console.warn,oe=console.error;
             var skip=[
               'DEPRECATED','Default export is deprecated',
-              'DialogContent','DialogTitle','aria-describedby',
+              'DialogContent','DialogTitle','aria-describedby','Missing \x60Description\x60',
               'Phantom was registered','SES Removing',
-              'solflare-detect','AdUnit'
+              'solflare-detect','AdUnit','content-script'
             ];
             function f(orig){return function(){
-              var s=arguments[0];
-              if(typeof s==='string'&&skip.some(function(k){return s.indexOf(k)!==-1}))return;
+              var s=String(arguments[0]||'');
+              if(skip.some(function(k){return s.indexOf(k)!==-1}))return;
               return orig.apply(console,arguments);
             }}
             console.warn=f(ow);console.error=f(oe);
