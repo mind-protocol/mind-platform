@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface NeonData {
   hr?: number;
@@ -57,6 +58,7 @@ function Pulse({ active }: { active: boolean }) {
 }
 
 export default function LiveBiometrics() {
+  const t = useTranslations('Tracker');
   const [data, setData] = useState<HouseState | null>(null);
   const [fresh, setFresh] = useState(false);
 
@@ -87,8 +89,8 @@ export default function LiveBiometrics() {
     // No biometric data — show minimal offline state
     return (
       <div className="bg-zinc-900/50 border border-zinc-800/50 rounded-lg px-4 py-2.5 flex items-center gap-3">
-        <span className="text-zinc-600 text-xs font-mono">Biometrics offline</span>
-        <span className="text-zinc-700 text-xs">Connect Garmin to see live data</span>
+        <span className="text-zinc-600 text-xs font-mono">{t('biometricsOffline')}</span>
+        <span className="text-zinc-700 text-xs">{t('connectGarmin')}</span>
       </div>
     );
   }
@@ -106,7 +108,7 @@ export default function LiveBiometrics() {
         <div className="flex items-center gap-2">
           <Pulse active={fresh} />
           <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-medium">
-            {fresh ? 'Live' : 'Stale'}
+            {fresh ? t('live') : t('stale')}
           </span>
         </div>
 

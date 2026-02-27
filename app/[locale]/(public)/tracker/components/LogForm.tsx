@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useRef, useEffect, lazy, Suspense } from 'react';
+import { useTranslations } from 'next-intl';
 
 const KCalculator = lazy(() => import('./KCalculator'));
 
@@ -158,7 +159,8 @@ function formatTimer(secs: number): string {
 }
 
 export default function LogForm({ onLogged, filter }: { onLogged: () => void; filter?: string[] }) {
-  const filteredTabs = filter ? TABS.filter((t) => filter.includes(t.key)) : TABS;
+  const t = useTranslations('Tracker');
+  const filteredTabs = filter ? TABS.filter((tab) => filter.includes(tab.key)) : TABS;
   const defaultTab = filteredTabs[0]?.key || 'thc';
   const [tab, setTab] = useState(defaultTab);
   const [amount, setAmount] = useState(DEFAULTS.thc.amount);
@@ -340,7 +342,7 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
         setFeedback(err?.error || 'Failed');
       }
     } catch {
-      setFeedback('Network error');
+      setFeedback(t('networkError'));
     } finally {
       setSubmitting(false);
     }

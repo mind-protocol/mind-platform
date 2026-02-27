@@ -226,7 +226,17 @@
     "tabPracticesDesc": "Yoga, breathing, meditation",
     "logSuccess": "Logged successfully",
     "logFailed": "Failed to log — try again",
-    "networkError": "Network error — check connection"
+    "networkError": "Network error — check connection",
+    "biometricsOffline": "Biometrics offline",
+    "connectGarmin": "Connect Garmin to see live data",
+    "live": "Live",
+    "stale": "Stale",
+    "foodTracker": "Food Tracker",
+    "analyzing": "Analyzing...",
+    "somethingWrong": "Something went wrong",
+    "errorDataSafe": "The tracker encountered an unexpected error. Your data is safe — this is a display issue.",
+    "tryAgain": "Try again",
+    "reloadTracker": "Reload tracker"
   },
   "Common": {
     "back": "Back",

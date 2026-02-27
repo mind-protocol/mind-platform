@@ -560,8 +560,6 @@ export default function Tracker3DPage() {
         break;
       case 'ZOOM':
         // Reserved for future use (e.g. scene zoom level)
-        // eslint-disable-next-line no-console
-        console.debug('[3D] ZOOM gesture, delta:', g.delta);
         break;
     }
   // startTransition is stable (from useTransition), setMode/setShowDirections/setDebugPanel are stable setState

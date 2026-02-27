@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface FoodItem {
   name: string;
@@ -57,6 +58,7 @@ function formatTime(ts: string): string {
 }
 
 export default function FoodLog({ refreshKey }: { refreshKey: number }) {
+  const t = useTranslations('Tracker');
   const [description, setDescription] = useState('');
   const [mealType, setMealType] = useState(autoMealType);
   const [notes, setNotes] = useState('');
@@ -208,7 +210,7 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
         setFeedback(err.error || 'Failed');
       }
     } catch {
-      setFeedback('Network error');
+      setFeedback(t('networkError'));
     } finally {
       setSubmitting(false);
     }
@@ -243,7 +245,7 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
       {/* Header + daily summary */}
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-zinc-300 flex items-center gap-2">
-          🍽️ Food Tracker
+          🍽️ {t('foodTracker')}
         </h2>
         {todayStats.meals > 0 && (
           <div className="text-xs text-zinc-400 flex items-center gap-3">
@@ -382,7 +384,7 @@ export default function FoodLog({ refreshKey }: { refreshKey: number }) {
             disabled={isDisabled || !description.trim()}
             className="px-5 py-2 rounded font-medium text-sm transition disabled:opacity-40 bg-orange-500 text-black"
           >
-            {submitting ? 'Analyzing...' : 'Log'}
+            {submitting ? t('analyzing') : 'Log'}
           </button>
         </div>
 

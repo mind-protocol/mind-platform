@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback, memo } from 'react';
 import { useSanitizeMode, isSanitized, isEffectSanitized } from '@/lib/use-sanitize';
+import { useTranslations } from 'next-intl';
 import { useToast } from '@/components/Toast';
 
 interface LogEntry {
@@ -578,6 +579,7 @@ const AdverseRow = memo(function AdverseRow({ entry }: { entry: AdverseEntry }) 
 
 // ── Main Timeline ──────────────────────────────────────────────────────
 export default function Timeline({ refreshKey, filter }: { refreshKey: number; filter?: string[] }) {
+  const t = useTranslations('Tracker');
   const [entries, setEntries] = useState<LogEntry[]>([]);
   const [adverseEntries, setAdverseEntries] = useState<AdverseEntry[]>([]);
   const [foodEntries, setFoodEntries] = useState<FoodEntry[]>([]);
@@ -591,11 +593,11 @@ export default function Timeline({ refreshKey, filter }: { refreshKey: number; f
       fetch('/api/tracker/log?days=7')
         .then((r) => r.ok ? r.json() : null)
         .then((d) => setEntries(d?.entries || []))
-        .catch(() => toast('Failed to load timeline', 'error')),
+        .catch(() => toast(t('networkError'), 'error')),
       fetch('/api/tracker/adverse?days=7')
         .then((r) => r.ok ? r.json() : null)
         .then((d) => setAdverseEntries(Array.isArray(d) ? d : []))
-        .catch(() => toast('Failed to load effects', 'error')),
+        .catch(() => toast(t('networkError'), 'error')),
       fetch('/api/tracker/food?days=7')
         .then((r) => r.ok ? r.json() : null)
         .then((d) => setFoodEntries(d?.entries || []))

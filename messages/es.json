@@ -226,7 +226,17 @@
     "tabPracticesDesc": "Yoga, respiración, meditación",
     "logSuccess": "Registrado con éxito",
     "logFailed": "Error al registrar — inténtalo de nuevo",
-    "networkError": "Error de red — verifica la conexión"
+    "networkError": "Error de red — verifica la conexión",
+    "biometricsOffline": "Biometría sin conexión",
+    "connectGarmin": "Conecta Garmin para datos en vivo",
+    "live": "En vivo",
+    "stale": "Desactualizado",
+    "foodTracker": "Rastreador de comida",
+    "analyzing": "Analizando...",
+    "somethingWrong": "Algo salió mal",
+    "errorDataSafe": "El rastreador encontró un error inesperado. Tus datos están seguros — es un problema de visualización.",
+    "tryAgain": "Intentar de nuevo",
+    "reloadTracker": "Recargar rastreador"
   },
   "Common": {
     "back": "Volver",
