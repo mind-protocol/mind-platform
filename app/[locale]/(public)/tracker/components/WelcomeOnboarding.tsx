@@ -13,9 +13,19 @@ export default function WelcomeOnboarding({ userName }: Props) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Show only if never dismissed
+    // Show only if never dismissed AND no existing data (truly new user)
     if (typeof window !== 'undefined' && !localStorage.getItem(ONBOARDING_KEY)) {
-      setVisible(true);
+      fetch('/api/tracker/log?days=1')
+        .then((r) => r.json())
+        .then((d) => {
+          // If user already has entries, auto-dismiss
+          if (d.entries && d.entries.length > 0) {
+            localStorage.setItem(ONBOARDING_KEY, 'true');
+          } else {
+            setVisible(true);
+          }
+        })
+        .catch(() => setVisible(true));
     }
   }, []);
 
