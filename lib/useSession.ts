@@ -21,7 +21,8 @@ export function useSession() {
     try {
       const res = await fetch('/api/auth/session');
       if (res.ok) {
-        setSession(await res.json());
+        const data = await res.json();
+        setSession(data.authenticated ? data : null);
       } else {
         setSession(null);
       }
