@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 type DeliveryMode = 'syringe' | 'spray';
 
@@ -12,6 +13,7 @@ const TIERS = [
 ];
 
 export default function KCalculator() {
+  const t = useTranslations('Tracker');
   const [crystalMg, setCrystalMg] = useState(1000);
   const [waterMl, setWaterMl] = useState(60);
   const [mode, setMode] = useState<DeliveryMode>('syringe');
@@ -50,7 +52,7 @@ export default function KCalculator() {
     <div className="bg-zinc-900 border border-purple-500/20 rounded-lg p-4">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-medium text-purple-400">
-          {'💎'} Calculateur Kétamine
+          {'💎'} {t('kCalculator')}
         </h3>
         {/* Delivery mode toggle */}
         <div className="flex gap-1 bg-zinc-800 rounded-lg p-0.5">
@@ -62,7 +64,7 @@ export default function KCalculator() {
                 : 'text-zinc-500 hover:text-zinc-300'
             }`}
           >
-            {'💉'} Seringue
+            {'💉'} {t('syringe')}
           </button>
           <button
             onClick={() => setMode('spray')}
@@ -72,7 +74,7 @@ export default function KCalculator() {
                 : 'text-zinc-500 hover:text-zinc-300'
             }`}
           >
-            {'🌫️'} Spray
+            {'🌫️'} {t('spray')}
           </button>
         </div>
       </div>
@@ -80,7 +82,7 @@ export default function KCalculator() {
       {/* Inputs */}
       <div className={`grid ${mode === 'spray' ? 'grid-cols-3' : 'grid-cols-2'} gap-3 mb-4`}>
         <div>
-          <label className="text-xs text-zinc-500 block mb-1">Cristal (mg)</label>
+          <label className="text-xs text-zinc-500 block mb-1">{t('crystalMg')}</label>
           <input
             type="number"
             min={0}
@@ -90,7 +92,7 @@ export default function KCalculator() {
           />
         </div>
         <div>
-          <label className="text-xs text-zinc-500 block mb-1">Eau (ml)</label>
+          <label className="text-xs text-zinc-500 block mb-1">{t('waterMl')}</label>
           <input
             type="number"
             min={0.1}
@@ -102,7 +104,7 @@ export default function KCalculator() {
         </div>
         {mode === 'spray' && (
           <div>
-            <label className="text-xs text-zinc-500 block mb-1">Volume spray (ml)</label>
+            <label className="text-xs text-zinc-500 block mb-1">{t('sprayVolume')}</label>
             <input
               type="number"
               min={0.01}
@@ -117,11 +119,11 @@ export default function KCalculator() {
 
       {/* Concentration result */}
       <div className="bg-zinc-800/50 rounded-lg p-3 mb-4 text-center">
-        <div className="text-xs text-zinc-500 mb-1">Concentration</div>
+        <div className="text-xs text-zinc-500 mb-1">{t('concentration')}</div>
         <div className="text-2xl font-mono text-purple-300 font-bold">{mgPerMl.toFixed(1)} mg/ml</div>
         {mode === 'spray' && (
           <div className="text-sm text-zinc-400 mt-1">
-            = {(mgPerMl * sprayMl).toFixed(2)} mg/puff &middot; {mgPerDose > 0 ? Math.round(crystalMg / mgPerDose) : '—'} puffs total
+            = {(mgPerMl * sprayMl).toFixed(2)} mg/puff &middot; {mgPerDose > 0 ? Math.round(crystalMg / mgPerDose) : '—'} {t('puffsTotal')}
           </div>
         )}
       </div>
@@ -129,7 +131,7 @@ export default function KCalculator() {
       {/* Dosing tiers — adapted to mode */}
       <div className="mb-4">
         <div className="text-xs text-zinc-500 mb-2">
-          {mode === 'syringe' ? 'Dosage à la seringue orale' : 'Dosage au spray'}
+          {mode === 'syringe' ? t('syringeDosing') : t('sprayDosing')}
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {TIERS.map((tier) => {
@@ -168,7 +170,7 @@ export default function KCalculator() {
       {/* Quick reference for syringe mode */}
       {mode === 'syringe' && mgPerMl > 0 && (
         <div className="mb-4 bg-zinc-800/30 rounded-lg p-3">
-          <div className="text-xs text-zinc-500 mb-2">Référence rapide</div>
+          <div className="text-xs text-zinc-500 mb-2">{t('quickReference')}</div>
           <div className="grid grid-cols-4 gap-2 text-center">
             {[0.25, 0.5, 1, 2].map((ml) => (
               <div key={ml}>
@@ -185,12 +187,12 @@ export default function KCalculator() {
       {/* Warnings */}
       {mgPerMl > 200 && (
         <div className="text-xs text-amber-400/80 mb-3 bg-amber-500/10 rounded p-2">
-          Concentration élevée — dissolution possiblement incomplète, irritation nasale.
+          {t('highConcentration')}
         </div>
       )}
       {mgPerMl > 0 && mgPerMl < 5 && (
         <div className="text-xs text-blue-400/80 mb-3 bg-blue-500/10 rounded p-2">
-          Concentration faible — gros volumes nécessaires par dose.
+          {t('lowConcentration')}
         </div>
       )}
 
@@ -201,7 +203,7 @@ export default function KCalculator() {
           disabled={saving}
           className="px-3 py-1.5 rounded text-sm border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition disabled:opacity-40"
         >
-          {saving ? 'Sauvegarde...' : saved ? 'Sauvegardé ✓' : 'Sauvegarder prépa'}
+          {saving ? t('saving') : saved ? `${t('saved')} ✓` : t('savePrep')}
         </button>
       </div>
     </div>

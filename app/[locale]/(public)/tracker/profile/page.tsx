@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 import { useSession } from '@/lib/useSession';
 
 // ─── Types ────────────────────────────────────────────────────────────
@@ -119,26 +120,27 @@ function EstimationCard({ label, value, sub }: { label: string; value: string; s
 }
 
 function EstimationGrid({ photoResult }: { photoResult: Record<string, unknown> }) {
+  const t = useTranslations('Tracker');
   const cards: { label: string; value: string; sub?: string }[] = [];
 
   const h = photoResult.height_cm_estimate as { value?: number; confidence?: string } | undefined;
-  if (h?.value) cards.push({ label: 'Taille', value: `~${h.value} cm`, sub: h.confidence });
+  if (h?.value) cards.push({ label: t('heightCm'), value: `~${h.value} cm`, sub: h.confidence });
 
   const w = photoResult.weight_kg_estimate as { value?: number; confidence?: string } | undefined;
-  if (w?.value) cards.push({ label: 'Poids', value: `~${w.value} kg`, sub: w.confidence });
+  if (w?.value) cards.push({ label: t('weightKg'), value: `~${w.value} kg`, sub: w.confidence });
 
   const bmi = photoResult.bmi_estimate as { value?: number; category?: string } | undefined;
-  if (bmi?.value) cards.push({ label: 'IMC', value: String(bmi.value), sub: bmi.category });
+  if (bmi?.value) cards.push({ label: t('bmiLabel'), value: String(bmi.value), sub: bmi.category });
 
   const skin = photoResult.skin_type as { fitzpatrick?: number; description?: string } | undefined;
-  if (skin?.fitzpatrick) cards.push({ label: 'Type de peau', value: `Fitzpatrick ${skin.fitzpatrick}`, sub: skin.description });
+  if (skin?.fitzpatrick) cards.push({ label: t('skinType'), value: `Fitzpatrick ${skin.fitzpatrick}`, sub: skin.description });
 
   const age = photoResult.apparent_age_range as { min?: number; max?: number } | undefined;
-  if (age?.min != null && age?.max != null) cards.push({ label: 'Âge apparent', value: `${age.min}–${age.max} ans` });
+  if (age?.min != null && age?.max != null) cards.push({ label: t('eyeColor'), value: `${age.min}–${age.max}` });
 
-  if (photoResult.build) cards.push({ label: 'Morphologie', value: String(photoResult.build) });
-  if (photoResult.eye_color) cards.push({ label: 'Yeux', value: String(photoResult.eye_color) });
-  if (photoResult.hair_color) cards.push({ label: 'Cheveux', value: String(photoResult.hair_color) });
+  if (photoResult.build) cards.push({ label: 'Build', value: String(photoResult.build) });
+  if (photoResult.eye_color) cards.push({ label: t('eyeColor'), value: String(photoResult.eye_color) });
+  if (photoResult.hair_color) cards.push({ label: t('hairColor'), value: String(photoResult.hair_color) });
 
   const visibleConds = photoResult.visible_conditions as string[] | undefined;
   const disclaimer = photoResult.disclaimer as string | undefined;
@@ -153,7 +155,7 @@ function EstimationGrid({ photoResult }: { photoResult: Record<string, unknown> 
 
       {visibleConds?.length ? (
         <div>
-          <span className="text-zinc-500 text-xs font-mono">Observations:</span>
+          <span className="text-zinc-500 text-xs font-mono">{t('observations')}</span>
           <ul className="mt-1 space-y-1">
             {visibleConds.map((c, i) => (
               <li key={i} className="text-zinc-400 text-xs">{'👁'} {c}</li>
@@ -172,6 +174,7 @@ function EstimationGrid({ photoResult }: { photoResult: Record<string, unknown> 
 // ─── Main ─────────────────────────────────────────────────────────────
 
 export default function HealthProfileEditor() {
+  const t = useTranslations('Tracker');
   const { session, loading: sessionLoading } = useSession();
   const [profile, setProfile] = useState<HealthProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -199,7 +202,7 @@ export default function HealthProfileEditor() {
         setProfile(data);
       }
     } catch {
-      setError('Impossible de charger le profil.');
+      setError(t('cannotLoadProfile'));
     } finally {
       setLoading(false);
     }
@@ -223,7 +226,7 @@ export default function HealthProfileEditor() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.error || 'Erreur lors de la sauvegarde.');
+        setError(data.error || t('saveError'));
         return;
       }
       const data = await res.json();
@@ -231,7 +234,7 @@ export default function HealthProfileEditor() {
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch {
-      setError('Erreur réseau.');
+      setError(t('networkError'));
     } finally {
       setSaving(false);
     }
@@ -357,12 +360,12 @@ export default function HealthProfileEditor() {
       const res = await fetch('/api/tracker/health/extract-document', { method: 'POST', body: fd });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || 'Extraction échouée.');
+        setError(data.error || t('extractionFailed'));
         return;
       }
       setDocResult(data.extraction);
     } catch {
-      setError('Erreur réseau lors de l\'extraction.');
+      setError(t('networkErrorExtraction'));
     } finally {
       setDocUploading(false);
       if (docInputRef.current) docInputRef.current.value = '';
@@ -445,12 +448,12 @@ export default function HealthProfileEditor() {
       const res = await fetch('/api/tracker/health/estimate-from-photo', { method: 'POST', body: fd });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || 'Estimation échouée.');
+        setError(data.error || t('estimationFailed'));
         return;
       }
       setPhotoResult(data.estimation);
     } catch {
-      setError('Erreur réseau lors de l\'estimation.');
+      setError(t('networkErrorEstimation'));
     } finally {
       setPhotoUploading(false);
       if (photoInputRef.current) photoInputRef.current.value = '';
@@ -484,7 +487,7 @@ export default function HealthProfileEditor() {
   if (sessionLoading || loading) {
     return (
       <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
-        <div className="text-zinc-500 text-sm">Chargement...</div>
+        <div className="text-zinc-500 text-sm">{t('loadingProfile')}</div>
       </div>
     );
   }
@@ -494,8 +497,8 @@ export default function HealthProfileEditor() {
       <div className="min-h-screen bg-zinc-950 flex items-center justify-center px-4">
         <div className="text-center">
           <div className="text-4xl mb-4">{'🔒'}</div>
-          <p className="text-zinc-400 mb-4">Connectez-vous pour accéder à votre fiche santé.</p>
-          <Link href="/login" className={btnPrimary}>Se connecter</Link>
+          <p className="text-zinc-400 mb-4">{t('loginRequired')}</p>
+          <Link href="/login" className={btnPrimary}>{t('signIn')}</Link>
         </div>
       </div>
     );
@@ -504,7 +507,7 @@ export default function HealthProfileEditor() {
   if (!profile) {
     return (
       <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
-        <div className="text-red-400 text-sm">{error || 'Profil introuvable.'}</div>
+        <div className="text-red-400 text-sm">{error || t('profileNotFound')}</div>
       </div>
     );
   }
@@ -523,31 +526,31 @@ export default function HealthProfileEditor() {
               &larr; tracker
             </Link>
             <span className="text-zinc-700">/</span>
-            <h1 className="text-xl font-bold font-mono">Fiche Santé</h1>
+            <h1 className="text-xl font-bold font-mono">{t('healthRecord')}</h1>
           </div>
           <p className="text-zinc-500 text-sm">
-            Remplissez manuellement, uploadez un document médical, ou prenez une photo.
+            {t('healthRecordDesc')}
           </p>
         </header>
 
         {/* Tab bar */}
         <div className="flex gap-1 mb-8 p-1 bg-zinc-900 rounded-xl border border-zinc-800/50">
           {([
-            { key: 'manual' as TabKey, label: 'Manuel', icon: '📝' },
-            { key: 'document' as TabKey, label: 'Document', icon: '📄' },
-            { key: 'photo' as TabKey, label: 'Photo', icon: '📸' },
-          ]).map(t => (
+            { key: 'manual' as TabKey, label: t('manualTab'), icon: '📝' },
+            { key: 'document' as TabKey, label: t('documentTab'), icon: '📄' },
+            { key: 'photo' as TabKey, label: t('photoTab'), icon: '📸' },
+          ]).map(tb => (
             <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
+              key={tb.key}
+              onClick={() => setTab(tb.key)}
               className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition ${
-                tab === t.key
+                tab === tb.key
                   ? 'bg-zinc-800 text-white shadow-sm'
                   : 'text-zinc-500 hover:text-zinc-300'
               }`}
             >
-              <span className="mr-1.5">{t.icon}</span>
-              {t.label}
+              <span className="mr-1.5">{tb.icon}</span>
+              {tb.label}
             </button>
           ))}
         </div>
@@ -556,9 +559,9 @@ export default function HealthProfileEditor() {
         {tab === 'manual' && (
           <div className="space-y-6">
             {/* Identity */}
-            <Section title="Identité" description="Informations de base">
+            <Section title={t('identitySection')} description={t('basicInfo')}>
               <div className="grid grid-cols-2 gap-4">
-                <Field label="Date de naissance">
+                <Field label={t('dateOfBirth')}>
                   <input
                     type="date"
                     value={profile.identity.date_of_birth}
@@ -566,17 +569,17 @@ export default function HealthProfileEditor() {
                     className={inputClass}
                   />
                 </Field>
-                <Field label="Sexe">
+                <Field label={t('sex')}>
                   <select value={profile.identity.sex} onChange={e => updateIdentity('sex', e.target.value)} className={selectClass}>
                     {SEX_OPTIONS.map(o => <option key={o} value={o}>{o || '—'}</option>)}
                   </select>
                 </Field>
-                <Field label="Groupe sanguin">
+                <Field label={t('bloodType')}>
                   <select value={profile.identity.blood_type} onChange={e => updateIdentity('blood_type', e.target.value)} className={selectClass}>
                     {BLOOD_TYPES.map(o => <option key={o} value={o}>{o || '—'}</option>)}
                   </select>
                 </Field>
-                <Field label="Latéralité">
+                <Field label={t('laterality')}>
                   <select value={profile.identity.laterality} onChange={e => updateIdentity('laterality', e.target.value)} className={selectClass}>
                     {LATERALITY.map(o => <option key={o} value={o}>{o || '—'}</option>)}
                   </select>
@@ -585,9 +588,9 @@ export default function HealthProfileEditor() {
             </Section>
 
             {/* Body */}
-            <Section title="Corps" description="Mensurations et caractéristiques physiques">
+            <Section title={t('bodySection')} description={t('bodyDesc')}>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                <Field label="Taille (cm)">
+                <Field label={t('heightCm')}>
                   <input
                     type="number"
                     value={profile.body.height_cm ?? ''}
@@ -596,7 +599,7 @@ export default function HealthProfileEditor() {
                     className={inputClass}
                   />
                 </Field>
-                <Field label="Poids (kg)">
+                <Field label={t('weightKg')}>
                   <input
                     type="number"
                     value={profile.body.weight_kg ?? ''}
@@ -605,12 +608,12 @@ export default function HealthProfileEditor() {
                     className={inputClass}
                   />
                 </Field>
-                <Field label="IMC">
+                <Field label={t('bmiLabel')}>
                   <div className="px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-400 font-mono">
                     {bmi || '—'}
                   </div>
                 </Field>
-                <Field label="Type de peau">
+                <Field label={t('skinType')}>
                   <input
                     type="text"
                     value={profile.body.skin_type}
@@ -619,7 +622,7 @@ export default function HealthProfileEditor() {
                     className={inputClass}
                   />
                 </Field>
-                <Field label="Couleur des yeux">
+                <Field label={t('eyeColor')}>
                   <input
                     type="text"
                     value={profile.body.eye_color}
@@ -628,7 +631,7 @@ export default function HealthProfileEditor() {
                     className={inputClass}
                   />
                 </Field>
-                <Field label="Couleur des cheveux">
+                <Field label={t('hairColor')}>
                   <input
                     type="text"
                     value={profile.body.hair_color}
@@ -641,7 +644,7 @@ export default function HealthProfileEditor() {
             </Section>
 
             {/* Allergies */}
-            <Section title="Allergies">
+            <Section title={t('allergiesSection')}>
               <div className="space-y-2">
                 {profile.allergies.map((a, i) => (
                   <div key={i} className="flex gap-2">
@@ -657,12 +660,12 @@ export default function HealthProfileEditor() {
                     </button>
                   </div>
                 ))}
-                <button onClick={addAllergy} className={btnSecondary}>+ Ajouter une allergie</button>
+                <button onClick={addAllergy} className={btnSecondary}>{t('addAllergiesBtn')}</button>
               </div>
             </Section>
 
             {/* Conditions */}
-            <Section title="Pathologies / Conditions">
+            <Section title={t('pathologiesSection')}>
               <div className="space-y-3">
                 {profile.conditions.map((c, i) => (
                   <div key={i} className="flex gap-2 items-start">
@@ -685,12 +688,12 @@ export default function HealthProfileEditor() {
                     </button>
                   </div>
                 ))}
-                <button onClick={addCondition} className={btnSecondary}>+ Ajouter une pathologie</button>
+                <button onClick={addCondition} className={btnSecondary}>{t('addPathologyBtn')}</button>
               </div>
             </Section>
 
             {/* Medications */}
-            <Section title="Médicaments en cours">
+            <Section title={t('currentMedications')}>
               <div className="space-y-3">
                 {profile.medications.map((m, i) => (
                   <div key={i} className="grid grid-cols-4 gap-2 items-start">
@@ -729,12 +732,12 @@ export default function HealthProfileEditor() {
                     </div>
                   </div>
                 ))}
-                <button onClick={addMedication} className={btnSecondary}>+ Ajouter un médicament</button>
+                <button onClick={addMedication} className={btnSecondary}>{t('addMedicationBtn')}</button>
               </div>
             </Section>
 
             {/* Surgeries */}
-            <Section title="Interventions chirurgicales">
+            <Section title={t('surgicalInterventions')}>
               <div className="space-y-3">
                 {profile.surgeries.map((s, i) => (
                   <div key={i} className="grid grid-cols-3 gap-2 items-start">
@@ -765,12 +768,12 @@ export default function HealthProfileEditor() {
                     </div>
                   </div>
                 ))}
-                <button onClick={addSurgery} className={btnSecondary}>+ Ajouter une intervention</button>
+                <button onClick={addSurgery} className={btnSecondary}>{t('addSurgeryBtn')}</button>
               </div>
             </Section>
 
             {/* Vaccinations */}
-            <Section title="Vaccinations">
+            <Section title={t('vaccinationsSection')}>
               <div className="space-y-2">
                 {profile.vaccinations.map((v, i) => (
                   <div key={i} className="flex gap-2">
@@ -792,12 +795,12 @@ export default function HealthProfileEditor() {
                     </button>
                   </div>
                 ))}
-                <button onClick={addVaccination} className={btnSecondary}>+ Ajouter un vaccin</button>
+                <button onClick={addVaccination} className={btnSecondary}>{t('addVaccinationBtn')}</button>
               </div>
             </Section>
 
             {/* Family history */}
-            <Section title="Antécédents familiaux">
+            <Section title={t('familyHistory')}>
               <div className="space-y-2">
                 {profile.family_history.map((h, i) => (
                   <div key={i} className="flex gap-2">
@@ -813,40 +816,40 @@ export default function HealthProfileEditor() {
                     </button>
                   </div>
                 ))}
-                <button onClick={addFamilyHistory} className={btnSecondary}>+ Ajouter</button>
+                <button onClick={addFamilyHistory} className={btnSecondary}>{t('addFamilyHistoryBtn')}</button>
               </div>
             </Section>
 
             {/* Lifestyle */}
-            <Section title="Mode de vie">
+            <Section title={t('lifestyleTitle')}>
               <div className="grid grid-cols-2 gap-4">
-                <Field label="Fumeur">
+                <Field label={t('smokerLabel')}>
                   <select
                     value={profile.lifestyle.smoker === null ? '' : profile.lifestyle.smoker ? 'true' : 'false'}
                     onChange={e => updateLifestyle('smoker', e.target.value === '' ? null : e.target.value === 'true')}
                     className={selectClass}
                   >
                     <option value="">—</option>
-                    <option value="true">Oui</option>
-                    <option value="false">Non</option>
+                    <option value="true">{t('yes')}</option>
+                    <option value="false">{t('no')}</option>
                   </select>
                 </Field>
-                <Field label="Alcool">
+                <Field label={t('alcoholLabel')}>
                   <select value={profile.lifestyle.alcohol} onChange={e => updateLifestyle('alcohol', e.target.value)} className={selectClass}>
                     {ALCOHOL_OPTIONS.map(o => <option key={o} value={o}>{o || '—'}</option>)}
                   </select>
                 </Field>
-                <Field label="Exercice physique">
+                <Field label={t('exerciseLabel')}>
                   <select value={profile.lifestyle.exercise_frequency} onChange={e => updateLifestyle('exercise_frequency', e.target.value)} className={selectClass}>
                     {EXERCISE_OPTIONS.map(o => <option key={o} value={o}>{o || '—'}</option>)}
                   </select>
                 </Field>
-                <Field label="Régime alimentaire">
+                <Field label={t('dietLabel')}>
                   <select value={profile.lifestyle.diet} onChange={e => updateLifestyle('diet', e.target.value)} className={selectClass}>
                     {DIET_OPTIONS.map(o => <option key={o} value={o}>{o || '—'}</option>)}
                   </select>
                 </Field>
-                <Field label="Heures de sommeil (moy.)">
+                <Field label={t('sleepHoursLabel')}>
                   <input
                     type="number"
                     step="0.5"
@@ -860,12 +863,12 @@ export default function HealthProfileEditor() {
             </Section>
 
             {/* Notes */}
-            <Section title="Notes libres">
+            <Section title={t('freeNotesTitle')}>
               <textarea
                 value={profile.notes}
                 onChange={e => setProfile({ ...profile, notes: e.target.value })}
                 rows={4}
-                placeholder="Informations complémentaires..."
+                placeholder={t('additionalInfo')}
                 className={`${inputClass} resize-y`}
               />
             </Section>
@@ -876,8 +879,8 @@ export default function HealthProfileEditor() {
         {tab === 'document' && (
           <div className="space-y-6">
             <Section
-              title="Scanner un document médical"
-              description="Photographiez ou uploadez une ordonnance, un carnet de santé, des résultats d'analyses, un certificat médical... L'IA extraira les informations automatiquement."
+              title={t('scanDocument')}
+              description={t('scanDocumentDesc')}
             >
               <div className="space-y-4">
                 <div
@@ -894,14 +897,14 @@ export default function HealthProfileEditor() {
                   {docUploading ? (
                     <div>
                       <div className="text-2xl mb-2 animate-pulse">{'🔍'}</div>
-                      <p className="text-sm text-zinc-400">Analyse en cours...</p>
-                      <p className="text-xs text-zinc-600 mt-1">L&apos;IA lit votre document</p>
+                      <p className="text-sm text-zinc-400">{t('analyzing2')}</p>
+                      <p className="text-xs text-zinc-600 mt-1">{t('aiReading')}</p>
                     </div>
                   ) : (
                     <div>
                       <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">{'📄'}</div>
-                      <p className="text-sm text-zinc-300">Cliquez pour uploader un document</p>
-                      <p className="text-xs text-zinc-600 mt-1">JPG, PNG, WebP, HEIC — max 20 Mo</p>
+                      <p className="text-sm text-zinc-300">{t('clickToUpload')}</p>
+                      <p className="text-xs text-zinc-600 mt-1">{t('fileFormats')}</p>
                     </div>
                   )}
                 </div>
@@ -911,10 +914,10 @@ export default function HealthProfileEditor() {
                   <div className="bg-zinc-900 border border-teal-500/30 rounded-xl p-5 space-y-4">
                     <div className="flex items-center justify-between">
                       <h4 className="text-sm font-semibold text-teal-400">
-                        {'🔍'} Données extraites
+                        {'🔍'} {t('extractedData')}
                         {docResult.confidence !== undefined && (
                           <span className="ml-2 text-xs text-zinc-500 font-mono">
-                            confiance: {Math.round(Number(docResult.confidence) * 100)}%
+                            {t('confidence')}: {Math.round(Number(docResult.confidence) * 100)}%
                           </span>
                         )}
                       </h4>
@@ -925,7 +928,7 @@ export default function HealthProfileEditor() {
                     <div className="space-y-2 text-sm">
                       {(docResult.medications as MedicationEntry[] | undefined)?.length ? (
                         <div>
-                          <span className="text-zinc-500 text-xs font-mono">Médicaments:</span>
+                          <span className="text-zinc-500 text-xs font-mono">{t('medicationsLabel')}:</span>
                           <ul className="mt-1 space-y-1">
                             {(docResult.medications as MedicationEntry[]).map((m, i) => (
                               <li key={i} className="text-zinc-300 text-xs">
@@ -938,7 +941,7 @@ export default function HealthProfileEditor() {
 
                       {(docResult.conditions as ConditionEntry[] | undefined)?.length ? (
                         <div>
-                          <span className="text-zinc-500 text-xs font-mono">Conditions:</span>
+                          <span className="text-zinc-500 text-xs font-mono">{t('conditionsLabel')}:</span>
                           <ul className="mt-1 space-y-1">
                             {(docResult.conditions as ConditionEntry[]).map((c, i) => (
                               <li key={i} className="text-zinc-300 text-xs">{'🏥'} {c.condition} ({c.status})</li>
@@ -949,7 +952,7 @@ export default function HealthProfileEditor() {
 
                       {(docResult.allergies as string[] | undefined)?.length ? (
                         <div>
-                          <span className="text-zinc-500 text-xs font-mono">Allergies:</span>
+                          <span className="text-zinc-500 text-xs font-mono">{t('allergiesSection')}:</span>
                           <span className="text-zinc-300 text-xs ml-2">
                             {(docResult.allergies as string[]).join(', ')}
                           </span>
@@ -958,7 +961,7 @@ export default function HealthProfileEditor() {
 
                       {(docResult.vaccinations as VaccinationEntry[] | undefined)?.length ? (
                         <div>
-                          <span className="text-zinc-500 text-xs font-mono">Vaccins:</span>
+                          <span className="text-zinc-500 text-xs font-mono">{t('vaccinesLabel')}:</span>
                           <ul className="mt-1 space-y-1">
                             {(docResult.vaccinations as VaccinationEntry[]).map((v, i) => (
                               <li key={i} className="text-zinc-300 text-xs">{'💉'} {v.name} {v.date && `(${v.date})`}</li>
@@ -969,7 +972,7 @@ export default function HealthProfileEditor() {
 
                       {(docResult.lab_results as Array<Record<string, string>> | undefined)?.length ? (
                         <div>
-                          <span className="text-zinc-500 text-xs font-mono">Résultats labo:</span>
+                          <span className="text-zinc-500 text-xs font-mono">{t('labResults')}:</span>
                           <ul className="mt-1 space-y-1">
                             {(docResult.lab_results as Array<Record<string, string>>).map((r, i) => (
                               <li key={i} className={`text-xs ${r.flag === 'high' ? 'text-red-400' : r.flag === 'low' ? 'text-amber-400' : 'text-zinc-300'}`}>
@@ -983,7 +986,7 @@ export default function HealthProfileEditor() {
                       {docResult.raw_text ? (
                         <details className="mt-2">
                           <summary className="text-zinc-500 text-xs font-mono cursor-pointer hover:text-zinc-300">
-                            Texte brut
+                            {t('rawText')}
                           </summary>
                           <pre className="mt-1 text-xs text-zinc-600 whitespace-pre-wrap max-h-40 overflow-y-auto">
                             {String(docResult.raw_text)}
@@ -994,10 +997,10 @@ export default function HealthProfileEditor() {
 
                     <div className="flex gap-2 pt-2 border-t border-zinc-800">
                       <button onClick={applyDocExtraction} className={btnPrimary}>
-                        Appliquer au profil
+                        {t('applyToProfile')}
                       </button>
                       <button onClick={() => setDocResult(null)} className={btnSecondary}>
-                        Ignorer
+                        {t('ignore')}
                       </button>
                     </div>
                   </div>
@@ -1006,7 +1009,7 @@ export default function HealthProfileEditor() {
             </Section>
 
             <div className="text-xs text-zinc-600 text-center">
-              Les documents sont analysés par IA (GPT-4o Vision). Vérifiez toujours les données extraites avant de les appliquer.
+              {t('docDisclaimer')}
             </div>
           </div>
         )}
@@ -1015,8 +1018,8 @@ export default function HealthProfileEditor() {
         {tab === 'photo' && (
           <div className="space-y-6">
             <Section
-              title="Estimation par photo"
-              description="Prenez un selfie ou une photo en pied. L'IA estimera taille, poids, type de peau et autres caractéristiques visibles."
+              title={t('photoEstimation')}
+              description={t('photoEstimationDesc')}
             >
               <div className="space-y-4">
                 <div
@@ -1034,14 +1037,14 @@ export default function HealthProfileEditor() {
                   {photoUploading ? (
                     <div>
                       <div className="text-2xl mb-2 animate-pulse">{'🔍'}</div>
-                      <p className="text-sm text-zinc-400">Analyse en cours...</p>
-                      <p className="text-xs text-zinc-600 mt-1">Estimation des caractéristiques</p>
+                      <p className="text-sm text-zinc-400">{t('analyzing2')}</p>
+                      <p className="text-xs text-zinc-600 mt-1">{t('estimatingFeatures')}</p>
                     </div>
                   ) : (
                     <div>
                       <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">{'📸'}</div>
-                      <p className="text-sm text-zinc-300">Cliquez pour prendre ou uploader une photo</p>
-                      <p className="text-xs text-zinc-600 mt-1">Selfie ou photo en pied — JPG, PNG, WebP</p>
+                      <p className="text-sm text-zinc-300">{t('clickToTakePhoto')}</p>
+                      <p className="text-xs text-zinc-600 mt-1">{t('photoFormats')}</p>
                     </div>
                   )}
                 </div>
@@ -1051,11 +1054,11 @@ export default function HealthProfileEditor() {
                   <div className="bg-zinc-900 border border-teal-500/30 rounded-xl p-5 space-y-4">
                     <div className="flex items-center justify-between">
                       <h4 className="text-sm font-semibold text-teal-400">
-                        {'📊'} Estimations
+                        {'📊'} {t('estimationsLabel')}
                       </h4>
                       {photoResult.overall_confidence !== undefined && (
                         <span className="text-xs text-zinc-500 font-mono">
-                          confiance: {Math.round(Number(photoResult.overall_confidence) * 100)}%
+                          {t('confidence')}: {Math.round(Number(photoResult.overall_confidence) * 100)}%
                         </span>
                       )}
                     </div>
@@ -1064,10 +1067,10 @@ export default function HealthProfileEditor() {
 
                     <div className="flex gap-2 pt-2 border-t border-zinc-800">
                       <button onClick={applyPhotoEstimation} className={btnPrimary}>
-                        Appliquer les estimations
+                        {t('applyEstimations')}
                       </button>
                       <button onClick={() => setPhotoResult(null)} className={btnSecondary}>
-                        Ignorer
+                        {t('ignore')}
                       </button>
                     </div>
                   </div>
@@ -1076,8 +1079,7 @@ export default function HealthProfileEditor() {
             </Section>
 
             <div className="text-xs text-zinc-600 text-center">
-              Les estimations sont approximatives. La taille et le poids sans objet de référence sont peu fiables.
-              Aucune photo n&apos;est stockée après analyse.
+              {t('photoDisclaimer')}
             </div>
           </div>
         )}
@@ -1086,13 +1088,13 @@ export default function HealthProfileEditor() {
         <div className="sticky bottom-0 mt-8 py-4 bg-zinc-950/90 backdrop-blur-sm border-t border-zinc-800/50">
           <div className="flex items-center justify-between gap-4">
             <div className="text-xs text-zinc-600 font-mono">
-              {profile.updated_at && `Mis à jour: ${new Date(profile.updated_at).toLocaleDateString('fr-FR')}`}
+              {profile.updated_at && `${t('updatedAt')} ${new Date(profile.updated_at).toLocaleDateString()}`}
             </div>
             <div className="flex items-center gap-3">
               {error && <span className="text-red-400 text-xs">{error}</span>}
-              {saved && <span className="text-emerald-400 text-xs">Sauvegardé</span>}
+              {saved && <span className="text-emerald-400 text-xs">{t('savedProfile')}</span>}
               <button onClick={saveProfile} disabled={saving} className={btnPrimary}>
-                {saving ? 'Sauvegarde...' : 'Sauvegarder'}
+                {saving ? t('savingProfile') : t('saveProfile')}
               </button>
             </div>
           </div>
@@ -1101,7 +1103,7 @@ export default function HealthProfileEditor() {
         {/* Footer */}
         <footer className="mt-4 text-center">
           <p className="text-xs text-zinc-600 font-mono">
-            Données privées — stockées localement, jamais partagées sans consentement
+            {t('privateDataFooter')}
           </p>
         </footer>
       </div>
