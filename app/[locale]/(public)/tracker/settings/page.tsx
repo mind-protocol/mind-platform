@@ -95,15 +95,24 @@ export default function SettingsPage() {
         if (res.ok) {
           // Session is valid — check linked accounts
           const uid = encodeURIComponent(session?.user_id || '');
-          const [garminRes, spotifyRes, gmailRes] = await Promise.allSettled([
-            fetch(`/api/garmin/status?user_id=${uid}`),
-            fetch('/api/spotify/status'),
-            fetch(`/api/gmail/status?user_id=${uid}`),
+
+          // Helper: fetch status endpoint and parse the `linked` boolean from JSON body
+          async function checkLinked(url: string): Promise<boolean> {
+            const r = await fetch(url);
+            if (!r.ok) return false;
+            const body = await r.json();
+            return body?.linked === true;
+          }
+
+          const [garminLinked, spotifyLinked, gmailLinked] = await Promise.allSettled([
+            checkLinked(`/api/garmin/status?user_id=${uid}`),
+            checkLinked('/api/spotify/status'),
+            checkLinked(`/api/gmail/status?user_id=${uid}`),
           ]);
           setLinked({
-            garmin: garminRes.status === 'fulfilled' && garminRes.value.ok,
-            spotify: spotifyRes.status === 'fulfilled' && spotifyRes.value.ok,
-            gmail: gmailRes.status === 'fulfilled' && gmailRes.value.ok,
+            garmin: garminLinked.status === 'fulfilled' && garminLinked.value,
+            spotify: spotifyLinked.status === 'fulfilled' && spotifyLinked.value,
+            gmail: gmailLinked.status === 'fulfilled' && gmailLinked.value,
           });
         }
       } catch {
