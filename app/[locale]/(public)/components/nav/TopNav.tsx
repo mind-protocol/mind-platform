@@ -182,7 +182,7 @@ export function TopNav() {
               href="/tracker"
               className="px-4 py-1.5 rounded-lg bg-zinc-800/60 border border-zinc-700 text-zinc-300 text-sm font-medium hover:bg-zinc-700/60 hover:text-white transition"
             >
-              Tracker
+              {t('tracker')}
             </Link>
             <Link
               href="/register"
@@ -243,7 +243,7 @@ export function TopNav() {
               className="block mt-3 text-center px-4 py-2.5 rounded-lg bg-zinc-800/60 border border-zinc-700 text-zinc-300 text-sm font-medium hover:bg-zinc-700/60 transition"
               onClick={() => setMobileOpen(false)}
             >
-              Tracker
+              {t('tracker')}
             </Link>
             <Link
               href="/register"

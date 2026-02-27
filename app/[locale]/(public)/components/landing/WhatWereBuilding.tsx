@@ -2,6 +2,7 @@
 
 import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
+import { FadeInSection } from './FadeInSection';
 
 interface ProjectCardProps {
   name: string;
@@ -78,35 +79,41 @@ export function WhatWereBuilding() {
   return (
     <section className="py-24 px-6">
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-amber-500/80 text-sm tracking-widest uppercase mb-4">
-            {t('label')}
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            {t('title')}
-          </h2>
-          <p className="text-zinc-500 text-lg max-w-2xl mx-auto">
-            {t('subtitle')}
-          </p>
-        </div>
+        <FadeInSection>
+          <div className="text-center mb-16">
+            <p className="text-amber-500/80 text-sm tracking-widest uppercase mb-4">
+              {t('label')}
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              {t('title')}
+            </h2>
+            <p className="text-zinc-500 text-lg max-w-2xl mx-auto">
+              {t('subtitle')}
+            </p>
+          </div>
+        </FadeInSection>
 
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {projects.map((project) => (
-            <ProjectCard key={project.name} {...project} />
+          {projects.map((project, index) => (
+            <FadeInSection key={project.name} delay={index * 100}>
+              <ProjectCard {...project} />
+            </FadeInSection>
           ))}
         </div>
 
-        <div className="text-center">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-zinc-400 hover:text-amber-500 transition text-sm"
-          >
-            <span>{t('allResearch')}</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
-        </div>
+        <FadeInSection delay={300}>
+          <div className="text-center">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-zinc-400 hover:text-amber-500 transition text-sm"
+            >
+              <span>{t('allResearch')}</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        </FadeInSection>
       </div>
     </section>
   );

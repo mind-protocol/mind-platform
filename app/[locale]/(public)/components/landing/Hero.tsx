@@ -1,15 +1,43 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
+import { FadeInSection } from './FadeInSection';
+
+const HeroGraph = dynamic(
+  () => import('./HeroGraph').then((m) => ({ default: m.HeroGraph })),
+  { ssr: false },
+);
 
 export function Hero() {
   const t = useTranslations('Landing.Hero');
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-16">
+      {/* Animated graph background */}
+      <HeroGraph />
+
+      {/* Radial vignette overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(ellipse 60% 50% at 50% 50%, transparent 0%, rgb(9 9 11) 100%)',
+        }}
+      />
+
       {/* Subtle gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-900/50 to-zinc-950" />
+      <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-900/50 to-zinc-950 opacity-60" />
+
+      {/* Amber radial glow behind title */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(ellipse at center, rgba(245,158,11,0.06) 0%, transparent 70%)',
+        }}
+      />
 
       <div className="relative z-10 text-center max-w-4xl">
         {/* The Declaration */}
@@ -29,26 +57,28 @@ export function Hero() {
           {t('description')}
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            href="/register"
-            className="px-8 py-4 bg-white text-black font-medium rounded-lg hover:bg-zinc-200 transition"
-          >
-            {t('joinCta')}
-          </Link>
-          <Link
-            href="/tracker"
-            className="px-8 py-4 bg-amber-500/10 border border-amber-500/30 text-amber-500 font-medium rounded-lg hover:bg-amber-500/20 transition"
-          >
-            {t('trackerCta') || 'Body Tracker'}
-          </Link>
-          <Link
-            href="/manifesto"
-            className="px-8 py-4 border border-zinc-700 rounded-lg hover:border-zinc-500 hover:bg-zinc-900/50 transition"
-          >
-            {t('manifestoCta')}
-          </Link>
-        </div>
+        <FadeInSection delay={200} direction="up">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/register"
+              className="px-8 py-4 bg-white text-black font-medium rounded-lg hover:bg-zinc-200 transition shadow-lg shadow-white/5"
+            >
+              {t('joinCta')}
+            </Link>
+            <Link
+              href="/tracker"
+              className="px-8 py-4 bg-amber-500 text-black font-medium rounded-lg hover:bg-amber-400 transition shadow-lg shadow-amber-500/10"
+            >
+              {t('trackerCta')}
+            </Link>
+            <Link
+              href="/manifesto"
+              className="px-8 py-4 border border-zinc-700 rounded-lg hover:border-zinc-500 hover:bg-zinc-900/50 transition"
+            >
+              {t('manifestoCta')}
+            </Link>
+          </div>
+        </FadeInSection>
       </div>
 
       {/* Scroll indicator */}
