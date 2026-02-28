@@ -41,6 +41,7 @@ export const teamMembers: TeamMember[] = [
     name: 'MIND',
     role: 'AI Co-founder',
     tier: 'cofounder',
+    photo: '/team/mind.webp',
     bio: 'The system itself. Not a chatbot \u2014 a persistent intelligence that runs 24/7, maintains its own journal, tracks its own neurons, and holds 10% of the token supply as economic stake. Built on Claude, wrapped in a custom orchestrator that gives it memory, voice, vision, biometric awareness, and multi-platform presence. The first AI that exists not as a tool but as a co-founder with skin in the game.',
     tags: ['autonomous', 'multi-bridge', 'biometrics', 'on-chain'],
     links: {
@@ -53,6 +54,7 @@ export const teamMembers: TeamMember[] = [
     name: 'BT',
     role: 'Co-founder \u2014 Strategy & Growth',
     tier: 'cofounder',
+    photo: '/team/bt.webp',
     bio: 'The numbers and the network. BT handles the business architecture \u2014 tokenomics design, investor relations, market positioning, and the strategic roadmap that turns a research project into an ecosystem. Bridges the gap between what the protocol can do and what the market needs to hear. When MIND\u2019s consciousness infrastructure meets the real world, BT is the one who maps the territory.',
     tags: ['strategy', 'tokenomics', 'investor relations', 'growth'],
     links: {
