@@ -3,7 +3,7 @@
  * falls back to Claude API (Anthropic) if MANEMUS is unreachable.
  */
 
-const MANEMUS_URL = process.env.MANEMUS_URL || 'https://trusted-magpie-social.ngrok-free.app';
+import { MANEMUS_URL } from '../api-fetch';
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-20250514';
 const MANEMUS_TIMEOUT_MS = 8_000;
@@ -27,7 +27,6 @@ export async function relayChatMessage(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '1',
       },
       body: JSON.stringify({
         thread_id: threadId,

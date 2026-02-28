@@ -6,7 +6,7 @@
 export const MANEMUS_URL =
   process.env.MIND_API_URL ||
   process.env.MANEMUS_URL ||
-  'https://trusted-magpie-social.ngrok-free.app';
+  'https://api.mindprotocol.ai';
 
 const DEFAULT_TIMEOUT_MS = 15_000; // 15 seconds
 
@@ -28,7 +28,6 @@ export async function manemusFetch(
       ...fetchInit,
       signal: controller.signal,
       headers: {
-        'ngrok-skip-browser-warning': '1',
         ...fetchInit.headers,
       },
     });

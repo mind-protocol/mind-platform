@@ -1,13 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { MANEMUS_URL } from './api-fetch';
 
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
-
-export const MANEMUS_URL =
-  process.env.MIND_API_URL ||
-  process.env.MANEMUS_URL ||
-  'https://trusted-magpie-social.ngrok-free.app';
 
 const COOKIE_NAME = 'mind_session';
 
@@ -44,7 +40,6 @@ export async function getSession(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '1',
       },
       body: JSON.stringify({ token }),
       cache: 'no-store',
