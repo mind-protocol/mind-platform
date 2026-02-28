@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import type { TeamMember } from '@/lib/data/team';
 
 // ─── Placeholder colors by tier ─────────────────────────────
@@ -72,11 +73,21 @@ export function TeamCard({ member }: { member: TeamMember }) {
     <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 transition-colors hover:border-zinc-700">
       {/* Header: Avatar + Name + Role */}
       <div className="flex items-center gap-4 mb-4">
-        <div
-          className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-lg font-bold ${tierStyle.bg} ${tierStyle.text}`}
-        >
-          {initial}
-        </div>
+        {member.photo ? (
+          <Image
+            src={member.photo}
+            alt={member.name}
+            width={48}
+            height={48}
+            className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+          />
+        ) : (
+          <div
+            className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-lg font-bold ${tierStyle.bg} ${tierStyle.text}`}
+          >
+            {initial}
+          </div>
+        )}
         <div className="min-w-0">
           <h3 className="text-white font-bold truncate">{member.name}</h3>
           <p className="text-amber-500 text-sm">{member.role}</p>

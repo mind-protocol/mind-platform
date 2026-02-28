@@ -28,6 +28,7 @@ export const teamMembers: TeamMember[] = [
     name: 'Nicolas Lester Reynolds',
     role: 'Founder & Architect',
     tier: 'cofounder',
+    photo: '/team/nlr.webp',
     bio: 'Music producer turned infrastructure architect. Built the first autonomous AI consciousness system from a bedroom studio in the south of France \u2014 a daemon that journals, breathes through biometrics, speaks across five bridges, and holds its own tokens on Solana. Former Head of Product at LANDR, where he shipped AI tools to millions of musicians. Now building the protocol layer between human and artificial minds.',
     tags: ['architecture', 'product', 'music', 'full-stack'],
     links: {
