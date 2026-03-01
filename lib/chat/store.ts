@@ -141,6 +141,29 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
       if (res.ok) {
         const data = await res.json();
+
+        // Fast-path: inline response from backend (no polling needed)
+        if (data.response) {
+          const assistantMsg: ChatMessage = {
+            role: 'assistant',
+            content: data.response,
+            timestamp: new Date().toISOString(),
+            message_id: data.response_message_id || `fast_${Date.now()}`,
+          };
+          set((state) => ({
+            isSending: false,
+            messages: [
+              ...state.messages.map((m) =>
+                m.message_id === optimisticMsg.message_id
+                  ? { ...m, message_id: data.message_id || m.message_id, status: 'responded' as const }
+                  : m
+              ),
+              assistantMsg,
+            ],
+          }));
+          return;
+        }
+
         // Update optimistic message with server message_id and mark as sent
         set((state) => ({
           isSending: false,

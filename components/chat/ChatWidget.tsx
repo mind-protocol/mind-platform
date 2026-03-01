@@ -706,7 +706,7 @@ export default function ChatWidget() {
   useEffect(() => {
     if (!threadId || !session) return;
     pollMessages();
-    const interval = isWaiting ? 1500 : isOpen ? 3000 : 15000;
+    const interval = isWaiting ? 2000 : isOpen ? 5000 : 60000;
     pollRef.current = setInterval(pollMessages, interval);
     return () => { if (pollRef.current) clearInterval(pollRef.current); };
   }, [threadId, session, isOpen, isWaiting, pollMessages]);
