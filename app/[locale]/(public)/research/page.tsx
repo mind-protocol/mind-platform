@@ -9,6 +9,7 @@ interface Paper {
   abstract: string;
   tags: string[];
   pdfUrl: string;
+  translations?: { label: string; url: string }[];
 }
 
 const PAPERS: Paper[] = [
@@ -27,6 +28,10 @@ const PAPERS: Paper[] = [
       'Case Study',
     ],
     pdfUrl: '/papers/mind-physiology-body-building-2026.pdf',
+    translations: [
+      { label: 'Français', url: '/papers/mind-physiology-bodybuilding-fr.pdf' },
+      { label: '中文', url: '/papers/mind-physiology-bodybuilding-zh.pdf' },
+    ],
   },
 ];
 
@@ -54,7 +59,7 @@ function PaperCard({ paper }: { paper: Paper }) {
 
       <p className="text-zinc-400 leading-relaxed mb-6">{paper.abstract}</p>
 
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-3">
         <a
           href={paper.pdfUrl}
           target="_blank"
@@ -74,8 +79,32 @@ function PaperCard({ paper }: { paper: Paper }) {
               d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
             />
           </svg>
-          Download PDF
+          Download PDF (EN)
         </a>
+        {paper.translations?.map((tr) => (
+          <a
+            key={tr.url}
+            href={tr.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 border border-zinc-700 text-zinc-300 rounded-lg hover:bg-zinc-800 transition text-sm"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            {tr.label}
+          </a>
+        ))}
       </div>
     </div>
   );
