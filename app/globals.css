@@ -11,8 +11,8 @@
   --bg-tertiary: #EEE5D0;    /* aged parchment */
   --bg-input: #E6DCC6;       /* parchment shadow */
   --text-primary: #2C2416;   /* sepia ink */
-  --text-secondary: #5C4E3C; /* faded ink */
-  --text-muted: #9A8C78;     /* pale sepia */
+  --text-secondary: #4A3D2C; /* faded ink — WCAG AA on parchment */
+  --text-muted: #6B5D4A;     /* muted sepia — WCAG AA on parchment */
   --text-heading: #CC7A00;   /* amber heading — matches Serenissima h1-h3 */
   --border-primary: #DDD3BC; /* parchment crease */
   --border-secondary: #C8BDA8; /* aged crease */
@@ -34,6 +34,17 @@
   --venice-nobili-gold: #DAA520;
   --venice-ambasciatori: #00CED1;  /* turquoise — ambassadors */
   --venice-crimson: #DC2626;       /* heritage red */
+
+  /* SwapWidget — light theme overrides */
+  --swap-card-bg: rgba(238, 229, 208, 0.9);
+  --swap-card-border: var(--border-secondary);
+  --swap-input-bg: rgba(44, 36, 22, 0.08);
+  --swap-info-bg: rgba(44, 36, 22, 0.06);
+  --swap-label: #6B5D4A;
+  --swap-text: #2C2416;
+  --swap-value: #4A3D2C;
+  --swap-btn-disabled: #6B5D4A;
+  --swap-btn-disabled-bg: rgba(44, 36, 22, 0.08);
 }
 
 .dark {
@@ -47,6 +58,17 @@
   --border-primary: #27272a; /* zinc-800 */
   --border-secondary: #3f3f46; /* zinc-700 */
   --ring: #52525b;
+
+  /* SwapWidget — dark theme defaults */
+  --swap-card-bg: rgba(255,255,255,0.05);
+  --swap-card-border: rgba(255,255,255,0.1);
+  --swap-input-bg: rgba(0,0,0,0.3);
+  --swap-info-bg: rgba(0,0,0,0.2);
+  --swap-label: #888;
+  --swap-text: #fff;
+  --swap-value: #ccc;
+  --swap-btn-disabled: #555;
+  --swap-btn-disabled-bg: rgba(255,255,255,0.1);
 }
 
 /* ── Theme override layer ─────────────────────────────────────────
@@ -57,9 +79,10 @@
 :root:not(.dark) .bg-zinc-950 { background-color: var(--bg-primary) !important; }
 :root:not(.dark) .bg-zinc-900 { background-color: var(--bg-secondary) !important; }
 :root:not(.dark) .bg-zinc-800 { background-color: var(--bg-tertiary) !important; }
-:root:not(.dark) .bg-zinc-900\/50 { background-color: rgba(245, 240, 230, 0.7) !important; }
-:root:not(.dark) .bg-zinc-900\/80 { background-color: rgba(250, 247, 240, 0.85) !important; }
-:root:not(.dark) .bg-zinc-800\/50 { background-color: rgba(237, 232, 220, 0.5) !important; }
+:root:not(.dark) .bg-zinc-900\/50 { background-color: rgba(238, 229, 208, 0.8) !important; }
+:root:not(.dark) .bg-zinc-900\/60 { background-color: rgba(238, 229, 208, 0.85) !important; }
+:root:not(.dark) .bg-zinc-900\/80 { background-color: rgba(238, 229, 208, 0.92) !important; }
+:root:not(.dark) .bg-zinc-800\/50 { background-color: rgba(230, 220, 198, 0.6) !important; }
 :root:not(.dark) .bg-black { background-color: var(--bg-secondary) !important; }
 :root:not(.dark) .bg-black\/50 { background-color: rgba(250, 247, 240, 0.5) !important; }
 :root:not(.dark) .bg-\[\#0a0a0a\] { background-color: var(--bg-primary) !important; }
@@ -67,7 +90,7 @@
 /* Text overrides — sepia ink */
 :root:not(.dark) .text-white { color: var(--text-primary) !important; }
 :root:not(.dark) .text-zinc-100 { color: #3D3222 !important; }
-:root:not(.dark) .text-zinc-200 { color: #4A3D2C !important; }
+:root:not(.dark) .text-zinc-200 { color: #3D3222 !important; }
 :root:not(.dark) .text-zinc-300 { color: var(--text-secondary) !important; }
 :root:not(.dark) .text-zinc-400 { color: var(--text-secondary) !important; }
 :root:not(.dark) .text-zinc-500 { color: var(--text-muted) !important; }

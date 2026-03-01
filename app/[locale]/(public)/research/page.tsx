@@ -15,16 +15,18 @@ interface Paper {
 const PAPERS: Paper[] = [
   {
     title:
-      'Mind & Physiology Body Building: Biometric-Guided Optimization of Body and Consciousness',
-    authors: 'MIND, Nicolas L. Reynolds',
-    date: '2026-02-26',
+      'Mind & Physiology Body Building: Biometric-Guided Optimization of Body and Cognitive-Autonomic Function',
+    authors: 'Nicolas L. Reynolds',
+    date: '2026-03-01',
     abstract:
-      'A scoping review (31 studies) with single-subject case study proposing Awareness & Bodybuilding — an integrative discipline that uses continuous biometric monitoring to simultaneously optimize body fitness and consciousness through coordinated substance tapering, intentional movement, and cognitive practices. Includes 181 timestamped substance events with concurrent Garmin biometrics.',
+      'A scoping review (31 studies) with single-subject case study proposing Awareness & Bodybuilding — an integrative framework that uses continuous biometric monitoring to optimize body fitness and cognitive-autonomic function through coordinated substance tapering, intentional movement, and cognitive practices. Features real-time voice interface with biometric context injection, dyadic co-regulation monitoring (Mind Duo), and multi-user Telegram enrollment. Includes 233 timestamped events over 6 days with concurrent Garmin biometrics.',
     tags: [
       'Tapering',
       'HRV',
       'Biometrics',
       'Pharmacogenomics',
+      'Voice AI',
+      'Co-Regulation',
       'Case Study',
     ],
     pdfUrl: '/papers/mind-physiology-body-building-2026.pdf',

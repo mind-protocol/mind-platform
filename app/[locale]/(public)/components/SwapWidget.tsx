@@ -229,9 +229,9 @@ export function SwapWidget() {
   return (
     <div style={{ width: '100%', maxWidth: '420px' }}>
       {/* Swap Card */}
-      <div style={{
-        background: 'rgba(255,255,255,0.05)',
-        border: '1px solid rgba(255,255,255,0.1)',
+      <div className="swap-card" style={{
+        background: 'var(--swap-card-bg, rgba(255,255,255,0.05))',
+        border: '1px solid var(--swap-card-border, rgba(255,255,255,0.1))',
         borderRadius: '16px',
         padding: '24px',
         backdropFilter: 'blur(10px)',
@@ -266,7 +266,7 @@ export function SwapWidget() {
             <span style={{ fontSize: '13px', color: '#f59e0b' }}>
               {publicKey ? `${publicKey.toBase58().slice(0, 4)}...${publicKey.toBase58().slice(-4)}` : ''}
             </span>
-            <span style={{ fontSize: '13px', color: '#888' }}>
+            <span style={{ fontSize: '13px', color: 'var(--swap-label, #888)' }}>
               {solBalance !== null ? `${solBalance.toFixed(4)} SOL` : '...'}
             </span>
           </div>
@@ -274,14 +274,14 @@ export function SwapWidget() {
 
         {/* Input */}
         <div style={{
-          background: 'rgba(0,0,0,0.3)',
+          background: 'var(--swap-input-bg, rgba(0,0,0,0.3))',
           borderRadius: '12px',
           padding: '16px',
           marginBottom: '12px',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-            <span style={{ fontSize: '13px', color: '#888' }}>{t('youPay')}</span>
-            <span style={{ fontSize: '13px', color: '#888' }}>SOL</span>
+            <span style={{ fontSize: '13px', color: 'var(--swap-label, #888)' }}>{t('youPay')}</span>
+            <span style={{ fontSize: '13px', color: 'var(--swap-label, #888)' }}>SOL</span>
           </div>
           <input
             type="number"
@@ -295,7 +295,7 @@ export function SwapWidget() {
               background: 'transparent',
               border: 'none',
               outline: 'none',
-              color: '#fff',
+              color: 'var(--swap-text, #fff)',
               fontSize: '24px',
               fontWeight: 600,
               fontFamily: 'var(--font-mono), monospace',
@@ -312,7 +312,7 @@ export function SwapWidget() {
                   background: solAmount === String(p) ? 'rgba(245,158,11,0.2)' : 'rgba(255,255,255,0.05)',
                   border: solAmount === String(p) ? '1px solid rgba(245,158,11,0.4)' : '1px solid rgba(255,255,255,0.1)',
                   borderRadius: '8px',
-                  color: '#fff',
+                  color: 'var(--swap-text, #fff)',
                   fontSize: '13px',
                   cursor: 'pointer',
                 }}
@@ -330,24 +330,24 @@ export function SwapWidget() {
 
         {/* Output */}
         <div style={{
-          background: 'rgba(0,0,0,0.3)',
+          background: 'var(--swap-input-bg, rgba(0,0,0,0.3))',
           borderRadius: '12px',
           padding: '16px',
           marginBottom: '16px',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-            <span style={{ fontSize: '13px', color: '#888' }}>{t('youReceive')}</span>
+            <span style={{ fontSize: '13px', color: 'var(--swap-label, #888)' }}>{t('youReceive')}</span>
             <span style={{ fontSize: '13px', color: '#f59e0b' }}>$MIND</span>
           </div>
           <div style={{
             fontSize: '24px',
             fontWeight: 600,
-            color: '#fff',
+            color: 'var(--swap-text, #fff)',
             fontFamily: 'var(--font-mono), monospace',
           }}>
             {state === 'quoting' ? '...' : received}
           </div>
-          <div style={{ fontSize: '12px', color: '#666', marginTop: '6px' }}>
+          <div style={{ fontSize: '12px', color: 'var(--swap-label, #888)', marginTop: '6px' }}>
             {quote ? `${mindAmount} MIND - ${fee} ${t('fee')} (1%) = ${received} MIND` : ''}
           </div>
         </div>
@@ -356,26 +356,26 @@ export function SwapWidget() {
         {quote && (
           <div style={{
             padding: '12px',
-            background: 'rgba(0,0,0,0.2)',
+            background: 'var(--swap-info-bg, rgba(0,0,0,0.2))',
             borderRadius: '10px',
             marginBottom: '16px',
             fontSize: '13px',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-              <span style={{ color: '#888' }}>{t('price')}</span>
-              <span style={{ color: '#ccc' }}>~${price}/MIND</span>
+              <span style={{ color: 'var(--swap-label, #888)' }}>{t('price')}</span>
+              <span style={{ color: 'var(--swap-value, #ccc)' }}>~${price}/MIND</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-              <span style={{ color: '#888' }}>{t('transferFee')}</span>
-              <span style={{ color: '#ccc' }}>{t('transferFeeValue')}</span>
+              <span style={{ color: 'var(--swap-label, #888)' }}>{t('transferFee')}</span>
+              <span style={{ color: 'var(--swap-value, #ccc)' }}>{t('transferFeeValue')}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-              <span style={{ color: '#888' }}>{t('slippage')}</span>
-              <span style={{ color: '#ccc' }}>5%</span>
+              <span style={{ color: 'var(--swap-label, #888)' }}>{t('slippage')}</span>
+              <span style={{ color: 'var(--swap-value, #ccc)' }}>5%</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#888' }}>{t('route')}</span>
-              <span style={{ color: '#ccc' }}>FluxBeam</span>
+              <span style={{ color: 'var(--swap-label, #888)' }}>{t('route')}</span>
+              <span style={{ color: 'var(--swap-value, #ccc)' }}>FluxBeam</span>
             </div>
           </div>
         )}
@@ -388,11 +388,11 @@ export function SwapWidget() {
             width: '100%',
             padding: '16px',
             background: !connected || !quote
-              ? 'rgba(255,255,255,0.1)'
+              ? 'var(--swap-btn-disabled-bg, rgba(255,255,255,0.1))'
               : 'linear-gradient(135deg, #f59e0b, #d97706)',
             border: 'none',
             borderRadius: '12px',
-            color: !connected || !quote ? '#555' : '#000',
+            color: !connected || !quote ? 'var(--swap-btn-disabled, #555)' : '#000',
             fontSize: '16px',
             fontWeight: 700,
             cursor: !connected || !quote ? 'not-allowed' : 'pointer',
@@ -470,7 +470,7 @@ export function SwapWidget() {
           border: '1px solid rgba(245,158,11,0.15)',
           borderRadius: '10px',
         }}>
-          <p style={{ fontSize: '12px', color: '#888', margin: 0, lineHeight: 1.5 }}>
+          <p style={{ fontSize: '12px', color: 'var(--swap-label, #888)', margin: 0, lineHeight: 1.5 }}>
             <strong style={{ color: '#f59e0b' }}>{t('note')}</strong> {t('noteText')}
           </p>
         </div>

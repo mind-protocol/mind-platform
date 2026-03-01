@@ -19,7 +19,7 @@ export function SwapSection() {
 
   return (
     <FadeInSection direction="up">
-      <section id="swap" className="py-16 px-6 border-b border-amber-500/20 bg-gradient-to-b from-zinc-950 via-zinc-900/50 to-zinc-950">
+      <section id="swap" className="py-16 px-6 border-b border-amber-500/20">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center lg:items-start gap-12">
           {/* Left: Token info */}
           <div className="flex-1 text-center lg:text-left lg:pt-8">

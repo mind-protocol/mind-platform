@@ -20,7 +20,7 @@ export function Hero() {
 
       {/* Radial vignette overlay */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none dark:block hidden"
         style={{
           background:
             'radial-gradient(ellipse 60% 50% at 50% 50%, transparent 0%, rgb(9 9 11) 100%)',
@@ -28,14 +28,14 @@ export function Hero() {
       />
 
       {/* Subtle gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-900/50 to-zinc-950 opacity-60" />
+      <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-900/50 to-zinc-950 opacity-60 dark:block hidden" />
 
       {/* Amber radial glow behind title */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse at center, rgba(245,158,11,0.06) 0%, transparent 70%)',
+            'radial-gradient(ellipse at center, rgba(212,146,11,0.08) 0%, transparent 70%)',
         }}
       />
 
