@@ -14,9 +14,10 @@ export async function PATCH(
   try {
     const { id } = await params;
     const body = await req.json();
+    const userId = auth.user_id;
     const { data, status } = await manemusFetchJson(`/api/tracker/environments/${id}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-User-Id': userId },
       body: JSON.stringify(body),
     });
     return NextResponse.json(data, { status });

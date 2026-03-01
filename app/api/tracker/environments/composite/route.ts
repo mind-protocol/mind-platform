@@ -9,9 +9,11 @@ export async function POST(req: NextRequest) {
   if (auth instanceof NextResponse) return auth;
 
   try {
+    const userId = auth.user_id;
     const formData = await req.formData();
     const res = await manemusFetch('/api/tracker/environments/composite', {
       method: 'POST',
+      headers: { 'X-User-Id': userId },
       body: formData,
       timeoutMs: 120_000, // 120s for multi-file composite uploads
     });

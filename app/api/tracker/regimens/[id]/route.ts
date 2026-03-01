@@ -12,11 +12,12 @@ export async function PATCH(
   if (auth instanceof NextResponse) return auth;
 
   try {
+    const userId = auth.user_id;
     const { id } = await params;
     const body = await req.json();
     const { data, status } = await manemusFetchJson(`/api/tracker/regimens/${id}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-User-Id': userId },
       body: JSON.stringify(body),
     });
     return NextResponse.json(data, { status });

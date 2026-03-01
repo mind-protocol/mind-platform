@@ -9,7 +9,10 @@ export async function GET(request: NextRequest) {
   if (auth instanceof NextResponse) return auth;
 
   try {
-    const { data, status } = await manemusFetchJson('/api/tracker/environments/active');
+    const userId = auth.user_id;
+    const { data, status } = await manemusFetchJson('/api/tracker/environments/active', {
+      headers: { 'X-User-Id': userId },
+    });
     return NextResponse.json(data, { status });
   } catch {
     return NextResponse.json({ error: 'Service unavailable' }, { status: 502 });

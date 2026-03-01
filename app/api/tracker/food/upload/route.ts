@@ -9,9 +9,11 @@ export async function POST(req: NextRequest) {
   if (auth instanceof NextResponse) return auth;
 
   try {
+    const userId = auth.user_id;
     const formData = await req.formData();
     const res = await manemusFetch('/api/tracker/food/upload', {
       method: 'POST',
+      headers: { 'X-User-Id': userId },
       body: formData,
     });
     const data = await res.json();

@@ -4,9 +4,18 @@ import { manemusFetch, manemusFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const auth = await requireSession(req);
+  if (auth instanceof NextResponse) return auth;
+
   try {
-    const { data, status } = await manemusFetchJson('/api/tracker/environments');
+    const userId = auth.user_id;
+    const params = req.nextUrl.searchParams.toString();
+    const path = `/api/tracker/environments${params ? `?${params}` : ''}`;
+    const { data, status } = await manemusFetchJson(path, {
+      cache: 'no-store',
+      headers: { 'X-User-Id': userId },
+    });
     return NextResponse.json(data, { status });
   } catch {
     return NextResponse.json({ error: 'Service unavailable' }, { status: 502 });
@@ -18,9 +27,11 @@ export async function POST(req: NextRequest) {
   if (auth instanceof NextResponse) return auth;
 
   try {
+    const userId = auth.user_id;
     const formData = await req.formData();
     const res = await manemusFetch('/api/tracker/environments', {
       method: 'POST',
+      headers: { 'X-User-Id': userId },
       body: formData,
       timeoutMs: 120_000, // 120s for large Scaniverse PLY uploads
     });

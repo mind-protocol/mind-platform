@@ -9,6 +9,7 @@ export async function POST(req: NextRequest) {
   if (auth instanceof NextResponse) return auth;
 
   try {
+    const userId = auth.user_id;
     const body = await req.json();
     if (!body || typeof body !== 'object') {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
@@ -16,7 +17,7 @@ export async function POST(req: NextRequest) {
 
     const { data, status } = await manemusFetchJson('/api/tracker/yoga/analyze', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-User-Id': userId },
       body: JSON.stringify(body),
     });
     return NextResponse.json(data, { status });
