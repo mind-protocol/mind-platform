@@ -77,6 +77,7 @@
 
 /* Background overrides — Venice parchment */
 :root:not(.dark) .bg-zinc-950 { background-color: var(--bg-primary) !important; }
+:root:not(.dark) .bg-zinc-950\/80 { background-color: rgba(245, 236, 215, 0.92) !important; }
 :root:not(.dark) .bg-zinc-900 { background-color: var(--bg-secondary) !important; }
 :root:not(.dark) .bg-zinc-800 { background-color: var(--bg-tertiary) !important; }
 :root:not(.dark) .bg-zinc-900\/30 { background-color: rgba(238, 229, 208, 0.35) !important; }
@@ -84,7 +85,11 @@
 :root:not(.dark) .bg-zinc-900\/60 { background-color: rgba(238, 229, 208, 0.65) !important; }
 :root:not(.dark) .bg-zinc-900\/80 { background-color: rgba(238, 229, 208, 0.85) !important; }
 :root:not(.dark) .bg-zinc-800\/50 { background-color: rgba(230, 220, 198, 0.5) !important; }
+:root:not(.dark) .bg-zinc-800\/60 { background-color: rgba(230, 220, 198, 0.6) !important; }
+:root:not(.dark) .bg-zinc-700\/60 { background-color: rgba(200, 189, 168, 0.6) !important; }
 :root:not(.dark) .hover\:bg-zinc-900\/50:hover { background-color: rgba(238, 229, 208, 0.55) !important; }
+:root:not(.dark) .hover\:bg-zinc-800\/50:hover { background-color: rgba(230, 220, 198, 0.5) !important; }
+:root:not(.dark) .hover\:bg-zinc-700\/60:hover { background-color: rgba(200, 189, 168, 0.6) !important; }
 :root:not(.dark) .bg-black { background-color: var(--bg-secondary) !important; }
 :root:not(.dark) .bg-black\/50 { background-color: rgba(250, 247, 240, 0.5) !important; }
 :root:not(.dark) .bg-\[\#0a0a0a\] { background-color: var(--bg-primary) !important; }
