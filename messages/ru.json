@@ -394,6 +394,8 @@
     "analyzedCal": "Проанализировано — {cal} кал ({count} элементов обнаружено)",
     "uploadFailed": "Ошибка загрузки",
     "logged": "Записано ✓",
+    "loggedAt": "Записано в",
+    "pastClock": "Прошлое время",
     "failed": "Ошибка",
     "welcomeTitle": "Добро пожаловать, {name}.",
     "welcomeDefault": "Добро пожаловать.",

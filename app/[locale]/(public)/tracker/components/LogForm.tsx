@@ -176,6 +176,10 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
     unit: string;
   } | null>(null);
 
+  // Past clock state
+  const [pastMode, setPastMode] = useState(false);
+  const [pastDateTime, setPastDateTime] = useState('');
+
   // Yoga timer state
   const [yogaTimerSecs, setYogaTimerSecs] = useState(180); // 3m default
   const [yogaTimerRunning, setYogaTimerRunning] = useState(false);
@@ -273,13 +277,19 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
         notes,
       };
       if (force) body.force = true;
+      if (pastMode && pastDateTime) body.ts = new Date(pastDateTime).toISOString();
       const res = await fetch('/api/tracker/log', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
       if (res.ok) {
-        setFeedback(t('logged'));
+        const fb = pastMode && pastDateTime
+          ? `${t('loggedAt')} ${new Date(pastDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+          : t('logged');
+        setFeedback(fb);
+        setPastMode(false);
+        setPastDateTime('');
         onLogged();
         setTimeout(() => setFeedback(''), 2000);
 
@@ -1986,6 +1996,43 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Past clock toggle */}
+      <div className="mt-3 flex items-center gap-2 flex-wrap">
+        <button
+          type="button"
+          onClick={() => {
+            const next = !pastMode;
+            setPastMode(next);
+            if (next) {
+              const d = new Date();
+              d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+              setPastDateTime(d.toISOString().slice(0, 16));
+            } else {
+              setPastDateTime('');
+            }
+          }}
+          className={`px-3 py-1.5 rounded text-sm border transition flex items-center gap-1.5 ${
+            pastMode
+              ? 'border-amber-500/50 bg-amber-500/10 text-amber-400'
+              : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+          }`}
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          {t('pastClock')}
+        </button>
+        {pastMode && (
+          <input
+            type="datetime-local"
+            value={pastDateTime}
+            onChange={(e) => setPastDateTime(e.target.value)}
+            className="bg-zinc-800 border border-zinc-700 rounded px-3 py-1.5 text-white text-sm focus:outline-none focus:border-amber-500/50"
+          />
+        )}
       </div>
 
       {/* Notes + submit */}

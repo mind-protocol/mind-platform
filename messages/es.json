@@ -394,6 +394,8 @@
     "analyzedCal": "Analizado — {cal} cal ({count} elementos detectados)",
     "uploadFailed": "Error al subir",
     "logged": "Registrado ✓",
+    "loggedAt": "Registrado a las",
+    "pastClock": "Reloj pasado",
     "failed": "Error",
     "welcomeTitle": "Bienvenido, {name}.",
     "welcomeDefault": "Bienvenido.",

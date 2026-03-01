@@ -394,6 +394,8 @@
     "analyzedCal": "已分析 — {cal} 卡（检测到 {count} 项）",
     "uploadFailed": "上传失败",
     "logged": "已记录 ✓",
+    "loggedAt": "已记录于",
+    "pastClock": "过去时间",
     "failed": "失败",
     "welcomeTitle": "欢迎，{name}。",
     "welcomeDefault": "欢迎。",
