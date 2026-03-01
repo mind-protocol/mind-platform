@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
 
+export const revalidate = 86400; // ISR: regenerate once per day (static data)
+
 export const metadata: Metadata = {
   title: 'Planning & Roadmap | Mind Protocol',
   description: 'What Mind Protocol has built, is building, and plans to build next.',

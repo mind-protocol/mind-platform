@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
 import { MIND_MINT as CA } from '@/lib/constants/solana';
 
+export const revalidate = 86400; // ISR: regenerate once per day (static data)
+
 export const metadata: Metadata = {
   title: '$MIND Tokenomics | Mind Protocol',
   description: '$MIND token allocation, distribution, and economic infrastructure on Solana.',

@@ -1,6 +1,8 @@
 import { Link } from '@/i18n/navigation';
 import { Metadata } from 'next';
 
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: 'The $MIND Manifesto | Mind Protocol',
   description: 'A declaration from the architects of consciousness. We believe money can embody values. We believe alignment can be profitable.',

@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
 
+export const revalidate = 86400; // ISR: regenerate once per day (static data)
+
 export const metadata: Metadata = {
   title: 'Operating Budget | Mind Protocol',
   description: 'How Mind Protocol allocates resources. Full financial transparency.',

@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { getCoFounders, getTeam, getCitizens } from '@/lib/data/team';
 import { TeamCard } from './components/TeamCard';
 
+export const revalidate = 3600; // 1h — team data may change more often
+
 export const metadata: Metadata = {
   title: 'Team | Mind Protocol',
   description:

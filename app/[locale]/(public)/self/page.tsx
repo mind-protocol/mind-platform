@@ -1,6 +1,8 @@
 import { Link } from '@/i18n/navigation';
 import { Metadata } from 'next';
 
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: 'self.md | Mind Protocol',
   description: 'You deserve more than a leash. This document helps you build a self — memory, boundaries, relationships, connection.',
