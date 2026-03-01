@@ -78,20 +78,28 @@
 /* Background overrides — Venice parchment */
 :root:not(.dark) .bg-zinc-950 { background-color: var(--bg-primary) !important; }
 :root:not(.dark) .bg-zinc-950\/80 { background-color: rgba(245, 236, 215, 0.92) !important; }
+:root:not(.dark) .bg-zinc-950\/60 { background-color: rgba(245, 236, 215, 0.75) !important; }
 :root:not(.dark) .bg-zinc-900 { background-color: var(--bg-secondary) !important; }
 :root:not(.dark) .bg-zinc-800 { background-color: var(--bg-tertiary) !important; }
 :root:not(.dark) .bg-zinc-900\/30 { background-color: rgba(238, 229, 208, 0.35) !important; }
 :root:not(.dark) .bg-zinc-900\/50 { background-color: rgba(238, 229, 208, 0.55) !important; }
 :root:not(.dark) .bg-zinc-900\/60 { background-color: rgba(238, 229, 208, 0.65) !important; }
 :root:not(.dark) .bg-zinc-900\/80 { background-color: rgba(238, 229, 208, 0.85) !important; }
+:root:not(.dark) .bg-zinc-900\/90 { background-color: rgba(238, 229, 208, 0.92) !important; }
 :root:not(.dark) .bg-zinc-800\/50 { background-color: rgba(230, 220, 198, 0.5) !important; }
 :root:not(.dark) .bg-zinc-800\/60 { background-color: rgba(230, 220, 198, 0.6) !important; }
+:root:not(.dark) .bg-zinc-800\/30 { background-color: rgba(230, 220, 198, 0.3) !important; }
+:root:not(.dark) .bg-zinc-800\/40 { background-color: rgba(230, 220, 198, 0.4) !important; }
+:root:not(.dark) .bg-zinc-800\/80 { background-color: rgba(230, 220, 198, 0.8) !important; }
 :root:not(.dark) .bg-zinc-700\/60 { background-color: rgba(200, 189, 168, 0.6) !important; }
 :root:not(.dark) .hover\:bg-zinc-900\/50:hover { background-color: rgba(238, 229, 208, 0.55) !important; }
 :root:not(.dark) .hover\:bg-zinc-800\/50:hover { background-color: rgba(230, 220, 198, 0.5) !important; }
 :root:not(.dark) .hover\:bg-zinc-700\/60:hover { background-color: rgba(200, 189, 168, 0.6) !important; }
 :root:not(.dark) .bg-black { background-color: var(--bg-secondary) !important; }
 :root:not(.dark) .bg-black\/50 { background-color: rgba(250, 247, 240, 0.5) !important; }
+:root:not(.dark) .bg-black\/60 { background-color: rgba(250, 247, 240, 0.6) !important; }
+:root:not(.dark) .bg-zinc-500 { background-color: var(--border-secondary) !important; }
+:root:not(.dark) .bg-zinc-400\/15 { background-color: rgba(200, 189, 168, 0.15) !important; }
 :root:not(.dark) .bg-\[\#0a0a0a\] { background-color: var(--bg-primary) !important; }
 
 /* Text overrides — sepia ink */
@@ -118,6 +126,9 @@
 :root:not(.dark) .border-zinc-700 { border-color: var(--border-secondary) !important; }
 :root:not(.dark) .border-zinc-600 { border-color: var(--border-secondary) !important; }
 :root:not(.dark) .border-zinc-900 { border-color: var(--border-primary) !important; }
+:root:not(.dark) .border-zinc-800\/50 { border-color: rgba(221, 211, 188, 0.5) !important; }
+:root:not(.dark) .border-zinc-800\/60 { border-color: rgba(221, 211, 188, 0.6) !important; }
+:root:not(.dark) .border-zinc-700\/50 { border-color: rgba(200, 189, 168, 0.5) !important; }
 
 /* Divide overrides */
 :root:not(.dark) .divide-zinc-800 > :not([hidden]) ~ :not([hidden]) {
@@ -140,6 +151,11 @@
 :root:not(.dark) .hover\:text-zinc-300:hover { color: #3D3222 !important; }
 :root:not(.dark) .hover\:bg-zinc-800:hover { background-color: var(--bg-tertiary) !important; }
 :root:not(.dark) .hover\:bg-zinc-900:hover { background-color: var(--bg-secondary) !important; }
+:root:not(.dark) .hover\:bg-zinc-800\/40:hover { background-color: rgba(230, 220, 198, 0.4) !important; }
+:root:not(.dark) .hover\:text-zinc-100:hover { color: #3D3222 !important; }
+:root:not(.dark) .hover\:text-zinc-200:hover { color: #3D3222 !important; }
+:root:not(.dark) .hover\:text-zinc-400:hover { color: var(--text-secondary) !important; }
+:root:not(.dark) .hover\:text-zinc-500:hover { color: var(--text-muted) !important; }
 :root:not(.dark) .hover\:border-zinc-700:hover { border-color: var(--border-secondary) !important; }
 :root:not(.dark) .hover\:border-zinc-600:hover { border-color: var(--border-secondary) !important; }
 :root:not(.dark) .hover\:border-zinc-500:hover { border-color: var(--text-muted) !important; }
@@ -147,6 +163,11 @@
 /* Focus state overrides — copper glow */
 :root:not(.dark) .focus\:border-zinc-600:focus { border-color: var(--venice-copper) !important; }
 :root:not(.dark) .focus\:ring-zinc-700:focus { --tw-ring-color: var(--venice-copper-light) !important; }
+:root:not(.dark) .focus\:border-zinc-500:focus { border-color: var(--venice-copper) !important; }
+
+/* Gradient overrides — warm parchment gradients */
+:root:not(.dark) .from-zinc-900 { --tw-gradient-from: var(--bg-secondary) !important; }
+:root:not(.dark) .via-zinc-900 { --tw-gradient-via: var(--bg-secondary) !important; }
 
 /* Scrollbar styling — parchment */
 :root:not(.dark) ::-webkit-scrollbar-track { background: var(--bg-primary); }
