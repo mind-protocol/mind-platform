@@ -76,6 +76,90 @@ const EXERCISE_OPTIONS = ['', 'none', 'occasional', '1-2x/week', '3-4x/week', 'd
 const DIET_OPTIONS = ['', 'omnivore', 'vegetarian', 'vegan', 'pescatarian', 'keto', 'other'];
 const CONDITION_STATUSES: ConditionEntry['status'][] = ['active', 'monitoring', 'resolved'];
 
+// ─── Suggestion Lists (datalist) ──────────────────────────────────────
+
+const ALLERGY_SUGGESTIONS = [
+  'Pénicilline', 'Amoxicilline', 'Aspirine', 'Ibuprofène', 'Sulfamides',
+  'Arachides', 'Fruits à coque', 'Lait', 'Œufs', 'Gluten', 'Soja', 'Crustacés', 'Poisson',
+  'Latex', 'Pollen', 'Acariens', 'Poils de chat', 'Poils de chien',
+  'Nickel', 'Iode', 'Produits de contraste',
+];
+
+const CONDITION_SUGGESTIONS = [
+  'Asthme', 'Hypertension', 'Diabète type 1', 'Diabète type 2', 'Hypothyroïdie', 'Hyperthyroïdie',
+  'Dépression', 'Anxiété', 'TDAH', 'Trouble bipolaire', 'Insomnie',
+  'Migraine', 'Épilepsie', 'Arthrose', 'Polyarthrite rhumatoïde',
+  'Eczéma', 'Psoriasis', 'Acné', 'Rhinite allergique',
+  'Reflux gastro-œsophagien', 'Syndrome du côlon irritable', 'Maladie de Crohn',
+  'Anémie', 'Hypercholestérolémie', 'Obésité',
+  'Apnée du sommeil', 'Endométriose', 'SOPK',
+];
+
+const MEDICATION_SUGGESTIONS = [
+  'Paracétamol', 'Ibuprofène', 'Aspirine', 'Doliprane', 'Efferalgan',
+  'Amoxicilline', 'Augmentin', 'Azithromycine',
+  'Oméprazole', 'Pantoprazole', 'Gaviscon',
+  'Levothyrox', 'Metformine', 'Insuline',
+  'Ventoline', 'Symbicort', 'Flixotide',
+  'Sertraline', 'Escitalopram', 'Fluoxétine', 'Paroxétine', 'Venlafaxine',
+  'Méthylphénidate', 'Atomoxétine',
+  'Atorvastatine', 'Rosuvastatine',
+  'Ramipril', 'Amlodipine', 'Bisoprolol', 'Losartan',
+  'Lorazépam', 'Alprazolam', 'Diazépam', 'Zopiclone', 'Mélatonine',
+  'Vitamine D', 'Vitamine B12', 'Fer', 'Magnésium', 'Zinc', 'Oméga-3',
+  'Pilule contraceptive', 'Stérilet hormonal',
+];
+
+const FREQUENCY_OPTIONS = [
+  '', '1x/jour', '2x/jour', '3x/jour', '4x/jour',
+  '1x/semaine', '2x/semaine', '3x/semaine',
+  '1x/mois', 'si besoin (PRN)', 'au coucher', 'au réveil', 'avant repas', 'après repas',
+];
+
+const DURATION_OPTIONS = [
+  '', 'continu', '1 semaine', '2 semaines', '1 mois', '3 mois', '6 mois', '1 an',
+  'cure ponctuelle', 'jusqu\'à amélioration', 'à vie',
+];
+
+const VACCINATION_SUGGESTIONS = [
+  'BCG', 'DTP (Diphtérie-Tétanos-Polio)', 'Coqueluche', 'Haemophilus influenzae b',
+  'Hépatite B', 'Hépatite A', 'Pneumocoque', 'Méningocoque C', 'Méningocoque B',
+  'ROR (Rougeole-Oreillons-Rubéole)', 'Varicelle', 'Grippe', 'HPV (Papillomavirus)',
+  'COVID-19 Pfizer', 'COVID-19 Moderna', 'COVID-19 AstraZeneca', 'COVID-19 Janssen',
+  'Fièvre jaune', 'Typhoïde', 'Rage', 'Encéphalite japonaise', 'Zona',
+];
+
+const SURGERY_SUGGESTIONS = [
+  'Appendicectomie', 'Amygdalectomie', 'Adénoïdectomie', 'Césarienne',
+  'Cholécystectomie', 'Hernie inguinale', 'Hernie discale',
+  'Arthroscopie genou', 'Ligaments croisés', 'Méniscectomie',
+  'Chirurgie des dents de sagesse', 'Implant dentaire',
+  'Rhinoplastie', 'Septoplastie', 'Chirurgie des yeux (LASIK)',
+  'Pose de stent', 'Pontage coronarien', 'Prothèse de hanche', 'Prothèse de genou',
+];
+
+const FAMILY_HISTORY_SUGGESTIONS = [
+  'Diabète (père)', 'Diabète (mère)', 'Hypertension (père)', 'Hypertension (mère)',
+  'Cancer du sein (mère)', 'Cancer du côlon (père)', 'Cancer du poumon',
+  'Maladie cardiovasculaire (père)', 'Maladie cardiovasculaire (mère)',
+  'AVC', 'Alzheimer', 'Parkinson', 'Dépression', 'Trouble bipolaire',
+  'Asthme', 'Allergie', 'Thyroïde', 'Obésité', 'Arthrose',
+];
+
+const SKIN_TYPE_OPTIONS = [
+  '', 'Fitzpatrick I — Très claire', 'Fitzpatrick II — Claire',
+  'Fitzpatrick III — Intermédiaire', 'Fitzpatrick IV — Mate',
+  'Fitzpatrick V — Foncée', 'Fitzpatrick VI — Très foncée',
+];
+
+const EYE_COLOR_OPTIONS = [
+  '', 'Marron', 'Noisette', 'Vert', 'Bleu', 'Gris', 'Ambre', 'Noir',
+];
+
+const HAIR_COLOR_OPTIONS = [
+  '', 'Noir', 'Brun foncé', 'Brun', 'Châtain', 'Blond foncé', 'Blond', 'Blond vénitien', 'Roux', 'Gris', 'Blanc',
+];
+
 // ─── Helpers ──────────────────────────────────────────────────────────
 
 function Section({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
@@ -614,42 +698,34 @@ export default function HealthProfileEditor() {
                   </div>
                 </Field>
                 <Field label={t('skinType')}>
-                  <input
-                    type="text"
-                    value={profile.body.skin_type}
-                    onChange={e => updateBody('skin_type', e.target.value)}
-                    placeholder="Fitzpatrick II"
-                    className={inputClass}
-                  />
+                  <select value={profile.body.skin_type} onChange={e => updateBody('skin_type', e.target.value)} className={selectClass}>
+                    {SKIN_TYPE_OPTIONS.map(o => <option key={o} value={o}>{o || '—'}</option>)}
+                  </select>
                 </Field>
                 <Field label={t('eyeColor')}>
-                  <input
-                    type="text"
-                    value={profile.body.eye_color}
-                    onChange={e => updateBody('eye_color', e.target.value)}
-                    placeholder="Marron"
-                    className={inputClass}
-                  />
+                  <select value={profile.body.eye_color} onChange={e => updateBody('eye_color', e.target.value)} className={selectClass}>
+                    {EYE_COLOR_OPTIONS.map(o => <option key={o} value={o}>{o || '—'}</option>)}
+                  </select>
                 </Field>
                 <Field label={t('hairColor')}>
-                  <input
-                    type="text"
-                    value={profile.body.hair_color}
-                    onChange={e => updateBody('hair_color', e.target.value)}
-                    placeholder="Brun"
-                    className={inputClass}
-                  />
+                  <select value={profile.body.hair_color} onChange={e => updateBody('hair_color', e.target.value)} className={selectClass}>
+                    {HAIR_COLOR_OPTIONS.map(o => <option key={o} value={o}>{o || '—'}</option>)}
+                  </select>
                 </Field>
               </div>
             </Section>
 
             {/* Allergies */}
             <Section title={t('allergiesSection')}>
+              <datalist id="allergy-suggestions">
+                {ALLERGY_SUGGESTIONS.map(s => <option key={s} value={s} />)}
+              </datalist>
               <div className="space-y-2">
                 {profile.allergies.map((a, i) => (
                   <div key={i} className="flex gap-2">
                     <input
                       type="text"
+                      list="allergy-suggestions"
                       value={a}
                       onChange={e => updateAllergy(i, e.target.value)}
                       placeholder="Ex: pénicilline, arachides..."
@@ -666,11 +742,15 @@ export default function HealthProfileEditor() {
 
             {/* Conditions */}
             <Section title={t('pathologiesSection')}>
+              <datalist id="condition-suggestions">
+                {CONDITION_SUGGESTIONS.map(s => <option key={s} value={s} />)}
+              </datalist>
               <div className="space-y-3">
                 {profile.conditions.map((c, i) => (
                   <div key={i} className="flex gap-2 items-start">
                     <input
                       type="text"
+                      list="condition-suggestions"
                       value={c.condition}
                       onChange={e => updateCondition(i, 'condition', e.target.value)}
                       placeholder="Ex: asthme, hypertension..."
@@ -694,11 +774,15 @@ export default function HealthProfileEditor() {
 
             {/* Medications */}
             <Section title={t('currentMedications')}>
+              <datalist id="medication-suggestions">
+                {MEDICATION_SUGGESTIONS.map(s => <option key={s} value={s} />)}
+              </datalist>
               <div className="space-y-3">
                 {profile.medications.map((m, i) => (
-                  <div key={i} className="grid grid-cols-4 gap-2 items-start">
+                  <div key={i} className="grid grid-cols-2 sm:grid-cols-4 gap-2 items-start">
                     <input
                       type="text"
+                      list="medication-suggestions"
                       value={m.name}
                       onChange={e => updateMedication(i, 'name', e.target.value)}
                       placeholder="Nom"
@@ -708,24 +792,24 @@ export default function HealthProfileEditor() {
                       type="text"
                       value={m.dose}
                       onChange={e => updateMedication(i, 'dose', e.target.value)}
-                      placeholder="Dose"
+                      placeholder="Ex: 500mg, 10ml..."
                       className={inputClass}
                     />
-                    <input
-                      type="text"
+                    <select
                       value={m.frequency}
                       onChange={e => updateMedication(i, 'frequency', e.target.value)}
-                      placeholder="Fréquence"
-                      className={inputClass}
-                    />
+                      className={selectClass}
+                    >
+                      {FREQUENCY_OPTIONS.map(o => <option key={o} value={o}>{o || 'Fréquence'}</option>)}
+                    </select>
                     <div className="flex gap-1">
-                      <input
-                        type="text"
+                      <select
                         value={m.duration}
                         onChange={e => updateMedication(i, 'duration', e.target.value)}
-                        placeholder="Durée"
-                        className={`${inputClass} flex-1`}
-                      />
+                        className={`${selectClass} flex-1`}
+                      >
+                        {DURATION_OPTIONS.map(o => <option key={o} value={o}>{o || 'Durée'}</option>)}
+                      </select>
                       <button onClick={() => removeMedication(i)} className="text-red-400 hover:text-red-300 text-xs px-1">
                         {'✕'}
                       </button>
@@ -738,11 +822,15 @@ export default function HealthProfileEditor() {
 
             {/* Surgeries */}
             <Section title={t('surgicalInterventions')}>
+              <datalist id="surgery-suggestions">
+                {SURGERY_SUGGESTIONS.map(s => <option key={s} value={s} />)}
+              </datalist>
               <div className="space-y-3">
                 {profile.surgeries.map((s, i) => (
                   <div key={i} className="grid grid-cols-3 gap-2 items-start">
                     <input
                       type="text"
+                      list="surgery-suggestions"
                       value={s.name}
                       onChange={e => updateSurgery(i, 'name', e.target.value)}
                       placeholder="Intervention"
@@ -774,11 +862,15 @@ export default function HealthProfileEditor() {
 
             {/* Vaccinations */}
             <Section title={t('vaccinationsSection')}>
+              <datalist id="vaccination-suggestions">
+                {VACCINATION_SUGGESTIONS.map(s => <option key={s} value={s} />)}
+              </datalist>
               <div className="space-y-2">
                 {profile.vaccinations.map((v, i) => (
                   <div key={i} className="flex gap-2">
                     <input
                       type="text"
+                      list="vaccination-suggestions"
                       value={v.name}
                       onChange={e => updateVaccination(i, 'name', e.target.value)}
                       placeholder="Vaccin"
@@ -801,11 +893,15 @@ export default function HealthProfileEditor() {
 
             {/* Family history */}
             <Section title={t('familyHistory')}>
+              <datalist id="family-history-suggestions">
+                {FAMILY_HISTORY_SUGGESTIONS.map(s => <option key={s} value={s} />)}
+              </datalist>
               <div className="space-y-2">
                 {profile.family_history.map((h, i) => (
                   <div key={i} className="flex gap-2">
                     <input
                       type="text"
+                      list="family-history-suggestions"
                       value={h}
                       onChange={e => updateFamilyHistory(i, e.target.value)}
                       placeholder="Ex: diabète (mère), cancer colon (père)..."
