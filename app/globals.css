@@ -79,10 +79,12 @@
 :root:not(.dark) .bg-zinc-950 { background-color: var(--bg-primary) !important; }
 :root:not(.dark) .bg-zinc-900 { background-color: var(--bg-secondary) !important; }
 :root:not(.dark) .bg-zinc-800 { background-color: var(--bg-tertiary) !important; }
-:root:not(.dark) .bg-zinc-900\/50 { background-color: rgba(238, 229, 208, 0.8) !important; }
-:root:not(.dark) .bg-zinc-900\/60 { background-color: rgba(238, 229, 208, 0.85) !important; }
-:root:not(.dark) .bg-zinc-900\/80 { background-color: rgba(238, 229, 208, 0.92) !important; }
-:root:not(.dark) .bg-zinc-800\/50 { background-color: rgba(230, 220, 198, 0.6) !important; }
+:root:not(.dark) .bg-zinc-900\/30 { background-color: rgba(238, 229, 208, 0.35) !important; }
+:root:not(.dark) .bg-zinc-900\/50 { background-color: rgba(238, 229, 208, 0.55) !important; }
+:root:not(.dark) .bg-zinc-900\/60 { background-color: rgba(238, 229, 208, 0.65) !important; }
+:root:not(.dark) .bg-zinc-900\/80 { background-color: rgba(238, 229, 208, 0.85) !important; }
+:root:not(.dark) .bg-zinc-800\/50 { background-color: rgba(230, 220, 198, 0.5) !important; }
+:root:not(.dark) .hover\:bg-zinc-900\/50:hover { background-color: rgba(238, 229, 208, 0.55) !important; }
 :root:not(.dark) .bg-black { background-color: var(--bg-secondary) !important; }
 :root:not(.dark) .bg-black\/50 { background-color: rgba(250, 247, 240, 0.5) !important; }
 :root:not(.dark) .bg-\[\#0a0a0a\] { background-color: var(--bg-primary) !important; }
@@ -95,6 +97,16 @@
 :root:not(.dark) .text-zinc-400 { color: var(--text-secondary) !important; }
 :root:not(.dark) .text-zinc-500 { color: var(--text-muted) !important; }
 :root:not(.dark) .text-zinc-600 { color: var(--text-muted) !important; }
+:root:not(.dark) .text-zinc-700 { color: var(--text-muted) !important; }
+
+/* Status tag overrides — darken for legibility on parchment */
+:root:not(.dark) .text-emerald-400 { color: #15803d !important; }
+:root:not(.dark) .text-blue-400 { color: #1d4ed8 !important; }
+:root:not(.dark) .text-amber-400 { color: #b45309 !important; }
+:root:not(.dark) .text-purple-400 { color: #7e22ce !important; }
+:root:not(.dark) .bg-emerald-500\/20 { background-color: rgba(21, 128, 61, 0.12) !important; }
+:root:not(.dark) .bg-blue-500\/20 { background-color: rgba(29, 78, 216, 0.12) !important; }
+:root:not(.dark) .bg-amber-500\/20 { background-color: rgba(180, 83, 9, 0.12) !important; }
 
 /* Border overrides — parchment creases */
 :root:not(.dark) .border-zinc-800 { border-color: var(--border-primary) !important; }
