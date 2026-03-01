@@ -30,7 +30,8 @@
     "groupExplore": "🔭 探索",
     "research": "🔬 研究",
     "toggleMenu": "切换菜单",
-    "tracker": "📈 追踪器"
+    "tracker": "📈 追踪器",
+    "login": "🔑 登录"
   },
   "Footer": {
     "manifesto": "宣言",

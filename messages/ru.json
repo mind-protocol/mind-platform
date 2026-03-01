@@ -30,7 +30,8 @@
     "groupExplore": "🔭 Обзор",
     "research": "🔬 Исследования",
     "toggleMenu": "Открыть меню",
-    "tracker": "📈 Трекер"
+    "tracker": "📈 Трекер",
+    "login": "🔑 Войти"
   },
   "Footer": {
     "manifesto": "Манифест",
