@@ -31,7 +31,9 @@
     "research": "🔬 研究",
     "toggleMenu": "切换菜单",
     "tracker": "📈 追踪器",
-    "login": "🔑 登录"
+    "login": "🔑 登录",
+    "budget": "💵 预算",
+    "planning": "🗺️ 规划"
   },
   "Footer": {
     "manifesto": "宣言",
@@ -46,6 +48,8 @@
     "privacy": "隐私政策",
     "terms": "使用条款",
     "deletion": "数据删除",
+    "budget": "预算",
+    "planning": "规划",
     "copyright": "意识的建筑师们"
   },
   "Landing": {

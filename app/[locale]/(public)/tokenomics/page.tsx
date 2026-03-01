@@ -56,6 +56,35 @@ const ALLOCATIONS = [
   },
 ];
 
+const TOP_HOLDERS = [
+  { rank: 1, wallet: '6CiQJ5ab5Qb9c7MPn3BMJDTYsMtBVV3GAizYww7hKgBz', mind: 15345, identity: 'Smithii Staking PDA', isTeam: true },
+  { rank: 2, wallet: '8pkCEtFZaRfbyK7nAyBX2hAppEJxuPt1vXT9me3RKCUh', mind: 11526, identity: 'Smithii Staking PDA', isTeam: true },
+  { rank: 3, wallet: 'AwvmKM8zsMSRNmvJC4HQ4cQguRMDe9jZYeoYuAE43T1e', mind: 4200, identity: 'External holder (Coinbase Prime)', isTeam: false },
+  { rank: 4, wallet: '9jejKXshrwF2qnLPpR1CNYWfnQnZqS7jk54n1ewqtzez', mind: 4072, identity: 'Smithii Staking PDA', isTeam: true },
+  { rank: 5, wallet: '2g2PLyFBbCU6eG2kRNyXuMdmtS6kZ5EJibpAF9aNZ9mG', mind: 769, identity: 'Smithii Staking PDA', isTeam: true },
+  { rank: 6, wallet: 'FP6jnN3vcmUhNekR7XMjoDU4jRcKo1ZzBFbehGYzy7FN', mind: 769, identity: 'Smithii Staking PDA', isTeam: true },
+];
+
+const LP_INFO = {
+  platform: 'FluxBeam',
+  pool: 'GNpB7YZgCkf4Efz6SATqphM8Q3jUum3dNA7Cj8Ti8MRa',
+  locked: true,
+  lockPercent: 100,
+  unlockDate: '2027-02-09',
+  initialSol: 16.21,
+  initialMind: 7047,
+  lockProvider: 'Streamflow',
+};
+
+const AIRDROP_DATA = {
+  totalRecipients: 546,
+  grossSent: 67437,
+  holdRate: 2.8,
+  sellRate: 97,
+  mindStillHeld: 36682,
+  origin: 'Snapshot of $COMPUTE on-chain staking balances',
+};
+
 function PieChart() {
   const total = ALLOCATIONS.reduce((sum, a) => sum + a.percent, 0);
   let cumulative = 0;
@@ -225,6 +254,147 @@ export default function TokenomicsPage() {
                 )}
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* Top Holders */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-8">Top Holders</h2>
+          <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-zinc-800">
+                    <th className="text-left text-zinc-500 font-medium px-6 py-3">#</th>
+                    <th className="text-left text-zinc-500 font-medium px-6 py-3">Wallet</th>
+                    <th className="text-right text-zinc-500 font-medium px-6 py-3">$MIND</th>
+                    <th className="text-left text-zinc-500 font-medium px-6 py-3">Identity</th>
+                    <th className="text-left text-zinc-500 font-medium px-6 py-3">Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {TOP_HOLDERS.map((holder) => (
+                    <tr
+                      key={holder.rank}
+                      className={`border-b border-zinc-800/50 ${holder.rank % 2 === 0 ? 'bg-zinc-900/40' : ''}`}
+                    >
+                      <td className="px-6 py-3 text-zinc-400">{holder.rank}</td>
+                      <td className="px-6 py-3">
+                        <WalletLink address={holder.wallet} />
+                      </td>
+                      <td className="px-6 py-3 text-right text-white font-medium">
+                        {holder.mind.toLocaleString()}
+                      </td>
+                      <td className="px-6 py-3 text-zinc-400">{holder.identity}</td>
+                      <td className="px-6 py-3">
+                        {holder.isTeam ? (
+                          <span className="px-2 py-0.5 rounded text-xs font-medium bg-emerald-500/20 text-emerald-400">
+                            Team
+                          </span>
+                        ) : (
+                          <span className="px-2 py-0.5 rounded text-xs font-medium bg-blue-500/20 text-blue-400">
+                            External
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        {/* Liquidity Pool */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-8">Liquidity Pool</h2>
+          <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <p className="text-zinc-500 text-sm mb-1">Platform</p>
+                <p className="text-white font-bold">{LP_INFO.platform}</p>
+              </div>
+              <div>
+                <p className="text-zinc-500 text-sm mb-1">LP Locked</p>
+                <p className="flex items-center gap-2">
+                  <span className="text-white font-bold">{LP_INFO.lockPercent}%</span>
+                  <span className="px-2 py-0.5 rounded text-xs font-medium bg-emerald-500/20 text-emerald-400">
+                    Fully Locked
+                  </span>
+                </p>
+              </div>
+              <div>
+                <p className="text-zinc-500 text-sm mb-1">Unlock Date</p>
+                <p className="text-white font-bold">February 9, 2027</p>
+              </div>
+              <div>
+                <p className="text-zinc-500 text-sm mb-1">Initial LP</p>
+                <p className="text-white font-bold">
+                  {LP_INFO.initialSol} SOL + {LP_INFO.initialMind.toLocaleString()} $MIND
+                </p>
+              </div>
+              <div>
+                <p className="text-zinc-500 text-sm mb-1">Lock Provider</p>
+                <p className="text-white font-bold">{LP_INFO.lockProvider}</p>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-4 mt-6 pt-6 border-t border-zinc-800">
+              <Link
+                href={`https://solscan.io/account/${LP_INFO.pool}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-500 hover:text-amber-400 text-sm transition"
+              >
+                Solscan Pool
+              </Link>
+              <Link
+                href={`https://dexscreener.com/solana/${LP_INFO.pool}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-500 hover:text-amber-400 text-sm transition"
+              >
+                DEXScreener
+              </Link>
+              <Link
+                href={`https://jup.ag/swap/SOL-${CA}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-500 hover:text-amber-400 text-sm transition"
+              >
+                Jupiter
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Airdrop Summary */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-8">$COMPUTE Airdrop</h2>
+          <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+              <div>
+                <p className="text-2xl font-bold text-white">{AIRDROP_DATA.totalRecipients.toLocaleString()}</p>
+                <p className="text-zinc-500 text-sm">Recipients</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-white">{AIRDROP_DATA.grossSent.toLocaleString()}</p>
+                <p className="text-zinc-500 text-sm">$MIND Distributed</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-white">{AIRDROP_DATA.holdRate}%</p>
+                <p className="text-zinc-500 text-sm">Hold Rate</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-white">{AIRDROP_DATA.mindStillHeld.toLocaleString()}</p>
+                <p className="text-zinc-500 text-sm">$MIND Still Held</p>
+              </div>
+            </div>
+            <p className="text-zinc-400 text-sm">
+              Origin: {AIRDROP_DATA.origin}
+            </p>
+            <p className="text-zinc-600 text-xs mt-2">
+              {AIRDROP_DATA.sellRate}% of recipients sold — only serious holders remain.
+            </p>
           </div>
         </section>
 

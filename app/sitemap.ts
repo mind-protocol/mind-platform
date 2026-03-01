@@ -8,6 +8,8 @@ const staticPages = [
   { path: '/swap', changeFrequency: 'monthly' as const, priority: 0.8 },
   { path: '/token', changeFrequency: 'weekly' as const, priority: 0.8 },
   { path: '/tokenomics', changeFrequency: 'monthly' as const, priority: 0.7 },
+  { path: '/budget', changeFrequency: 'monthly' as const, priority: 0.7 },
+  { path: '/planning', changeFrequency: 'weekly' as const, priority: 0.7 },
   { path: '/whitepaper', changeFrequency: 'monthly' as const, priority: 0.7 },
   { path: '/manifesto', changeFrequency: 'monthly' as const, priority: 0.7 },
   { path: '/team', changeFrequency: 'monthly' as const, priority: 0.6 },

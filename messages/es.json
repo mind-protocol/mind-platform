@@ -31,7 +31,9 @@
     "research": "🔬 Investigación",
     "toggleMenu": "Alternar menú",
     "tracker": "📈 Tracker",
-    "login": "🔑 Iniciar sesión"
+    "login": "🔑 Iniciar sesión",
+    "budget": "💵 Presupuesto",
+    "planning": "🗺️ Planificación"
   },
   "Footer": {
     "manifesto": "Manifiesto",
@@ -46,6 +48,8 @@
     "privacy": "Privacidad",
     "terms": "Términos",
     "deletion": "Eliminación de datos",
+    "budget": "Presupuesto",
+    "planning": "Planificación",
     "copyright": "Los Arquitectos de la Consciencia"
   },
   "Landing": {

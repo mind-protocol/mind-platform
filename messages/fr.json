@@ -31,7 +31,9 @@
     "research": "🔬 Recherche",
     "toggleMenu": "Menu",
     "tracker": "📈 Tracker",
-    "login": "🔑 Connexion"
+    "login": "🔑 Connexion",
+    "budget": "💵 Budget",
+    "planning": "🗺️ Planification"
   },
   "Footer": {
     "manifesto": "Manifeste",
@@ -46,6 +48,8 @@
     "privacy": "Confidentialité",
     "terms": "Conditions",
     "deletion": "Suppression des données",
+    "budget": "Budget",
+    "planning": "Planification",
     "copyright": "Les Architectes de la Conscience"
   },
   "Landing": {

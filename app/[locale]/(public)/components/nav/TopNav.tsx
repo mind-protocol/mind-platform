@@ -31,6 +31,9 @@ const NAV_GROUPS: NavGroup[] = [
     labelKey: 'groupMind',
     items: [
       { href: '/token', key: 'token' },
+      { href: '/tokenomics', key: 'tokenomics' },
+      { href: '/budget', key: 'budget' },
+      { href: '/planning', key: 'planning' },
       { href: '/swap', key: 'swap' },
       { href: '/wallet', key: 'wallet' },
     ],

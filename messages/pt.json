@@ -31,7 +31,9 @@
     "research": "🔬 Pesquisa",
     "toggleMenu": "Alternar menu",
     "tracker": "📈 Tracker",
-    "login": "🔑 Entrar"
+    "login": "🔑 Entrar",
+    "budget": "💵 Orçamento",
+    "planning": "🗺️ Planejamento"
   },
   "Footer": {
     "manifesto": "Manifesto",
@@ -46,6 +48,8 @@
     "privacy": "Privacidade",
     "terms": "Termos",
     "deletion": "Exclusão de Dados",
+    "budget": "Orçamento",
+    "planning": "Planejamento",
     "copyright": "Os Arquitetos da Consciência"
   },
   "Landing": {

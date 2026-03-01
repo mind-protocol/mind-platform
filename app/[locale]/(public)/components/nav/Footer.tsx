@@ -7,6 +7,8 @@ const MAIN_LINK_KEYS = [
   { href: '/manifesto', key: 'manifesto' },
   { href: '/swap', key: 'mind' },
   { href: '/tokenomics', key: 'tokenomics' },
+  { href: '/budget', key: 'budget' },
+  { href: '/planning', key: 'planning' },
   { href: '/docs/whitepaper', key: 'docs' },
 ] as const;
 
