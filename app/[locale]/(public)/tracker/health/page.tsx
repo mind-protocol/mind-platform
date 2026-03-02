@@ -1,68 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { useHealthAuth, useHealthProfile, useGrowthData } from '@/lib/tracker/hooks/useHealthProfile';
+import { useSession } from '@/lib/useSession';
+import { useHealthProfile, useGrowthData } from '@/lib/tracker/hooks/useHealthProfile';
 import SanitizeToggle from '@/components/SanitizeToggle';
 import ProfileHeader from './components/ProfileHeader';
 import CurrentMedications from './components/CurrentMedications';
 import CurrentPathologies from './components/CurrentPathologies';
+import SupportedConditions from './components/SupportedConditions';
 import GrowthChart from './components/GrowthChart';
 import VaccinationTimeline from './components/VaccinationTimeline';
 import MedicalHistory from './components/MedicalHistory';
 import DoctorsGrid from './components/DoctorsGrid';
-import SupportedConditions from './components/SupportedConditions';
 
-function AuthGate({ onAuthenticated }: { onAuthenticated: (token: string) => void }) {
+function HealthDashboard({ onLogout }: { onLogout: () => Promise<void> }) {
   const t = useTranslations('Tracker');
-  const { error, authenticate } = useHealthAuth();
-  const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!input.trim()) return;
-    setLoading(true);
-    const ok = await authenticate(input.trim());
-    if (ok) onAuthenticated(input.trim());
-    setLoading(false);
-  }
-
-  return (
-    <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4">
-      <form onSubmit={handleSubmit} className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 w-full max-w-sm space-y-6">
-        <div className="text-center">
-          <div className="text-3xl mb-2">🔒</div>
-          <h1 className="text-xl font-semibold text-zinc-100">{t('medicalRecord')}</h1>
-          <p className="text-sm text-zinc-500 mt-1">{t('protectedAccess')}</p>
-        </div>
-        <div>
-          <input
-            type="password"
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            placeholder={t('accessKey')}
-            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
-            autoFocus
-          />
-          {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
-        </div>
-        <button
-          type="submit"
-          disabled={loading || !input.trim()}
-          className="w-full bg-teal-600 hover:bg-teal-500 disabled:bg-zinc-700 disabled:text-zinc-500 text-white font-medium py-3 rounded-lg transition-colors"
-        >
-          {loading ? t('verifying') : t('unlock')}
-        </button>
-      </form>
-    </div>
-  );
-}
-
-function HealthDashboard({ token }: { token: string }) {
-  const t = useTranslations('Tracker');
-  const { profile, loading } = useHealthProfile(token);
-  const { points, dob } = useGrowthData(token);
+  const { profile, loading } = useHealthProfile(true);
+  const { points, dob } = useGrowthData(true);
 
   if (loading || !profile) {
     return (
@@ -81,14 +36,11 @@ function HealthDashboard({ token }: { token: string }) {
           <div className="flex gap-2 items-center">
             <SanitizeToggle />
             <button
-            onClick={() => {
-              sessionStorage.removeItem('health_access_token');
-              window.location.reload();
-            }}
-            className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
-          >
-            {t('lock')}
-          </button>
+              onClick={onLogout}
+              className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
+            >
+              {t('lock')}
+            </button>
           </div>
         </div>
 
@@ -130,15 +82,34 @@ function HealthDashboard({ token }: { token: string }) {
 }
 
 export default function HealthProfilePage() {
-  const { token } = useHealthAuth();
-  const [activeToken, setActiveToken] = useState<string | null>(null);
+  const t = useTranslations('Tracker');
+  const { session, loading, logout } = useSession();
 
-  // Check sessionStorage on mount
-  const effectiveToken = activeToken || token;
-
-  if (!effectiveToken) {
-    return <AuthGate onAuthenticated={setActiveToken} />;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+        <div className="text-zinc-500">{t('loadingRecord')}</div>
+      </div>
+    );
   }
 
-  return <HealthDashboard token={effectiveToken} />;
+  if (!session) {
+    return (
+      <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4">
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 w-full max-w-sm space-y-6 text-center">
+          <div className="text-3xl mb-2">🔒</div>
+          <h1 className="text-xl font-semibold text-zinc-100">{t('medicalRecord')}</h1>
+          <p className="text-sm text-zinc-500 mt-1">{t('protectedAccess')}</p>
+          <Link
+            href="/login"
+            className="block w-full bg-teal-600 hover:bg-teal-500 text-white font-medium py-3 rounded-lg transition-colors"
+          >
+            {t('login')}
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return <HealthDashboard onLogout={logout} />;
 }
