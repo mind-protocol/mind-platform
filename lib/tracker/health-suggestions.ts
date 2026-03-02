@@ -31,6 +31,7 @@ const fr: HealthSuggestions = {
     'Reflux gastro-œsophagien', 'Syndrome du côlon irritable', 'Maladie de Crohn',
     'Anémie', 'Hypercholestérolémie', 'Obésité',
     'Apnée du sommeil', 'Endométriose', 'SOPK',
+    'Narcolepsie', 'Maladie cœliaque', 'Sclérose en plaques', 'Lupus (LED)', 'Fibromyalgie',
   ],
   MEDICATION_SUGGESTIONS: [
     'Paracétamol', 'Ibuprofène', 'Aspirine', 'Doliprane', 'Efferalgan',
@@ -45,6 +46,7 @@ const fr: HealthSuggestions = {
     'Lorazépam', 'Alprazolam', 'Diazépam', 'Zopiclone', 'Mélatonine',
     'Vitamine D', 'Vitamine B12', 'Fer', 'Magnésium', 'Zinc', 'Oméga-3',
     'Pilule contraceptive', 'Stérilet hormonal',
+    'Modafinil (Modiodal)', 'Oxybate de sodium (Xyrem)', 'Pitolisant (Wakix)',
   ],
   FREQUENCY_OPTIONS: [
     '', '1x/jour', '2x/jour', '3x/jour', '4x/jour',
@@ -105,6 +107,7 @@ const en: HealthSuggestions = {
     'Gastroesophageal reflux disease', 'Irritable bowel syndrome', "Crohn's disease",
     'Anemia', 'Hypercholesterolemia', 'Obesity',
     'Sleep apnea', 'Endometriosis', 'PCOS',
+    'Narcolepsy', 'Celiac disease', 'Multiple sclerosis', 'Lupus (SLE)', 'Fibromyalgia',
   ],
   MEDICATION_SUGGESTIONS: [
     'Acetaminophen', 'Ibuprofen', 'Aspirin', 'Tylenol', 'Acetaminophen (effervescent)',
@@ -119,6 +122,7 @@ const en: HealthSuggestions = {
     'Lorazepam', 'Alprazolam', 'Diazepam', 'Zopiclone', 'Melatonin',
     'Vitamin D', 'Vitamin B12', 'Iron', 'Magnesium', 'Zinc', 'Omega-3',
     'Birth control pill', 'Hormonal IUD',
+    'Modafinil (Provigil)', 'Sodium oxybate (Xyrem)', 'Pitolisant (Wakix)',
   ],
   FREQUENCY_OPTIONS: [
     '', '1x/day', '2x/day', '3x/day', '4x/day',
@@ -179,6 +183,7 @@ const es: HealthSuggestions = {
     'Reflujo gastroesofágico', 'Síndrome del intestino irritable', 'Enfermedad de Crohn',
     'Anemia', 'Hipercolesterolemia', 'Obesidad',
     'Apnea del sueño', 'Endometriosis', 'SOP',
+    'Narcolepsia', 'Enfermedad celíaca', 'Esclerosis múltiple', 'Lupus (LES)', 'Fibromialgia',
   ],
   MEDICATION_SUGGESTIONS: [
     'Paracetamol', 'Ibuprofeno', 'Aspirina', 'Paracetamol (comprimidos)', 'Paracetamol (efervescente)',
@@ -193,6 +198,7 @@ const es: HealthSuggestions = {
     'Lorazepam', 'Alprazolam', 'Diazepam', 'Zopiclona', 'Melatonina',
     'Vitamina D', 'Vitamina B12', 'Hierro', 'Magnesio', 'Zinc', 'Omega-3',
     'Píldora anticonceptiva', 'DIU hormonal',
+    'Modafinilo (Provigil)', 'Oxibato de sodio (Xyrem)', 'Pitolisant (Wakix)',
   ],
   FREQUENCY_OPTIONS: [
     '', '1x/día', '2x/día', '3x/día', '4x/día',
@@ -253,6 +259,7 @@ const pt: HealthSuggestions = {
     'Refluxo gastroesofágico', 'Síndrome do intestino irritável', 'Doença de Crohn',
     'Anemia', 'Hipercolesterolemia', 'Obesidade',
     'Apneia do sono', 'Endometriose', 'SOP',
+    'Narcolepsia', 'Doença celíaca', 'Esclerose múltipla', 'Lúpus (LES)', 'Fibromialgia',
   ],
   MEDICATION_SUGGESTIONS: [
     'Paracetamol', 'Ibuprofeno', 'Aspirina', 'Tylenol', 'Novalgina',
@@ -267,6 +274,7 @@ const pt: HealthSuggestions = {
     'Lorazepam', 'Alprazolam', 'Diazepam', 'Zopiclona', 'Melatonina',
     'Vitamina D', 'Vitamina B12', 'Ferro', 'Magnésio', 'Zinco', 'Ômega-3',
     'Pílula anticoncepcional', 'DIU hormonal',
+    'Modafinila (Provigil)', 'Oxibato de sódio (Xyrem)', 'Pitolisant (Wakix)',
   ],
   FREQUENCY_OPTIONS: [
     '', '1x/dia', '2x/dia', '3x/dia', '4x/dia',
@@ -327,6 +335,7 @@ const ru: HealthSuggestions = {
     'Гастроэзофагеальная рефлюксная болезнь', 'Синдром раздражённого кишечника', 'Болезнь Крона',
     'Анемия', 'Гиперхолестеринемия', 'Ожирение',
     'Апноэ сна', 'Эндометриоз', 'СПКЯ',
+    'Нарколепсия', 'Целиакия', 'Рассеянный склероз', 'Системная красная волчанка', 'Фибромиалгия',
   ],
   MEDICATION_SUGGESTIONS: [
     'Парацетамол', 'Ибупрофен', 'Аспирин', 'Панадол', 'Эффералган',
@@ -341,6 +350,7 @@ const ru: HealthSuggestions = {
     'Лоразепам', 'Алпразолам', 'Диазепам', 'Зопиклон', 'Мелатонин',
     'Витамин D', 'Витамин B12', 'Железо', 'Магний', 'Цинк', 'Омега-3',
     'Оральные контрацептивы', 'Гормональная ВМС',
+    'Модафинил', 'Оксибат натрия (Xyrem)', 'Питолизант (Wakix)',
   ],
   FREQUENCY_OPTIONS: [
     '', '1 раз/день', '2 раза/день', '3 раза/день', '4 раза/день',
@@ -401,6 +411,7 @@ const zh: HealthSuggestions = {
     '胃食管反流病', '肠易激综合征', '克罗恩病',
     '贫血', '高胆固醇血症', '肥胖症',
     '睡眠呼吸暂停', '子宫内膜异位症', '多囊卵巢综合征',
+    '嗜睡症', '乳糜泻', '多发性硬化症', '系统性红斑狼疮', '纤维肌痛',
   ],
   MEDICATION_SUGGESTIONS: [
     '对乙酰氨基酚', '布洛芬', '阿司匹林', '对乙酰氨基酚（泰诺林）', '对乙酰氨基酚（泡腾片）',
@@ -415,6 +426,7 @@ const zh: HealthSuggestions = {
     '劳拉西泮', '阿普唑仑', '地西泮', '佐匹克隆', '褪黑素',
     '维生素D', '维生素B12', '铁剂', '镁剂', '锌剂', 'Omega-3鱼油',
     '口服避孕药', '左炔诺孕酮宫内节育系统',
+    '莫达非尼', '羟丁酸钠 (Xyrem)', '替洛利生 (Wakix)',
   ],
   FREQUENCY_OPTIONS: [
     '', '每日1次', '每日2次', '每日3次', '每日4次',

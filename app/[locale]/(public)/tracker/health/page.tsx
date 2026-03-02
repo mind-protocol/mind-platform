@@ -11,6 +11,7 @@ import GrowthChart from './components/GrowthChart';
 import VaccinationTimeline from './components/VaccinationTimeline';
 import MedicalHistory from './components/MedicalHistory';
 import DoctorsGrid from './components/DoctorsGrid';
+import SupportedConditions from './components/SupportedConditions';
 
 function AuthGate({ onAuthenticated }: { onAuthenticated: (token: string) => void }) {
   const t = useTranslations('Tracker');
@@ -103,6 +104,9 @@ function HealthDashboard({ token }: { token: string }) {
           <CurrentMedications medications={profile.current_medications} />
           <CurrentPathologies pathologies={profile.current_pathologies} allergies={profile.allergies} />
         </div>
+
+        {/* Biometric insights for chronic conditions */}
+        <SupportedConditions pathologies={profile.current_pathologies} />
 
         {/* Growth chart */}
         {points.length > 0 && <GrowthChart points={points} dob={dob} />}
