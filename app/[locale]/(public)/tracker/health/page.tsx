@@ -102,7 +102,7 @@ export default function HealthProfilePage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
-        <div className="text-zinc-500">{t('loadingRecord')}</div>
+        <div className="text-zinc-500">Authenticating...</div>
       </div>
     );
   }

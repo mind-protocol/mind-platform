@@ -11,17 +11,25 @@ export function useHealthProfile(authenticated: boolean) {
   useEffect(() => {
     if (!authenticated) { setLoading(false); return; }
     setLoading(true);
+    console.log('[health] fetching /api/tracker/health...');
     fetch('/api/tracker/health')
       .then(r => {
+        console.log('[health] response status:', r.status);
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json();
       })
-      .then(data => { setProfile(data); })
+      .then(data => {
+        console.log('[health] data loaded, keys:', Object.keys(data));
+        setProfile(data);
+      })
       .catch(err => {
-        console.error('Failed to load health profile:', err);
+        console.error('[health] Failed to load:', err);
         setError(err.message);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        console.log('[health] loading complete');
+        setLoading(false);
+      });
   }, [authenticated]);
 
   return { profile, loading, error };

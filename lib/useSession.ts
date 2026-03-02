@@ -19,14 +19,19 @@ export function useSession() {
 
   const refresh = useCallback(async () => {
     try {
+      console.log('[session] checking /api/auth/session...');
       const res = await fetch('/api/auth/session');
+      console.log('[session] status:', res.status);
       if (res.ok) {
         const data = await res.json();
+        console.log('[session] authenticated:', data.authenticated, 'user:', data.name);
         setSession(data.authenticated ? data : null);
       } else {
+        console.log('[session] not ok, clearing session');
         setSession(null);
       }
-    } catch {
+    } catch (err) {
+      console.error('[session] error:', err);
       setSession(null);
     } finally {
       setLoading(false);
