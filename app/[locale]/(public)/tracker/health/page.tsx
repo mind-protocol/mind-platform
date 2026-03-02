@@ -16,10 +16,24 @@ import DoctorsGrid from './components/DoctorsGrid';
 
 function HealthDashboard({ onLogout }: { onLogout: () => Promise<void> }) {
   const t = useTranslations('Tracker');
-  const { profile, loading } = useHealthProfile(true);
+  const { profile, loading: profileLoading, error } = useHealthProfile(true);
   const { points, dob } = useGrowthData(true);
 
-  if (loading || !profile) {
+  if (error) {
+    return (
+      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+        <div className="text-center space-y-2">
+          <div className="text-red-400">Failed to load medical record</div>
+          <div className="text-sm text-zinc-500">{error}</div>
+          <button onClick={() => window.location.reload()} className="text-sm text-teal-400 hover:underline mt-2">
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (profileLoading || !profile) {
     return (
       <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
         <div className="text-zinc-500">{t('loadingRecord')}</div>

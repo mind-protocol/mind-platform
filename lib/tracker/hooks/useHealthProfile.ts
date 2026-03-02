@@ -5,19 +5,26 @@ import type { MedicalProfile, GrowthPoint } from '../types/health';
 
 export function useHealthProfile(authenticated: boolean) {
   const [profile, setProfile] = useState<MedicalProfile | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!authenticated) return;
+    if (!authenticated) { setLoading(false); return; }
     setLoading(true);
     fetch('/api/tracker/health')
-      .then(r => r.ok ? r.json() : null)
-      .then(data => { if (data) setProfile(data); })
-      .catch(() => { console.error('Failed to load health profile'); })
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .then(data => { setProfile(data); })
+      .catch(err => {
+        console.error('Failed to load health profile:', err);
+        setError(err.message);
+      })
       .finally(() => setLoading(false));
   }, [authenticated]);
 
-  return { profile, loading };
+  return { profile, loading, error };
 }
 
 export function useGrowthData(authenticated: boolean) {
