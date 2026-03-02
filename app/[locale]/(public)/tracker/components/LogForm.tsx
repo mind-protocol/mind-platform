@@ -708,7 +708,7 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                   { key: 'cortado', label: 'Cortado', icon: '🫗', mg: 75 },
                   { key: 'noisette', label: 'Noisette', icon: '🌰', mg: 75 },
                   { key: 'italian', label: 'Italien', icon: '🇮🇹', mg: 100 },
-                  { key: 'nitro', label: 'Nitro', icon: '🧊', mg: 215 },
+                  { key: 'nitro', label: 'Nitro', icon: '🧊', mg: 215, desc: 'Grounded, sugar integrated, chilled with ice cubes', sugar: 1, milk: false },
                   { key: 'turkish', label: 'Turc', icon: '🫖', mg: 200 },
                   { key: 'vietnamese', label: 'Vietnamien', icon: '🇻🇳', mg: 200 },
                   { key: 'bonbon', label: 'Bonbon', icon: '🍬', mg: 160 },
@@ -721,8 +721,15 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                     key={v.key}
                     onClick={() => {
                       setAmount(v.mg);
-                      setDetails({ ...details, form: v.key, ...('shots' in v ? { shots: v.shots } : {}) });
+                      setDetails({
+                        ...details,
+                        form: v.key,
+                        ...('shots' in v ? { shots: v.shots } : {}),
+                        ...('sugar' in v ? { sugar: v.sugar } : {}),
+                        ...('milk' in v ? { milk: v.milk } : {}),
+                      });
                     }}
+                    title={'desc' in v ? v.desc : undefined}
                     className={`px-2 py-1 rounded text-xs border transition ${
                       details.form === v.key
                         ? 'border-amber-500/50 text-amber-300 bg-amber-500/15'
