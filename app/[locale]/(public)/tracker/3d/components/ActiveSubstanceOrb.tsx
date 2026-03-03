@@ -94,6 +94,7 @@ function OrbPosition({
     cocaine: 0.35,     // Very fast, frenetic
     mmc: 0.2,          // Fast, stimulant-like
     heroine: 0.04,     // Slow, heavy sedation
+    alcohol: 0.06,     // Moderate, depressant sway
   };
 
   // Vertical offsets — psychedelics float higher, sedatives lower
@@ -121,6 +122,7 @@ function OrbPosition({
     cocaine: 2.0,       // High up — intense stimulant
     mmc: 1.8,           // High — stimulant/empathogen
     heroine: -3.0,      // Very low — heavy sedation/opioid
+    alcohol: -1.0,      // Below neutral — CNS depressant
   };
 
   useFrame((state) => {

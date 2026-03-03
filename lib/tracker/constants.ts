@@ -1,4 +1,4 @@
-export type SubstanceKey = 'thc' | 'cbd' | 'lions_mane' | 'caffeine' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'sertraline' | 'prazepam' | 'cyamemazine' | 'dynabiane' | 'omegabiane' | 'griffonia' | 'valeriane' | 'safran' | 'yoga' | 'vitamine_c' | 'cocaine' | 'mmc' | 'heroine';
+export type SubstanceKey = 'thc' | 'cbd' | 'lions_mane' | 'caffeine' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'sertraline' | 'prazepam' | 'cyamemazine' | 'dynabiane' | 'omegabiane' | 'griffonia' | 'valeriane' | 'safran' | 'yoga' | 'vitamine_c' | 'cocaine' | 'mmc' | 'heroine' | 'alcohol';
 
 export interface SubstanceConfig {
   color: string;
@@ -39,6 +39,7 @@ export const SUBSTANCE_CONFIG: Record<SubstanceKey, SubstanceConfig> = {
   cocaine:     { color: '#e2e8f0', icon: '\u{26A0}\u{FE0F}', label: '\u{26A0}\u{FE0F} Cocaïne',  unit: 'mg', geometry: 'octahedron', laneY: 32.5, hidden: true, danger: 'critical', forms: ['insufflation (ligne)', 'fumé (crack)', 'injectable', 'gencive'] },
   mmc:         { color: '#22d3ee', icon: '\u{26A0}\u{FE0F}', label: '\u{26A0}\u{FE0F} MMC',      unit: 'mg', geometry: 'tetrahedron', laneY: 33.75, hidden: true, danger: 'critical', forms: ['insufflation', 'oral', 'injectable'] },
   heroine:     { color: '#78350f', icon: '\u{1F6A8}', label: '\u{1F6A8} Héroïne', unit: 'mg', geometry: 'cylinder', laneY: 35, hidden: true, danger: 'critical', forms: ['insufflation', 'fumé', 'injectable', 'sublingual'] },
+  alcohol:     { color: '#dc2626', icon: '\u{1F377}', label: 'Alcool', unit: 'verres', geometry: 'droplet', laneY: 36.25, danger: 'moderate', forms: ['bière', 'vin rouge', 'vin blanc', 'vin rosé', 'champagne', 'cocktail', 'shot', 'whisky', 'vodka', 'rhum', 'gin', 'tequila', 'pastis', 'digestif', 'apéritif', 'cidre', 'saké'] },
 };
 
 export const SUBSTANCE_KEYS = Object.keys(SUBSTANCE_CONFIG) as SubstanceKey[];
@@ -68,6 +69,7 @@ export const DOSE_RANGES: Record<SubstanceKey, { min: number; max: number }> = {
   cocaine:     { min: 20, max: 500 },   // 20mg (bump) to 500mg (session)
   mmc:         { min: 50, max: 500 },   // 50mg (small) to 500mg (heavy session)
   heroine:     { min: 10, max: 200 },   // 10mg (sniff) to 200mg (heavy use)
+  alcohol:     { min: 1, max: 10 },    // 1 verre to 10 verres (standard drinks)
 };
 
 export function normalizeDose(substance: SubstanceKey, amount: number): number {

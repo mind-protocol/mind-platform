@@ -27,6 +27,7 @@ const INTENTS: Record<SubstanceKey, string[]> = {
   cocaine: ['social', 'energy', 'focus'],
   mmc: ['social', 'empathy', 'energy'],
   heroine: ['pain', 'sedation', 'withdrawal-management'],
+  alcohol: ['social', 'apéro', 'repas', 'fête', 'détente', 'dégustation', 'nightlife'],
 };
 
 interface ScheduleDoseFormProps {

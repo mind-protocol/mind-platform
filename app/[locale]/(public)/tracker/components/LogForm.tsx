@@ -29,6 +29,7 @@ const TABS = [
   { key: 'cocaine', label: 'Cocaïne', color: '#e2e8f0', icon: '⚠️' },
   { key: 'mmc', label: 'MMC', color: '#22d3ee', icon: '⚠️' },
   { key: 'heroine', label: 'Héroïne', color: '#78350f', icon: '🚨' },
+  { key: 'alcohol', label: 'Alcool', color: '#dc2626', icon: '🍷' },
 ] as const;
 
 type TabKey = (typeof TABS)[number]['key'];
@@ -57,6 +58,7 @@ const INTENTS: Record<string, string[]> = {
   cocaine: ['stimulation', 'social', 'work', 'craving'],
   mmc: ['stimulation', 'social', 'craving'],
   heroine: ['pain', 'craving', 'withdrawal'],
+  alcohol: ['social', 'apéro', 'repas', 'fête', 'détente', 'dégustation', 'nightlife'],
 };
 
 const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<string, unknown> }> = {
@@ -83,6 +85,7 @@ const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<s
   cocaine: { amount: 50, unit: 'mg', details: { form: 'insufflation (ligne)' } },
   mmc: { amount: 100, unit: 'mg', details: { form: 'insufflation' } },
   heroine: { amount: 30, unit: 'mg', details: { form: 'insufflation' } },
+  alcohol: { amount: 1, unit: 'verres', details: { form: 'bière', abv: 5 } },
 };
 
 const K_PRESETS = [
@@ -1774,6 +1777,73 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                     }`}
                   >
                     {mg}mg
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {tab === 'alcohol' && (
+          <div className="space-y-3">
+            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+              <div className="text-xs text-red-400 font-medium mb-1">Reduction des risques</div>
+              <div className="text-[10px] text-red-400/70">1 verre standard = 10g alcool pur. NE PAS combiner avec benzodiazepines, opiaces ou somniferes. Hydratation entre chaque verre. Manger avant.</div>
+            </div>
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Type</label>
+              <div className="flex flex-wrap gap-1.5">
+                {([
+                  { key: 'bière', label: 'Bière', icon: '🍺', abv: 5 },
+                  { key: 'bière-forte', label: 'Bière forte', icon: '🍺', abv: 8 },
+                  { key: 'vin-rouge', label: 'Vin rouge', icon: '🍷', abv: 13 },
+                  { key: 'vin-blanc', label: 'Vin blanc', icon: '🥂', abv: 12 },
+                  { key: 'vin-rosé', label: 'Rosé', icon: '🌸', abv: 12 },
+                  { key: 'champagne', label: 'Champagne', icon: '🍾', abv: 12 },
+                  { key: 'cocktail', label: 'Cocktail', icon: '🍸', abv: 15 },
+                  { key: 'cocktail-fort', label: 'Cocktail fort', icon: '🍹', abv: 25 },
+                  { key: 'shot', label: 'Shot', icon: '🥃', abv: 40 },
+                  { key: 'whisky', label: 'Whisky', icon: '🥃', abv: 40 },
+                  { key: 'vodka', label: 'Vodka', icon: '🧊', abv: 40 },
+                  { key: 'rhum', label: 'Rhum', icon: '🏴‍☠️', abv: 40 },
+                  { key: 'gin', label: 'Gin', icon: '🫒', abv: 40 },
+                  { key: 'tequila', label: 'Tequila', icon: '🌵', abv: 40 },
+                  { key: 'pastis', label: 'Pastis', icon: '☀️', abv: 45 },
+                  { key: 'digestif', label: 'Digestif', icon: '🫗', abv: 35 },
+                  { key: 'apéritif', label: 'Apéritif', icon: '🍊', abv: 18 },
+                  { key: 'cidre', label: 'Cidre', icon: '🍏', abv: 5 },
+                  { key: 'saké', label: 'Saké', icon: '🍶', abv: 15 },
+                ] as const).map((v) => (
+                  <button
+                    key={v.key}
+                    onClick={() => {
+                      setDetails({ ...details, form: v.key, abv: v.abv });
+                    }}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      details.form === v.key
+                        ? 'border-red-500/50 text-red-300 bg-red-500/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {v.icon} {v.label} <span className="text-zinc-600">· {v.abv}%</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Nombre de verres</label>
+              <div className="flex flex-wrap gap-1.5">
+                {[1, 2, 3, 4, 5, 6, 8, 10].map((n) => (
+                  <button
+                    key={n}
+                    onClick={() => setAmount(n)}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      amount === n
+                        ? 'border-red-500/50 text-red-300 bg-red-500/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {n} {n === 1 ? 'verre' : 'verres'}
                   </button>
                 ))}
               </div>

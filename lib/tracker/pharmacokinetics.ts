@@ -218,6 +218,14 @@ export const PK_PROFILES: Record<SubstanceKey, PKProfile> = {
     peakIntensity: 0.95,    // Intense — powerful opioid
     decayShape: 'exponential',
   },
+  alcohol: {
+    onsetMin: 10,           // Oral absorption through stomach/intestine
+    peakMin: 45,            // Peak BAC ~30-60min (depends on food)
+    plateauEndMin: 120,     // ~2h plateau per standard drink
+    durationMin: 360,       // ~6h total per drink (metabolism ~0.15g/dL/h)
+    peakIntensity: 0.7,     // Moderate-high — dose-dependent CNS depressant
+    decayShape: 'linear',   // Alcohol metabolized at constant rate (zero-order kinetics)
+  },
 };
 
 /**
@@ -333,7 +341,7 @@ export function computeAwareness(
   biometrics?: { stress?: number | null; body_battery?: number | null; hr?: number | null },
 ): AwarenessState {
   const substances: Record<string, number> = {};
-  const keys: SubstanceKey[] = ['thc', 'cbd', 'lions_mane', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'hydration', 'melatonin', 'venlafaxine', 'sertraline', 'prazepam', 'cyamemazine', 'dynabiane', 'omegabiane', 'griffonia', 'valeriane', 'safran', 'vitamine_c', 'cocaine', 'mmc', 'heroine'];
+  const keys: SubstanceKey[] = ['thc', 'cbd', 'lions_mane', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'hydration', 'melatonin', 'venlafaxine', 'sertraline', 'prazepam', 'cyamemazine', 'dynabiane', 'omegabiane', 'griffonia', 'valeriane', 'safran', 'vitamine_c', 'cocaine', 'mmc', 'heroine', 'alcohol'];
 
   for (const key of keys) {
     // Sum intensities from all recent doses of this substance
@@ -355,7 +363,7 @@ export function computeAwareness(
   // Composite loads
   const psychedelicLoad = Math.min(1, sub.lsd * 1.0 + sub.ketamine * 0.8 + sub.thc * 0.4);
   const stimulantLoad = Math.min(1, sub.nicotine + sub.caffeine * 0.7 + sub.cbd * 0.1); // Rhodiola mild stimulant
-  const sedativeLoad = Math.min(1, sub.melatonin + sub.prazepam * 0.8 + sub.cyamemazine * 0.7 + sub.cbd * 0.35 + sub.valeriane * 0.6); // CBD + ashwagandha anxiolytic + valerian GABA
+  const sedativeLoad = Math.min(1, sub.melatonin + sub.prazepam * 0.8 + sub.cyamemazine * 0.7 + sub.cbd * 0.35 + sub.valeriane * 0.6 + sub.alcohol * 0.6); // CBD + ashwagandha anxiolytic + valerian GABA + alcohol CNS depressant
   const antidepressantBaseline = Math.min(1, sub.venlafaxine + sub.sertraline + sub.safran * 0.3); // Saffron has mild antidepressant properties
   // Adaptogenic: ashwagandha (280mg) + rhodiola (30mg) via CBD complex + lion's mane + dynabiane gut-brain
   const adaptogenicLoad = Math.min(1, sub.cbd * 0.8 + sub.lions_mane * 0.15 + sub.dynabiane * 0.1);
@@ -382,7 +390,8 @@ export function computeAwareness(
     sub.omegabiane * 0.01 +
     sub.griffonia * 0.03 +
     sub.valeriane * 0.04 +
-    sub.safran * 0.01
+    sub.safran * 0.01 +
+    sub.alcohol * 0.15
   );
 
   // Find dominant
