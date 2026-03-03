@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Recommendation from './components/Recommendation';
 import SubstanceCard from './components/SubstanceCard';
+import TrackerStats from './components/TrackerStats';
 import LogForm from './components/LogForm';
 import BiometricCorrelation from './components/BiometricCorrelation';
 import SensationLogger from './components/SensationLogger';
@@ -297,6 +298,11 @@ export default function TrackerPage() {
             )}
           </>
         )}
+
+        {/* Tracker stats dashboard (collapsible) */}
+        <div className="mt-6">
+          <TrackerStats refreshKey={refreshKey} />
+        </div>
 
         {/* Biometric correlation chart — always visible */}
         <div className="mt-6">
