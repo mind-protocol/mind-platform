@@ -72,7 +72,9 @@ function OrbPosition({
   // Different orbit speeds per substance class
   const speeds: Record<SubstanceKey, number> = {
     thc: 0.08,
+    hashish: 0.07,     // Similar to THC — smoked cannabis
     cbd: 0.07,         // Slightly slower than THC — calming
+    cbd_joint: 0.06,   // Slow, calming — CBD smoke
     lions_mane: 0.02,  // Very slow — steady supplement
     caffeine: 0.18,    // Fast, energetic
     ketamine: 0.05,
@@ -102,7 +104,9 @@ function OrbPosition({
     lsd: 2.5,
     ketamine: 1.5,
     thc: 0.5,
+    hashish: 0.4,      // Similar to THC
     cbd: 0.3,
+    cbd_joint: 0.2,    // Mild, calming
     lions_mane: 0.2,
     caffeine: 0.8,     // High up — stimulant energy
     nicotine: 0,

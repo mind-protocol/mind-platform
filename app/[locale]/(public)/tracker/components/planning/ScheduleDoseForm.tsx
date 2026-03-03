@@ -5,7 +5,9 @@ import { SUBSTANCE_KEYS, SUBSTANCE_CONFIG, DOSE_RANGES, type SubstanceKey } from
 
 const INTENTS: Record<SubstanceKey, string[]> = {
   thc: ['focus', 'relax', 'creative', 'sleep', 'social'],
+  hashish: ['relax', 'social', 'creative', 'sleep', 'détente'],
   cbd: ['relax', 'pain', 'sleep', 'anxiety', 'recovery'],
+  cbd_joint: ['relax', 'anxiety', 'sleep', 'détente', 'rituel-soir'],
   lions_mane: ['focus', 'neuroprotection', 'memory', 'daily'],
   caffeine: ['focus', 'energy', 'morning-ritual', 'social', 'pre-workout'],
   ketamine: ['micro-boost', 'dissociation', 'identity-dissolution'],

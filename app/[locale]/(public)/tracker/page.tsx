@@ -40,7 +40,7 @@ import { useSession } from '@/lib/useSession';
 
 // Category definitions (before visibility filtering)
 const BODY_KEYS = new Set(['hydration', 'lions_mane', 'dynabiane', 'omegabiane', 'griffonia', 'valeriane', 'safran', 'venlafaxine', 'sertraline', 'prazepam', 'cyamemazine', 'melatonin', 'yoga', 'vitamine_c']);
-const RECREATIONAL_KEYS = new Set(['thc', 'cbd', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'cocaine', 'mmc', 'heroine']);
+const RECREATIONAL_KEYS = new Set(['thc', 'hashish', 'cbd', 'cbd_joint', 'caffeine', 'ketamine', 'lsd', 'nicotine', 'cocaine', 'mmc', 'heroine', 'alcohol']);
 
 export default function TrackerPage() {
   const t = useTranslations('Tracker');

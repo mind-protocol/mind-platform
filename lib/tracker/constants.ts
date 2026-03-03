@@ -1,4 +1,4 @@
-export type SubstanceKey = 'thc' | 'cbd' | 'lions_mane' | 'caffeine' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'sertraline' | 'prazepam' | 'cyamemazine' | 'dynabiane' | 'omegabiane' | 'griffonia' | 'valeriane' | 'safran' | 'yoga' | 'vitamine_c' | 'cocaine' | 'mmc' | 'heroine' | 'alcohol';
+export type SubstanceKey = 'thc' | 'cbd' | 'hashish' | 'cbd_joint' | 'lions_mane' | 'caffeine' | 'ketamine' | 'lsd' | 'nicotine' | 'hydration' | 'melatonin' | 'venlafaxine' | 'sertraline' | 'prazepam' | 'cyamemazine' | 'dynabiane' | 'omegabiane' | 'griffonia' | 'valeriane' | 'safran' | 'yoga' | 'vitamine_c' | 'cocaine' | 'mmc' | 'heroine' | 'alcohol';
 
 export interface SubstanceConfig {
   color: string;
@@ -18,6 +18,8 @@ export interface SubstanceConfig {
 export const SUBSTANCE_CONFIG: Record<SubstanceKey, SubstanceConfig> = {
   thc:         { color: '#22c55e', icon: '\u{1F33F}', label: 'THC',         unit: 'chambers', geometry: 'cylinder',     laneY: 0,     hidden: true,  danger: 'moderate' },
   cbd:         { color: '#84cc16', icon: '\u{1F331}', label: 'CBD Complex', unit: 'comprimé',  geometry: 'dodecahedron', laneY: 1.25 },
+  hashish:     { color: '#854d0e', icon: '\u{1FAB4}', label: 'Shit',       unit: 'g',        geometry: 'sphere',       laneY: 0.5,   hidden: true,  danger: 'moderate', forms: ['joint', 'pipe', 'bong', 'vaporisé', 'space cake'] },
+  cbd_joint:   { color: '#a3e635', icon: '\u{1F4A8}', label: 'Joint CBD',  unit: 'joint',    geometry: 'cylinder',     laneY: 1.5,   forms: ['pré-roulé', 'roulé maison', 'infusion', 'vaporisé'] },
   lions_mane:  { color: '#b45309', icon: '\u{1F981}', label: "Lion's Mane", unit: 'mg',       geometry: 'cone',         laneY: 1.75 },
   caffeine:    { color: '#d97706', icon: '\u{2615}',  label: 'Caffeine',    unit: 'mg',       geometry: 'ring',         laneY: 2.25 },
   ketamine:    { color: '#8b5cf6', icon: '\u{1F48E}', label: 'Ketamine',    unit: 'mg',       geometry: 'octahedron',   laneY: 2.5,   hidden: true,  danger: 'high' },
@@ -48,6 +50,8 @@ export const SUBSTANCE_KEYS = Object.keys(SUBSTANCE_CONFIG) as SubstanceKey[];
 export const DOSE_RANGES: Record<SubstanceKey, { min: number; max: number }> = {
   thc:         { min: 1, max: 5 },
   cbd:         { min: 1, max: 3 },     // Comprimé count (1-3 tablets)
+  hashish:     { min: 0.1, max: 1 },   // 0.1g (petit joint) to 1g (gros)
+  cbd_joint:   { min: 0.5, max: 2 },   // 0.5 (demi) to 2 joints
   lions_mane:  { min: 420, max: 2520 },
   caffeine:    { min: 40, max: 400 },
   ketamine:    { min: 15, max: 150 },

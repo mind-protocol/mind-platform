@@ -9,7 +9,9 @@ const TABS = [
   { key: 'nicotine', label: 'Nicotine', color: '#f59e0b', icon: '💨' },
   { key: 'caffeine', label: 'Caffeine', color: '#d97706', icon: '☕' },
   { key: 'thc', label: 'THC', color: '#22c55e', icon: '🌿' },
+  { key: 'hashish', label: 'Shit', color: '#854d0e', icon: '🪴' },
   { key: 'cbd', label: 'CBD Complex', color: '#84cc16', icon: '🌱' },
+  { key: 'cbd_joint', label: 'Joint CBD', color: '#a3e635', icon: '💨' },
   { key: 'lions_mane', label: "Lion's Mane", color: '#b45309', icon: '🦁' },
   { key: 'ketamine', label: 'Ketamine', color: '#8b5cf6', icon: '💎' },
   { key: 'lsd', label: 'LSD', color: '#ec4899', icon: '🔮' },
@@ -36,7 +38,9 @@ type TabKey = (typeof TABS)[number]['key'];
 
 const INTENTS: Record<string, string[]> = {
   thc: ['focus', 'relax', 'creative', 'sleep', 'social'],
+  hashish: ['relax', 'social', 'creative', 'sleep', 'détente'],
   cbd: ['relax', 'anxiety', 'sleep', 'recovery', 'adaptogenic', 'serotonin-support'],
+  cbd_joint: ['relax', 'anxiety', 'sleep', 'détente', 'rituel-soir'],
   lions_mane: ['focus', 'neuroprotection', 'memory', 'daily'],
   caffeine: ['focus', 'energy', 'morning-ritual', 'social', 'pre-workout'],
   ketamine: ['micro-boost', 'dissociation', 'identity-dissolution'],
@@ -63,7 +67,9 @@ const INTENTS: Record<string, string[]> = {
 
 const DEFAULTS: Record<string, { amount: number; unit: string; details: Record<string, unknown> }> = {
   thc: { amount: 1, unit: 'chamber', details: { strain_thc: 22, temp_c: 230, reaction: 'clean' } },
+  hashish: { amount: 0.3, unit: 'g', details: { form: 'joint', thc_pct: 15, mix: 'tabac', reaction: 'clean' } },
   cbd: { amount: 1, unit: 'comprimé', details: { route: 'complex', form: 'tablet', reaction: 'clean' } },
+  cbd_joint: { amount: 1, unit: 'joint', details: { form: 'pré-roulé', cbd_pct: 15, brand: '', reaction: 'clean' } },
   lions_mane: { amount: 420, unit: 'mg', details: { form: 'capsule', mg_per_capsule: 420 } },
   caffeine: { amount: 150, unit: 'mg', details: { form: 'double', shots: 2, milk: true, sugar: 1, sugarType: 'blanc' } },
   ketamine: { amount: 1, unit: 'ml', details: { form: 'liquid', route: 'oral', crystal_mg: 1000, water_ml: 10 } },
@@ -432,6 +438,185 @@ export default function LogForm({ onLogged, filter }: { onLogged: () => void; fi
                   className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
                 />
               </div>
+            </div>
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Reaction</label>
+              <div className="flex gap-1.5 flex-wrap">
+                {VAPE_REACTIONS.map((r) => (
+                  <button
+                    key={r.key}
+                    onClick={() => setDetails({ ...details, reaction: r.key })}
+                    className={`px-2 py-1.5 rounded text-xs border transition ${
+                      (details.reaction as string || 'clean') === r.key
+                        ? 'border-green-500/50 text-green-400 bg-green-500/10'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {r.icon} {r.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {tab === 'hashish' && (
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Forme</label>
+              <div className="flex flex-wrap gap-1.5">
+                {([
+                  { key: 'joint', label: 'Joint', icon: '🚬' },
+                  { key: 'pipe', label: 'Pipe', icon: '🪈' },
+                  { key: 'bong', label: 'Bong', icon: '🫧' },
+                  { key: 'vaporisé', label: 'Vaporisé', icon: '💨' },
+                  { key: 'space-cake', label: 'Space cake', icon: '🍰' },
+                ] as const).map((f) => (
+                  <button
+                    key={f.key}
+                    onClick={() => setDetails({ ...details, form: f.key })}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      details.form === f.key
+                        ? 'border-yellow-700/50 text-yellow-600 bg-yellow-700/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {f.icon} {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">Quantité (g)</label>
+                <div className="flex flex-wrap gap-1.5">
+                  {[0.1, 0.2, 0.3, 0.5, 0.7, 1].map((g) => (
+                    <button
+                      key={g}
+                      onClick={() => setAmount(g)}
+                      className={`px-2 py-1 rounded text-xs border transition ${
+                        amount === g
+                          ? 'border-yellow-700/50 text-yellow-600 bg-yellow-700/15'
+                          : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      {g}g
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">THC %</label>
+                <input
+                  type="number"
+                  value={(details.thc_pct as number) || 15}
+                  onChange={(e) => setDetails({ ...details, thc_pct: Number(e.target.value) })}
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Mix</label>
+              <div className="flex gap-1.5">
+                {(['tabac', 'pur', 'cbd', 'herbes'] as const).map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => setDetails({ ...details, mix: m })}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      details.mix === m
+                        ? 'border-yellow-700/50 text-yellow-600 bg-yellow-700/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {m}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Reaction</label>
+              <div className="flex gap-1.5 flex-wrap">
+                {VAPE_REACTIONS.map((r) => (
+                  <button
+                    key={r.key}
+                    onClick={() => setDetails({ ...details, reaction: r.key })}
+                    className={`px-2 py-1.5 rounded text-xs border transition ${
+                      (details.reaction as string || 'clean') === r.key
+                        ? 'border-green-500/50 text-green-400 bg-green-500/10'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {r.icon} {r.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {tab === 'cbd_joint' && (
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Forme</label>
+              <div className="flex flex-wrap gap-1.5">
+                {([
+                  { key: 'pré-roulé', label: 'Pré-roulé', icon: '🚬' },
+                  { key: 'roulé-maison', label: 'Roulé maison', icon: '✋' },
+                  { key: 'infusion', label: 'Infusion', icon: '🍵' },
+                  { key: 'vaporisé', label: 'Vaporisé', icon: '💨' },
+                ] as const).map((f) => (
+                  <button
+                    key={f.key}
+                    onClick={() => setDetails({ ...details, form: f.key })}
+                    className={`px-2 py-1 rounded text-xs border transition ${
+                      details.form === f.key
+                        ? 'border-lime-500/50 text-lime-400 bg-lime-500/15'
+                        : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {f.icon} {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">Quantité</label>
+                <div className="flex flex-wrap gap-1.5">
+                  {[0.5, 1, 1.5, 2].map((n) => (
+                    <button
+                      key={n}
+                      onClick={() => setAmount(n)}
+                      className={`px-2 py-1 rounded text-xs border transition ${
+                        amount === n
+                          ? 'border-lime-500/50 text-lime-400 bg-lime-500/15'
+                          : 'border-zinc-700 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      {n} joint{n > 1 ? 's' : ''}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="text-xs text-zinc-500 block mb-1">CBD %</label>
+                <input
+                  type="number"
+                  value={(details.cbd_pct as number) || 15}
+                  onChange={(e) => setDetails({ ...details, cbd_pct: Number(e.target.value) })}
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white font-mono text-sm focus:outline-none focus:border-zinc-500"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs text-zinc-500 block mb-1">Marque / Variété</label>
+              <input
+                type="text"
+                value={(details.brand as string) || ''}
+                onChange={(e) => setDetails({ ...details, brand: e.target.value })}
+                placeholder="ex: Strawberry Haze CBD"
+                className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-zinc-500 placeholder:text-zinc-600"
+              />
             </div>
             <div>
               <label className="text-xs text-zinc-500 block mb-1">Reaction</label>

@@ -36,12 +36,28 @@ export const PK_PROFILES: Record<SubstanceKey, PKProfile> = {
     peakIntensity: 1.0,
     decayShape: 'exponential',
   },
+  hashish: {
+    onsetMin: 1,            // Smoked — instant
+    peakMin: 10,            // Faster than vape due to combustion
+    plateauEndMin: 30,
+    durationMin: 150,       // ~2.5h (shorter than vape THC)
+    peakIntensity: 1.0,
+    decayShape: 'exponential',
+  },
   cbd: {
     onsetMin: 25,           // Oral tablet — slower absorption
     peakMin: 75,            // ~1h15 to peak (CBD + ashwagandha + griffonia synergy)
     plateauEndMin: 180,     // 3h plateau (adaptogenic compounds sustain effect)
     durationMin: 420,       // ~7 hours (ashwagandha + magnesium long tail)
     peakIntensity: 0.55,    // Stronger than pure CBD — compound synergy
+    decayShape: 'linear',
+  },
+  cbd_joint: {
+    onsetMin: 1,            // Smoked — immediate
+    peakMin: 10,
+    plateauEndMin: 40,
+    durationMin: 120,       // ~2h — CBD smoked is shorter than oral
+    peakIntensity: 0.4,     // Mild — CBD, not psychoactive
     decayShape: 'linear',
   },
   lions_mane: {
