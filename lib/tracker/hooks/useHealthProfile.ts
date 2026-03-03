@@ -1,38 +1,55 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { MedicalProfile, GrowthPoint } from '../types/health';
+
+const FETCH_TIMEOUT_MS = 20_000; // 20s — Render cold start can be slow
+
+function fetchWithTimeout(url: string, timeoutMs: number): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { signal: controller.signal }).finally(() => clearTimeout(timer));
+}
 
 export function useHealthProfile(authenticated: boolean) {
   const [profile, setProfile] = useState<MedicalProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
 
-  useEffect(() => {
+  const load = useCallback(async () => {
     if (!authenticated) { setLoading(false); return; }
     setLoading(true);
-    console.log('[health] fetching /api/tracker/health...');
-    fetch('/api/tracker/health')
-      .then(r => {
-        console.log('[health] response status:', r.status);
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      })
-      .then(data => {
-        console.log('[health] data loaded, keys:', Object.keys(data));
-        setProfile(data);
-      })
-      .catch(err => {
-        console.error('[health] Failed to load:', err);
-        setError(err.message);
-      })
-      .finally(() => {
-        console.log('[health] loading complete');
-        setLoading(false);
-      });
-  }, [authenticated]);
+    setError(null);
 
-  return { profile, loading, error };
+    try {
+      const r = await fetchWithTimeout('/api/tracker/health', FETCH_TIMEOUT_MS);
+      if (!r.ok) {
+        const body = await r.json().catch(() => ({}));
+        throw new Error(body.error || `HTTP ${r.status}`);
+      }
+      const data = await r.json();
+      if (!data || !data.identity) {
+        throw new Error('Invalid profile data');
+      }
+      setProfile(data);
+    } catch (err) {
+      const msg = err instanceof DOMException && err.name === 'AbortError'
+        ? 'Request timed out — backend may be starting up'
+        : err instanceof Error ? err.message : 'Unknown error';
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
+  }, [authenticated, retryCount]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const retry = useCallback(() => {
+    setRetryCount(c => c + 1);
+  }, []);
+
+  return { profile, loading, error, retry };
 }
 
 export function useGrowthData(authenticated: boolean) {
@@ -43,7 +60,7 @@ export function useGrowthData(authenticated: boolean) {
   useEffect(() => {
     if (!authenticated) return;
     setLoading(true);
-    fetch('/api/tracker/health?section=growth')
+    fetchWithTimeout('/api/tracker/health?section=growth', FETCH_TIMEOUT_MS)
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (data) {
@@ -51,7 +68,7 @@ export function useGrowthData(authenticated: boolean) {
           setDob(data.dob || '');
         }
       })
-      .catch(() => { console.error('Failed to load growth data'); })
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, [authenticated]);
 
