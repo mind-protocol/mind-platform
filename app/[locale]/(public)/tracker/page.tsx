@@ -176,6 +176,12 @@ export default function TrackerPage() {
               {t('navProfile')}
             </Link>
             <Link
+              href="/tracker/status"
+              className="flex-none text-xs px-3 py-1.5 rounded-full border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 transition whitespace-nowrap"
+            >
+              Status
+            </Link>
+            <Link
               href="/tracker/settings"
               className="flex-none text-xs px-3 py-1.5 rounded-full border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition whitespace-nowrap"
             >
