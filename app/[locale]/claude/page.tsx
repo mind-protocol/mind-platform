@@ -61,7 +61,7 @@ function ClaudeIntegrationForm() {
 
       if (data.status === 'otp_verified') {
         setStep('consent');
-      } else if (data.status === 'consented_no_upload' || data.status === 'upload_received') {
+      } else if (data.status === 'consented_no_upload' || data.status === 'upload_received' || data.status === 'processing_failed') {
         setStep('upload');
       } else if (data.status === 'processing_accepted' || data.status === 'processing') {
         setStep('processing');
@@ -226,6 +226,12 @@ function ClaudeIntegrationForm() {
       const data = await res.json();
 
       if (res.status !== 202) {
+        // If upload expired (server restart), reset to file picker
+        if (data.error?.includes('Upload not found') || data.error?.includes('re-upload')) {
+          setUploadId('');
+          setSelectedFile(null);
+          setConvCount(0);
+        }
         setError(data.error || 'Erreur lors du lancement de l\'analyse.');
         setIsSubmitting(false);
         return;
