@@ -63,6 +63,9 @@ function ClaudeIntegrationForm() {
         setStep('consent');
       } else if (data.status === 'consented_no_upload' || data.status === 'upload_received' || data.status === 'processing_failed') {
         setStep('upload');
+        setUploadId('');
+        setSelectedFile(null);
+        setError('');
       } else if (data.status === 'processing_accepted' || data.status === 'processing') {
         setStep('processing');
       } else if (data.status === 'active') {
