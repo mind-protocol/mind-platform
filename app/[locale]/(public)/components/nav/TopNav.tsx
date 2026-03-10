@@ -51,6 +51,7 @@ const NAV_GROUPS: NavGroup[] = [
       { href: '/music', key: 'music' },
       { href: '/registry', key: 'registry' },
       { href: '/faq', key: 'faq' },
+      { href: '/substances', key: 'substances' },
     ],
   },
 ];
