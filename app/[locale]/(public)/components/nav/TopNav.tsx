@@ -48,8 +48,9 @@ const NAV_GROUPS: NavGroup[] = [
       { href: '/connectome', key: 'connectome' },
       { href: '/blog', key: 'blog' },
       { href: '/research', key: 'research' },
-      { href: '/synthetic-souls', key: 'syntheticSouls' },
+      { href: '/music', key: 'music' },
       { href: '/registry', key: 'registry' },
+      { href: '/faq', key: 'faq' },
     ],
   },
 ];

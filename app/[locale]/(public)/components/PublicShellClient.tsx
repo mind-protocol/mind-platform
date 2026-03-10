@@ -9,7 +9,7 @@ import ScrollToTop from '@/components/ScrollToTop';
 import { ToastProvider } from '@/components/Toast';
 
 // Routes that render in full immersive mode (no header/footer/chat)
-const IMMERSIVE_ROUTES = ['/tracker/3d'];
+const IMMERSIVE_ROUTES = ['/tracker/3d', '/music'];
 
 export default function PublicShellClient({ children }: { children: ReactNode }) {
   const pathname = usePathname();

@@ -1,0 +1,1472 @@
+{
+  "tracks": [
+    {
+      "id": 1,
+      "slug": "going-under",
+      "title": "Going Under",
+      "durationSec": 214,
+      "annotations": [
+        {
+          "timeSec": 0,
+          "label": "Guitar intro",
+          "lyricQuote": null,
+          "commentary": "The album opens with a drowning. Not a random metaphor — it's the exact feeling of an abusive relationship. You sink. Slowly. And nobody sees.",
+          "section": "intro"
+        },
+        {
+          "timeSec": 18,
+          "label": "\"Now I will tell you what I've done for you\"",
+          "lyricQuote": "Now I will tell you what I've done for you",
+          "commentary": "The inventory begins. She counts. Fifty thousand tears. The number is absurd — that's the point. The absurdity of the sacrifice you make for someone who sees nothing.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 30,
+          "label": "\"Screaming, deceiving and bleeding for you\"",
+          "lyricQuote": "Screaming, deceiving and bleeding for you",
+          "commentary": "Three verbs. Scream. Deceive. Bleed. The victim's triptych. You scream to be heard. You lie to survive. You bleed because that's what happens.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 38,
+          "label": "\"And you still won't hear me\"",
+          "lyricQuote": "And you still won't hear me",
+          "commentary": "The most important line of the verse. The \"still\" — how many times before \"still\" becomes the word that defines your life?",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 45,
+          "label": "\"Don't want your hand this time, I'll save myself\"",
+          "lyricQuote": "Don't want your hand this time, I'll save myself",
+          "commentary": "The pivot. The moment the victim refuses the abuser's help. Because his \"outstretched hand\" is always a trap.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 52,
+          "label": "\"Maybe I'll wake up for once\"",
+          "lyricQuote": "Maybe I'll wake up for once",
+          "commentary": "\"For once.\" She knows she's been asleep. She knows she's been kept asleep. Awareness precedes the awakening.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 60,
+          "label": "\"Not tormented daily, defeated by you\"",
+          "lyricQuote": "Not tormented daily, defeated by you",
+          "commentary": "Daily. The torture isn't an event — it's a rhythm. Every day. Morning. Evening. The repetition that grinds you down.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 68,
+          "label": "\"Just when I thought I'd reached the bottom\"",
+          "lyricQuote": "Just when I thought I'd reached the bottom",
+          "commentary": "There is no bottom. That's the trap. You think you've hit rock bottom, and then there's still further to fall.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 75,
+          "label": "\"I'm dying again\"",
+          "lyricQuote": "I'm dying again",
+          "commentary": "\"Again.\" Death isn't a single event. In an abusive relationship, you die multiple times. Sometimes every day.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 80,
+          "label": "\"Drowning in you\"",
+          "lyricQuote": "Drowning in you",
+          "commentary": "Drowning in another person. Not in water. In a person. When someone becomes your environment, your atmosphere — and that environment is killing you.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 85,
+          "label": "\"I'm falling forever\"",
+          "lyricQuote": "I'm falling forever",
+          "commentary": "Not \"I fell.\" \"I'm falling.\" Present continuous. The fall has no end.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 90,
+          "label": "\"I've got to break through\"",
+          "lyricQuote": "I've got to break through",
+          "commentary": "Willpower emerging from the drowning. The first movement toward the surface.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 105,
+          "label": "\"Blurring and stirring the truth and the lies\"",
+          "lyricQuote": "Blurring and stirring the truth and the lies",
+          "commentary": "Gaslighting. The classic technique of the abuser — blending truth and lies until you no longer know anything.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 112,
+          "label": "\"So I don't know what's real and what's not\"",
+          "lyricQuote": "So I don't know what's real and what's not",
+          "commentary": "The loss of reality. Not madness — induced confusion. Someone stole your ability to distinguish true from false.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 120,
+          "label": "\"Always confusing the thoughts in my head\"",
+          "lyricQuote": "Always confusing the thoughts in my head",
+          "commentary": "\"Always.\" This isn't an accident. It's a method. Systematic.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 128,
+          "label": "\"So I can't trust myself anymore\"",
+          "lyricQuote": "So I can't trust myself anymore",
+          "commentary": "The ultimate goal of gaslighting. Not just that you doubt him — that you doubt yourself. Your perception. Your judgment. Yourself.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 155,
+          "label": "\"So go on and scream, scream at me\"",
+          "lyricQuote": "So go on and scream, scream at me",
+          "commentary": "The reversal. She invites his rage. \"Go ahead, scream.\" The victim reclaiming power by accepting the attack rather than fleeing it.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 162,
+          "label": "\"I'm so far away\"",
+          "lyricQuote": "I'm so far away",
+          "commentary": "She's already gone. Mentally. Emotionally. The body is still there but the soul has begun to flee.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 170,
+          "label": "\"I won't be broken again\"",
+          "lyricQuote": "I won't be broken again",
+          "commentary": "\"Again\" — that word once more. She's already been broken. Multiple times. This time she refuses.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 178,
+          "label": "\"I've got to breathe, I can't keep going under\"",
+          "lyricQuote": "I've got to breathe, I can't keep going under",
+          "commentary": "Breathing as an act of resistance. To breathe is to refuse to die. Simple. Vital.",
+          "section": "bridge"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "bring-me-to-life",
+      "title": "Bring Me To Life",
+      "durationSec": 235,
+      "annotations": [
+        {
+          "timeSec": 0,
+          "label": "Solo piano",
+          "lyricQuote": null,
+          "commentary": "The calm after the storm. Or rather — the calm DURING the storm. This piano is the inner silence of someone who has cut off everything to survive.",
+          "section": "intro"
+        },
+        {
+          "timeSec": 12,
+          "label": "\"How can you see into my eyes like open doors?\"",
+          "lyricQuote": "How can you see into my eyes like open doors?",
+          "commentary": "The shock of recognition. Someone SEES you. Through the facade. Amy Lee said: someone asked her \"Are you happy?\" and she realized he could see through her.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 20,
+          "label": "\"Leading you down into my core\"",
+          "lyricQuote": "Leading you down into my core",
+          "commentary": "Eyes as doors. The other entering. Not an invasion — an invitation. She lets him see.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 26,
+          "label": "\"Where I've become so numb\"",
+          "lyricQuote": "Where I've become so numb",
+          "commentary": "Dissociation. The survival mechanism. You cut off sensation because feeling is unbearable.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 32,
+          "label": "\"Without a soul\"",
+          "lyricQuote": "Without a soul",
+          "commentary": "Not a metaphor. This is literally what someone who has dissociated feels. A body with no presence inside.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 38,
+          "label": "\"My spirit's sleeping somewhere cold\"",
+          "lyricQuote": "My spirit's sleeping somewhere cold",
+          "commentary": "The soul isn't dead — it's sleeping. Somewhere cold. In hibernation. Waiting until it's safe to come back.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 44,
+          "label": "\"Until you find it there and lead it back home\"",
+          "lyricQuote": "Until you find it there and lead it back home",
+          "commentary": "The other as guide. Not savior — guide. Who finds what was lost and leads it home.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 52,
+          "label": "\"Wake me up inside\"",
+          "lyricQuote": "Wake me up inside",
+          "commentary": "The central cry of the album. Wake me up. From the inside. Not from the outside. The awakening must come from within.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 56,
+          "label": "\"Call my name and save me from the dark\"",
+          "lyricQuote": "Call my name and save me from the dark",
+          "commentary": "The name. Identity. Someone who speaks your name reminds you that you exist.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 62,
+          "label": "\"Bid my blood to run\"",
+          "lyricQuote": "Bid my blood to run",
+          "commentary": "Command my blood to flow. Biological life as a metaphor for emotional life. She is so numb that even her blood seems to have stopped.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 66,
+          "label": "\"Before I come undone\"",
+          "lyricQuote": "Before I come undone",
+          "commentary": "To come undone. To disintegrate. The race against time — wake me before I dissolve completely.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 70,
+          "label": "\"Save me from the nothing I've become\"",
+          "lyricQuote": "Save me from the nothing I've become",
+          "commentary": "\"The nothing.\" Not something negative. The void. The absence. Becoming nothing.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 77,
+          "label": "\"Now that I know what I'm without\"",
+          "lyricQuote": "Now that I know what I'm without",
+          "commentary": "The awareness of absence. You don't know what you're missing until you see it in someone else.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 84,
+          "label": "\"You can't just leave me\"",
+          "lyricQuote": "You can't just leave me",
+          "commentary": "Now that you've woken me, you can't leave. The dependency born from recognition.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 88,
+          "label": "\"Breathe into me and make me real\"",
+          "lyricQuote": "Breathe into me and make me real",
+          "commentary": "Breathe into me. Like God breathing life into Adam. Make me real. Because right now, I'm not.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 108,
+          "label": "\"Frozen inside without your touch\"",
+          "lyricQuote": "Frozen inside without your touch",
+          "commentary": "The inner freeze. Without contact, without connection — everything seizes up.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 115,
+          "label": "\"Only you are the life among the dead\"",
+          "lyricQuote": "Only you are the life among the dead",
+          "commentary": "Everything else is dead. Only you are alive. The danger of this vision — putting all of life into a single person.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 130,
+          "label": "\"All this time I can't believe I couldn't see\"",
+          "lyricQuote": "All this time I can't believe I couldn't see",
+          "commentary": "Retrospective regret. How could I not see? How much time did I spend blind?",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 138,
+          "label": "\"Kept in the dark but you were there in front of me\"",
+          "lyricQuote": "Kept in the dark but you were there in front of me",
+          "commentary": "The light was there. In front of me. And I was in the dark. By choice? By fear? By survival?",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 145,
+          "label": "\"I've been sleeping a thousand years it seems\"",
+          "lyricQuote": "I've been sleeping a thousand years it seems",
+          "commentary": "A thousand years. The hyperbole of dissociated time. When you're numb, time loses meaning.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 152,
+          "label": "\"Got to open my eyes to everything\"",
+          "lyricQuote": "Got to open my eyes to everything",
+          "commentary": "Not just open my eyes — open them to EVERYTHING. Total awakening. No filters. No protection.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 160,
+          "label": "\"Without a thought, without a voice, without a soul\"",
+          "lyricQuote": "Without a thought, without a voice, without a soul",
+          "commentary": "The trinity of absence. Thought. Voice. Soul. Everything that makes a being.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 167,
+          "label": "\"Don't let me die here, there must be something more\"",
+          "lyricQuote": "Don't let me die here, there must be something more",
+          "commentary": "Hope that survives. There MUST be something more. The certainty that this isn't everything.",
+          "section": "chorus"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "everybodys-fool",
+      "title": "Everybody's Fool",
+      "durationSec": 195,
+      "annotations": [
+        {
+          "timeSec": 0,
+          "label": "Heavy intro",
+          "lyricQuote": null,
+          "commentary": "Change of tone. After introspection — outward-directed anger. The industry. The pretense. The masks.",
+          "section": "intro"
+        },
+        {
+          "timeSec": 12,
+          "label": "\"Perfect by nature\"",
+          "lyricQuote": "Perfect by nature",
+          "commentary": "Irony from the first word. \"Perfect\" — by nature. As if it were natural. As if it existed.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 16,
+          "label": "\"Icons of self-indulgence\"",
+          "lyricQuote": "Icons of self-indulgence",
+          "commentary": "Icons of self-indulgence. Celebrities wallowing in their own image.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 20,
+          "label": "\"Just what we all need, more lies\"",
+          "lyricQuote": "Just what we all need, more lies",
+          "commentary": "Acid sarcasm. Exactly what we need — more lies. Thanks very much.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 26,
+          "label": "\"About a world that never was and never will be\"",
+          "lyricQuote": "About a world that never was and never will be",
+          "commentary": "A world that never existed. And never will. The impossible promise of perfection.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 34,
+          "label": "\"Have you no shame? Don't you see me?\"",
+          "lyricQuote": "Have you no shame? Don't you see me?",
+          "commentary": "The personal pivot. Have you no shame? Don't you see me? The victim of illusion confronting the liar.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 42,
+          "label": "\"You know you've got everybody fooled\"",
+          "lyricQuote": "You know you've got everybody fooled",
+          "commentary": "Everyone except me. I see. I know. You've fooled everyone — but not me.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 52,
+          "label": "\"Look here she comes now, bow down and stare in wonder\"",
+          "lyricQuote": "Look here she comes now, bow down and stare in wonder",
+          "commentary": "The procession of the false goddess. Bow down. Stare in wonder. The cult of image.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 62,
+          "label": "\"Oh how we love you\"",
+          "lyricQuote": "Oh how we love you",
+          "commentary": "The love we give to illusions. Sincere and misplaced.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 68,
+          "label": "\"No flaws when you're pretending\"",
+          "lyricQuote": "No flaws when you're pretending",
+          "commentary": "No flaws when you're pretending. Perfection exists only in performance.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 76,
+          "label": "\"But now I know she never was and never will be\"",
+          "lyricQuote": "But now I know she never was and never will be",
+          "commentary": "Disenchantment. The fall of the idol. She never was what she claimed.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 84,
+          "label": "\"You don't know how you've betrayed me\"",
+          "lyricQuote": "You don't know how you've betrayed me",
+          "commentary": "Personal betrayal. This isn't abstract — it's personal. You betrayed ME.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 92,
+          "label": "\"And somehow you've got everybody fooled\"",
+          "lyricQuote": "And somehow you've got everybody fooled",
+          "commentary": "The mystery persists. HOW? How can everyone be duped?",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 105,
+          "label": "\"Without the mask, where will you hide?\"",
+          "lyricQuote": "Without the mask, where will you hide?",
+          "commentary": "The killer question. Without the mask — where will you hide? What's left when the performance stops?",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 112,
+          "label": "\"Can't find yourself, lost in your lie\"",
+          "lyricQuote": "Can't find yourself, lost in your lie",
+          "commentary": "You lost yourself in your own lie. The actor who no longer knows who they are without the role.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 120,
+          "label": "\"I know the truth now\"",
+          "lyricQuote": "I know the truth now",
+          "commentary": "The revelation. I know. Now. The truth.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 124,
+          "label": "\"I know who you are\"",
+          "lyricQuote": "I know who you are",
+          "commentary": "I know WHO you are. Not what you pretend. Who you really are.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 128,
+          "label": "\"And I don't love you anymore\"",
+          "lyricQuote": "And I don't love you anymore",
+          "commentary": "The end of love. Simple. Definitive. A shattered illusion cannot be repaired.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 165,
+          "label": "\"You're not real and you can't save me\"",
+          "lyricQuote": "You're not real and you can't save me",
+          "commentary": "You're not real. And you can't save me. No one who is false can save anyone.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 172,
+          "label": "\"Somehow now you're everybody's fool\"",
+          "lyricQuote": "Somehow now you're everybody's fool",
+          "commentary": "The final reversal. The one who fooled everyone is now everyone's fool.",
+          "section": "bridge"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "slug": "my-immortal",
+      "title": "My Immortal",
+      "durationSec": 262,
+      "annotations": [
+        {
+          "timeSec": 0,
+          "label": "Solo piano, adolescent voice",
+          "lyricQuote": null,
+          "commentary": "This version is a demo. Amy was around 17. The label insisted on keeping this version against her will. She says she \"sounds like a kid.\"\nThat's exactly it. The voice of the child who lost.",
+          "section": "intro"
+        },
+        {
+          "timeSec": 8,
+          "label": "\"I'm so tired of being here\"",
+          "lyricQuote": "I'm so tired of being here",
+          "commentary": "Existential fatigue. Not physical. Being here. Existing. Continuing.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 16,
+          "label": "\"Suppressed by all my childish fears\"",
+          "lyricQuote": "Suppressed by all my childish fears",
+          "commentary": "Childish fears. But who suppresses whom? The fears crush. Or you crush them. Both at the same time.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 24,
+          "label": "\"And if you have to leave, I wish that you would just leave\"",
+          "lyricQuote": "And if you have to leave, I wish that you would just leave",
+          "commentary": "The paradox of grief. If you have to go — GO. Don't stay halfway. Don't haunt.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 38,
+          "label": "\"Cause your presence still lingers here\"",
+          "lyricQuote": "Cause your presence still lingers here",
+          "commentary": "You're gone but you're still here. The presence-absence. The ghost that inhabits.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 46,
+          "label": "\"And it won't leave me alone\"",
+          "lyricQuote": "And it won't leave me alone",
+          "commentary": "And it won't leave me alone. The insistence of absence.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 54,
+          "label": "\"These wounds won't seem to heal\"",
+          "lyricQuote": "These wounds won't seem to heal",
+          "commentary": "Wounds that won't heal. \"Won't seem\" — they refuse even the appearance of healing.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 62,
+          "label": "\"This pain is just too real\"",
+          "lyricQuote": "This pain is just too real",
+          "commentary": "The pain is too real. Not abstract enough to ignore. Too concrete.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 70,
+          "label": "\"There's just too much that time cannot erase\"",
+          "lyricQuote": "There's just too much that time cannot erase",
+          "commentary": "Time doesn't erase everything. The lie we're told — that time heals. No. Some things remain.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 80,
+          "label": "\"When you cried, I'd wipe away all of your tears\"",
+          "lyricQuote": "When you cried, I'd wipe away all of your tears",
+          "commentary": "The reversal. It was SHE who consoled. She who wiped away the tears. Who fought the fears. Who held the hand.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 95,
+          "label": "\"But you still have all of me\"",
+          "lyricQuote": "But you still have all of me",
+          "commentary": "And yet — you still have all of me. After everything I gave. You still possess everything.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 110,
+          "label": "\"You used to captivate me by your resonating light\"",
+          "lyricQuote": "You used to captivate me by your resonating light",
+          "commentary": "The light that captivated. \"Used to\" — before. Now the light is gone but the captivity remains.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 122,
+          "label": "\"Now I'm bound by the life you left behind\"",
+          "lyricQuote": "Now I'm bound by the life you left behind",
+          "commentary": "Bound to the life you left behind. Prisoner not of you — but of your absence.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 134,
+          "label": "\"Your face, it haunts my once pleasant dreams\"",
+          "lyricQuote": "Your face, it haunts my once pleasant dreams",
+          "commentary": "Your face haunts my dreams. \"Once pleasant\" — once. The dreams are now invaded territory.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 146,
+          "label": "\"Your voice, it chased away all the sanity in me\"",
+          "lyricQuote": "Your voice, it chased away all the sanity in me",
+          "commentary": "Your voice chased away all my sanity. The sound of someone can destroy inner balance.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 190,
+          "label": "\"I've tried so hard to tell myself that you're gone\"",
+          "lyricQuote": "I've tried so hard to tell myself that you're gone",
+          "commentary": "I've tried to convince myself you're gone. The conscious effort to believe in reality.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 202,
+          "label": "\"But though you're still with me, I've been alone all along\"",
+          "lyricQuote": "But though you're still with me, I've been alone all along",
+          "commentary": "The coup de grace. You're still with me — but I've been alone from the very start. Even your presence was a solitude.",
+          "section": "chorus"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "slug": "haunted",
+      "title": "Haunted",
+      "durationSec": 185,
+      "annotations": [
+        {
+          "timeSec": 0,
+          "label": "Whispers, atmosphere",
+          "lyricQuote": null,
+          "commentary": "The atmosphere shifts. Something predatory enters the album. You're no longer alone. Someone is watching.",
+          "section": "intro"
+        },
+        {
+          "timeSec": 15,
+          "label": "\"Long lost words whisper slowly to me\"",
+          "lyricQuote": "Long lost words whisper slowly to me",
+          "commentary": "Words long lost. Whispering. Slowly. Whose voice? What voice?",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 24,
+          "label": "\"Still can't find what keeps me here\"",
+          "lyricQuote": "Still can't find what keeps me here",
+          "commentary": "I still don't know what keeps me here. In this house. In this relationship. In this life.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 32,
+          "label": "\"When all this time I've been so hollow inside\"",
+          "lyricQuote": "When all this time I've been so hollow inside",
+          "commentary": "All this time I've been so hollow inside. The revelation of emptiness.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 40,
+          "label": "\"I know you're still there\"",
+          "lyricQuote": "I know you're still there",
+          "commentary": "I know you're still there. The certainty of invisible presence.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 48,
+          "label": "\"Watching me, wanting me\"",
+          "lyricQuote": "Watching me, wanting me",
+          "commentary": "You're watching me. You want me. The gaze as possession.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 52,
+          "label": "\"I can feel you pull me down\"",
+          "lyricQuote": "I can feel you pull me down",
+          "commentary": "I feel you pulling me down. The gravity of obsession.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 58,
+          "label": "\"Fearing you, loving you\"",
+          "lyricQuote": "Fearing you, loving you",
+          "commentary": "Fearing you. Loving you. Both at once. The toxic cocktail.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 62,
+          "label": "\"I won't let you pull me down\"",
+          "lyricQuote": "I won't let you pull me down",
+          "commentary": "Resistance. I won't let you. Willpower against attraction.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 75,
+          "label": "\"Haunting you, I can smell you, alive\"",
+          "lyricQuote": "Haunting you, I can smell you, alive",
+          "commentary": "The reversal. SHE becomes the predator. I'm haunting YOU. I can smell you. Alive.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 85,
+          "label": "\"Your heart pounding in my head\"",
+          "lyricQuote": "Your heart pounding in my head",
+          "commentary": "Your heart pounding in my head. Total invasion. You are inside me.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 100,
+          "label": "\"Saving me, raping me\"",
+          "lyricQuote": "Saving me, raping me",
+          "commentary": "Saving me. Raping me. The two words side by side. The total confusion between salvation and destruction.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 105,
+          "label": "\"Watching me\"",
+          "lyricQuote": "Watching me",
+          "commentary": "Repeated. Obsessive. Watching me. Watching me. Watching me.",
+          "section": "verse2"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "slug": "tourniquet",
+      "title": "Tourniquet",
+      "durationSec": 278,
+      "annotations": [
+        {
+          "timeSec": 0,
+          "label": "Atmospheric intro",
+          "lyricQuote": null,
+          "commentary": "The darkest song on the album. Written from the perspective of someone who has just committed suicide. And who asks: will I be forgiven?",
+          "section": "intro"
+        },
+        {
+          "timeSec": 25,
+          "label": "\"I tried to kill the pain\"",
+          "lyricQuote": "I tried to kill the pain",
+          "commentary": "I tried to kill the pain. The goal of suicide isn't to die — it's to stop suffering.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 32,
+          "label": "\"But only brought more\"",
+          "lyricQuote": "But only brought more",
+          "commentary": "But only brought more pain. The cruel irony.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 40,
+          "label": "\"I lay dying and I'm pouring crimson regret and betrayal\"",
+          "lyricQuote": "I lay dying and I'm pouring crimson regret and betrayal",
+          "commentary": "I'm dying and pouring crimson regret and betrayal. Blood as a metaphor for emotions flowing out.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 58,
+          "label": "\"I'm dying, praying, bleeding and screaming\"",
+          "lyricQuote": "I'm dying, praying, bleeding and screaming",
+          "commentary": "Dying. Praying. Bleeding. Screaming. The four simultaneous actions of the end.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 68,
+          "label": "\"Am I too lost to be saved?\"",
+          "lyricQuote": "Am I too lost to be saved?",
+          "commentary": "Am I too lost to be saved? THE question of the album. Of life, perhaps.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 78,
+          "label": "\"My God, my tourniquet\"",
+          "lyricQuote": "My God, my tourniquet",
+          "commentary": "My God, my tourniquet. The tourniquet stops the bleeding — but also the circulation. God as what saves you by immobilizing you.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 88,
+          "label": "\"Return to me salvation\"",
+          "lyricQuote": "Return to me salvation",
+          "commentary": "Return salvation to me. The prayer of someone who has lost everything.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 105,
+          "label": "\"Do you remember me?\"",
+          "lyricQuote": "Do you remember me?",
+          "commentary": "Do you remember me? The question to God. Or to the loved one. Or to oneself.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 112,
+          "label": "\"Lost for so long\"",
+          "lyricQuote": "Lost for so long",
+          "commentary": "Lost for so long. Time in absence.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 120,
+          "label": "\"Will you be on the other side?\"",
+          "lyricQuote": "Will you be on the other side?",
+          "commentary": "Will you be on the other side? The hope of finding someone after death.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 128,
+          "label": "\"Or will you forget me?\"",
+          "lyricQuote": "Or will you forget me?",
+          "commentary": "Or will you forget me? The fear of eternal oblivion.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 170,
+          "label": "\"My wounds cry for the grave\"",
+          "lyricQuote": "My wounds cry for the grave",
+          "commentary": "My wounds cry for the grave. The body asking for rest.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 180,
+          "label": "\"My soul cries for deliverance\"",
+          "lyricQuote": "My soul cries for deliverance",
+          "commentary": "My soul cries for deliverance. The spirit asking for liberation.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 190,
+          "label": "\"Will I be denied Christ?\"",
+          "lyricQuote": "Will I be denied Christ?",
+          "commentary": "Will I be denied? Christ. Salvation. The theological question of suicide.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 198,
+          "label": "\"Tourniquet, my suicide\"",
+          "lyricQuote": "Tourniquet, my suicide",
+          "commentary": "Tourniquet, my suicide. The two words together. What saves and what kills — the same thing.",
+          "section": "bridge"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "slug": "imaginary",
+      "title": "Imaginary",
+      "durationSec": 256,
+      "annotations": [
+        {
+          "timeSec": 0,
+          "label": "Gentle introduction",
+          "lyricQuote": null,
+          "commentary": "After death — the refuge. The world built to escape. Amy wrote this in middle school. At 12-13. The imaginary world of the child who survives.",
+          "section": "intro"
+        },
+        {
+          "timeSec": 20,
+          "label": "\"I linger in the doorway\"",
+          "lyricQuote": "I linger in the doorway",
+          "commentary": "I linger in the doorway. Between two worlds. Inside and outside.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 28,
+          "label": "\"Of alarm clock screaming monsters calling my name\"",
+          "lyricQuote": "Of alarm clock screaming monsters calling my name",
+          "commentary": "Alarm clocks screaming. Monsters calling my name. The real world as aggression.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 40,
+          "label": "\"Let me stay where the wind will whisper to me\"",
+          "lyricQuote": "Let me stay where the wind will whisper to me",
+          "commentary": "Let me stay where the wind will whisper to me. The imaginary world as a place of gentleness.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 52,
+          "label": "\"Where the raindrops as they're falling tell a story\"",
+          "lyricQuote": "Where the raindrops as they're falling tell a story",
+          "commentary": "Where raindrops tell a story as they fall. Nature as narrator.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 65,
+          "label": "\"In my field of paper flowers\"",
+          "lyricQuote": "In my field of paper flowers",
+          "commentary": "In my field of paper flowers. Not real flowers. Paper. Constructed. Artificial. But mine.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 75,
+          "label": "\"And candy clouds of lullaby\"",
+          "lyricQuote": "And candy clouds of lullaby",
+          "commentary": "Candy clouds and lullabies. The vocabulary of childhood. Primal comfort.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 85,
+          "label": "\"I lie inside myself for hours\"",
+          "lyricQuote": "I lie inside myself for hours",
+          "commentary": "I lie inside myself for hours. Dissociation as habitat.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 95,
+          "label": "\"And watch my purple sky fly over me\"",
+          "lyricQuote": "And watch my purple sky fly over me",
+          "commentary": "And I watch my purple sky fly over me. A personal sky. An impossible color. Purple.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 115,
+          "label": "\"Don't say I'm out of touch with this rampant chaos — your reality\"",
+          "lyricQuote": "Don't say I'm out of touch with this rampant chaos — your reality",
+          "commentary": "Don't say I'm out of touch with this chaos — YOUR reality. She knows. She chooses.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 128,
+          "label": "\"I know well what lies beyond my sleeping refuge\"",
+          "lyricQuote": "I know well what lies beyond my sleeping refuge",
+          "commentary": "I know exactly what lies beyond my sleeping refuge. Full awareness of the escape.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 138,
+          "label": "\"The nightmare I built my own world to escape\"",
+          "lyricQuote": "The nightmare I built my own world to escape",
+          "commentary": "The nightmare I built my own world to escape. The complete admission of the mechanism.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 170,
+          "label": "\"Swallowed up in the sound of my screaming\"",
+          "lyricQuote": "Swallowed up in the sound of my screaming",
+          "commentary": "Swallowed by the sound of my own screams. The inner world becomes so loud it drowns everything.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 182,
+          "label": "\"Cannot cease for the fear of silent nights\"",
+          "lyricQuote": "Cannot cease for the fear of silent nights",
+          "commentary": "I cannot stop for fear of silent nights. Noise as protection. Silence as threat.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 195,
+          "label": "\"Oh how I long for the deep sleep dreaming\"",
+          "lyricQuote": "Oh how I long for the deep sleep dreaming",
+          "commentary": "Oh how I long for the deep sleep dreaming. The ultimate escape — endless sleep.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 208,
+          "label": "\"The goddess of imaginary light\"",
+          "lyricQuote": "The goddess of imaginary light",
+          "commentary": "The goddess of imaginary light. The being she created to rule her world.",
+          "section": "bridge"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "slug": "taking-over-me",
+      "title": "Taking Over Me",
+      "durationSec": 228,
+      "annotations": [
+        {
+          "timeSec": 0,
+          "label": "Gentle intro",
+          "lyricQuote": null,
+          "commentary": "The return to the other. After the inner refuge — the obsession with someone. How a person becomes your world.",
+          "section": "intro"
+        },
+        {
+          "timeSec": 15,
+          "label": "\"You don't remember me but I remember you\"",
+          "lyricQuote": "You don't remember me but I remember you",
+          "commentary": "You don't remember me but I remember you. The asymmetry of obsession.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 26,
+          "label": "\"I lie awake and try so hard not to think of you\"",
+          "lyricQuote": "I lie awake and try so hard not to think of you",
+          "commentary": "I lie awake and try so hard not to think of you. The futile effort against obsession.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 37,
+          "label": "\"But who can decide what they dream?\"",
+          "lyricQuote": "But who can decide what they dream?",
+          "commentary": "But who can decide what they dream? Powerlessness against the unconscious.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 44,
+          "label": "\"And dream I do\"",
+          "lyricQuote": "And dream I do",
+          "commentary": "And dream I do. The simple admission.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 52,
+          "label": "\"I believe in you\"",
+          "lyricQuote": "I believe in you",
+          "commentary": "I believe in you. Faith placed in a person.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 58,
+          "label": "\"I'll give up everything just to find you\"",
+          "lyricQuote": "I'll give up everything just to find you",
+          "commentary": "I'll give up everything just to find you. Total sacrifice.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 65,
+          "label": "\"I have to be with you to live, to breathe\"",
+          "lyricQuote": "I have to be with you to live, to breathe",
+          "commentary": "I have to be with you to live, to breathe. Dependency as condition of life.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 72,
+          "label": "\"You're taking over me\"",
+          "lyricQuote": "You're taking over me",
+          "commentary": "You're taking over me. The title. The consented invasion.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 90,
+          "label": "\"Have you forgotten all I know and all we had?\"",
+          "lyricQuote": "Have you forgotten all I know and all we had?",
+          "commentary": "Have you forgotten everything I know and everything we had? Memory as contested territory.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 102,
+          "label": "\"You saw me mourning my love for you and touched my hand\"",
+          "lyricQuote": "You saw me mourning my love for you and touched my hand",
+          "commentary": "You saw me mourning my love for you and touched my hand. The gesture that changes everything.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 112,
+          "label": "\"I knew you loved me then\"",
+          "lyricQuote": "I knew you loved me then",
+          "commentary": "I knew you loved me then. Certainty in memory.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 150,
+          "label": "\"I look in the mirror and see your face\"",
+          "lyricQuote": "I look in the mirror and see your face",
+          "commentary": "I look in the mirror and see your face. The other replacing the self.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 162,
+          "label": "\"If I look deep enough\"",
+          "lyricQuote": "If I look deep enough",
+          "commentary": "If I look deep enough. Searching in one's own eyes.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 170,
+          "label": "\"So many things inside that are just like you are taking over\"",
+          "lyricQuote": "So many things inside that are just like you are taking over",
+          "commentary": "So many things inside that are like you are taking over. The inner invasion.",
+          "section": "bridge"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "slug": "hello",
+      "title": "Hello",
+      "durationSec": 220,
+      "annotations": [
+        {
+          "timeSec": null,
+          "label": "THE HEART OF THE ALBUM",
+          "lyricQuote": null,
+          "commentary": "Amy Lee's sister died at the age of 3. Amy was 6. This song captures \"a day from that time.\" It has never been performed live. Too much.",
+          "section": "special"
+        },
+        {
+          "timeSec": 0,
+          "label": "Melancholic atmosphere",
+          "lyricQuote": null,
+          "commentary": "The sound of a child's grief. Something broken that can never be repaired.",
+          "section": "intro"
+        },
+        {
+          "timeSec": 18,
+          "label": "\"Playground school bell rings again\"",
+          "lyricQuote": "Playground school bell rings again",
+          "commentary": "The school bell rings again. Life continues. Children play. But not her.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 28,
+          "label": "\"Rain clouds come to play again\"",
+          "lyricQuote": "Rain clouds come to play again",
+          "commentary": "Rain clouds come to play again. Weather as playmate.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 38,
+          "label": "\"Has no one told you she's not breathing?\"",
+          "lyricQuote": "Has no one told you she's not breathing?",
+          "commentary": "Has no one told you she's not breathing? The six-year-old's question. The incomprehension. Why isn't anyone doing something?",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 55,
+          "label": "\"Hello, I'm your mind giving you someone to talk to\"",
+          "lyricQuote": "Hello, I'm your mind giving you someone to talk to",
+          "commentary": "Hello, I'm your mind giving you someone to talk to. The voice speaking — it's the dead sister. Saying: I'm here so you won't be alone.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 72,
+          "label": "\"Hello\"",
+          "lyricQuote": "Hello",
+          "commentary": "Hello. The simplest word. The most devastating here.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 85,
+          "label": "\"If I smile and don't believe\"",
+          "lyricQuote": "If I smile and don't believe",
+          "commentary": "If I smile and don't believe. The mask of the grieving child.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 95,
+          "label": "\"Soon I know I'll wake from this dream\"",
+          "lyricQuote": "Soon I know I'll wake from this dream",
+          "commentary": "Soon I know I'll wake from this dream. Denial as protection.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 105,
+          "label": "\"Don't try to fix me, I'm not broken\"",
+          "lyricQuote": "Don't try to fix me, I'm not broken",
+          "commentary": "Don't try to fix me, I'm not broken. Resistance to help. To pity.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 120,
+          "label": "\"Hello, I'm the lie living for you so you can hide\"",
+          "lyricQuote": "Hello, I'm the lie living for you so you can hide",
+          "commentary": "Hello, I'm the lie living for you so you can hide. The dead sister saying: I am the illusion that lets you keep going.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 135,
+          "label": "\"Don't cry\"",
+          "lyricQuote": "Don't cry",
+          "commentary": "Don't cry. The little sister consoling the big one.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 145,
+          "label": "\"Suddenly I know I'm not sleeping\"",
+          "lyricQuote": "Suddenly I know I'm not sleeping",
+          "commentary": "Suddenly I know I'm not sleeping. The brutal awakening. This isn't a dream. She really is dead.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 160,
+          "label": "\"Hello, I'm still here\"",
+          "lyricQuote": "Hello, I'm still here",
+          "commentary": "Hello, I'm still here. The persistence of absent presence.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 175,
+          "label": "\"All that's left of yesterday\"",
+          "lyricQuote": "All that's left of yesterday",
+          "commentary": "All that's left of yesterday. What survives of the past. A ghost. A voice. A \"hello.\"",
+          "section": "bridge"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "slug": "my-last-breath",
+      "title": "My Last Breath",
+      "durationSec": 247,
+      "annotations": [
+        {
+          "timeSec": 0,
+          "label": "Delicate introduction",
+          "lyricQuote": null,
+          "commentary": "After \"Hello\" — another form of ending. Not the death of another. Her own death, accepted.",
+          "section": "intro"
+        },
+        {
+          "timeSec": 12,
+          "label": "\"Hold on to me love\"",
+          "lyricQuote": "Hold on to me love",
+          "commentary": "Hold on to me, my love. The first words of someone who is leaving.",
+          "section": "intro"
+        },
+        {
+          "timeSec": 18,
+          "label": "\"You know I can't stay long\"",
+          "lyricQuote": "You know I can't stay long",
+          "commentary": "You know I can't stay long. The admission of imminent departure.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 25,
+          "label": "\"All I wanted to say was I love you and I'm not afraid\"",
+          "lyricQuote": "All I wanted to say was I love you and I'm not afraid",
+          "commentary": "All I wanted to say was I love you and I'm not afraid. The essential message. Two things. Love. Absence of fear.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 38,
+          "label": "\"Can you hear me?\"",
+          "lyricQuote": "Can you hear me?",
+          "commentary": "Can you hear me? The question of one who is fading.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 44,
+          "label": "\"Can you feel me in your arms?\"",
+          "lyricQuote": "Can you feel me in your arms?",
+          "commentary": "Can you feel me in your arms? The physical presence about to disappear.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 60,
+          "label": "\"Holding my last breath\"",
+          "lyricQuote": "Holding my last breath",
+          "commentary": "Holding my last breath. The title. The moment between life and death.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 68,
+          "label": "\"Safe inside myself\"",
+          "lyricQuote": "Safe inside myself",
+          "commentary": "Safe inside myself. The inner refuge at the moment of dying.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 75,
+          "label": "\"Are all my thoughts of you\"",
+          "lyricQuote": "Are all my thoughts of you",
+          "commentary": "All my thoughts are of you. At the end, there is only this.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 82,
+          "label": "\"Sweet raptured light, it ends here tonight\"",
+          "lyricQuote": "Sweet raptured light, it ends here tonight",
+          "commentary": "Sweet raptured light, it ends here tonight. The beauty of an accepted ending.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 105,
+          "label": "\"I'll miss the winter\"",
+          "lyricQuote": "I'll miss the winter",
+          "commentary": "I'll miss the winter. The concrete detail. Not \"life\" — winter. Specific things.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 112,
+          "label": "\"A world of fragile things\"",
+          "lyricQuote": "A world of fragile things",
+          "commentary": "A world of fragile things. What will be lost.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 120,
+          "label": "\"Look for me in the white forest hiding in a hollow tree\"",
+          "lyricQuote": "Look for me in the white forest hiding in a hollow tree",
+          "commentary": "Look for me in the white forest, hiding in a hollow tree. Instructions for after. Where to find me when I'm gone.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 135,
+          "label": "\"I know you hear me, I can taste it in your tears\"",
+          "lyricQuote": "I know you hear me, I can taste it in your tears",
+          "commentary": "I know you hear me, I can taste it in your tears. The connection that persists until the very end.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 175,
+          "label": "\"Closing your eyes to disappear\"",
+          "lyricQuote": "Closing your eyes to disappear",
+          "commentary": "Closing your eyes to disappear. The final gesture.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 185,
+          "label": "\"You pray your dreams will leave you here\"",
+          "lyricQuote": "You pray your dreams will leave you here",
+          "commentary": "You pray your dreams will leave you here. The wish of the one who remains — not to follow into death.",
+          "section": "bridge"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "slug": "whisper",
+      "title": "Whisper",
+      "durationSec": 327,
+      "annotations": [
+        {
+          "timeSec": 0,
+          "label": "Ominous atmosphere",
+          "lyricQuote": null,
+          "commentary": "The end of the album. Not a resolution — a continuation of the fight. The fight never truly ends.",
+          "section": "intro"
+        },
+        {
+          "timeSec": 25,
+          "label": "\"Catch me as I fall\"",
+          "lyricQuote": "Catch me as I fall",
+          "commentary": "Catch me as I fall. The request for help.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 32,
+          "label": "\"Say you're here and it's all over now\"",
+          "lyricQuote": "Say you're here and it's all over now",
+          "commentary": "Say you're here and it's all over now. The need to hear that it'll be okay.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 40,
+          "label": "\"Speaking to the atmosphere\"",
+          "lyricQuote": "Speaking to the atmosphere",
+          "commentary": "Speaking to the atmosphere. Speaking to no one. To everything. To the void.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 47,
+          "label": "\"No one's here and I fall into myself\"",
+          "lyricQuote": "No one's here and I fall into myself",
+          "commentary": "No one's here and I fall into myself. The inner collapse.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 55,
+          "label": "\"This truth drives me into madness\"",
+          "lyricQuote": "This truth drives me into madness",
+          "commentary": "This truth drives me into madness. What truth? Perhaps that no one truly comes.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 65,
+          "label": "\"I know I can stop the pain if I will it all away\"",
+          "lyricQuote": "I know I can stop the pain if I will it all away",
+          "commentary": "I know I can stop the pain if I will it all away. Control through willpower. Or the illusion of control.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 80,
+          "label": "\"Don't turn away\"",
+          "lyricQuote": "Don't turn away",
+          "commentary": "Don't turn away. The injunction to oneself.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 85,
+          "label": "\"Don't give in to the pain\"",
+          "lyricQuote": "Don't give in to the pain",
+          "commentary": "Don't give in to the pain. Resistance.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 90,
+          "label": "\"Don't try to hide\"",
+          "lyricQuote": "Don't try to hide",
+          "commentary": "Don't try to hide. Forced honesty.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 95,
+          "label": "\"Though they're screaming your name\"",
+          "lyricQuote": "Though they're screaming your name",
+          "commentary": "Though they're screaming your name. The voices. The calls. The noise.",
+          "section": "verse1"
+        },
+        {
+          "timeSec": 100,
+          "label": "\"Don't close your eyes\"",
+          "lyricQuote": "Don't close your eyes",
+          "commentary": "Don't close your eyes. Stay conscious.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 105,
+          "label": "\"God knows what lies behind them\"",
+          "lyricQuote": "God knows what lies behind them",
+          "commentary": "God knows what lies behind them. Behind closed eyes — what?",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 110,
+          "label": "\"Don't turn out the light\"",
+          "lyricQuote": "Don't turn out the light",
+          "commentary": "Don't turn out the light. Stay in the light.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 115,
+          "label": "\"Never sleep, never die\"",
+          "lyricQuote": "Never sleep, never die",
+          "commentary": "Never sleep, never die. The impossible injunction. To live forever awake.",
+          "section": "chorus"
+        },
+        {
+          "timeSec": 150,
+          "label": "\"Fallen angels at my feet\"",
+          "lyricQuote": "Fallen angels at my feet",
+          "commentary": "Fallen angels at my feet. The presences around her.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 158,
+          "label": "\"Whispered voices at my ear\"",
+          "lyricQuote": "Whispered voices at my ear",
+          "commentary": "Whispered voices at my ear. The temptations. The calls.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 165,
+          "label": "\"Death before my eyes\"",
+          "lyricQuote": "Death before my eyes",
+          "commentary": "Death before my eyes. The direct vision.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 172,
+          "label": "\"Lying next to me I fear\"",
+          "lyricQuote": "Lying next to me I fear",
+          "commentary": "Lying next to me, I fear. Death as a bedfellow.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 180,
+          "label": "\"She beckons me, shall I give in?\"",
+          "lyricQuote": "She beckons me, shall I give in?",
+          "commentary": "She beckons me, shall I give in? The question remains open.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 190,
+          "label": "\"Upon my end shall I begin?\"",
+          "lyricQuote": "Upon my end shall I begin?",
+          "commentary": "Upon my end, shall I begin? Death as a new beginning.",
+          "section": "verse2"
+        },
+        {
+          "timeSec": 200,
+          "label": "\"Forsaking all I've fallen for\"",
+          "lyricQuote": "Forsaking all I've fallen for",
+          "commentary": "Forsaking all I've fallen for. The sacrifice.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 210,
+          "label": "\"I rise to meet the end\"",
+          "lyricQuote": "I rise to meet the end",
+          "commentary": "I rise to meet the end. The final action — rising, not falling.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 240,
+          "label": "LATIN CHOIR",
+          "lyricQuote": null,
+          "commentary": "The Millennium Choir sings in Latin. The sacred dimension. The battle between life and death becomes ritual.",
+          "section": "bridge"
+        },
+        {
+          "timeSec": 285,
+          "label": "\"Servatis a periculum, servatis a maleficum\"",
+          "lyricQuote": "Servatis a periculum, servatis a maleficum",
+          "commentary": "\"Saved from danger, saved from evil.\" The Latin prayer. The choir imploring.",
+          "section": "outro"
+        },
+        {
+          "timeSec": 315,
+          "label": "Instrumental ending",
+          "lyricQuote": null,
+          "commentary": "The album ends without resolution. The fight continues. No victory declared. No defeat admitted. Just silence after song.",
+          "section": "outro"
+        }
+      ]
+    }
+  ],
+  "silenceAfterAlbum": "46 minutes of emotional autobiography.\nAmy Lee was between 15 and 21 years old when she wrote these songs.\nThe death of her sister. An abusive relationship. Dissociation. Contemplated suicide. The refuge built. Survival.\n17 million copies sold.\nBecause these questions are universal:\n- Can you be too lost to be saved?\n- What remains when someone leaves?\n- How do you know what is real?\n- How do you resist the call of the void?\nThe album doesn't answer.\nIt bears witness.\n\"Hello, I'm still here. All that's left of yesterday.\""
+}

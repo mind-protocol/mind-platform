@@ -1,5 +1,7 @@
 'use client';
 
+import { Link } from '@/i18n/navigation';
+
 interface Release {
   title: string;
   subtitle: string;
@@ -52,7 +54,7 @@ function ReleaseCard({ release }: { release: Release }) {
         {release.description}
       </p>
 
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 mb-4">
         {release.docs.map((doc) => (
           <a
             key={doc.url}
@@ -78,6 +80,32 @@ function ReleaseCard({ release }: { release: Release }) {
           </a>
         ))}
       </div>
+
+      <Link
+        href="/music/evanescence/fallen"
+        className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition text-sm font-semibold tracking-wide"
+      >
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        Enter Augmented Listening Experience
+      </Link>
     </div>
   );
 }

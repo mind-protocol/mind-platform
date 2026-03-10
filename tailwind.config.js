@@ -20,6 +20,17 @@ module.exports = {
           L3: '#8b5cf6', // Purple - Ecosystem
           L4: '#f59e0b', // Amber - Protocol
         },
+        // Fallen (Evanescence) palette
+        fallen: {
+          bg: '#0a1628',
+          surface: '#0f1d32',
+          border: '#1a2a42',
+          text: '#d8dfe8',
+          accent: '#4a7ab5',
+          highlight: '#8ab4e8',
+          glow: '#9fc5f0',
+          muted: '#5a6d8a',
+        },
         // Venice / Serenissima palette
         venice: {
           copper: { DEFAULT: '#D4920B', light: '#E8B44A', dark: '#B87A08' },
