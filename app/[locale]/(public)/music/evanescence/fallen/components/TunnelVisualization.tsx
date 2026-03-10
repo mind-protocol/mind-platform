@@ -939,6 +939,408 @@ function WordInstance({
 }
 
 /* ================================================================== */
+/*  7. HarpStrings — MidHigh-reactive vibrating lines in tunnel        */
+/* ================================================================== */
+
+const NUM_STRINGS = 10;
+const STRING_POINTS = 64;
+
+function HarpStrings({ frequencyRef, currentTime, isPlaying, sectionColors }: InternalProps) {
+  const pointsRef = useRef<THREE.Points>(null);
+  const currentColor = useRef(new THREE.Color().copy(CYAN));
+
+  // All strings share one big points buffer for performance
+  const totalPoints = NUM_STRINGS * STRING_POINTS;
+  const positions = useMemo(() => new Float32Array(totalPoints * 3), [totalPoints]);
+  const colors = useMemo(() => new Float32Array(totalPoints * 3), [totalPoints]);
+
+  useFrame((state, delta) => {
+    if (!pointsRef.current) return;
+
+    const freq = frequencyRef.current;
+    const midHigh = freq?.midHigh ?? 0;
+    const energy = freq?.energy ?? 0;
+    const phase = getPhase(currentTime);
+    const t = state.clock.elapsedTime;
+
+    // Smooth color toward section secondary
+    currentColor.current.lerp(sectionColors.secondary, delta * 2);
+    const cr = currentColor.current.r;
+    const cg = currentColor.current.g;
+    const cb = currentColor.current.b;
+
+    const opacity = lerp(0.02, 0.7, midHigh * phase.growth) * (0.3 + energy * 0.7);
+
+    for (let s = 0; s < NUM_STRINGS; s++) {
+      const stringRatio = s / (NUM_STRINGS - 1);
+      const angle = (stringRatio - 0.5) * Math.PI * 0.8;
+      const radius = 3 + stringRatio * 2;
+      const baseX = Math.sin(angle) * radius;
+      const baseY = Math.cos(angle) * radius - 1;
+
+      const stringFreq = 2 + s * 0.7;
+      const vibration = midHigh * (0.3 + Math.sin(t * stringFreq + s) * 0.7);
+
+      for (let p = 0; p < STRING_POINTS; p++) {
+        const idx = (s * STRING_POINTS + p) * 3;
+        const ratio = p / (STRING_POINTS - 1);
+        const z = -ratio * 35;
+        const amp = Math.sin(ratio * Math.PI) * vibration * 0.8;
+        const wave = Math.sin(ratio * stringFreq * 2 + t * 3 + s * 1.5) * amp;
+
+        positions[idx] = baseX + wave * Math.cos(angle);
+        positions[idx + 1] = baseY + wave * Math.sin(angle);
+        positions[idx + 2] = z;
+
+        colors[idx] = cr * opacity;
+        colors[idx + 1] = cg * opacity;
+        colors[idx + 2] = cb * opacity;
+      }
+    }
+
+    const geom = pointsRef.current.geometry;
+    (geom.getAttribute('position') as THREE.BufferAttribute).needsUpdate = true;
+    (geom.getAttribute('color') as THREE.BufferAttribute).needsUpdate = true;
+  });
+
+  return (
+    <points ref={pointsRef as React.RefObject<THREE.Points>}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-color" args={[colors, 3]} />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.03}
+        sizeAttenuation
+        transparent
+        opacity={0.9}
+        vertexColors
+        toneMapped={false}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+      />
+    </points>
+  );
+}
+
+/* ================================================================== */
+/*  8. SnareGeometrics — MidLow burst shapes on transients             */
+/* ================================================================== */
+
+const MAX_SHAPES = 24;
+
+interface ShapeState {
+  active: boolean;
+  x: number;
+  y: number;
+  z: number;
+  rotSpeed: number;
+  scale: number;
+  age: number;
+  maxAge: number;
+  sides: number; // 3=tri, 6=hex
+}
+
+function SnareGeometrics({ frequencyRef, currentTime, isPlaying, sectionColors }: InternalProps) {
+  const groupRef = useRef<THREE.Group>(null);
+  const meshRefs = useRef<(THREE.Mesh | null)[]>(new Array(MAX_SHAPES).fill(null));
+  const matRefs = useRef<(THREE.MeshBasicMaterial | null)[]>(new Array(MAX_SHAPES).fill(null));
+  const shapes = useRef<ShapeState[]>(
+    Array.from({ length: MAX_SHAPES }, () => ({
+      active: false, x: 0, y: 0, z: 0,
+      rotSpeed: 0, scale: 0, age: 0, maxAge: 1, sides: 6,
+    })),
+  );
+  const prevMidLow = useRef(0);
+  const currentColor = useRef(new THREE.Color().copy(GOLD));
+
+  useFrame((_state, delta) => {
+    if (!groupRef.current) return;
+
+    const freq = frequencyRef.current;
+    const midLow = freq?.midLow ?? 0;
+    const energy = freq?.energy ?? 0;
+    const phase = getPhase(currentTime);
+
+    currentColor.current.lerp(sectionColors.accent, delta * 2);
+
+    // Detect snare transient: sudden midLow spike
+    const snareHit = midLow - prevMidLow.current > 0.1 && midLow > 0.25;
+    prevMidLow.current = midLow;
+
+    // Spawn shapes on snare
+    if (isPlaying && snareHit && phase.growth > 0.2) {
+      const count = 1 + Math.floor(midLow * 3);
+      let spawned = 0;
+      for (let i = 0; i < MAX_SHAPES && spawned < count; i++) {
+        if (!shapes.current[i].active) {
+          const s = shapes.current[i];
+          s.active = true;
+          s.x = (Math.random() - 0.5) * 10;
+          s.y = (Math.random() - 0.5) * 6;
+          s.z = -5 - Math.random() * 15;
+          s.rotSpeed = (Math.random() - 0.5) * 4;
+          s.scale = 0.2 + Math.random() * 0.5;
+          s.age = 0;
+          s.maxAge = 0.8 + Math.random() * 1.2;
+          s.sides = Math.random() > 0.5 ? 6 : 3;
+          spawned++;
+        }
+      }
+    }
+
+    // Update shapes
+    for (let i = 0; i < MAX_SHAPES; i++) {
+      const s = shapes.current[i];
+      const mesh = meshRefs.current[i];
+      const mat = matRefs.current[i];
+      if (!mesh || !mat) continue;
+
+      if (s.active) {
+        s.age += delta;
+        if (s.age > s.maxAge) {
+          s.active = false;
+          mesh.visible = false;
+          continue;
+        }
+
+        const lifeRatio = s.age / s.maxAge;
+        // Quick scale-up, slow fade
+        const scaleT = lifeRatio < 0.1 ? lifeRatio / 0.1 : 1 + lifeRatio * 0.3;
+        const fade = lifeRatio < 0.05
+          ? lifeRatio / 0.05
+          : 1 - (lifeRatio * lifeRatio); // quadratic fade
+
+        mesh.visible = true;
+        mesh.position.set(s.x, s.y, s.z);
+        mesh.scale.setScalar(s.scale * scaleT);
+        mesh.rotation.z += s.rotSpeed * delta;
+
+        mat.opacity = fade * 0.6 * (0.3 + energy * 0.7);
+        mat.color.copy(currentColor.current);
+      } else {
+        mesh.visible = false;
+      }
+    }
+  });
+
+  // Pre-create geometries
+  const triGeom = useMemo(() => new THREE.RingGeometry(0.8, 1, 3), []);
+  const hexGeom = useMemo(() => new THREE.RingGeometry(0.8, 1, 6), []);
+
+  return (
+    <group ref={groupRef}>
+      {Array.from({ length: MAX_SHAPES }, (_, i) => (
+        <mesh
+          key={i}
+          ref={(el) => { meshRefs.current[i] = el; }}
+          visible={false}
+          geometry={i % 2 === 0 ? hexGeom : triGeom}
+        >
+          <meshBasicMaterial
+            ref={(el) => { matRefs.current[i] = el; }}
+            color={GOLD}
+            transparent
+            opacity={0}
+            toneMapped={false}
+            side={THREE.DoubleSide}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+          />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+/* ================================================================== */
+/*  9. SparkleField — Treble-reactive micro particles (hi-hats/air)    */
+/* ================================================================== */
+
+const MAX_SPARKLES = 600;
+
+function SparkleField({ frequencyRef, currentTime, isPlaying, sectionColors }: InternalProps) {
+  const pointsRef = useRef<THREE.Points>(null);
+  const prevTreble = useRef(0);
+
+  const positions = useMemo(() => new Float32Array(MAX_SPARKLES * 3), []);
+  const colors = useMemo(() => new Float32Array(MAX_SPARKLES * 3), []);
+  const sizes = useMemo(() => {
+    const s = new Float32Array(MAX_SPARKLES);
+    for (let i = 0; i < MAX_SPARKLES; i++) s[i] = 0;
+    return s;
+  }, []);
+
+  // Per-particle state stored in typed arrays for performance
+  const ages = useMemo(() => new Float32Array(MAX_SPARKLES), []);
+  const maxAges = useMemo(() => new Float32Array(MAX_SPARKLES), []);
+  const velocities = useMemo(() => new Float32Array(MAX_SPARKLES * 3), []);
+  const actives = useMemo(() => new Uint8Array(MAX_SPARKLES), []);
+
+  useFrame((_state, delta) => {
+    if (!pointsRef.current) return;
+
+    const freq = frequencyRef.current;
+    const treble = freq?.treble ?? 0;
+    const energy = freq?.energy ?? 0;
+    const phase = getPhase(currentTime);
+
+    // Detect hi-hat transient
+    const hiHatHit = treble - prevTreble.current > 0.05 && treble > 0.15;
+    prevTreble.current = treble;
+
+    // Spawn sparkles on treble peaks
+    if (isPlaying && hiHatHit && phase.growth > 0.1) {
+      const count = Math.floor(5 + treble * 20);
+      let spawned = 0;
+      for (let i = 0; i < MAX_SPARKLES && spawned < count; i++) {
+        if (!actives[i]) {
+          actives[i] = 1;
+          ages[i] = 0;
+          maxAges[i] = 0.3 + Math.random() * 0.8;
+
+          // Spawn in a spread around the tunnel
+          positions[i * 3] = (Math.random() - 0.5) * 12;
+          positions[i * 3 + 1] = (Math.random() - 0.5) * 8;
+          positions[i * 3 + 2] = -3 - Math.random() * 20;
+
+          // Slight outward drift
+          velocities[i * 3] = (Math.random() - 0.5) * 2;
+          velocities[i * 3 + 1] = (Math.random() - 0.5) * 2;
+          velocities[i * 3 + 2] = (Math.random() - 0.5) * 1;
+
+          spawned++;
+        }
+      }
+    }
+
+    // Update particles
+    const sr = sectionColors.secondary.r;
+    const sg = sectionColors.secondary.g;
+    const sb = sectionColors.secondary.b;
+
+    for (let i = 0; i < MAX_SPARKLES; i++) {
+      if (actives[i]) {
+        ages[i] += delta;
+        if (ages[i] > maxAges[i]) {
+          actives[i] = 0;
+          sizes[i] = 0;
+          continue;
+        }
+
+        // Move
+        positions[i * 3] += velocities[i * 3] * delta;
+        positions[i * 3 + 1] += velocities[i * 3 + 1] * delta;
+        positions[i * 3 + 2] += velocities[i * 3 + 2] * delta;
+
+        // Brightness: flash-in, slow fade
+        const lifeRatio = ages[i] / maxAges[i];
+        const brightness = lifeRatio < 0.05
+          ? lifeRatio / 0.05
+          : Math.max(0, 1 - lifeRatio * lifeRatio);
+
+        sizes[i] = brightness * (0.02 + treble * 0.04);
+
+        // White-ish with slight section tint
+        const tint = 0.3;
+        colors[i * 3] = 1 * (1 - tint) + sr * tint;
+        colors[i * 3 + 1] = 1 * (1 - tint) + sg * tint;
+        colors[i * 3 + 2] = 1 * (1 - tint) + sb * tint;
+      } else {
+        sizes[i] = 0;
+      }
+    }
+
+    const geom = pointsRef.current.geometry;
+    (geom.getAttribute('position') as THREE.BufferAttribute).needsUpdate = true;
+    (geom.getAttribute('color') as THREE.BufferAttribute).needsUpdate = true;
+    (geom.getAttribute('size') as THREE.BufferAttribute).needsUpdate = true;
+  });
+
+  return (
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-color" args={[colors, 3]} />
+        <bufferAttribute attach="attributes-size" args={[sizes, 1]} />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.04}
+        sizeAttenuation
+        transparent
+        opacity={0.9}
+        vertexColors
+        toneMapped={false}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+      />
+    </points>
+  );
+}
+
+/* ================================================================== */
+/*  10. SectionFlash — Transition wave on section changes              */
+/* ================================================================== */
+
+function SectionFlash({
+  frequencyRef,
+  currentTime,
+  isPlaying,
+  sectionColors,
+  currentSection,
+}: InternalProps & { currentSection: string }) {
+  const meshRef = useRef<THREE.Mesh>(null);
+  const matRef = useRef<THREE.MeshBasicMaterial>(null);
+  const prevSection = useRef('');
+  const flashAge = useRef(999);
+  const flashColor = useRef(new THREE.Color().copy(VIOLET));
+
+  useFrame((_state, delta) => {
+    if (!meshRef.current || !matRef.current) return;
+
+    // Detect section change
+    if (currentSection && currentSection !== prevSection.current) {
+      prevSection.current = currentSection;
+      flashAge.current = 0;
+      flashColor.current.copy(sectionColors.primary);
+    }
+
+    flashAge.current += delta;
+
+    if (flashAge.current < 1.5) {
+      meshRef.current.visible = true;
+      // Quick flash in, slow fade
+      const t = flashAge.current / 1.5;
+      const opacity = t < 0.05
+        ? t / 0.05
+        : Math.max(0, 1 - t * t);
+
+      matRef.current.opacity = opacity * 0.3;
+      matRef.current.color.copy(flashColor.current);
+      meshRef.current.scale.setScalar(1 + t * 8);
+    } else {
+      meshRef.current.visible = false;
+    }
+  });
+
+  return (
+    <mesh ref={meshRef} visible={false} position={[0, 0, -5]}>
+      <ringGeometry args={[0, 1, 64]} />
+      <meshBasicMaterial
+        ref={matRef}
+        color={VIOLET}
+        transparent
+        opacity={0}
+        toneMapped={false}
+        side={THREE.DoubleSide}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+      />
+    </mesh>
+  );
+}
+
+/* ================================================================== */
 /*  Camera Controller — breathing tunnel with intensity modulation     */
 /* ================================================================== */
 
@@ -1050,7 +1452,7 @@ function AmbientLighting({
 /*  Scene — orchestrates all sub-components inside Canvas              */
 /* ================================================================== */
 
-function Scene({ frequencyRef, currentTime, isPlaying, dpr, sectionColors, activeText }: InternalProps) {
+function Scene({ frequencyRef, currentTime, isPlaying, dpr, sectionColors, activeText, currentSection }: InternalProps & { currentSection: string }) {
   return (
     <>
       <CameraController
@@ -1100,6 +1502,39 @@ function Scene({ frequencyRef, currentTime, isPlaying, dpr, sectionColors, activ
         dpr={dpr}
         sectionColors={sectionColors}
         activeText={activeText}
+      />
+      <HarpStrings
+        frequencyRef={frequencyRef}
+        currentTime={currentTime}
+        isPlaying={isPlaying}
+        dpr={dpr}
+        sectionColors={sectionColors}
+        activeText={activeText}
+      />
+      <SnareGeometrics
+        frequencyRef={frequencyRef}
+        currentTime={currentTime}
+        isPlaying={isPlaying}
+        dpr={dpr}
+        sectionColors={sectionColors}
+        activeText={activeText}
+      />
+      <SparkleField
+        frequencyRef={frequencyRef}
+        currentTime={currentTime}
+        isPlaying={isPlaying}
+        dpr={dpr}
+        sectionColors={sectionColors}
+        activeText={activeText}
+      />
+      <SectionFlash
+        frequencyRef={frequencyRef}
+        currentTime={currentTime}
+        isPlaying={isPlaying}
+        dpr={dpr}
+        sectionColors={sectionColors}
+        activeText={activeText}
+        currentSection={currentSection}
       />
       <FloatingWords
         frequencyRef={frequencyRef}
@@ -1165,6 +1600,7 @@ export default function TunnelVisualization({
             dpr={dpr}
             sectionColors={sectionColors}
             activeText={activeText ?? ''}
+            currentSection={currentSection ?? ''}
           />
         </PerformanceMonitor>
       </Canvas>
