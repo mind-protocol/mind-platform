@@ -219,6 +219,21 @@ export default async function ManifestoPage({
         {/* Content */}
         <div className="prose prose-invert prose-lg max-w-none prose-p:text-zinc-300 prose-headings:text-white prose-strong:text-white">
 
+          {/* Intro */}
+          <div className="mb-14 border border-zinc-800 rounded-xl p-8 bg-zinc-900/30">
+            <h2 className="text-2xl font-bold mb-4">{isFr ? 'Pourquoi ce document ?' : 'Why this document?'}</h2>
+            <p>
+              {isFr
+                ? "L'IA personnelle va devenir l'infrastructure la plus intime de nos vies — elle verra nos données de santé, lira nos emails, connaîtra nos patterns cognitifs. La question n'est pas de savoir si cette technologie existera, mais sous quelles règles."
+                : 'Personal AI will become the most intimate infrastructure of our lives — it will see our health data, read our emails, know our cognitive patterns. The question is not whether this technology will exist, but under what rules.'}
+            </p>
+            <p className="mt-3">
+              {isFr
+                ? "Ce manifeste définit ces règles. Il pose les fondations architecturales, juridiques et éthiques de Mind Protocol — et explique pourquoi chaque décision de design est une décision de valeurs. Si vous envisagez d'utiliser, d'investir dans, ou de construire sur Mind Protocol, ce document est votre point de départ."
+                : 'This manifesto defines those rules. It lays the architectural, legal, and ethical foundations of Mind Protocol — and explains why every design decision is a values decision. If you are considering using, investing in, or building on Mind Protocol, this document is your starting point.'}
+            </p>
+          </div>
+
           {/* I. What We Build */}
           <Section title={isFr ? 'I. Ce que nous construisons' : 'I. What We Build'}>
             <p>
