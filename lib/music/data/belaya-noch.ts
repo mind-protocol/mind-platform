@@ -76,6 +76,13 @@ export const belayaNoch: AugmentedTrack = {
     ],
   },
 
+  depthVisuals: {
+    manifestUrl: '/visuals/nlr/belaya-noch/manifest.json',
+    placement: 'background',
+    scale: 5,
+    opacity: 0.55,
+  },
+
   visuals: [
     {
       startSec: 0,

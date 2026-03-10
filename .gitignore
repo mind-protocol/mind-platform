@@ -46,5 +46,11 @@ __pycache__/
 .mind/runtime/
 .env
 
+# Generated visual assets (depth maps, frames — regenerate with scripts/process_track_visuals.py)
+public/visuals/
+
+# Audio files (too large for git)
+public/audio/
+
 # Private user data (biometrics, analysis)
 user/

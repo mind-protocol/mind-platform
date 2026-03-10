@@ -30,8 +30,8 @@ from pathlib import Path
 
 # ─── Constants ──────────────────────────────────────────────
 DEPTH_MODELS = {
-    "small": "LiheYoung/depth-anything-v2-small",
-    "base": "LiheYoung/depth-anything-v2-base",
+    "small": "Intel/dpt-hybrid-midas",
+    "base": "Intel/dpt-large",
 }
 DEFAULT_SIZE = 1024  # Max dimension for output frames
 DEFAULT_FPS = 2      # Frames per second for video extraction
