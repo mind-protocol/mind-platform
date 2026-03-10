@@ -12,18 +12,22 @@ export const metadata: Metadata = {
 
 const BUDGET_CATEGORIES = [
   { name: 'AI', monthlyTotal: 910, color: '#f59e0b', description: 'LLM inference, voice synthesis, speech-to-text', items: 'Claude Max x3, Anthropic API, ElevenLabs TTS, OpenAI Whisper' },
-  { name: 'Infrastructure', monthlyTotal: 45, color: '#3b82f6', description: 'Messaging, hosting, connectivity', items: 'Twilio SMS, WhatsApp SIM, Domain' },
+  { name: 'Infrastructure', monthlyTotal: 65, color: '#3b82f6', description: 'Messaging, hosting, deployment, domains', items: 'Vercel ($20), Render (TBD), Twilio SMS, WhatsApp SIM, Domain' },
   { name: 'Legal', monthlyTotal: 0, color: '#ef4444', description: 'Corporate formation, compliance' },
   { name: 'DevTools', monthlyTotal: 0, color: '#8b5cf6', description: 'App store accounts, developer tooling' },
 ];
 
-const MONTHLY_BURN = 955; // USD
+const MONTHLY_BURN = 975; // USD
 
 const ONE_TIME_COSTS = [
+  { name: 'Shiva — Unpaid Invoice', amount: 234, currency: 'EUR', status: 'overdue' as const, note: '1st reminder — cleaning service invoice' },
+  { name: 'Vercel — Failed Payment', amount: 20, currency: 'USD', status: 'overdue' as const, note: 'Card declined (Mastercard 3125) — team "Mind Protocol"' },
+  { name: 'Render — Outstanding Balance', amount: 0, currency: 'USD', status: 'overdue' as const, note: 'Unpaid balance for 6 services — exact amount TBD (check dashboard)' },
+  { name: 'AWS Route 53 — Domain Renewal', amount: 15, currency: 'USD', status: 'pending' as const, note: 'Auto-renewal: debatingsecurityplus.org' },
+  { name: 'IONOS Unpaid Invoice', amount: 118.44, currency: 'EUR', status: 'overdue' as const, note: 'Failed SEPA mandate' },
   { name: 'SAS Creation (France)', amount: 1500, currency: 'EUR', status: 'pending' as const, note: 'Required for Stripe payments' },
   { name: 'Apple Developer Program', amount: 99, currency: 'USD', status: 'pending' as const, note: 'Annual — iOS App Store' },
   { name: 'Google Play Developer', amount: 25, currency: 'USD', status: 'pending' as const, note: 'One-time registration' },
-  { name: 'IONOS Unpaid Invoice', amount: 118.44, currency: 'EUR', status: 'pending' as const, note: 'Failed SEPA mandate' },
   { name: 'WAHA Pro (WhatsApp API)', amount: 99, currency: 'USD', status: 'planned' as const, note: 'Monthly once acquired' },
 ];
 
@@ -122,8 +126,9 @@ function DonutChart() {
 
 /* ─── Status Badge ────────────────────────────────────────────────────── */
 
-function StatusBadge({ status }: { status: 'pending' | 'planned' }) {
+function StatusBadge({ status }: { status: 'pending' | 'planned' | 'overdue' }) {
   const styles = {
+    overdue: 'bg-red-500/10 text-red-500 border-red-500/30',
     pending: 'bg-amber-500/10 text-amber-500 border-amber-500/30',
     planned: 'bg-blue-500/10 text-blue-500 border-blue-500/30',
   };
@@ -252,6 +257,27 @@ export default function BudgetPage() {
         {/* One-Time & Upcoming Costs */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold mb-8">One-Time &amp; Upcoming Costs</h2>
+
+          {/* Overdue alert banner */}
+          {(() => {
+            const overdue = ONE_TIME_COSTS.filter((c) => c.status === 'overdue');
+            const overdueEur = overdue.filter((c) => c.currency === 'EUR').reduce((s, c) => s + c.amount, 0);
+            const overdueUsd = overdue.filter((c) => c.currency === 'USD').reduce((s, c) => s + c.amount, 0);
+            const hasUnknown = overdue.some((c) => c.amount === 0);
+            return overdue.length > 0 ? (
+              <div className="mb-6 p-4 rounded-xl border border-red-500/30 bg-red-500/5">
+                <p className="text-red-400 font-medium text-sm">
+                  {overdue.length} overdue payment{overdue.length > 1 ? 's' : ''} —{' '}
+                  {overdueEur > 0 && <span className="font-mono">{'\u20AC'}{overdueEur.toFixed(2)}</span>}
+                  {overdueEur > 0 && overdueUsd > 0 && ' + '}
+                  {overdueUsd > 0 && <span className="font-mono">${overdueUsd}</span>}
+                  {hasUnknown && ' + Render (TBD)'}
+                  {' '}{'\u2248'} <span className="font-mono">{'\u20AC'}{Math.round(overdueEur + overdueUsd * 0.93)}</span> total
+                </p>
+              </div>
+            ) : null;
+          })()}
+
           <div className="space-y-4">
             {ONE_TIME_COSTS.map((cost) => (
               <div
@@ -266,12 +292,18 @@ export default function BudgetPage() {
                   <p className="text-zinc-500 text-sm">{cost.note}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-amber-500 font-bold font-mono text-lg">
-                    {cost.currency === 'EUR' ? '\u20AC' : '$'}
-                    {cost.amount.toLocaleString('en-US', {
-                      minimumFractionDigits: cost.amount % 1 !== 0 ? 2 : 0,
-                      maximumFractionDigits: 2,
-                    })}
+                  <p className={`font-bold font-mono text-lg ${cost.status === 'overdue' ? 'text-red-400' : 'text-amber-500'}`}>
+                    {cost.amount === 0 ? (
+                      'TBD'
+                    ) : (
+                      <>
+                        {cost.currency === 'EUR' ? '\u20AC' : '$'}
+                        {cost.amount.toLocaleString('en-US', {
+                          minimumFractionDigits: cost.amount % 1 !== 0 ? 2 : 0,
+                          maximumFractionDigits: 2,
+                        })}
+                      </>
+                    )}
                   </p>
                   <p className="text-zinc-600 text-xs">{cost.currency}</p>
                 </div>
