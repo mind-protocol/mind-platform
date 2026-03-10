@@ -473,6 +473,7 @@ export default function TrackExperience({
           currentSection={currentSection}
           palette={activeVisual?.palette}
           activeText={activeLyric?.text}
+          depthVisuals={track.depthVisuals}
         />
 
         {/* Overlay: lyrics + annotation */}

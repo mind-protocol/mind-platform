@@ -5,10 +5,18 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Text, PerformanceMonitor } from '@react-three/drei';
 import * as THREE from 'three';
 import type { FrequencyData } from '@/lib/music/hooks/useAudioEngine';
+import DepthImage from './DepthImage';
 
 /* ================================================================== */
 /*  Types                                                              */
 /* ================================================================== */
+
+interface DepthVisualsConfig {
+  manifestUrl: string;
+  placement: 'background' | 'floating' | 'ceiling';
+  scale?: number;
+  opacity?: number;
+}
 
 interface TunnelVisualizationProps {
   frequencyRef: React.MutableRefObject<FrequencyData | null>;
@@ -20,6 +28,8 @@ interface TunnelVisualizationProps {
   palette?: string[];
   /** Active lyric text — keywords spawn as floating words */
   activeText?: string;
+  /** 3D depth-displaced visual assets */
+  depthVisuals?: DepthVisualsConfig;
 }
 
 interface InternalProps {
@@ -1452,7 +1462,7 @@ function AmbientLighting({
 /*  Scene — orchestrates all sub-components inside Canvas              */
 /* ================================================================== */
 
-function Scene({ frequencyRef, currentTime, isPlaying, dpr, sectionColors, activeText, currentSection }: InternalProps & { currentSection: string }) {
+function Scene({ frequencyRef, currentTime, isPlaying, dpr, sectionColors, activeText, currentSection, depthVisuals }: InternalProps & { currentSection: string; depthVisuals?: DepthVisualsConfig }) {
   return (
     <>
       <CameraController
@@ -1544,6 +1554,23 @@ function Scene({ frequencyRef, currentTime, isPlaying, dpr, sectionColors, activ
         sectionColors={sectionColors}
         activeText={activeText}
       />
+
+      {/* Depth-displaced visual asset (if available) */}
+      {depthVisuals && (
+        <DepthImage
+          manifestUrl={depthVisuals.manifestUrl}
+          frequencyRef={frequencyRef}
+          currentTime={currentTime}
+          isPlaying={isPlaying}
+          position={
+            depthVisuals.placement === 'ceiling' ? [0, 3, -12]
+              : depthVisuals.placement === 'floating' ? [0, 0.5, -8]
+                : [0, 0, -15]
+          }
+          scale={depthVisuals.scale ?? 4}
+          opacity={depthVisuals.opacity ?? 0.6}
+        />
+      )}
     </>
   );
 }
@@ -1559,6 +1586,7 @@ export default function TunnelVisualization({
   currentSection,
   palette,
   activeText,
+  depthVisuals,
 }: TunnelVisualizationProps) {
   const [dpr, setDpr] = useState(1.5);
 
@@ -1601,6 +1629,7 @@ export default function TunnelVisualization({
             sectionColors={sectionColors}
             activeText={activeText ?? ''}
             currentSection={currentSection ?? ''}
+            depthVisuals={depthVisuals}
           />
         </PerformanceMonitor>
       </Canvas>

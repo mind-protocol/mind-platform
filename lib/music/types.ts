@@ -43,6 +43,18 @@ export interface AugmentedTrack {
     direction: string;
   }[];
 
+  /** 3D visual assets (depth-displaced images/video from pipeline) */
+  depthVisuals?: {
+    /** Path to manifest.json, e.g. "/visuals/synthetic-souls/binary-lullaby/manifest.json" */
+    manifestUrl: string;
+    /** Position in tunnel: 'background' | 'floating' | 'ceiling' */
+    placement: 'background' | 'floating' | 'ceiling';
+    /** Scale in world units (default 4) */
+    scale?: number;
+    /** Opacity 0-1 (default 0.6) */
+    opacity?: number;
+  };
+
   context: {
     theme: string;
     character?: {
