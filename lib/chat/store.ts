@@ -10,8 +10,10 @@ export interface ChatMessage {
   sender_id?: string;
   page_url?: string;
   wallet?: string;
-  /** Read status: sending → sent → responded */
-  status?: 'sending' | 'sent' | 'responded';
+  /** Read status: sending → sent → responded → failed */
+  status?: 'sending' | 'sent' | 'responded' | 'failed';
+  /** Error message shown to user on failure */
+  errorMessage?: string;
   /** Base64 image attached to the message (user only) */
   image?: string;
 }
@@ -39,6 +41,7 @@ interface ChatActions {
   setPendingImage: (img: string | null) => void;
   initThread: () => void;
   sendMessage: (content: string, pageUrl?: string, screenshot?: string) => Promise<void>;
+  retryMessage: (messageId: string) => Promise<void>;
   pollMessages: () => Promise<void>;
   clearUnread: () => void;
 }
@@ -122,7 +125,8 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       image: imageToSend || undefined,
     };
 
-    set({ isSending: true, messages: [...messages, optimisticMsg], inputText: '', pendingImage: null });
+    // Keep pendingImage in case of failure — only clear on success
+    set({ isSending: true, messages: [...messages, optimisticMsg], inputText: '' });
 
     try {
       const res = await fetch('/api/chat/send', {
@@ -141,6 +145,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
       if (res.ok) {
         const data = await res.json();
+
+        // Clear pending image only on success
+        set({ pendingImage: null });
 
         // Fast-path: inline response from backend (no polling needed)
         if (data.response) {
@@ -174,7 +181,27 @@ export const useChatStore = create<ChatStore>((set, get) => ({
           ),
         }));
       } else {
-        set({ isSending: false });
+        // Determine error message based on status code
+        let errorMessage = 'Failed to send. Tap to retry.';
+        if (res.status === 401) {
+          errorMessage = 'Sign in required to chat.';
+        } else if (res.status === 429) {
+          const retryAfter = res.headers.get('Retry-After');
+          errorMessage = retryAfter
+            ? `Too many messages. Wait ${retryAfter}s.`
+            : 'Too many messages. Please wait.';
+        } else if (res.status >= 500) {
+          errorMessage = 'Server error. Tap to retry.';
+        }
+
+        set((state) => ({
+          isSending: false,
+          messages: state.messages.map((m) =>
+            m.message_id === optimisticMsg.message_id
+              ? { ...m, status: 'failed' as const, errorMessage }
+              : m
+          ),
+        }));
       }
     } catch {
       set((state) => ({
@@ -182,11 +209,25 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         connectionStatus: 'error',
         messages: state.messages.map((m) =>
           m.message_id === optimisticMsg.message_id
-            ? { ...m, status: 'sent' as const }
+            ? { ...m, status: 'failed' as const, errorMessage: 'Network error. Tap to retry.' }
             : m
         ),
       }));
     }
+  },
+
+  retryMessage: async (messageId) => {
+    const { messages } = get();
+    const msg = messages.find((m) => m.message_id === messageId);
+    if (!msg || msg.status !== 'failed') return;
+
+    // Remove the failed message, re-send its content
+    set((state) => ({
+      messages: state.messages.filter((m) => m.message_id !== messageId),
+      inputText: '',
+    }));
+
+    await get().sendMessage(msg.content, msg.page_url);
   },
 
   pollMessages: async () => {

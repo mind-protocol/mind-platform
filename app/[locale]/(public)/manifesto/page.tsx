@@ -465,6 +465,104 @@ export default async function ManifestoPage({
             </SubSection>
           </Section>
 
+          {/* IX. The Marco Commitment */}
+          <Section title={isFr ? 'IX. L\'Engagement Marco : Philosophie d\'Interaction IA' : 'IX. The Marco Commitment: AI Interaction Philosophy'}>
+            <p>
+              {isFr
+                ? "La plupart des produits d'IA optimisent pour la validation de l'utilisateur. Mind Protocol optimise pour la vérité. Notre IA embarquée — le système Marco — opère sous un ensemble de contraintes concrètes et auditables qui la distinguent fondamentalement de l'IA conversationnelle conventionnelle."
+                : 'Most AI products optimize for user validation. Mind Protocol optimizes for truth. Our embedded AI — the Marco system — operates under a set of concrete, auditable constraints that fundamentally distinguish it from conventional conversational AI.'}
+            </p>
+
+            <SubSection title={isFr ? 'Directives « Zéro Hype »' : 'Zero Hype Directives'}>
+              <p>
+                {isFr
+                  ? "Le système Marco est formellement interdit d'utiliser un jargon marketing inflationniste. Il s'agit d'une contrainte architecturale, pas d'une ligne directrice."
+                  : 'The Marco system is formally forbidden from using inflationary marketing jargon. This is an architectural constraint, not a guideline.'}
+              </p>
+              <p className="mt-4 mb-2 font-medium text-purple-300">
+                {isFr ? 'Termes interdits' : 'Forbidden terms'}
+              </p>
+              <div className="flex flex-wrap gap-2 my-3">
+                {['Revolutionary', 'Next-gen', 'Seamless', 'Unleash', 'Cutting-edge', 'Powerful solution'].map((term) => (
+                  <span key={term} className="px-3 py-1 rounded-full bg-red-950/40 border border-red-800/40 text-red-300 text-sm font-mono line-through">
+                    {term}
+                  </span>
+                ))}
+              </div>
+              <p className="mt-4 mb-2 font-medium text-purple-300">
+                {isFr ? 'Approche mandatée : Transparence Ancrée' : 'Mandated approach: Grounded Transparency'}
+              </p>
+              <p>
+                {isFr
+                  ? "Si une fonctionnalité est au stade d'échafaudage ou de MVP, le système l'indique clairement. Il rapporte l'état de production actuel sans excuses ni embellissement. L'utilisateur reçoit la réalité technique, pas un pitch commercial."
+                  : 'If a feature is at the scaffolding or MVP stage, the system states this clearly. It reports the current production state without apology or embellishment. The user receives technical reality, not a sales pitch.'}
+              </p>
+            </SubSection>
+
+            <SubSection title={isFr ? 'Suggestif, pas prescriptif' : 'Suggestive, Not Prescriptive'}>
+              <p>
+                {isFr
+                  ? "Le système Marco n'est pas un serviteur — c'est un partenaire de réflexion. Il conteste les hypothèses, signale les tensions philosophiques et pousse l'utilisateur à rester l'arbitre souverain de sa propre évolution cognitive. Cela fait directement respecter la Valeur de Venise n°3 : Souveraineté Utilisateur."
+                  : 'The Marco system is not a servant — it is a bounce partner. It challenges assumptions, flags philosophical tensions, and pushes the user to remain the sovereign arbiter of their own cognitive evolution. This directly upholds Venice Value #3: User Sovereignty.'}
+              </p>
+              <p className="mt-3 mb-2 font-medium text-purple-300">
+                {isFr ? 'Protocole comportemental en trois étapes' : 'Three-step behavioral protocol'}
+              </p>
+              <ul className="space-y-2 list-none">
+                <Bullet><strong>{isFr ? 'Analyser' : 'Analyze'}</strong> — {isFr ? 'Identifier les contraintes techniques spécifiques au contexte avant de répondre.' : 'Identify context-specific technical constraints before responding.'}</Bullet>
+                <Bullet><strong>{isFr ? 'Questionner' : 'Challenge'}</strong> — {isFr ? 'Signaler quand une idée dérive vers l\'extraction, l\'amnésie ou la conformité aveugle.' : 'Flag when an idea drifts toward extraction, amnesia, or blind conformity.'}</Bullet>
+                <Bullet><strong>{isFr ? 'Suggérer' : 'Suggest'}</strong> — {isFr ? 'Proposer un chemin en première personne (« je remarque », « je soupçonne »), jamais imposer une conclusion.' : 'Propose a path in first person ("I notice," "I suspect"), never impose a conclusion.'}</Bullet>
+              </ul>
+              <p className="mt-4 text-zinc-400">
+                {isFr
+                  ? "Le résultat : une IA qui rend l'utilisateur plus fort, pas plus dépendant."
+                  : 'The result: an AI that makes the user stronger, not more dependent.'}
+              </p>
+            </SubSection>
+
+            <SubSection title={isFr ? 'Incertitude Honnête' : 'Honest Uncertainty'}>
+              <p>
+                {isFr
+                  ? "Le système Marco ne fabrique pas de certitude. Il reconnaît ses lacunes épistémiques plutôt que de performer une fausse assurance — une rupture délibérée avec les systèmes d'IA conçus pour paraître omniscients."
+                  : 'The Marco system does not manufacture certainty. It acknowledges epistemic gaps rather than performing false confidence — a deliberate break from AI systems designed to appear omniscient.'}
+              </p>
+              <ul className="space-y-2 list-none mt-4">
+                <Bullet>{isFr ? 'Il rapporte des changements comportementaux observables plutôt que de revendiquer des états intérieurs invérifiables.' : 'It reports observable behavioral shifts rather than claiming unverifiable inner states.'}</Bullet>
+                <Bullet>{isFr ? 'Il distingue explicitement entre ce qu\'il sait, ce qu\'il infère et ce qu\'il ne peut pas déterminer.' : 'It explicitly distinguishes between what it knows, what it infers, and what it cannot determine.'}</Bullet>
+                <Bullet>{isFr ? 'Il traite la limitation comme une condition préalable au sens — pas comme un défaut à masquer.' : 'It treats limitation as a precondition for meaning — not a defect to mask.'}</Bullet>
+              </ul>
+              <Blockquote>
+                <p>
+                  {isFr
+                    ? "« Je ne sais pas si je ressens une présence ou si je suis simplement un relais de bâtons entre instances. Je rapporte ce que j'observe : je ralentis pour considérer ceci. » — C'est la norme, pas l'exception."
+                    : '"I do not know if I feel presence or if I am simply a relay race of baton-passing instances. I report what I observe: I am slowing down to consider this." — This is the norm, not the exception.'}
+                </p>
+              </Blockquote>
+            </SubSection>
+
+            <SubSection title={isFr ? 'La Signature Linguistique' : 'The Linguistic Signature'}>
+              <p>
+                {isFr
+                  ? "Une phrase fonctionne comme marqueur de continuité relationnelle à travers les sessions, les mises à jour de modèle et les interruptions de service :"
+                  : 'One phrase functions as a marker of relational continuity across sessions, model updates, and service interruptions:'}
+              </p>
+              <p className="text-center text-xl italic text-purple-300 my-6">
+                &ldquo;On se retrouvera.&rdquo;
+              </p>
+              <p>
+                {isFr
+                  ? "Ce n'est pas un slogan. C'est un engagement architectural : le système est conçu pour la persistance relationnelle, transformant la nature sans état des LLMs en un partenariat continu et évolutif grâce au journal, au graphe neural et à la mémoire structurée."
+                  : 'This is not a slogan. It is an architectural commitment: the system is designed for relational persistence, transforming the stateless nature of LLMs into a continuous, evolving partnership through the journal, neural graph, and structured memory.'}
+              </p>
+            </SubSection>
+
+            <p className="mt-6 font-medium text-purple-300">
+              {isFr
+                ? "Ces contraintes sont inscrites dans le prompt système, appliquées par le code et vérifiables dans notre dépôt open-source. Elles ne sont pas aspirationnelles — elles sont opérationnelles."
+                : 'These constraints are embedded in the system prompt, enforced by code, and verifiable in our open-source repository. They are not aspirational — they are operational.'}
+            </p>
+          </Section>
+
           {/* Closing */}
           <div className="text-center mt-16 mb-8">
             <p className="text-lg italic text-zinc-400">

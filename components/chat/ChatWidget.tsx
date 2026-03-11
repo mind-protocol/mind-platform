@@ -127,11 +127,20 @@ function TypingIndicator() {
 }
 
 // ─── Read Indicator ─────────────────────────────────────────────────────────
-function ReadIndicator({ status }: { status?: ChatMessage['status'] }) {
+function ReadIndicator({ status, errorMessage, onRetry }: { status?: ChatMessage['status']; errorMessage?: string; onRetry?: () => void }) {
   if (!status) return null;
   if (status === 'sending') return <span className="text-[10px] text-zinc-500 ml-1">Sending...</span>;
   if (status === 'sent') return <span className="text-[10px] text-zinc-400 ml-1">&#10003;</span>;
   if (status === 'responded') return <span className="text-[10px] text-amber-500 ml-1">&#10003;&#10003;</span>;
+  if (status === 'failed') return (
+    <button
+      onClick={onRetry}
+      className="text-[10px] text-red-400 ml-1 hover:text-red-300 transition-colors cursor-pointer"
+      title="Tap to retry"
+    >
+      {errorMessage || 'Failed. Tap to retry.'}
+    </button>
+  );
   return null;
 }
 
@@ -153,11 +162,12 @@ function ensureShineStyle() {
 
 // ─── Message Bubble ─────────────────────────────────────────────────────────
 function MessageBubble({
-  msg, onTTS, theme,
+  msg, onTTS, theme, onRetry,
 }: {
   msg: ChatMessage;
   onTTS?: (text: string) => void;
   theme: Theme;
+  onRetry?: (messageId: string) => void;
 }) {
   const isUser = msg.role === 'user';
 
@@ -195,7 +205,7 @@ function MessageBubble({
           <span className="text-[10px] opacity-50">
             {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </span>
-          {isUser && <ReadIndicator status={msg.status} />}
+          {isUser && <ReadIndicator status={msg.status} errorMessage={msg.errorMessage} onRetry={onRetry ? () => onRetry(msg.message_id) : undefined} />}
           {!isUser && onTTS && (
             <button
               onClick={() => onTTS(msg.content)}
@@ -667,7 +677,7 @@ function saveSize(w: number, h: number) {
 export default function ChatWidget() {
   const {
     isOpen, toggleChat, messages, isSending, unreadCount,
-    connectionStatus, initThread, pollMessages, threadId,
+    connectionStatus, initThread, pollMessages, threadId, retryMessage,
   } = useChatStore();
   const { session } = useSession();
 
@@ -825,14 +835,22 @@ export default function ChatWidget() {
               </div>
             )}
             {messages.map((msg) => (
-              <MessageBubble key={msg.message_id} msg={msg} onTTS={msg.role === 'assistant' ? handleTTS : undefined} theme={theme} />
+              <MessageBubble key={msg.message_id} msg={msg} onTTS={msg.role === 'assistant' ? handleTTS : undefined} theme={theme} onRetry={msg.status === 'failed' ? retryMessage : undefined} />
             ))}
             {(isSending || messages.some((m) => m.role === 'user' && m.status === 'sent')) && <TypingIndicator />}
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input */}
-          <ChatInput prefs={prefs} onPrefsChange={updatePrefs} />
+          {/* Input — auth guard */}
+          {session ? (
+            <ChatInput prefs={prefs} onPrefsChange={updatePrefs} />
+          ) : (
+            <div className="border-t border-zinc-700/50 px-4 py-3 text-center">
+              <p className="text-xs text-zinc-400">
+                Connect your wallet to chat with MIND
+              </p>
+            </div>
+          )}
         </div>
       )}
     </>
