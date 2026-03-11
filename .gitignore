@@ -49,8 +49,10 @@ __pycache__/
 # Generated visual assets (depth maps, frames — regenerate with scripts/process_track_visuals.py)
 public/visuals/
 
-# Audio files (too large for git)
+# Audio files (too large for git — music tracks)
 public/audio/
+# But keep debate/spoken content (smaller, not regenerable)
+!public/audio/debates/
 
 # Private user data (biometrics, analysis)
 user/
