@@ -49,7 +49,7 @@ const NAV_GROUPS: NavGroup[] = [
       { href: '/blog', key: 'blog' },
       { href: '/research', key: 'research' },
       { href: '/music', key: 'music' },
-      { href: '/listen', key: 'listen' },
+      { href: '/talks', key: 'talks' },
       { href: '/registry', key: 'registry' },
       { href: '/faq', key: 'faq' },
       { href: '/substances', key: 'substances' },

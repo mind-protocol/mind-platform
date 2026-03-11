@@ -61,8 +61,8 @@ export async function generateMetadata({
   const isFr = locale === 'fr';
   return {
     title: isFr
-      ? 'Ecouter | Mind Protocol'
-      : 'Listen | Mind Protocol',
+      ? 'Talks | Mind Protocol'
+      : 'Talks | Mind Protocol',
     description: isFr
       ? 'Débats, essais audio et discussions sur l\'IA persistante, la souveraineté cognitive et le Mind Protocol.'
       : 'Debates, audio essays and discussions on persistent AI, cognitive sovereignty, and the Mind Protocol.',
@@ -140,7 +140,7 @@ function AudioCard({ item, isFr }: { item: AudioItem; isFr: boolean }) {
   );
 }
 
-export default async function ListenPage({
+export default async function TalksPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
@@ -153,10 +153,10 @@ export default async function ListenPage({
       <div className="max-w-4xl mx-auto px-6 py-24">
         <header className="mb-12">
           <p className="text-amber-500/80 text-sm tracking-widest uppercase mb-4">
-            {isFr ? 'Contenu Audio' : 'Audio Content'}
+            {isFr ? 'Débats & Essais Audio' : 'Debates & Audio Essays'}
           </p>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            {isFr ? 'Ecouter' : 'Listen'}
+            Talks
           </h1>
           <p className="text-zinc-400 text-lg max-w-2xl">
             {isFr
