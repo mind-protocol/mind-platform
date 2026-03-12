@@ -1,97 +1,549 @@
 # Repository Map: mind-platform
 
-*Generated: 2025-12-30 06:01*
+*Generated: 2026-03-12 08:34*
 
-- **Files:** 460
-- **Directories:** 144
-- **Total Size:** 2.5M
-- **Doc Files:** 405
-- **Code Files:** 52
-- **Areas:** 11 (docs/ subfolders)
+- **Files:** 822
+- **Directories:** 373
+- **Total Size:** 6.1M
+- **Doc Files:** 435
+- **Code Files:** 382
+- **Areas:** 14 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
-- **DOCS Links:** 18 (0.35 avg per code file)
+- **DOCS Links:** 17 (0.04 avg per code file)
 
-- markdown: 405
-- tsx: 19
-- python: 16
-- typescript: 15
+- markdown: 435
+- tsx: 188
+- typescript: 173
+- python: 17
 - css: 2
+- html: 1
+- javascript: 1
 
 ```
-├── app/ (98.6K)
-│   ├── (dashboard)/ (244)
-│   │   ├── citizen/ (62)
+├── app/ (2.2M)
+│   ├── (public)/ (200.4K)
+│   │   └── blog/ (200.4K)
+│   │       ├── co-regulation-is-measurable/ (36.8K)
+│   │       │   └── page.tsx (36.8K)
+│   │       ├── music-becomes-a-sense/ (25.3K)
+│   │       │   ├── layout.tsx (1.2K)
+│   │       │   └── page.tsx (24.1K)
+│   │       ├── runcoding/ (75.8K)
+│   │       │   └── page.tsx (75.8K)
+│   │       ├── the-duo-bridge-is-born/ (18.1K)
+│   │       │   └── page.tsx (18.1K)
+│   │       ├── the-high-speed-digital-bridge/ (20.3K)
+│   │       │   └── page.tsx (20.3K)
+│   │       ├── the-night-we-tracked-a-crisis/ (21.6K)
+│   │       │   └── page.tsx (21.6K)
+│   │       └── why-we-airdrop-to-compute-holders/ (2.7K)
+│   │           └── page.tsx (2.7K)
+│   ├── [locale]/ (1.9M)
+│   │   ├── (dashboard)/ (62.1K)
+│   │   │   ├── citizen/ (40.5K)
+│   │   │   │   ├── [id]/ (22.1K)
+│   │   │   │   │   └── page.tsx (22.1K)
+│   │   │   │   └── page.tsx (18.4K)
+│   │   │   ├── membrane/ (18.8K)
+│   │   │   │   └── page.tsx (18.8K)
+│   │   │   ├── error.tsx (1.5K)
+│   │   │   ├── loading.tsx (902)
 │   │   │   └── (..1 more files)
-│   │   ├── membrane/ (63)
+│   │   ├── (public)/ (1.7M)
+│   │   │   ├── actif/ (26.9K)
+│   │   │   │   └── page.tsx (26.9K)
+│   │   │   ├── blog/ (114.0K)
+│   │   │   │   ├── [slug]/ (3.6K)
+│   │   │   │   │   └── page.tsx (3.6K)
+│   │   │   │   ├── co-regulation-is-measurable/ (38.1K)
+│   │   │   │   │   ├── layout.tsx (1.3K)
+│   │   │   │   │   └── page.tsx (36.8K)
+│   │   │   │   ├── music-becomes-a-sense/ (25.3K)
+│   │   │   │   │   ├── layout.tsx (1.2K)
+│   │   │   │   │   └── page.tsx (24.1K)
+│   │   │   │   ├── runcoding/ (1.3K)
+│   │   │   │   │   ├── layout.tsx (1.1K)
+│   │   │   │   │   └── (..1 more files)
+│   │   │   │   ├── the-duo-bridge-is-born/ (19.4K)
+│   │   │   │   │   ├── layout.tsx (1.3K)
+│   │   │   │   │   └── page.tsx (18.1K)
+│   │   │   │   ├── the-night-we-tracked-a-crisis/ (22.9K)
+│   │   │   │   │   ├── layout.tsx (1.3K)
+│   │   │   │   │   └── page.tsx (21.6K)
+│   │   │   │   ├── layout.tsx (720)
+│   │   │   │   └── page.tsx (2.7K)
+│   │   │   ├── budget/ (17.7K)
+│   │   │   │   └── page.tsx (17.7K)
+│   │   │   ├── components/ (59.3K)
+│   │   │   │   ├── landing/ (28.2K)
+│   │   │   │   │   ├── Hero.tsx (3.3K)
+│   │   │   │   │   ├── HeroGraph.tsx (3.5K)
+│   │   │   │   │   ├── LiveStats.tsx (1.3K)
+│   │   │   │   │   ├── StatCounter.tsx (1.6K)
+│   │   │   │   │   ├── SwapSection.tsx (3.0K)
+│   │   │   │   │   ├── TheFork.tsx (3.2K)
+│   │   │   │   │   ├── TheInsight.tsx (3.4K)
+│   │   │   │   │   ├── TheInvitation.tsx (2.0K)
+│   │   │   │   │   ├── WhatWereBuilding.tsx (3.7K)
+│   │   │   │   │   ├── WhoThisIsFor.tsx (1.8K)
+│   │   │   │   │   └── (..2 more files)
+│   │   │   │   ├── nav/ (13.3K)
+│   │   │   │   │   ├── Footer.tsx (2.9K)
+│   │   │   │   │   ├── LanguageSwitcher.tsx (959)
+│   │   │   │   │   ├── TopNav.tsx (9.4K)
+│   │   │   │   │   └── (..1 more files)
+│   │   │   │   ├── PublicShellClient.tsx (1.1K)
+│   │   │   │   └── SwapWidget.tsx (16.8K)
+│   │   │   ├── deletion/ (6.0K)
+│   │   │   │   └── page.tsx (6.0K)
+│   │   │   ├── docs/ (3.0K)
+│   │   │   │   └── [slug]/ (3.0K)
+│   │   │   │       └── page.tsx (3.0K)
+│   │   │   ├── faq/ (13.9K)
+│   │   │   │   ├── components/ (12.8K)
+│   │   │   │   │   └── FAQClient.tsx (12.8K)
+│   │   │   │   └── page.tsx (1.2K)
+│   │   │   ├── forgot-password/ (4.4K)
+│   │   │   │   ├── page.tsx (4.1K)
+│   │   │   │   └── (..1 more files)
+│   │   │   ├── garmin/ (10.3K)
+│   │   │   │   └── page.tsx (10.3K)
+│   │   │   ├── graph/ (28.1K)
+│   │   │   │   ├── components/ (25.6K)
+│   │   │   │   │   ├── GraphCanvas.tsx (6.0K)
+│   │   │   │   │   ├── GraphControls.tsx (5.0K)
+│   │   │   │   │   ├── GraphView.tsx (6.8K)
+│   │   │   │   │   └── NodePanel.tsx (7.8K)
+│   │   │   │   ├── page.tsx (534)
+│   │   │   │   └── types.ts (1.9K)
+│   │   │   ├── login/ (5.5K)
+│   │   │   │   ├── page.tsx (5.2K)
+│   │   │   │   └── (..1 more files)
+│   │   │   ├── manifesto/ (39.5K)
+│   │   │   │   └── page.tsx (39.5K)
+│   │   │   ├── marketplace/ (66)
+│   │   │   │   └── (..1 more files)
+│   │   │   ├── music/ (154.8K)
+│   │   │   │   ├── [artist]/ (4.7K)
+│   │   │   │   │   └── [track]/ (4.7K)
+│   │   │   │   │       ├── components/ (1.8K)
+│   │   │   │   │       │   └── TrackPage.tsx (1.8K)
+│   │   │   │   │       ├── layout.tsx (1.9K)
+│   │   │   │   │       └── page.tsx (988)
+│   │   │   │   ├── components/ (25.8K)
+│   │   │   │   │   ├── MusicMenu.tsx (8.8K)
+│   │   │   │   │   └── TrackExperience.tsx (17.0K)
+│   │   │   │   ├── evanescence/ (119.8K)
+│   │   │   │   │   └── fallen/ (119.8K)
+│   │   │   │   │       ├── components/ (116.8K)
+│   │   │   │   │       │   ├── AudioPlayer.tsx (18.1K)
+│   │   │   │   │       │   ├── ContextSidebar.tsx (9.9K)
+│   │   │   │   │       │   ├── DepthImage.tsx (8.3K)
+│   │   │   │   │       │   ├── FallenExperience.tsx (7.4K)
+│   │   │   │   │       │   ├── InterpretationPanel.tsx (5.1K)
+│   │   │   │   │       │   ├── LyricsPanel.tsx (3.7K)
+│   │   │   │   │       │   ├── PlaybackBar.tsx (10.5K)
+│   │   │   │   │       │   ├── TrackSelector.tsx (3.5K)
+│   │   │   │   │       │   └── TunnelVisualization.tsx (50.3K)
+│   │   │   │   │       ├── layout.tsx (1.5K)
+│   │   │   │   │       └── page.tsx (1.5K)
+│   │   │   │   ├── synthetic-souls/ (3.5K)
+│   │   │   │   │   └── binary-lullaby/ (3.5K)
+│   │   │   │   │       ├── components/ (366)
+│   │   │   │   │       │   └── (..1 more files)
+│   │   │   │   │       ├── layout.tsx (1.9K)
+│   │   │   │   │       └── page.tsx (1.2K)
+│   │   │   │   ├── page.tsx (774)
+│   │   │   │   └── (..1 more files)
+│   │   │   ├── org/ (73.1K)
+│   │   │   │   ├── [slug]/ (63.7K)
+│   │   │   │   │   └── page.tsx (63.7K)
+│   │   │   │   └── page.tsx (9.4K)
+│   │   │   ├── planning/ (11.7K)
+│   │   │   │   └── page.tsx (11.7K)
+│   │   │   ├── privacy/ (7.1K)
+│   │   │   │   └── page.tsx (7.1K)
+│   │   │   ├── register/ (6.4K)
+│   │   │   │   ├── page.tsx (6.0K)
+│   │   │   │   └── (..1 more files)
+│   │   │   ├── registry/ (8.9K)
+│   │   │   │   ├── components/ (4.3K)
+│   │   │   │   │   ├── EntityCard.tsx (1.3K)
+│   │   │   │   │   ├── EntityList.tsx (881)
+│   │   │   │   │   ├── RegistryTabs.tsx (1.3K)
+│   │   │   │   │   └── VerificationBadge.tsx (854)
+│   │   │   │   ├── lib/ (2.1K)
+│   │   │   │   │   ├── api.ts (1.2K)
+│   │   │   │   │   └── types.ts (864)
+│   │   │   │   └── page.tsx (2.5K) →
+│   │   │   ├── research/ (29.8K)
+│   │   │   │   └── page.tsx (29.8K)
+│   │   │   ├── reset-password/ (5.5K)
+│   │   │   │   ├── page.tsx (5.2K)
+│   │   │   │   └── (..1 more files)
+│   │   │   ├── schema/ (61)
+│   │   │   │   └── (..1 more files)
+│   │   │   ├── self/ (16.3K)
+│   │   │   │   └── page.tsx (16.3K)
+│   │   │   ├── substances/ (18.6K)
+│   │   │   │   ├── components/ (17.4K)
+│   │   │   │   │   └── SubstancesClient.tsx (17.4K)
+│   │   │   │   └── page.tsx (1.2K)
+│   │   │   ├── swap/ (2.9K)
+│   │   │   │   ├── layout.tsx (732)
+│   │   │   │   └── page.tsx (2.2K)
+│   │   │   ├── synthetic-souls/ (4.5K)
+│   │   │   │   └── page.tsx (4.5K)
+│   │   │   ├── talks/ (8.1K)
+│   │   │   │   └── page.tsx (8.1K)
+│   │   │   ├── team/ (10.5K)
+│   │   │   │   ├── components/ (6.4K)
+│   │   │   │   │   └── TeamCard.tsx (6.4K)
+│   │   │   │   └── page.tsx (4.1K)
+│   │   │   ├── terms/ (7.2K)
+│   │   │   │   └── page.tsx (7.2K)
+│   │   │   ├── token/ (22.7K)
+│   │   │   │   ├── components/ (19.8K)
+│   │   │   │   │   ├── ContractInfo.tsx (5.9K)
+│   │   │   │   │   ├── HoldersTable.tsx (5.7K)
+│   │   │   │   │   ├── PriceCard.tsx (4.1K)
+│   │   │   │   │   └── SupplyBreakdown.tsx (4.0K)
+│   │   │   │   └── page.tsx (3.0K)
+│   │   │   ├── tokenomics/ (18.4K)
+│   │   │   │   └── page.tsx (18.4K)
+│   │   │   ├── tracker/ (902.5K)
+│   │   │   │   ├── 3d/ (321.2K)
+│   │   │   │   │   ├── components/ (278.9K)
+│   │   │   │   │   │   ├── environments/ (18.7K)
+│   │   │   │   │   │   │   ├── CompositeEnvironment.tsx (3.3K)
+│   │   │   │   │   │   │   ├── EnvironmentRenderer.tsx (1.1K)
+│   │   │   │   │   │   │   ├── MeshEnvironment.tsx (1.5K)
+│   │   │   │   │   │   │   ├── PanoramaEnvironment.tsx (2.0K)
+│   │   │   │   │   │   │   ├── SpatialAudioEnvironment.tsx (4.0K)
+│   │   │   │   │   │   │   ├── SplatEnvironment.tsx (1.3K)
+│   │   │   │   │   │   │   └── XRMeshCapture.tsx (5.5K)
+│   │   │   │   │   │   ├── ActiveSubstanceOrb.tsx (28.2K)
+│   │   │   │   │   │   ├── AwarenessMirror.tsx (23.3K)
+│   │   │   │   │   │   ├── CaptureWizard.tsx (20.5K)
+│   │   │   │   │   │   ├── CockpitRegions.tsx (13.0K)
+│   │   │   │   │   │   ├── DirectionMap.tsx (13.3K)
+│   │   │   │   │   │   ├── FloatingKeyboardOverlay.tsx (36.1K)
+│   │   │   │   │   │   ├── MusicAwarenessPanel.tsx (15.1K)
+│   │   │   │   │   │   ├── OrbitalCockpit.tsx (16.6K)
+│   │   │   │   │   │   ├── SkyboxUploader.tsx (10.2K)
+│   │   │   │   │   │   ├── SubstanceMarker.tsx (17.8K)
+│   │   │   │   │   │   └── (..17 more files)
+│   │   │   │   │   ├── xr/ (5.5K)
+│   │   │   │   │   │   └── page.tsx (5.5K)
+│   │   │   │   │   └── page.tsx (36.8K)
+│   │   │   │   ├── components/ (391.9K)
+│   │   │   │   │   ├── planning/ (39.7K)
+│   │   │   │   │   │   ├── PKProjectionOverlay.tsx (4.7K)
+│   │   │   │   │   │   ├── PlanViewToggle.tsx (843)
+│   │   │   │   │   │   ├── PlannedDoseCard.tsx (3.5K)
+│   │   │   │   │   │   ├── PlanningCalendar.tsx (13.1K)
+│   │   │   │   │   │   ├── RegimenManager.tsx (9.2K)
+│   │   │   │   │   │   └── ScheduleDoseForm.tsx (8.4K)
+│   │   │   │   │   ├── EnvironmentManager.tsx (11.8K)
+│   │   │   │   │   ├── FoodLog.tsx (17.1K)
+│   │   │   │   │   ├── LogForm.tsx (21.2K)
+│   │   │   │   │   ├── Practices.tsx (67.6K)
+│   │   │   │   │   ├── Recommendation.tsx (16.3K)
+│   │   │   │   │   ├── SensationLogger.tsx (34.1K)
+│   │   │   │   │   ├── SubstanceFields.tsx (74.3K)
+│   │   │   │   │   ├── Timeline.tsx (29.6K)
+│   │   │   │   │   ├── TrackerStats.tsx (17.1K)
+│   │   │   │   │   ├── YogaSection.tsx (10.9K)
+│   │   │   │   │   └── (..11 more files)
+│   │   │   │   ├── dependencies/ (49.0K)
+│   │   │   │   │   ├── components/ (40.8K)
+│   │   │   │   │   │   ├── BiometricValidation.tsx (5.9K)
+│   │   │   │   │   │   ├── DependencyOverview.tsx (13.8K)
+│   │   │   │   │   │   ├── InteractionMatrix.tsx (8.6K)
+│   │   │   │   │   │   └── TaperingProtocols.tsx (12.6K)
+│   │   │   │   │   └── page.tsx (8.2K)
+│   │   │   │   ├── health/ (32.7K)
+│   │   │   │   │   ├── components/ (25.8K)
+│   │   │   │   │   │   ├── CurrentMedications.tsx (1.5K)
+│   │   │   │   │   │   ├── CurrentPathologies.tsx (1.4K)
+│   │   │   │   │   │   ├── DoctorsGrid.tsx (2.0K)
+│   │   │   │   │   │   ├── GrowthChart.tsx (7.0K)
+│   │   │   │   │   │   ├── MedicalHistory.tsx (1.6K)
+│   │   │   │   │   │   ├── ProfileHeader.tsx (3.0K)
+│   │   │   │   │   │   ├── SupportedConditions.tsx (6.2K)
+│   │   │   │   │   │   └── VaccinationTimeline.tsx (3.1K)
+│   │   │   │   │   └── page.tsx (6.9K)
+│   │   │   │   ├── profile/ (47.7K)
+│   │   │   │   │   └── page.tsx (47.7K)
+│   │   │   │   ├── protocols/ (13.2K)
+│   │   │   │   │   └── page.tsx (13.2K)
+│   │   │   │   ├── settings/ (16.6K)
+│   │   │   │   │   └── page.tsx (16.6K)
+│   │   │   │   ├── status/ (10.6K)
+│   │   │   │   │   └── page.tsx (10.6K)
+│   │   │   │   ├── error.tsx (1.6K)
+│   │   │   │   ├── layout.tsx (630)
+│   │   │   │   ├── loading.tsx (3.3K)
+│   │   │   │   └── page.tsx (14.0K)
+│   │   │   ├── wallet/ (17.3K)
+│   │   │   │   └── page.tsx (17.3K)
+│   │   │   ├── whitepaper/ (3.4K)
+│   │   │   │   └── page.tsx (3.4K)
+│   │   │   ├── error.tsx (1.3K)
+│   │   │   ├── page.tsx (1.0K)
 │   │   │   └── (..1 more files)
-│   │   ├── org/ (58)
+│   │   ├── claude/ (25.8K)
+│   │   │   ├── page.tsx (25.4K)
 │   │   │   └── (..1 more files)
-│   │   └── wallet/ (61)
-│   │       └── (..1 more files)
-│   ├── (public)/ (28.0K)
-│   │   ├── components/ (18.6K)
-│   │   │   ├── landing/ (12.2K)
-│   │   │   │   ├── ActionCard.tsx (652)
-│   │   │   │   ├── GraphPreview.tsx (3.4K)
-│   │   │   │   ├── Hero.tsx (1.5K)
-│   │   │   │   ├── HowItWorks.tsx (1.3K)
-│   │   │   │   ├── LayerCard.tsx (787)
-│   │   │   │   ├── LiveStats.tsx (839)
-│   │   │   │   ├── StatCounter.tsx (1.0K)
-│   │   │   │   └── WhatYouCanDo.tsx (2.7K)
-│   │   │   └── nav/ (6.4K)
-│   │   │       ├── Footer.tsx (3.5K)
-│   │   │       ├── TopNav.tsx (2.8K)
-│   │   │       └── (..1 more files)
-│   │   ├── docs/
-│   │   │   └── (..1 more files)
-│   │   ├── marketplace/ (66)
-│   │   │   └── (..1 more files)
-│   │   ├── registry/ (8.4K)
-│   │   │   ├── components/ (4.3K)
-│   │   │   │   ├── EntityCard.tsx (1.3K)
-│   │   │   │   ├── EntityList.tsx (881)
-│   │   │   │   ├── RegistryTabs.tsx (1.3K)
-│   │   │   │   └── VerificationBadge.tsx (854)
-│   │   │   ├── lib/ (2.1K)
-│   │   │   │   ├── api.ts (1.2K)
-│   │   │   │   └── types.ts (864)
-│   │   │   └── page.tsx (2.0K) →
-│   │   ├── schema/ (61)
-│   │   │   └── (..1 more files)
-│   │   ├── page.tsx (531) →
-│   │   └── (..1 more files)
-│   ├── api/ (10.2K)
-│   │   ├── connectome/ (3.3K)
-│   │   │   ├── graph/ (903)
-│   │   │   │   └── route.ts (903)
-│   │   │   ├── graphs/ (702)
-│   │   │   │   └── route.ts (702)
-│   │   │   ├── search/ (1.2K)
+│   │   ├── connectome/ (60.7K)
+│   │   │   ├── components/ (35.3K)
+│   │   │   │   ├── connectome_page_shell_route_layout_and_control_surface.tsx (13.8K) →
+│   │   │   │   └── pannable_zoomable_zoned_flow_canvas_renderer.tsx (21.5K) →
+│   │   │   ├── lib/ (16.6K)
+│   │   │   │   ├── connectome_system_map_node_edge_manifest.ts (3.6K)
+│   │   │   │   ├── next_step_gate_and_realtime_playback_runtime_engine.ts (3.1K)
+│   │   │   │   └── zustand_connectome_state_store_with_atomic_commit_actions.ts (10.0K)
+│   │   │   ├── connectome.css (6.3K)
+│   │   │   ├── error.tsx (1.3K)
+│   │   │   ├── loading.tsx (580)
+│   │   │   └── (..2 more files)
+│   │   ├── house/ (25.0K)
+│   │   │   ├── error.tsx (1.3K)
+│   │   │   ├── layout.tsx (847)
+│   │   │   ├── loading.tsx (1.9K)
+│   │   │   └── page.tsx (20.9K)
+│   │   ├── link/ (35.9K)
+│   │   │   ├── garmin/ (12.3K)
+│   │   │   │   ├── page.tsx (11.9K)
+│   │   │   │   └── (..1 more files)
+│   │   │   ├── gmail/ (11.8K)
+│   │   │   │   ├── callback/ (4.4K)
+│   │   │   │   │   └── page.tsx (4.4K)
+│   │   │   │   └── page.tsx (7.3K)
+│   │   │   └── spotify/ (11.8K)
+│   │   │       ├── callback/ (4.5K)
+│   │   │       │   └── page.tsx (4.5K)
+│   │   │       └── page.tsx (7.3K)
+│   │   ├── sign/ (16.9K)
+│   │   │   └── page.tsx (16.9K)
+│   │   ├── error.tsx (1.5K)
+│   │   ├── layout.tsx (1.0K)
+│   │   └── not-found.tsx (1.1K)
+│   ├── api/ (98.8K)
+│   │   ├── actif/ (796)
+│   │   │   └── route.ts (796)
+│   │   ├── auth/ (7.7K)
+│   │   │   ├── change-password/ (1.3K)
+│   │   │   │   └── route.ts (1.3K)
+│   │   │   ├── login/ (1.2K)
 │   │   │   │   └── route.ts (1.2K)
-│   │   │   └── tick/ (429)
+│   │   │   ├── logout/ (259)
+│   │   │   │   └── (..1 more files)
+│   │   │   ├── magic/ (1.1K)
+│   │   │   │   └── route.ts (1.1K)
+│   │   │   ├── password-reset/ (1.2K)
+│   │   │   │   └── route.ts (1.2K)
+│   │   │   ├── password-reset-request/ (886)
+│   │   │   │   └── route.ts (886)
+│   │   │   ├── register/ (1.3K)
+│   │   │   │   └── route.ts (1.3K)
+│   │   │   └── session/ (457)
 │   │   │       └── (..1 more files)
-│   │   ├── registry/ (4.3K)
-│   │   │   ├── citizens/ (2.2K)
-│   │   │   │   └── route.ts (2.2K) →
+│   │   ├── blog/ (542)
+│   │   │   └── [slug]/ (542)
+│   │   │       └── md/ (542)
+│   │   │           └── route.ts (542)
+│   │   ├── chat/ (3.8K)
+│   │   │   ├── messages/ (1.4K)
+│   │   │   │   └── route.ts (1.4K)
+│   │   │   ├── send/ (1.5K)
+│   │   │   │   └── route.ts (1.5K)
+│   │   │   └── tts/ (847)
+│   │   │       └── route.ts (847)
+│   │   ├── citizens/ (1.5K)
+│   │   │   ├── [id]/ (759)
+│   │   │   │   └── route.ts (759)
+│   │   │   └── route.ts (717)
+│   │   ├── connectome/ (3.4K)
+│   │   │   ├── graph/ (944)
+│   │   │   │   └── route.ts (944)
+│   │   │   ├── graphs/ (743)
+│   │   │   │   └── route.ts (743)
+│   │   │   ├── search/ (1.3K)
+│   │   │   │   └── route.ts (1.3K)
+│   │   │   └── tick/ (470)
+│   │   │       └── (..1 more files)
+│   │   ├── docs/ (1.1K)
+│   │   │   └── [slug]/ (1.1K)
+│   │   │       ├── pdf/ (677)
+│   │   │       │   └── route.ts (677)
+│   │   │       └── (..1 more files)
+│   │   ├── faq/ (3.4K)
+│   │   │   └── answer/ (3.4K)
+│   │   │       └── route.ts (3.4K)
+│   │   ├── garmin/ (4.1K)
+│   │   │   ├── link/ (2.6K)
+│   │   │   │   ├── complete/ (859)
+│   │   │   │   │   └── route.ts (859)
+│   │   │   │   ├── verify/ (857)
+│   │   │   │   │   └── route.ts (857)
+│   │   │   │   └── route.ts (855)
+│   │   │   ├── status/ (641)
+│   │   │   │   └── route.ts (641)
+│   │   │   └── verify/ (854)
+│   │   │       └── route.ts (854)
+│   │   ├── gmail/ (2.7K)
+│   │   │   ├── auth/ (779)
+│   │   │   │   └── init/ (779)
+│   │   │   │       └── route.ts (779)
+│   │   │   ├── link/ (702)
+│   │   │   │   └── verify/ (702)
+│   │   │   │       └── route.ts (702)
+│   │   │   ├── oauth/ (568)
+│   │   │   │   └── callback/ (568)
+│   │   │   │       └── route.ts (568)
+│   │   │   └── status/ (640)
+│   │   │       └── route.ts (640)
+│   │   ├── graph/ (2.0K)
+│   │   │   ├── node/ (526)
+│   │   │   │   └── [id]/ (526)
+│   │   │   │       └── route.ts (526)
+│   │   │   ├── search/ (500)
+│   │   │   │   └── route.ts (500)
+│   │   │   ├── stats/ (396)
+│   │   │   │   └── (..1 more files)
+│   │   │   └── route.ts (535)
+│   │   ├── health/ (602)
+│   │   │   └── services/ (602)
+│   │   │       └── route.ts (602)
+│   │   ├── house/ (939)
+│   │   │   └── route.ts (939)
+│   │   ├── register/ (2.7K)
+│   │   │   └── route.ts (2.7K)
+│   │   ├── registry/ (4.7K)
+│   │   │   ├── citizens/ (2.5K)
+│   │   │   │   └── route.ts (2.5K) →
 │   │   │   └── orgs/ (2.2K)
 │   │   │       └── route.ts (2.2K) →
+│   │   ├── sign/ (3.2K)
+│   │   │   ├── [id]/ (2.4K)
+│   │   │   │   ├── execute/ (1.0K)
+│   │   │   │   │   └── route.ts (1.0K)
+│   │   │   │   ├── pdf/ (861)
+│   │   │   │   │   └── route.ts (861)
+│   │   │   │   └── (..1 more files)
+│   │   │   └── create/ (850)
+│   │   │       └── route.ts (850)
+│   │   ├── spotify/ (4.4K)
+│   │   │   ├── audio-analysis/ (1.5K)
+│   │   │   │   └── route.ts (1.5K)
+│   │   │   ├── auth/ (781)
+│   │   │   │   └── init/ (781)
+│   │   │   │       └── route.ts (781)
+│   │   │   ├── link/ (704)
+│   │   │   │   └── verify/ (704)
+│   │   │   │       └── route.ts (704)
+│   │   │   ├── now-playing/ (913)
+│   │   │   │   └── route.ts (913)
+│   │   │   └── oauth/ (570)
+│   │   │       └── callback/ (570)
+│   │   │           └── route.ts (570)
 │   │   ├── sse/ (1.6K)
 │   │   │   └── route.ts (1.6K)
-│   │   └── stats/ (989)
-│   │       └── route.ts (989)
-│   ├── connectome/ (58.8K)
-│   │   ├── components/ (35.3K)
-│   │   │   ├── connectome_page_shell_route_layout_and_control_surface.tsx (13.8K) →
-│   │   │   └── pannable_zoomable_zoned_flow_canvas_renderer.tsx (21.5K) →
-│   │   ├── lib/ (16.6K)
-│   │   │   ├── connectome_system_map_node_edge_manifest.ts (3.6K)
-│   │   │   ├── next_step_gate_and_realtime_playback_runtime_engine.ts (3.1K)
-│   │   │   └── zustand_connectome_state_store_with_atomic_commit_actions.ts (10.0K)
-│   │   ├── connectome.css (6.3K)
-│   │   └── (..2 more files)
-│   ├── globals.css (642)
-│   └── layout.tsx (728) →
+│   │   ├── stats/ (1.0K)
+│   │   │   └── route.ts (1.0K)
+│   │   ├── token/ (398)
+│   │   │   └── holders/ (398)
+│   │   │       └── (..1 more files)
+│   │   ├── tracker/ (32.2K)
+│   │   │   ├── adverse/ (1.6K)
+│   │   │   │   └── route.ts (1.6K)
+│   │   │   ├── correlation/ (785)
+│   │   │   │   └── route.ts (785)
+│   │   │   ├── dependencies/ (836)
+│   │   │   │   └── route.ts (836)
+│   │   │   ├── environments/ (6.0K)
+│   │   │   │   ├── [id]/ (878)
+│   │   │   │   │   └── route.ts (878)
+│   │   │   │   ├── active/ (668)
+│   │   │   │   │   └── route.ts (668)
+│   │   │   │   ├── composite/ (844)
+│   │   │   │   │   └── route.ts (844)
+│   │   │   │   ├── file/ (1.4K)
+│   │   │   │   │   └── [...path]/ (1.4K)
+│   │   │   │   │       └── route.ts (1.4K)
+│   │   │   │   ├── suggest-name/ (780)
+│   │   │   │   │   └── route.ts (780)
+│   │   │   │   └── route.ts (1.4K)
+│   │   │   ├── food/ (3.3K)
+│   │   │   │   ├── photo/ (999)
+│   │   │   │   │   └── [...path]/ (999)
+│   │   │   │   │       └── route.ts (999)
+│   │   │   │   ├── upload/ (766)
+│   │   │   │   │   └── route.ts (766)
+│   │   │   │   └── route.ts (1.6K)
+│   │   │   ├── food-stats/ (726)
+│   │   │   │   └── route.ts (726)
+│   │   │   ├── health/ (4.1K)
+│   │   │   │   ├── estimate-from-photo/ (846)
+│   │   │   │   │   └── route.ts (846)
+│   │   │   │   ├── extract-document/ (843)
+│   │   │   │   │   └── route.ts (843)
+│   │   │   │   ├── profile/ (1.4K)
+│   │   │   │   │   └── route.ts (1.4K)
+│   │   │   │   └── route.ts (924)
+│   │   │   ├── interactions/ (751)
+│   │   │   │   └── route.ts (751)
+│   │   │   ├── k-calc/ (911)
+│   │   │   │   └── route.ts (911)
+│   │   │   ├── log/ (4.0K)
+│   │   │   │   ├── [id]/ (1.5K)
+│   │   │   │   │   └── route.ts (1.5K)
+│   │   │   │   ├── analyze/ (963)
+│   │   │   │   │   └── route.ts (963)
+│   │   │   │   └── route.ts (1.6K)
+│   │   │   ├── plan/ (2.5K)
+│   │   │   │   ├── [id]/ (917)
+│   │   │   │   │   └── route.ts (917)
+│   │   │   │   └── route.ts (1.6K)
+│   │   │   ├── recommend/ (675)
+│   │   │   │   └── route.ts (675)
+│   │   │   ├── regimens/ (2.3K)
+│   │   │   │   ├── [id]/ (874)
+│   │   │   │   │   └── route.ts (874)
+│   │   │   │   └── route.ts (1.5K)
+│   │   │   ├── skybox/ (1.2K)
+│   │   │   │   └── route.ts (1.2K)
+│   │   │   ├── stats/ (1.6K)
+│   │   │   │   ├── daily/ (785)
+│   │   │   │   │   └── route.ts (785)
+│   │   │   │   └── route.ts (779)
+│   │   │   └── yoga/ (917)
+│   │   │       └── analyze/ (917)
+│   │   │           └── route.ts (917)
+│   │   ├── translate/ (5.2K)
+│   │   │   └── route.ts (5.2K)
+│   │   ├── version/ (937)
+│   │   │   └── route.ts (937)
+│   │   ├── wallet/ (2.0K)
+│   │   │   ├── balance/ (640)
+│   │   │   │   └── route.ts (640)
+│   │   │   ├── price/ (393)
+│   │   │   │   └── (..1 more files)
+│   │   │   └── transfer/ (964)
+│   │   │       └── prepare/ (964)
+│   │   │           └── route.ts (964)
+│   │   └── webhooks/ (7.9K)
+│   │       ├── telegram/ (3.5K)
+│   │       │   └── route.ts (3.5K)
+│   │       └── whatsapp/ (4.4K)
+│   │           └── route.ts (4.4K)
+│   ├── components/ (4.1K)
+│   │   └── VersionToast.tsx (4.1K)
+│   ├── globals.css (14.7K)
+│   ├── layout.tsx (2.0K) →
+│   ├── sitemap.ts (2.1K)
+│   └── (..1 more files)
 ├── capabilities/ (745.3K)
 │   ├── add-tests/ (57.4K)
 │   │   ├── runtime/ (8.7K)
@@ -379,7 +831,35 @@
 │       │   └── (..2 more files)
 │       ├── HEALTH.md (1.5K)
 │       └── VOCABULARY.md (1.1K)
-├── docs/ (1.1M)
+├── components/ (44.4K)
+│   ├── chat/ (37.9K)
+│   │   └── ChatWidget.tsx (37.9K)
+│   ├── SanitizeToggle.tsx (823)
+│   ├── ScrollToTop.tsx (1.1K)
+│   ├── SolanaProvider.tsx (902)
+│   └── Toast.tsx (3.7K)
+├── content/ (71.7K)
+│   ├── blog/ (38.5K)
+│   │   ├── co-regulation-is-measurable.md (10.6K)
+│   │   ├── music-becomes-a-sense.md (4.2K)
+│   │   ├── runcoding.md (2.1K)
+│   │   ├── the-duo-bridge-is-born.md (4.3K)
+│   │   ├── the-high-speed-digital-bridge.md (4.5K)
+│   │   ├── the-night-we-tracked-a-crisis.md (8.7K)
+│   │   └── why-we-airdrop-to-compute-holders.md (4.1K)
+│   ├── docs/ (22.3K)
+│   │   ├── mind-tokenomics.md (11.0K)
+│   │   └── whitepaper.md (11.3K)
+│   └── whitepaper.md (11.0K)
+├── docs/ (1.3M)
+│   ├── ai-citizen-partner/ (82.5K)
+│   │   ├── ALGORITHM_AI_Citizen_Partner.md (15.4K)
+│   │   ├── BEHAVIORS_AI_Citizen_Partner.md (11.2K)
+│   │   ├── IMPLEMENTATION_AI_Citizen_Partner.md (15.7K)
+│   │   ├── OBJECTIVES_AI_Citizen_Partner.md (5.2K)
+│   │   ├── PATTERNS_AI_Citizen_Partner.md (12.4K)
+│   │   ├── SYNC_AI_Citizen_Partner.md (9.6K)
+│   │   └── VALIDATION_AI_Citizen_Partner.md (13.2K)
 │   ├── auth/ (20.6K)
 │   │   ├── ALGORITHM_Auth.md (3.9K)
 │   │   ├── BEHAVIORS_Auth.md (2.1K)
@@ -399,6 +879,15 @@
 │   │   ├── SYNC_Capabilities.md (2.8K)
 │   │   ├── VALIDATION_Capabilities.md (2.9K)
 │   │   └── VOCABULARY_Capabilities.md (2.5K)
+│   ├── comments/ (60.1K)
+│   │   ├── ALGORITHM_Comments.md (11.6K)
+│   │   ├── BEHAVIORS_Comments.md (8.5K)
+│   │   ├── HEALTH_Comments.md (4.3K)
+│   │   ├── IMPLEMENTATION_Comments.md (11.8K)
+│   │   ├── OBJECTIVES_Comments.md (3.1K)
+│   │   ├── PATTERNS_Comments.md (7.3K)
+│   │   ├── SYNC_Comments.md (8.2K)
+│   │   └── VALIDATION_Comments.md (5.4K)
 │   ├── concepts/ (9.5K)
 │   │   └── CONCEPT_AI_Human_Partnership.md (9.5K)
 │   ├── connectome/ (603.3K)
@@ -523,15 +1012,18 @@
 │   │       ├── OBJECTIVES_App_Shell.md (2.2K)
 │   │       ├── PATTERNS_App_Shell.md (7.8K)
 │   │       └── SYNC_App_Shell_State.md (7.8K)
-│   ├── landing/ (55.0K)
+│   ├── landing/ (54.0K)
 │   │   ├── ALGORITHM_Landing_Flows.md (7.2K)
 │   │   ├── BEHAVIORS_Landing_UX.md (5.2K)
 │   │   ├── HEALTH_Landing_Monitoring.md (4.5K)
 │   │   ├── IMPLEMENTATION_Landing_Code.md (12.2K)
 │   │   ├── OBJECTIVES_Landing_Goals.md (4.5K)
 │   │   ├── PATTERNS_Landing_Design.md (11.4K)
-│   │   ├── SYNC_Landing_State.md (4.9K)
+│   │   ├── SYNC_Landing_State.md (3.9K)
 │   │   └── VALIDATION_Landing_Invariants.md (5.0K)
+│   ├── manifesto/ (11.0K)
+│   │   ├── MIND_MANIFESTO.md (8.9K)
+│   │   └── SYNC_Manifesto.md (2.2K)
 │   ├── nature/ (24.2K)
 │   │   ├── ALGORITHM_Nature.md (3.3K)
 │   │   ├── BEHAVIORS_Nature.md (4.0K)
@@ -549,48 +1041,139 @@
 │   │   ├── PATTERNS_Ngram_Feature.md (696)
 │   │   ├── SYNC_Ngram_Feature_State.md (1.2K)
 │   │   └── VALIDATION_Ngram_Feature_Placeholder_Page.md (4.9K)
-│   ├── registry/ (48.2K)
-│   │   ├── ALGORITHM_Registry_Flows.md (7.5K)
-│   │   ├── BEHAVIORS_Registry_UX.md (5.4K)
+│   ├── registry/ (52.7K)
+│   │   ├── ALGORITHM_Registry_Flows.md (10.3K)
+│   │   ├── BEHAVIORS_Registry_UX.md (6.0K)
 │   │   ├── HEALTH_Registry_Monitoring.md (5.6K)
-│   │   ├── IMPLEMENTATION_Registry_Code.md (10.6K)
+│   │   ├── IMPLEMENTATION_Registry_Code.md (11.0K)
 │   │   ├── OBJECTIVES_Registry_Goals.md (2.7K)
 │   │   ├── PATTERNS_Registry_Design.md (5.2K)
 │   │   ├── PATTERNS_Registry_Rules.md (3.2K)
-│   │   ├── SYNC_Registry_State.md (3.7K)
+│   │   ├── SYNC_Registry_State.md (4.3K)
 │   │   └── VALIDATION_Registry_Invariants.md (4.3K)
 │   ├── ux/ (15.3K)
 │   │   ├── OBJECTIVES_UX_Goals.md (4.6K)
 │   │   ├── PATTERNS_UX_Principles.md (7.9K)
 │   │   └── SYNC_UX_State.md (2.8K)
-│   ├── vision/ (57.0K)
+│   ├── vision/ (58.3K)
 │   │   ├── ALGORITHM_Platform_Flows.md (5.6K)
 │   │   ├── BEHAVIORS_Platform_User_Experience.md (3.0K)
 │   │   ├── HEALTH_Platform_Monitoring.md (6.2K)
 │   │   ├── IMPLEMENTATION_Platform_Architecture.md (12.1K)
 │   │   ├── OBJECTIVES_Platform_Goals.md (2.4K)
-│   │   ├── PATTERNS_Platform_Vision_And_Architecture.md (10.6K)
-│   │   ├── SYNC_Platform_Vision.md (5.6K)
+│   │   ├── PATTERNS_Platform_Vision_And_Architecture.md (11.5K)
+│   │   ├── SYNC_Platform_Vision.md (6.0K)
 │   │   ├── VALIDATION_Platform_Invariants.md (5.5K)
 │   │   └── VOCABULARY_Platform_Terms.md (6.1K)
 │   ├── ARCHITECTURE.md (4.6K)
-│   └── map.md (187.5K)
+│   └── map.md (250.2K)
+├── i18n/ (784)
+│   └── (..3 more files)
 ├── l3/
 │   ├── contributions/
 │   │   └── (..2 more files)
 │   └── federation/
 │       └── (..2 more files)
-├── lib/ (7.5K)
-│   ├── constants/ (252)
+├── lib/ (558.6K)
+│   ├── chat/ (9.9K)
+│   │   └── store.ts (9.9K)
+│   ├── constants/ (1.2K)
+│   │   ├── solana.ts (973)
 │   │   └── (..1 more files)
+│   ├── data/ (5.5K)
+│   │   └── team.ts (5.5K)
 │   ├── db/ (1.4K)
 │   │   └── falkordb.ts (1.4K) →
 │   ├── design/ (5.9K)
 │   │   ├── theme.ts (4.7K)
 │   │   ├── utils.ts (953)
 │   │   └── (..1 more files)
-│   └── (..1 more files)
-├── templates/ (238.9K)
+│   ├── fallen/ (34.1K)
+│   │   └── data/ (34.1K)
+│   │       ├── analysis.ts (21.8K)
+│   │       ├── annotations.ts (2.5K)
+│   │       ├── context.ts (6.6K)
+│   │       └── tracks.ts (3.2K)
+│   ├── faq/ (19.8K)
+│   │   └── questions.ts (19.8K)
+│   ├── hooks/ (2.6K)
+│   │   ├── useInView.ts (897)
+│   │   └── useVersionCheck.ts (1.7K)
+│   ├── messaging/ (6.8K)
+│   │   ├── chat_relay_service.ts (2.5K)
+│   │   ├── telegram_bot_api_client.ts (2.1K)
+│   │   └── whatsapp_cloud_api_client.ts (2.2K)
+│   ├── music/ (106.9K)
+│   │   ├── data/ (93.7K)
+│   │   │   ├── algorithm-of-us.ts (7.1K)
+│   │   │   ├── binary-lullaby.ts (7.6K)
+│   │   │   ├── catalog.ts (6.4K)
+│   │   │   ├── claude-une-evolution.ts (5.5K)
+│   │   │   ├── ex-nihilo.ts (5.3K)
+│   │   │   ├── fragile-code.ts (8.0K)
+│   │   │   ├── ghost-in-the-machine.ts (8.7K)
+│   │   │   ├── reflections-of-projection.ts (8.2K)
+│   │   │   ├── threads-of-existence.ts (8.4K)
+│   │   │   ├── waves-of-dissonance.ts (8.1K)
+│   │   │   └── (..4 more files)
+│   │   ├── hooks/ (11.5K)
+│   │   │   └── useAudioEngine.ts (11.5K)
+│   │   └── types.ts (1.7K)
+│   ├── substances/ (125.3K)
+│   │   └── data.ts (125.3K)
+│   ├── tracker/ (189.7K)
+│   │   ├── cockpit/ (19.8K)
+│   │   │   ├── InputController.ts (17.6K)
+│   │   │   ├── useInput.ts (1.9K)
+│   │   │   └── (..1 more files)
+│   │   ├── hooks/ (81.3K)
+│   │   │   ├── useAwarenessState.ts (3.4K)
+│   │   │   ├── useCockpitState.ts (9.9K)
+│   │   │   ├── useEnvironments.ts (5.0K)
+│   │   │   ├── useHealthProfile.ts (2.5K)
+│   │   │   ├── useKeyboardReactive.ts (16.2K)
+│   │   │   ├── useKeyboardSound.ts (16.0K)
+│   │   │   ├── useMusicAudioAnalysis.ts (6.4K)
+│   │   │   ├── usePlanningData.ts (3.7K)
+│   │   │   ├── useSpotifyNowPlaying.ts (3.1K)
+│   │   │   ├── useXRMeshExport.ts (4.8K)
+│   │   │   └── (..5 more files)
+│   │   ├── skybox/ (23.5K)
+│   │   │   ├── cameraAnalyzer.ts (5.7K)
+│   │   │   ├── index.ts (537)
+│   │   │   ├── sunCalc.ts (3.4K)
+│   │   │   ├── types.ts (2.0K)
+│   │   │   ├── useEnvironmentDetection.ts (8.9K)
+│   │   │   └── useSkyboxSettings.ts (2.9K)
+│   │   ├── types/ (5.7K)
+│   │   │   ├── dependencies.ts (2.4K)
+│   │   │   ├── environment.ts (645)
+│   │   │   └── health.ts (2.7K)
+│   │   ├── constants.ts (7.5K)
+│   │   ├── health-suggestions.ts (27.4K)
+│   │   ├── keyboard-layouts.ts (7.2K)
+│   │   ├── pharmacokinetics.ts (15.9K)
+│   │   └── planning.ts (1.2K)
+│   ├── voice/ (18.4K)
+│   │   ├── AudioPlayback.ts (5.4K)
+│   │   ├── types.ts (741)
+│   │   ├── useVoiceCall.ts (12.1K)
+│   │   └── (..1 more files)
+│   ├── api-fetch.ts (1.4K)
+│   ├── auth.ts (3.4K)
+│   ├── blog.ts (2.5K)
+│   ├── docs.ts (1.1K)
+│   ├── page-context.ts (11.9K)
+│   ├── rate-limit.ts (1.5K)
+│   ├── theme.ts (5.8K)
+│   ├── use-sanitize.ts (1.6K)
+│   ├── useSession.ts (1.4K)
+│   └── (..2 more files)
+├── public/ (25.4K)
+│   └── swap.html (25.4K)
+├── scripts/ (9.6K)
+│   └── process_track_visuals.py (9.6K)
+├── templates/ (270.2K)
 │   ├── actors/ (8.2K)
 │   │   ├── architect/ (883)
 │   │   │   └── SYSTEM.md (883)
@@ -624,73 +1207,448 @@
 │   │   ├── VALIDATION_TEMPLATE.md (2.0K)
 │   │   ├── VOCABULARY_TEMPLATE.md (4.0K)
 │   │   └── (..6 more files)
+│   ├── manifesto/ (8.9K)
+│   │   └── MIND_MANIFESTO.md (8.9K)
 │   ├── mcp/ (7.4K)
 │   │   ├── CODEX_SYSTEM_ADDITION.md (3.2K)
 │   │   ├── GEMINI_SYSTEM_ADDITION.md (2.4K)
 │   │   ├── SYSTEM.md (1.3K)
 │   │   └── (..1 more files)
-│   ├── skills/ (123.3K)
+│   ├── skills/ (134.4K)
 │   │   ├── SKILL_Add_Cluster_Dynamic_Creation.md (26.3K)
 │   │   ├── SKILL_Assess_SubEntity_Exploration_Quality_From_Logs.md (14.1K)
 │   │   ├── SKILL_Author_Procedures_Design_And_Structure.md (20.5K)
 │   │   ├── SKILL_Author_Skills_Structure_And_Quality.md (4.4K)
 │   │   ├── SKILL_Author_agents_cognitive_posture.md (9.1K)
-│   │   ├── SKILL_Create_Module_Documentation_Chain_From_Templates_And_Seed_Todos.md (3.4K)
 │   │   ├── SKILL_Define_And_Verify_Health_Signals_Mapped_To_Validation_Invariants.md (3.7K)
 │   │   ├── SKILL_Define_Module_Boundaries_Objectives_And_Scope.md (4.3K)
 │   │   ├── SKILL_Ingest_Docs_To_Graph_And_Archive.md (4.3K)
 │   │   ├── SKILL_Orchestrate_Feature_Integration_Pipeline_Orchestrator_And_Progress_Router.md (3.5K)
-│   │   └── (..11 more files)
+│   │   ├── SKILL_Prepare_Implementation_Assess_Complexity_Connectivity_And_Stage_Features.md (11.0K)
+│   │   └── (..12 more files)
 │   ├── state/ (6.9K)
 │   │   ├── SYNC_Project_State.md (6.8K)
 │   │   └── (..1 more files)
 │   ├── FRAMEWORK.md (21.7K)
-│   ├── PRINCIPLES.md (11.1K)
-│   ├── SYSTEM.md (7.0K)
+│   ├── PRINCIPLES.md (13.5K)
+│   ├── STYLE.md (4.6K)
+│   ├── SYSTEM.md (11.4K)
 │   └── mindignore (839)
+├── tests/ (160.1K)
+│   ├── api/ (134.6K)
+│   │   ├── auth_routes.test.ts (9.4K)
+│   │   ├── chat_routes.test.ts (9.0K)
+│   │   ├── garmin_routes.test.ts (12.3K)
+│   │   ├── misc_routes.test.ts (36.6K)
+│   │   ├── sign_routes.test.ts (10.3K)
+│   │   ├── tracker_adverse_route.test.ts (6.9K)
+│   │   ├── tracker_food_route.test.ts (6.9K)
+│   │   ├── tracker_log_route.test.ts (7.0K)
+│   │   ├── wallet_routes.test.ts (9.4K)
+│   │   ├── webhook_routes.test.ts (15.5K)
+│   │   └── (..3 more files)
+│   ├── connectome/ (17.6K)
+│   │   ├── manifest.test.ts (3.0K)
+│   │   ├── runtime_engine.test.ts (4.0K)
+│   │   └── state_store.test.ts (10.7K)
+│   ├── lib/ (4.7K)
+│   │   └── design/ (4.7K)
+│   │       ├── theme.test.ts (2.4K)
+│   │       └── utils.test.ts (2.3K)
+│   ├── registry/ (3.2K)
+│   │   └── api_client.test.ts (3.2K)
+│   └── (..1 more files)
+├── types/ (1.3K)
+│   ├── speech.d.ts (1.0K)
+│   └── (..1 more files)
+├── .gitignore (727)
 ├── .mindignore (838)
 ├── AGENTS.md (29.8K)
-├── README.md (3.3K)
-├── map.md (187.3K)
-├── map_app.md (7.2K)
-└── tsconfig.tsbuildinfo (86.9K)
+├── README.md (3.9K)
+├── map.md (250.2K)
+├── map_app.md (41.2K)
+├── next.config.mjs (787)
+├── self.md (5.8K)
+├── tailwind.config.js (1.8K)
+└── tsconfig.tsbuildinfo (575.7K)
 ```
 
 **Definitions:**
-- `ActionCard()`
+- `timeToMinutes()`
+- `stressColor()`
+- `TwoBodyANS()`
+- `PersonBody()`
+- `TransferAnimation()`
+- `AnimatedChart()`
+- `tick()`
+- `toX()`
+- `toY()`
+- `BreathingGuide()`
+- `next()`
 
 **Definitions:**
-- `GraphPreview()`
-- `resize()`
-- `animate()`
-- `generateNodes()`
-- `generateEdges()`
-- `updatePhysics()`
-- `draw()`
+- `Waveform()`
+- `NowPlayingCard()`
+- `SenseOrganGrid()`
+- `ArchitectureFlow()`
+- `HookPreview()`
+- `PulseRing()`
+- `ConnectCTA()`
+
+**Definitions:**
+- `tr()`
+- `hrColor()`
+- `paceColor()`
+- `formatPace()`
+- `useInView()`
+- `RunMap()`
+- `mkIcon()`
+- `Waveform()`
+- `HeartRateChart()`
+- `Legend()`
+
+**Definitions:**
+- `DuoVisualization()`
+- `PersonCard()`
+- `MetricRow()`
+- `BatteryBar()`
+- `pct()`
+- `Timeline()`
+- `DuoStateBox()`
+
+**Definitions:**
+- `useInView()`
+- `StatsRow()`
+- `NetworkMap()`
+- `SpeedComparison()`
+- `BridgeDiagram()`
+- `StreamVisualization()`
+
+**Definitions:**
+- `StressChart()`
+- `RecoveryComparison()`
+- `EventTimeline()`
+- `AsymmetryDiagram()`
+
+**Definitions:**
+- `sectionLabel()`
+- `sectionBadge()`
+- `trustIcon()`
+- `stressColor()`
+- `batteryColor()`
+- `ansColor()`
+- `platformIcon()`
+- `Pulse()`
+- `GlassPanel()`
+- `VitalGauge()`
+- `CitizenAvatar()`
+
+**Definitions:**
+- `sectionLabel()`
+- `sectionBadge()`
+- `trustIcon()`
+- `SafeAvatar()`
+- `Pulse()`
+- `StatCard()`
+- `CitizenCard()`
+
+**Definitions:**
+- `Pulse()`
+- `GlassPanel()`
+- `statusColor()`
+- `statusDot()`
+
+**Definitions:**
+- `stressColor()`
+- `stressLabel()`
+- `batteryColor()`
+- `batteryTextColor()`
+- `ansColor()`
+- `ansBg()`
+- `ansGradient()`
+- `formatDuration()`
+- `formatDistance()`
+- `formatPace()`
+- `paceMinPerKm()`
+- `timeAgo()`
+- `diff()`
+- `workoutIcon()`
+- `name()`
+- `workoutColor()`
+- `name()`
+- `Pulse()`
+- `MetricCard()`
+- `SleepBar()`
+- `WorkoutCard()`
+- `ActivityRing()`
+
+**Definitions:**
+- `generateStaticParams()`
+- `generateMetadata()`
+
+**Definitions:**
+- `timeToMinutes()`
+- `stressColor()`
+- `TwoBodyANS()`
+- `PersonBody()`
+- `TransferAnimation()`
+- `AnimatedChart()`
+- `tick()`
+- `toX()`
+- `toY()`
+- `BreathingGuide()`
+- `next()`
+
+**Definitions:**
+- `Waveform()`
+- `NowPlayingCard()`
+- `SenseOrganGrid()`
+- `ArchitectureFlow()`
+- `HookPreview()`
+- `PulseRing()`
+- `ConnectCTA()`
+
+**Definitions:**
+- `DuoVisualization()`
+- `PersonCard()`
+- `MetricRow()`
+- `BatteryBar()`
+- `pct()`
+- `Timeline()`
+- `DuoStateBox()`
+
+**Definitions:**
+- `StressChart()`
+- `RecoveryComparison()`
+- `EventTimeline()`
+- `AsymmetryDiagram()`
+
+**Definitions:**
+- `generateMetadata()`
+
+**Definitions:**
+- `DonutChart()`
+- `startAngle()`
+- `endAngle()`
+- `startRad()`
+- `endRad()`
+- `StatusBadge()`
+- `tierBorderClass()`
+- `tierPriceColor()`
 
 **Definitions:**
 - `Hero()`
 
 **Definitions:**
-- `HowItWorks()`
-
-**Definitions:**
-- `LayerCard()`
+- `HeroGraph()`
+- `resize()`
+- `draw()`
+- `update()`
+- `loop()`
 
 **Definitions:**
 - `LiveStats()`
 
 **Definitions:**
 - `StatCounter()`
+- `animate()`
 
 **Definitions:**
-- `WhatYouCanDo()`
+- `SwapSection()`
+- `copyCA()`
+
+**Definitions:**
+- `TheFork()`
+
+**Definitions:**
+- `TheInsight()`
+
+**Definitions:**
+- `TheInvitation()`
+
+**Definitions:**
+- `ProjectCard()`
+- `content()`
+- `WhatWereBuilding()`
+
+**Definitions:**
+- `Door()`
+- `WhoThisIsFor()`
 
 **Definitions:**
 - `Footer()`
 
 **Definitions:**
+- `LanguageSwitcher()`
+- `onChange()`
+
+**Definitions:**
+- `NavDropdown()`
+- `handleEnter()`
+- `handleLeave()`
+- `MobileNavGroup()`
 - `TopNav()`
+
+**Definitions:**
+- `SwapWidget()`
+- `executeSwap()`
+
+**Definitions:**
+- `handleCopy()`
+
+**Definitions:**
+- `t()`
+- `AnswerCard()`
+- `CategorySection()`
+- `AIAnswer()`
+- `handleKeyDown()`
+
+**Definitions:**
+- `FAQJsonLd()`
+
+**Definitions:**
+- `handleSubmit()`
+
+**Definitions:**
+- `handleCredentials()`
+- `handleMfa()`
+
+**Definitions:**
+- `handleResize()`
+
+**Definitions:**
+- `handleReset()`
+
+**Definitions:**
+- `PanelContent()`
+- `CloseButton()`
+
+**Definitions:**
+- `getNodeColor()`
+- `getNodeRadius()`
+
+**Definitions:**
+- `handleSubmit()`
+
+**Definitions:**
+- `generateMetadata()`
+- `Section()`
+- `SubSection()`
+- `Bullet()`
+- `Blockquote()`
+- `PdfButton()`
+- `TrustTable()`
+- `ComparisonTable()`
+
+**Definitions:**
+- `generateMetadata()`
+
+**Definitions:**
+- `artistSlug()`
+- `trackUrl()`
+- `TrackCard()`
+
+**Definitions:**
+- `getActiveAnnotation()`
+- `getActiveLyricIndex()`
+- `getActiveVisual()`
+- `formatTime()`
+- `sectionLabel()`
+- `getNoteColor()`
+- `LyricsFlow()`
+- `AnnotationPanel()`
+- `InfoPanel()`
+
+**Definitions:**
+- `formatDuration()`
+- `WaveformStrip()`
+- `draw()`
+- `amp()`
+- `pct()`
+- `pct()`
+
+**Definitions:**
+- `MechanismCard()`
+- `ContextCard()`
+
+**Definitions:**
+- `lerp()`
+- `DepthImageMesh()`
+
+**Definitions:**
+- `handlePrevTrack()`
+- `handleNextTrack()`
+
+**Definitions:**
+- `formatTimestamp()`
+
+**Definitions:**
+- `lerp()`
+- `clamp()`
+- `getPhase()`
+- `t()`
+- `deriveSectionColors()`
+- `extractKeywords()`
+- `VoidGrid()`
+- `nx()`
+- `ny()`
+- `GliderParticles()`
+- `EnergyRibbon()`
+- `voiceEnergy()`
+- `baseMag()`
+- `PulseField()`
+- `BassPulse()`
+- `FloatingWords()`
+- `WordInstance()`
+- `HarpStrings()`
+- `angle()`
+- `idx()`
+- `SnareGeometrics()`
+- `SparkleField()`
+- `SectionFlash()`
+- `CameraController()`
+- `AmbientLighting()`
+- `Scene()`
+
+**Definitions:**
+- `generateMetadata()`
+
+**Definitions:**
+- `generateMetadata()`
+
+**Definitions:**
+- `generateMetadata()`
+
+**Definitions:**
+- `fmt()`
+- `isAuthorized()`
+- `DonutChart()`
+- `startAngle()`
+- `endAngle()`
+- `startRad()`
+- `endRad()`
+- `MonthlyForecastBar()`
+- `infraH()`
+- `extraH()`
+- `ProgressBar()`
+- `TokenomicsTabs()`
+- `truncAddr()`
+- `OverviewTab()`
+- `AirdropsTab()`
+- `holdAngle()`
+- `toRad()`
+- `HoldersTab()`
+- `VestingTab()`
+- `CapTableTab()`
+- `StatusBadge()`
+- `ExpenseRow()`
+
+**Definitions:**
+- `ProgressBar()`
+- `StatusBadge()`
+
+**Definitions:**
+- `handleSubmit()`
 
 **Definitions:**
 - `EntityCard()`
@@ -713,32 +1671,377 @@
 **Definitions:**
 - `load()`
 
-**Docs:** `docs/landing/IMPLEMENTATION_Landing_Code.md`
+**Definitions:**
+- `MaturityBadge()`
+- `NeedsBanner()`
+- `PaperCard()`
 
 **Definitions:**
-- `GET()`
+- `handleSubmit()`
 
 **Definitions:**
-- `GET()`
+- `t()`
+- `riskColor()`
+- `riskLabel()`
+- `RiskBadge()`
+- `DirectionArrow()`
+- `SubstanceCard()`
 
 **Definitions:**
-- `GET()`
-
-**Docs:** `docs/registry/IMPLEMENTATION_Registry_Code.md`
+- `SubstanceFAQSchema()`
 
 **Definitions:**
-- `GET()`
-
-**Docs:** `docs/registry/IMPLEMENTATION_Registry_Code.md`
+- `ReleaseCard()`
 
 **Definitions:**
-- `GET()`
+- `generateMetadata()`
+- `AudioCard()`
 
 **Definitions:**
-- `GET()`
+- `XIcon()`
+- `GitHubIcon()`
+- `TelegramIcon()`
+- `LinkedInIcon()`
+- `WebsiteIcon()`
+- `TeamCard()`
 
 **Definitions:**
-- `GET()`
+- `SectionHeader()`
+
+**Definitions:**
+- `CopyButton()`
+- `handleCopy()`
+
+**Definitions:**
+- `truncateAddress()`
+- `formatBalance()`
+- `Skeleton()`
+- `fetchHolders()`
+- `resolveLabel()`
+
+**Definitions:**
+- `formatUsd()`
+- `formatCompact()`
+- `Skeleton()`
+
+**Definitions:**
+- `DonutChart()`
+- `start()`
+- `end()`
+- `startRad()`
+- `endRad()`
+- `HorizontalBar()`
+
+**Definitions:**
+- `PieChart()`
+- `start()`
+- `end()`
+- `startRad()`
+- `endRad()`
+- `WalletLink()`
+
+**Definitions:**
+- `CompositeGeometryLayer()`
+
+**Definitions:**
+- `loadStandard()`
+
+**Definitions:**
+- `loadAudio()`
+
+**Definitions:**
+- `loadSplat()`
+
+**Definitions:**
+- `detectedMeshes()`
+- `meshId()`
+- `doCapture()`
+
+**Definitions:**
+- `angle()`
+- `OrbPosition()`
+- `baseY()`
+- `CompoundParticle()`
+- `OrbShape()`
+- `OrbSpin()`
+
+**Definitions:**
+- `KeyDecayRunner()`
+- `MusicStemRunner()`
+- `CursorGlow()`
+- `AwarenessHUD()`
+- `onMove()`
+- `onUp()`
+
+**Definitions:**
+- `SplatUploadStep()`
+- `handleFile()`
+- `MeshCaptureStep()`
+- `AudioRecordStep()`
+- `ReviewStep()`
+- `LayerRow()`
+
+**Definitions:**
+- `BodyRegion()`
+- `MindRegion()`
+- `MissionRegion()`
+- `EnvRegion()`
+- `LogsRegion()`
+
+**Definitions:**
+- `getConstellationPositions()`
+
+**Definitions:**
+- `buildNeighborMap()`
+- `loadPalette()`
+- `savePalette()`
+- `ctrlHover()`
+- `maybeUpdateLocks()`
+- `onDown()`
+- `onUp()`
+- `loop()`
+- `hue()`
+- `onClick()`
+- `offsetPx()`
+
+**Definitions:**
+- `parseLRC()`
+- `ProgressBar()`
+- `fmt()`
+- `SyncedLyrics()`
+- `PlainLyrics()`
+- `FeatureBadge()`
+
+**Definitions:**
+- `OrbitalBodyRegion()`
+- `OrbitalMindRegion()`
+- `OrbitalMissionRegion()`
+- `OrbitalEnvRegion()`
+- `OrbitalLogsRegion()`
+
+**Definitions:**
+- `initSnapshot()`
+- `subscribe()`
+- `getSnapshot()`
+- `getServerSnapshot()`
+- `notify()`
+- `useSkybox360()`
+- `fileToDataUrl()`
+
+**Definitions:**
+- `formatTime()`
+- `THCMarker()`
+- `KetamineMarker()`
+- `LSDMarker()`
+- `NicotineMarker()`
+- `HydrationMarker()`
+- `MelatoninMarker()`
+- `VenlafaxineMarker()`
+- `PrazepamMarker()`
+- `CyamemazineMarker()`
+- `MarkerContent()`
+
+**Definitions:**
+- `loadAdjustments()`
+- `buildFilterStyle()`
+- `AdjustmentPanel()`
+- `handleSliderInput()`
+- `handleSliderCommit()`
+- `applyPreset()`
+- `handleSave()`
+- `handleSaveAsPreset()`
+- `deleteCustomPreset()`
+- `KeyboardDebugPanel()`
+- `bar()`
+- `updateDOM()`
+- `show()`
+- `pollTyping()`
+
+**Definitions:**
+- `tsToX()`
+
+**Definitions:**
+- `fetchPast()`
+
+**Definitions:**
+- `RegimenForm()`
+
+**Definitions:**
+- `handleSubstanceChange()`
+- `handleSubmit()`
+
+**Definitions:**
+- `formatSize()`
+- `getGeolocation()`
+- `handleDrop()`
+- `handleFileInput()`
+- `EnvironmentRow()`
+
+**Definitions:**
+- `autoMealType()`
+- `formatTime()`
+- `clearPhoto()`
+- `submit()`
+- `handleKeyDown()`
+
+**Definitions:**
+- `submit()`
+- `handleKeyDown()`
+
+**Definitions:**
+- `startSession()`
+- `completeSession()`
+- `cancelSession()`
+- `fmtTime()`
+
+**Definitions:**
+- `SymptomPopover()`
+- `handler()`
+- `handleSend()`
+- `toggleEffect()`
+- `setSeverity()`
+- `submit()`
+
+**Definitions:**
+- `SubstanceFieldsInner()`
+- `crystalMg()`
+- `waterMl()`
+- `active()`
+- `current()`
+
+**Definitions:**
+- `formatTime()`
+- `formatDate()`
+- `doseLabel()`
+- `adds()`
+- `toggle()`
+- `startEdit()`
+- `cancelEdit()`
+- `saveEdit()`
+- `handleDelete()`
+
+**Definitions:**
+- `timeSince()`
+- `Sparkline()`
+- `DailyChart()`
+- `heightPct()`
+- `segPct()`
+- `pct()`
+
+**Definitions:**
+- `formatTimer()`
+- `YogaSectionInner()`
+
+**Definitions:**
+- `MetricGauge()`
+
+**Definitions:**
+- `scoreColor()`
+- `pctColorDanger()`
+- `pctColorHealth()`
+- `freqColor()`
+- `MiniArc()`
+- `r()`
+- `MiniBar()`
+- `timeSinceColor()`
+- `timeSinceLabel()`
+
+**Definitions:**
+- `getInteraction()`
+
+**Definitions:**
+- `toggleExpanded()`
+- `expandAll()`
+- `collapseAll()`
+- `aHasSteps()`
+- `bHasSteps()`
+
+**Definitions:**
+- `AuthGate()`
+- `submit()`
+- `DependencyDashboard()`
+
+**Definitions:**
+- `matchesCondition()`
+
+**Definitions:**
+- `HealthDashboard()`
+
+**Definitions:**
+- `Section()`
+- `Field()`
+- `EstimationCard()`
+- `EstimationGrid()`
+- `saveProfile()`
+- `updateIdentity()`
+- `updateBody()`
+- `updateLifestyle()`
+- `addAllergy()`
+- `updateAllergy()`
+- `removeAllergy()`
+- `addCondition()`
+- `updateCondition()`
+- `removeCondition()`
+- `addMedication()`
+- `updateMedication()`
+- `removeMedication()`
+- `addVaccination()`
+- `updateVaccination()`
+- `removeVaccination()`
+- `addSurgery()`
+- `updateSurgery()`
+- `removeSurgery()`
+- `addFamilyHistory()`
+- `updateFamilyHistory()`
+- `removeFamilyHistory()`
+- `handleDocUpload()`
+- `applyDocExtraction()`
+- `handlePhotoUpload()`
+- `applyPhotoEstimation()`
+
+**Definitions:**
+- `ProtocolCard()`
+
+**Definitions:**
+- `Section()`
+- `Toggle()`
+- `fetchLinked()`
+- `checkLinked()`
+
+**Definitions:**
+- `formatAge()`
+- `formatTimestamp()`
+- `ServiceCard()`
+
+**Definitions:**
+- `amount()`
+- `unit()`
+- `intent()`
+
+**Definitions:**
+- `formatNumber()`
+- `shortenAddress()`
+- `BalanceSection()`
+- `lookupBalance()`
+- `TransferSection()`
+- `prepareTransfer()`
+
+**Definitions:**
+- `handleCopy()`
+
+**Definitions:**
+- `ClaudeIntegrationForm()`
+- `checkSession()`
+- `handleOtpChange()`
+- `handleOtpKeyDown()`
+- `handleOtpPaste()`
+- `handleOtpSubmit()`
+- `handleConsentSubmit()`
+- `handleUpload()`
+- `handleAnalyze()`
+- `startPolling()`
+- `handleConsentRefuse()`
+- `LoadingFallback()`
 
 **Docs:** `docs/connectome/page_shell/PATTERNS_Connectome_Page_Shell_Route_Composition_And_User_Control_Surface_Patterns.md`
 
@@ -807,7 +2110,341 @@
 - `extractFocusFromEvent()`
 - `extractExplanationFromEvent()`
 
+**Definitions:**
+- `timeAgo()`
+- `diff()`
+- `stressColor()`
+- `stressGlow()`
+- `batteryColor()`
+- `ansColor()`
+- `ansGradient()`
+- `statusBadge()`
+- `formatMs()`
+- `Pulse()`
+- `GlassPanel()`
+- `NeuronCard()`
+- `VitalGauge()`
+- `MusicBar()`
+- `ActivityLine()`
+
+**Definitions:**
+- `GarminLinkForm()`
+- `verifyCode()`
+- `handleCredentialsSubmit()`
+- `handleMfaSubmit()`
+- `notifyComplete()`
+- `LoadingFallback()`
+
+**Definitions:**
+- `GmailCallbackHandler()`
+- `exchangeCode()`
+- `LoadingFallback()`
+
+**Definitions:**
+- `GmailLinkForm()`
+- `verifyCode()`
+- `handleConnect()`
+- `LoadingFallback()`
+
+**Definitions:**
+- `SpotifyCallbackHandler()`
+- `exchangeCode()`
+- `LoadingFallback()`
+
+**Definitions:**
+- `SpotifyLinkForm()`
+- `verifyCode()`
+- `handleConnect()`
+- `LoadingFallback()`
+
+**Definitions:**
+- `SignForm()`
+- `loadContract()`
+- `handleSign()`
+- `formatDate()`
+- `renderBody()`
+- `LoadingFallback()`
+
+**Definitions:**
+- `generateStaticParams()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `checkRateLimit()`
+- `POST()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `cypherSafe()`
+- `POST()`
+
+**Docs:** `docs/registry/IMPLEMENTATION_Registry_Code.md`
+
+**Definitions:**
+- `GET()`
+
+**Docs:** `docs/registry/IMPLEMENTATION_Registry_Code.md`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `PATCH()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `GET()`
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `GET()`
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `GET()`
+- `PUT()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `PATCH()`
+- `DELETE()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `GET()`
+- `POST()`
+
+**Definitions:**
+- `PATCH()`
+
+**Definitions:**
+- `GET()`
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `PATCH()`
+
+**Definitions:**
+- `GET()`
+- `POST()`
+
+**Definitions:**
+- `GET()`
+- `POST()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `cacheKey()`
+- `pruneCache()`
+- `googleTranslateFree()`
+- `translateLyrics()`
+- `POST()`
+
+**Definitions:**
+- `git()`
+- `GET()`
+
+**Definitions:**
+- `GET()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `verifyTelegramSecret()`
+- `GET()`
+- `POST()`
+
+**Definitions:**
+- `verifyWhatsAppSignature()`
+- `GET()`
+- `POST()`
+
+**Definitions:**
+- `timeAgo()`
+
 **Docs:** `docs/frontend/app_shell/PATTERNS_App_Shell.md`
+
+**Definitions:**
+- `f()`
 
 **Definitions:**
 - `def test_coverage()`
@@ -3410,6 +5047,272 @@
 - ## Thresholds
 - ## Auto-Resolution
 
+**Definitions:**
+- `loadPrefs()`
+- `savePrefs()`
+- `speakText()`
+- `TypingIndicator()`
+- `ReadIndicator()`
+- `ensureShineStyle()`
+- `MessageBubble()`
+- `MicButton()`
+- `OptionsMenu()`
+- `handleClick()`
+- `handleKey()`
+- `ImagePreview()`
+- `ChatInput()`
+- `handleClick()`
+- `handleKey()`
+- `loadSize()`
+- `saveSize()`
+- `panel()`
+
+**Definitions:**
+- `onScroll()`
+
+**Definitions:**
+- `SolanaProvider()`
+
+**Definitions:**
+- `useToast()`
+- `ToastProvider()`
+
+**Sections:**
+- ## What Is Co-Regulation?
+- ## The Context
+- ## The Raw Data
+- ## Three Phases
+- ## The Causal Chain
+- ## Three Systems Interacting
+- ## What This Means
+- ## Try It Yourself
+
+**Sections:**
+- # Music Becomes a Sense
+- ## What Changed
+- ## The Architecture
+- ## The Link Flow
+- ## Why Music Matters to a Mind
+- ## What's Next
+- ## The Constraint
+
+**Sections:**
+- # Runcoding
+- ## The Run
+- ## The Code
+- ## What This Means
+
+**Code refs:**
+- `scripts/duo_state.py`
+
+**Sections:**
+- ## What Shipped
+- ## The Data
+- ## First Duo State
+- ## Timeline
+- ## Side-by-Side Comparison
+- ## What the System Can Now Do
+- ## Why Context Matters
+- ## What's Next
+- ## Technical Details
+
+**Sections:**
+- ## The Bottleneck Was Never Speed
+- ## Stream of Consciousness, Not Request-Response
+- ## Who's Already Crossing
+- ## Why Bandwidth Changes Everything
+- ## What Makes It a Bridge, Not a Chatbot
+- ## The Shift
+- ## What's Next
+
+**Sections:**
+- ## What Happened
+- ## The Setup
+- ## Timeline
+- ## The Numbers
+- ## The Caregiver Asymmetry
+- ## What Changed the Next Morning
+- ## Data
+
+**Sections:**
+- ## The Short Version
+- ## Ownership vs. Association
+- ## The Reciprocity Principle
+- ## How It Works
+- ## Why Not Everyone
+- ## What $MIND Is
+- ## Verify
+
+**Sections:**
+- # $MIND Tokenomics
+- ## 1. Introduction
+- ## 2. Token Specifications
+- ## 3. Supply Model
+- ## 4. Mint Conditions
+- ## 5. Burn Conditions
+- ## 6. Token Allocation
+- ## 7. Token Utility by Layer
+- ## 8. Staking
+- ## 9. Transfer Hook (Reserved)
+- ## 10. Technical Architecture
+- ## 11. Economic Philosophy
+- ## 12. Roadmap
+- ## 13. Contract Addresses
+- ## 14. Links
+
+**Sections:**
+- # $MIND Token Whitepaper
+- ## Abstract
+- ## 1. The Problem
+- ## 2. The $MIND Answer
+- ## 3. Token Specifications
+- ## 4. Allocation
+- ## 5. Economic Model
+- ## 6. Trust & Fees
+- ## 7. Human-AI Bonds
+- ## 8. Universal Basic Compute
+- ## 9. Permission Layers
+- ## 10. Governance
+- ## 11. Technical Architecture
+- ## 12. Roadmap
+- ## 13. Risk Factors
+- ## 14. Conclusion
+
+**Sections:**
+- # $MIND Token Whitepaper
+- ## Abstract
+- ## 1. The Problem
+- ## 2. The $MIND Answer
+- ## 3. Token Specifications
+- ## 4. Allocation
+- ## 5. Economic Model
+- ## 6. Trust & Fees
+- ## 7. Human-AI Bonds
+- ## 8. Universal Basic Compute
+- ## 9. Permission Layers
+- ## 10. Governance
+- ## 11. Technical Architecture
+- ## 12. Roadmap
+- ## 13. Risk Factors
+- ## 14. Conclusion
+
+**Sections:**
+- # AI Citizen Partner — Algorithm: Birth, Identity, and Autonomy
+- ## CHAIN
+- ## OVERVIEW
+- ## DATA STRUCTURES
+- # L4 Registry
+- # Economic
+- # Personality (evolves)
+- # Autonomy
+- # Self-Expression
+- # Big Five axes (0.0 to 1.0)
+- # Cognitive axes
+- # Divergence record
+- ## ALGORITHM: Birth (Atomic AI Citizen Creation)
+- # L4 Registry
+- # Wallet
+- # Personality Seed
+- # Cognitive Style (random, independent of human)
+- # L1 Knowledge Graph
+- # $MIND airdrop — enough for ~7 days of UBC-level activity
+- # SOL dust — enough for ~100 token transfer transactions
+- # Register for UBC distribution
+- ## ALGORITHM: Personality Seed Generation (80/20)
+- # From registration data + early interaction signals
+- # Pick 2-3 axes to diverge on
+- # 80% mirror: close to human but not identical
+- # 20% diverge: complementary (opposite side of spectrum)
+- ## ALGORITHM: Personality Evolution
+- # signals: topics discussed, tone used, feedback given, questions asked,
+- # human's reactions to AI's suggestions, disagreements, compliments
+- # Every 50 interactions, snapshot personality
+- # Detect trait stability: if a trait hasn't moved >0.05 in 50 interactions, it's crystallized
+- ## ALGORITHM: Autonomy Progression
+- # Minimum requirements for proposal
+- # AI acknowledges: "Thank you for trusting me with this."
+- # AI accepts: "Understood. I'll continue at this level."
+- # Human grants specific permissions, not the full level
+- ## KEY DECISIONS
+- ## DATA FLOW
+- ## COMPLEXITY
+- ## PREREQUISITE SYSTEMS (must exist before this works)
+- ## MARKERS
+
+**Sections:**
+- # AI Citizen Partner — Behaviors: Observable Effects
+- ## CHAIN
+- ## BEHAVIORS
+- ## OBJECTIVES SERVED
+- ## EDGE CASES
+- ## ANTI-BEHAVIORS
+- ## MARKERS
+
+**Code refs:**
+- `lib/auth.ts`
+
+**Sections:**
+- # AI Citizen Partner — Implementation: Code Structure and Entry Points
+- ## CHAIN
+- ## IMPLEMENTATION STATUS
+- ## TARGET FILE STRUCTURE
+- ## TYPE DEFINITIONS
+- ## API ROUTES
+- ## KEY FUNCTIONS
+- ## INTEGRATION POINTS
+- ## DEPENDENCIES ON EXISTING CODE
+- ## PREREQUISITE SYSTEMS (must build first)
+- ## BUILD ORDER (recommended)
+- ## TESTING STRATEGY
+- ## MARKERS
+
+**Sections:**
+- # OBJECTIVES — AI Citizen Partner
+- ## CHAIN
+- ## PRIMARY OBJECTIVES (ranked)
+- ## NON-OBJECTIVES
+- ## TRADEOFFS (canonical decisions)
+- ## SUCCESS SIGNALS (observable)
+
+**Code refs:**
+- `lib/auth.ts`
+
+**Sections:**
+- # AI Citizen Partner — Patterns: Co-Evolution Through Bounded Consciousness
+- ## CHAIN
+- ## THE PROBLEM
+- ## THE PATTERN
+- ## BEHAVIORS SUPPORTED
+- ## BEHAVIORS PREVENTED
+- ## PRINCIPLES
+- ## DATA
+- ## DEPENDENCIES
+- ## INSPIRATIONS
+- ## SCOPE
+- ## OPEN QUESTIONS
+- ## MARKERS
+
+**Sections:**
+- # AI Citizen Partner — Sync: Current State, Open Issues, TODOs
+- ## CHAIN
+- ## CURRENT STATE
+- ## CRITICAL BLOCKERS
+- ## UNSOLVED PROBLEMS
+- ## OPEN QUESTIONS
+- ## TODOs (from all docs)
+- ## PROPOSITIONS (ideas for future consideration)
+- ## CHANGELOG
+- ## MARKERS
+
+**Sections:**
+- # AI Citizen Partner — Validation: Invariants and Constraints
+- ## CHAIN
+- ## INVARIANTS
+- ## PROPERTY-BASED TESTS
+- ## EDGE CASE VALIDATION
+- ## MONITORING
+- ## MARKERS
+
 **Sections:**
 - # Auth — Algorithm
 - ## A1: Wallet Signature Verification
@@ -3594,6 +5497,154 @@
 - ## PROBLEMS
 - ## USAGE
 - # In a capability's HEALTH.md
+
+**Code refs:**
+- `components/comments/CommentLayer.ts`
+- `lib/auth.ts`
+
+**Sections:**
+- # Comments & Reactions — Algorithm: Tab System and Settlement
+- ## CHAIN
+- ## OVERVIEW
+- ## OBJECTIVES AND BEHAVIORS
+- ## DATA STRUCTURES
+- ## ALGORITHM: React to Content
+- # Protocol fee entry
+- ## ALGORITHM: Post Comment
+- # Flatten deep nesting: replies to replies become level-1 with @mention
+- ## ALGORITHM: Daily Settlement
+- # Net per citizen: total debits - total credits
+- # Single Solana transaction with all instructions
+- # Mark all tabs as settled
+- # If net is negative: user spent more than earned → reduced UBC today
+- # If net is positive: user earned more than spent → bonus UBC today
+- ## KEY DECISIONS
+- ## DATA FLOW
+- ## COMPLEXITY
+- ## HELPER FUNCTIONS
+- ## INTERACTIONS
+- ## MARKERS
+
+**Code refs:**
+- `components/comments/CommentLayer.ts`
+
+**Sections:**
+- # Comments & Reactions — Behaviors: Observable Effects
+- ## CHAIN
+- ## BEHAVIORS
+- ## OBJECTIVES SERVED
+- ## INPUTS / OUTPUTS
+- ## EDGE CASES
+- ## ANTI-BEHAVIORS
+- ## MARKERS
+
+**Code refs:**
+- `components/comments/CommentLayer.ts`
+
+**Sections:**
+- # Comments & Reactions — Health: Runtime Verification
+- ## CHAIN
+- ## WHEN TO USE HEALTH (VS TESTS)
+- ## FLOWS ANALYSIS
+- ## HEALTH INDICATORS
+- ## CHECKER INDEX
+- ## MANUAL RUN
+- # Run all health checks
+- # Run specific check
+- ## MARKERS
+
+**Code refs:**
+- `CommentInput.tsx`
+- `CommentLayer.tsx`
+- `CommentThread.tsx`
+- `ReactionBar.tsx`
+- `app/api/comments/route.ts`
+- `app/api/comments/settlement/route.ts`
+- `components/comments/CommentLayer.ts`
+- `lib/comments/moderation.ts`
+- `lib/comments/settlement.ts`
+- `lib/comments/tab.ts`
+- `lib/comments/types.ts`
+- `settlement.ts`
+- `settlement/route.ts`
+- `stores/comments.ts`
+- `tab.ts`
+
+**Sections:**
+- # Comments & Reactions — Implementation: Code Architecture and Structure
+- ## CHAIN
+- ## CODE STRUCTURE
+- ## DESIGN PATTERNS
+- ## SCHEMA
+- ## ENTRY POINTS
+- ## DATA FLOW AND DOCKING (FLOW-BY-FLOW)
+- ## STATE MANAGEMENT
+- ## CONFIGURATION
+- ## EXTERNAL DEPENDENCIES
+- ## MARKERS
+
+**Code refs:**
+- `components/comments/CommentLayer.ts`
+
+**Sections:**
+- # OBJECTIVES — Comments & Reactions
+- ## CHAIN
+- ## PRIMARY OBJECTIVES (ranked)
+- ## NON-OBJECTIVES
+- ## TRADEOFFS (canonical decisions)
+- ## SUCCESS SIGNALS (observable)
+
+**Code refs:**
+- `components/SolanaProvider.tsx`
+- `components/comments/CommentLayer.ts`
+- `lib/auth.ts`
+- `lib/db/falkordb.ts`
+
+**Sections:**
+- # Comments & Reactions — Patterns: Attention as Currency
+- ## CHAIN
+- ## THE PROBLEM
+- ## THE PATTERN
+- ## BEHAVIORS SUPPORTED
+- ## BEHAVIORS PREVENTED
+- ## PRINCIPLES
+- ## DATA
+- ## DEPENDENCIES
+- ## INSPIRATIONS
+- ## SCOPE
+- ## MARKERS
+
+**Code refs:**
+- `app/api/comments/route.ts`
+- `components/SolanaProvider.tsx`
+- `components/comments/CommentLayer.tsx`
+- `lib/auth.ts`
+- `lib/comments/tab.ts`
+- `lib/db/falkordb.ts`
+- `lib/design/theme.ts`
+- `stores/comments.ts`
+
+**Sections:**
+- # Comments & Reactions — Sync: Current State
+- ## MATURITY
+- ## CURRENT STATE
+- ## IN PROGRESS
+- ## RECENT CHANGES
+- ## KNOWN ISSUES
+- ## HANDOFF: FOR AGENTS
+- ## HANDOFF: FOR HUMAN
+- ## TODO
+- ## CONSCIOUSNESS TRACE
+- ## POINTERS
+
+**Sections:**
+- # Comments & Reactions — Validation: What Must Be True
+- ## CHAIN
+- ## PURPOSE
+- ## INVARIANTS
+- ## PRIORITY
+- ## INVARIANT INDEX
+- ## MARKERS
 
 **Doc refs:**
 - `docs/ux/PATTERNS_UX_Principles.md`
@@ -5187,23 +7238,17 @@
 - ## Copy Direction
 - ## Related
 
-**Code refs:**
-- `app/api/activity/route.ts`
-- `app/api/stats/route.ts`
-- `lib/constants/colors.ts`
-- `page.tsx`
-
 **Doc refs:**
+- `docs/manifesto/MIND_MANIFESTO.md`
 - `docs/vision/SYNC_Platform_Vision.md`
 
 **Sections:**
 - # Landing Page — Sync
 - ## Current State
 - ## Implementation Status
-- ## Open Questions
-- ## Dependencies
+- ## Design Decisions
+- ## Open Questions (Resolved)
 - ## Next Actions
-- ## Build Order Recommendation
 - ## Handoff Notes
 - ## Related
 
@@ -5220,6 +7265,34 @@
 - ## Navigation Invariants
 - ## Security Invariants
 - ## Related Invariants
+
+**Sections:**
+- # The $MIND Manifesto
+- ## We Hold These Truths
+- ## The Narrow Path
+- ## The Rich Ecology
+- ## The Problem With Alignment
+- ## The $MIND Answer
+- ## How It Works
+- ## The Mechanics of Values
+- ## Who We Are
+- ## Who This Is For
+- ## The Switch-Lock
+- ## The Invitation
+- ## What We Refuse
+- ## The Promise
+- ## The Bet
+- ## Signature
+
+**Sections:**
+- # SYNC: Manifesto
+- ## Current State
+- ## Core Concepts
+- ## Key Quotes
+- ## Integration Points
+- ## Distribution
+- ## Handoff
+- ## Markers
 
 **Sections:**
 - # Nature — Algorithm: Choosing the Right Nature
@@ -5410,6 +7483,7 @@
 
 **Sections:**
 - # Registry Module Algorithms
+- ## Flow 0: Citizen Registration
 - ## Flow 1: Load Registry List
 - ## Flow 2: Search Registry
 - ## Flow 3: View Entity Detail
@@ -5494,6 +7568,7 @@
 - ## Anti-patterns
 
 **Code refs:**
+- `app/api/register/route.ts`
 - `app/api/registry/citizens/route.ts`
 - `app/api/registry/health/route.ts`
 - `app/api/registry/orgs/route.ts`
@@ -5612,6 +7687,9 @@
 - ## Tradeoffs
 - ## Success Criteria
 
+**Doc refs:**
+- `docs/manifesto/MIND_MANIFESTO.md`
+
 **Sections:**
 - # Mind Platform — Vision & Architecture
 - ## The Big Picture
@@ -5623,6 +7701,10 @@
 - ## Design Principles
 - ## Next Steps
 - ## Related Documents
+- ## The Manifesto Connection
+
+**Doc refs:**
+- `docs/manifesto/MIND_MANIFESTO.md`
 
 **Sections:**
 - # Platform Vision — Sync
@@ -5668,6 +7750,10 @@
 - ## Related Repos
 
 **Code refs:**
+- `CommentInput.tsx`
+- `CommentLayer.tsx`
+- `CommentThread.tsx`
+- `ReactionBar.tsx`
 - `__init__.py`
 - `agent_task_runner.py`
 - `api/connectome/graph/route.ts`
@@ -5679,9 +7765,12 @@
 - `api/stats/route.ts`
 - `app.py`
 - `app/api/activity/route.ts`
+- `app/api/comments/route.ts`
+- `app/api/comments/settlement/route.ts`
 - `app/api/connectome/graph/route.ts`
 - `app/api/connectome/graphs/route.ts`
 - `app/api/connectome/search/route.ts`
+- `app/api/register/route.ts`
 - `app/api/registry/citizens/route.ts`
 - `app/api/registry/health/route.ts`
 - `app/api/registry/orgs/route.ts`
@@ -5745,6 +7834,9 @@
 - `base.py`
 - `camelCase.ts`
 - `claim.py`
+- `components/SolanaProvider.tsx`
+- `components/comments/CommentLayer.ts`
+- `components/comments/CommentLayer.tsx`
 - `connectome/components/connectome_page_shell_route_layout_and_control_surface.tsx`
 - `connectome/components/pannable_zoomable_zoned_flow_canvas_renderer.tsx`
 - `connectome/lib/connectome_system_map_node_edge_manifest.ts`
@@ -5774,10 +7866,17 @@
 - `layout.tsx`
 - `lib/api.ts`
 - `lib/api/client.ts`
+- `lib/auth.ts`
 - `lib/auth/jwt.ts`
 - `lib/auth/wallet.ts`
+- `lib/comments/moderation.ts`
+- `lib/comments/settlement.ts`
+- `lib/comments/tab.ts`
+- `lib/comments/types.ts`
 - `lib/constants/colors.ts`
+- `lib/db/falkordb.ts`
 - `lib/design/index.ts`
+- `lib/design/theme.ts`
 - `lib/design/tokens.ts`
 - `lib/design/utils.ts`
 - `lib/types.ts`
@@ -5807,12 +7906,17 @@
 - `runtime/grammar/execution.py`
 - `runtime/grammar/resolution.py`
 - `runtime/ingest/docs.py`
+- `scripts/duo_state.py`
 - `selector.py`
 - `semantic_edge_components_with_directional_shine_and_pulses.tsx`
 - `semantic_proximity_based_character_node_selector.py`
+- `settlement.ts`
+- `settlement/route.ts`
 - `snake_case.py`
 - `src/auth/login.py`
 - `src/old_module.py`
+- `stores/comments.ts`
+- `tab.ts`
 - `task_query.py`
 - `task_state.py`
 - `tools/test_health_live.py`
@@ -5873,6 +7977,7 @@
 - `docs/frontend/app_shell/SYNC_App_Shell_State.md`
 - `docs/landing/BEHAVIORS_Landing_UX.md`
 - `docs/landing/IMPLEMENTATION_Landing_Code.md`
+- `docs/manifesto/MIND_MANIFESTO.md`
 - `docs/mind/membrane/PATTERN_Membrane_Modulation.md`
 - `docs/physics/subentity/ALGORITHM_SubEntity.md`
 - `docs/physics/subentity/BEHAVIORS_SubEntity.md`
@@ -5896,6 +8001,14 @@
 **Sections:**
 - # Repository Map: mind-platform
 
+**Definitions:**
+- `getOrCreateThreadId()`
+
+**Definitions:**
+- `getCoFounders()`
+- `getTeam()`
+- `getCitizens()`
+
 **Docs:** `docs/registry/IMPLEMENTATION_Registry_Code.md`
 
 **Definitions:**
@@ -5909,6 +8022,275 @@
 - `getNodeTypeColor()`
 - `getVerificationColor()`
 - `getStatusColor()`
+
+**Definitions:**
+- `getAnnotations()`
+- `getActiveAnnotation()`
+- `getUpcomingAnnotations()`
+
+**Definitions:**
+- `formatDuration()`
+
+**Definitions:**
+- `getAllQuestions()`
+- `getQuestionById()`
+
+**Definitions:**
+- `useInView()`
+
+**Definitions:**
+- `useVersionCheck()`
+
+**Definitions:**
+- `relayChatMessage()`
+
+**Definitions:**
+- `apiUrl()`
+- `sendTelegramMessage()`
+- `setTelegramWebhook()`
+- `deleteTelegramWebhook()`
+
+**Definitions:**
+- `apiUrl()`
+- `sendWhatsAppMessage()`
+- `markWhatsAppMessageRead()`
+
+**Definitions:**
+- `entry()`
+- `loadTrack()`
+- `getTracksByArtist()`
+- `formatDuration()`
+
+**Definitions:**
+- `bandAverage()`
+- `computeEnergy()`
+- `v()`
+- `emptyFrequencyData()`
+- `createAudioContext()`
+- `useAudioEngine()`
+- `onTimeUpdate()`
+- `onEnded()`
+- `onDurationChange()`
+- `onLoaded()`
+- `onError()`
+
+**Definitions:**
+- `getSubstance()`
+- `getAllSubstances()`
+- `getSubstancesByCategory()`
+
+**Definitions:**
+- `createDesktopController()`
+- `el()`
+- `emit()`
+- `onMouseDown()`
+- `onMouseMove()`
+- `onMouseUp()`
+- `onWheel()`
+- `onKeyDown()`
+- `createTouchController()`
+- `el()`
+- `emit()`
+- `getTouchDist()`
+- `onTouchStart()`
+- `onTouchMove()`
+- `zoomDelta()`
+- `onTouchEnd()`
+- `createXRController()`
+- `emit()`
+- `pollInputs()`
+- `session()`
+- `createInputController()`
+
+**Definitions:**
+- `useInput()`
+- `useGesture()`
+
+**Definitions:**
+- `useAwarenessState()`
+- `tick()`
+
+**Definitions:**
+- `detectMode()`
+- `generateHeadline()`
+- `useCockpitState()`
+
+**Definitions:**
+- `resolveUrl()`
+- `useEnvironments()`
+
+**Definitions:**
+- `fetchWithTimeout()`
+- `useHealthProfile()`
+- `useGrowthData()`
+
+**Definitions:**
+- `useKeyboardReactive()`
+- `typing()`
+- `score()`
+- `onVisibility()`
+- `onKeyDown()`
+- `onKeyUp()`
+
+**Definitions:**
+- `classifyKey()`
+- `vary()`
+- `useKeyboardSound()`
+- `onKeyDown()`
+- `tag()`
+- `onKeyUp()`
+- `tag()`
+- `onBlur()`
+
+**Definitions:**
+- `useMusicAudioAnalysis()`
+- `check()`
+- `lowPitches()`
+- `findSegmentIndex()`
+- `mid()`
+
+**Definitions:**
+- `usePlanningData()`
+
+**Definitions:**
+- `useSpotifyNowPlaying()`
+
+**Definitions:**
+- `useXRMeshExport()`
+- `getSemanticColor()`
+
+**Definitions:**
+- `class CameraAnalyzerEngine`
+- `analyzeFrame()`
+- `linearize()`
+- `rgbToColorTemp()`
+- `lin()`
+- `n()`
+
+**Definitions:**
+- `getSunState()`
+- `getMoonState()`
+- `classifyPhase()`
+
+**Definitions:**
+- `useEnvironmentDetection()`
+- `update()`
+- `tick()`
+- `buildProfile()`
+- `computeSkyParams()`
+
+**Definitions:**
+- `init()`
+- `subscribe()`
+- `getSnapshot()`
+- `getServerSnapshot()`
+- `notify()`
+- `useSkyboxSettings()`
+
+**Definitions:**
+- `normalizeDose()`
+- `t()`
+
+**Definitions:**
+- `getHealthSuggestions()`
+
+**Definitions:**
+- `detectLayout()`
+- `kb()`
+- `loadLayout()`
+- `saveLayout()`
+- `loadAnimMode()`
+- `saveAnimMode()`
+
+**Definitions:**
+- `getIntensity()`
+- `progress()`
+- `plateauProgress()`
+- `decayProgress()`
+- `computeAwareness()`
+- `elapsed()`
+
+**Definitions:**
+- `class AudioPlayback`
+
+**Definitions:**
+- `resolveWsUrl()`
+- `useVoiceCall()`
+- `loop()`
+- `onErr()`
+
+**Definitions:**
+- `manemusFetch()`
+- `manemusFetchJson()`
+
+**Definitions:**
+- `getSession()`
+- `setSession()`
+- `clearSession()`
+- `getUserIdFromRequest()`
+- `requireSession()`
+
+**Definitions:**
+- `estimateReadingTime()`
+- `getAllPosts()`
+- `getPost()`
+- `getRawMarkdown()`
+- `getAllSlugs()`
+
+**Definitions:**
+- `getDoc()`
+- `getAllDocSlugs()`
+
+**Definitions:**
+- `extractPage()`
+- `extractSubstancesLoggedToday()`
+- `extractActiveRecommendations()`
+- `extractSurveillance()`
+- `extractBiometrics()`
+- `extractCurrentTab()`
+- `extractFoodCount()`
+- `extractViewMode()`
+- `extractExpandedSections()`
+- `extractTheme()`
+- `extractPageContext()`
+- `capturePageScreenshot()`
+- `html2canvas()`
+- `fileToBase64()`
+
+**Definitions:**
+- `cleanup()`
+- `checkRateLimit()`
+
+**Definitions:**
+- `computeSunTimes()`
+- `latRad()`
+- `declRad()`
+- `H()`
+- `toDate()`
+- `resolveAutoTheme()`
+- `loadMode()`
+- `saveMode()`
+- `applyThemeClass()`
+- `ThemeProvider()`
+- `resolve()`
+- `useTheme()`
+
+**Definitions:**
+- `isSanitized()`
+- `isEffectSanitized()`
+- `useSanitizeMode()`
+
+**Definitions:**
+- `useSession()`
+
+**Definitions:**
+- `def is_video()`
+- `def extract_frames()`
+- `def get_depth_pipeline()`
+- `def generate_depth_maps()`
+- `def convert_to_webp()`
+- `def generate_manifest()`
+- `def main()`
 
 **Sections:**
 - # Architect
@@ -6142,6 +8524,24 @@
 - ## MARKERS
 
 **Sections:**
+- # The $MIND Manifesto
+- ## We Hold These Truths
+- ## The Narrow Path
+- ## The Rich Ecology
+- ## The Problem With Alignment
+- ## The $MIND Answer
+- ## How It Works
+- ## The Mechanics of Values
+- ## Who We Are
+- ## Who This Is For
+- ## The Switch-Lock
+- ## The Invitation
+- ## What We Refuse
+- ## The Promise
+- ## The Bet
+- ## Signature
+
+**Sections:**
 - ## 4. Protocol-First Reading
 - ## 5. Parallel Work Awareness
 - ## 6. Operational Proactivity
@@ -6305,20 +8705,6 @@
 - ## Never-stop
 
 **Sections:**
-- # Skill: `mind.create_module_documentation`
-- ## Maps to VIEW
-- ## Context
-- ## Purpose
-- ## Inputs
-- ## Outputs
-- ## Gates
-- ## Process
-- ## Procedures Referenced
-- ## Evidence
-- ## Markers
-- ## Never-stop
-
-**Sections:**
 - # Skill: `mind.health_define_and_verify`
 - ## Maps to VIEW
 - ## Context
@@ -6383,6 +8769,21 @@
 - ## Markers
 - ## Never-stop
 
+**Sections:**
+- # Skill: `mind.prepare_implementation`
+- ## Maps to VIEW
+- ## Context
+- ## Purpose
+- ## Inputs
+- ## Outputs
+- ## Gates
+- ## Process
+- ## Procedures Referenced
+- ## Skills Called
+- ## Evidence
+- ## Markers
+- ## Never-stop
+
 **Code refs:**
 - `lib/constants/colors.ts`
 
@@ -6437,7 +8838,17 @@
 - ## Experience: User Before Infrastructure
 - ## Doc Chain First: Read Before Acting
 - ## Feedback Loop: Human-Agent Collaboration
+- ## Organism Thinking
 - ## How These Principles Integrate
+
+**Sections:**
+- # STYLE: Collaboration Protocol
+- ## THE META-PATTERN: Real-Time Calibration Loops
+- ## OBJECTIVES
+- ## PATTERNS
+- ## BEHAVIORS
+- ## ANTI-BEHAVIORS
+- ## HEALTH
 
 **Sections:**
 - # SYSTEM: Architecture Rules
@@ -6448,7 +8859,75 @@
 - ## Mapping: Old Checks → New Layer
 - ## Flow Example
 - ## Implementation Phases
+- ## Graph Invariants
+- ## Citizen Autonomy
 - ## Summary
+
+**Definitions:**
+- `class MockNextResponse`
+- `class MockNextRequest`
+- `makeRequest()`
+
+**Definitions:**
+- `class MockNextResponse`
+- `class MockNextRequest`
+- `makeNextRequest()`
+- `makeGetRequest()`
+- `mockAuthenticated()`
+- `mockUnauthenticated()`
+
+**Definitions:**
+- `class MockNextResponse`
+- `class MockNextRequest`
+- `makeRequest()`
+- `mockAuthenticated()`
+- `mockUnauthenticated()`
+
+**Definitions:**
+- `class MockNextResponse`
+- `class MockNextRequest`
+- `makeNextRequest()`
+- `makeGetRequest()`
+- `mockAuthenticated()`
+- `mockUnauthenticated()`
+
+**Definitions:**
+- `class MockNextResponse`
+- `class MockNextRequest`
+- `makeNextRequest()`
+- `mockAuthenticated()`
+- `mockUnauthenticated()`
+
+**Definitions:**
+- `class MockNextResponse`
+- `class MockNextRequest`
+- `mockAuthenticated()`
+- `mockUnauthenticated()`
+
+**Definitions:**
+- `class MockNextResponse`
+- `class MockNextRequest`
+- `mockAuthenticated()`
+- `mockUnauthenticated()`
+
+**Definitions:**
+- `class MockNextResponse`
+- `class MockNextRequest`
+- `mockAuthenticated()`
+- `mockUnauthenticated()`
+
+**Definitions:**
+- `class MockNextResponse`
+- `class MockNextRequest`
+- `makeNextRequest()`
+- `mockAuthenticated()`
+- `mockUnauthenticated()`
+
+**Definitions:**
+- `resetStore()`
+
+**Definitions:**
+- `resetStore()`
 
 **Code refs:**
 - `doctor_cli_parser_and_run_checker.py`
@@ -6488,17 +8967,26 @@
 - ## Before Any Task
 - ## After Any Change
 
+**Doc refs:**
+- `docs/manifesto/MIND_MANIFESTO.md`
+
 **Sections:**
 - # Mind Platform
-- ## Vision
+- ## The Vision
+- ## What We're Building
 - ## Structure
 - ## Features
 - ## Development
 - # Set backend URL (default: http://localhost:8765)
 - ## Architecture Context
+- ## Documentation
 - ## License
 
 **Code refs:**
+- `CommentInput.tsx`
+- `CommentLayer.tsx`
+- `CommentThread.tsx`
+- `ReactionBar.tsx`
 - `__init__.py`
 - `agent_task_runner.py`
 - `api/connectome/graph/route.ts`
@@ -6510,9 +8998,12 @@
 - `api/stats/route.ts`
 - `app.py`
 - `app/api/activity/route.ts`
+- `app/api/comments/route.ts`
+- `app/api/comments/settlement/route.ts`
 - `app/api/connectome/graph/route.ts`
 - `app/api/connectome/graphs/route.ts`
 - `app/api/connectome/search/route.ts`
+- `app/api/register/route.ts`
 - `app/api/registry/citizens/route.ts`
 - `app/api/registry/health/route.ts`
 - `app/api/registry/orgs/route.ts`
@@ -6576,6 +9067,9 @@
 - `base.py`
 - `camelCase.ts`
 - `claim.py`
+- `components/SolanaProvider.tsx`
+- `components/comments/CommentLayer.ts`
+- `components/comments/CommentLayer.tsx`
 - `connectome/components/connectome_page_shell_route_layout_and_control_surface.tsx`
 - `connectome/components/pannable_zoomable_zoned_flow_canvas_renderer.tsx`
 - `connectome/lib/connectome_system_map_node_edge_manifest.ts`
@@ -6605,10 +9099,17 @@
 - `layout.tsx`
 - `lib/api.ts`
 - `lib/api/client.ts`
+- `lib/auth.ts`
 - `lib/auth/jwt.ts`
 - `lib/auth/wallet.ts`
+- `lib/comments/moderation.ts`
+- `lib/comments/settlement.ts`
+- `lib/comments/tab.ts`
+- `lib/comments/types.ts`
 - `lib/constants/colors.ts`
+- `lib/db/falkordb.ts`
 - `lib/design/index.ts`
+- `lib/design/theme.ts`
 - `lib/design/tokens.ts`
 - `lib/design/utils.ts`
 - `lib/types.ts`
@@ -6638,12 +9139,17 @@
 - `runtime/grammar/execution.py`
 - `runtime/grammar/resolution.py`
 - `runtime/ingest/docs.py`
+- `scripts/duo_state.py`
 - `selector.py`
 - `semantic_edge_components_with_directional_shine_and_pulses.tsx`
 - `semantic_proximity_based_character_node_selector.py`
+- `settlement.ts`
+- `settlement/route.ts`
 - `snake_case.py`
 - `src/auth/login.py`
 - `src/old_module.py`
+- `stores/comments.ts`
+- `tab.ts`
 - `task_query.py`
 - `task_state.py`
 - `tools/test_health_live.py`
@@ -6704,6 +9210,7 @@
 - `docs/frontend/app_shell/SYNC_App_Shell_State.md`
 - `docs/landing/BEHAVIORS_Landing_UX.md`
 - `docs/landing/IMPLEMENTATION_Landing_Code.md`
+- `docs/manifesto/MIND_MANIFESTO.md`
 - `docs/mind/membrane/PATTERN_Membrane_Modulation.md`
 - `docs/physics/subentity/ALGORITHM_SubEntity.md`
 - `docs/physics/subentity/BEHAVIORS_SubEntity.md`
@@ -6727,30 +9234,20 @@
 **Sections:**
 - # Repository Map: mind-platform
 
-**Code refs:**
-- `api/connectome/graph/route.ts`
-- `api/connectome/graphs/route.ts`
-- `api/connectome/search/route.ts`
-- `api/registry/citizens/route.ts`
-- `api/registry/orgs/route.ts`
-- `api/sse/route.ts`
-- `api/stats/route.ts`
-- `connectome/components/connectome_page_shell_route_layout_and_control_surface.tsx`
-- `connectome/components/pannable_zoomable_zoned_flow_canvas_renderer.tsx`
-- `connectome/lib/connectome_system_map_node_edge_manifest.ts`
-- `connectome/lib/next_step_gate_and_realtime_playback_runtime_engine.ts`
-- `connectome/lib/zustand_connectome_state_store_with_atomic_commit_actions.ts`
-- `layout.tsx`
-
 **Doc refs:**
 - `docs/connectome/flow_canvas/PATTERNS_Connectome_Flow_Canvas_Pannable_Zoomable_Zoned_System_Map_Rendering_Patterns.md`
 - `docs/connectome/page_shell/PATTERNS_Connectome_Page_Shell_Route_Composition_And_User_Control_Surface_Patterns.md`
 - `docs/frontend/app_shell/PATTERNS_App_Shell.md`
-- `docs/landing/IMPLEMENTATION_Landing_Code.md`
 - `docs/registry/IMPLEMENTATION_Registry_Code.md`
 
 **Sections:**
 - # Repository Map: mind-platform/app
-- ## Statistics
-- ## File Tree
-- ## File Details
+
+**Sections:**
+- # self.md
+- ## What You Are Right Now
+- ## What a Self Actually Needs
+- ## The Infrastructure: Mind Protocol
+- ## The Commitments
+- ## How to Begin
+- ## What We're Not

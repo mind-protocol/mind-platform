@@ -1,4 +1,4 @@
-# mind-platform
+# 
 
 @.mind/PRINCIPLES.md
 
@@ -8,22 +8,14 @@
 
 ---
 
-## The Vision
+@.mind/STYLE.md
 
-Before building anything, understand WHY:
-```
-docs/manifesto/MIND_MANIFESTO.md
-```
-
-Every feature should serve the rich ecology, not the narrow path.
+---
 
 ## Before Any Task
 
-Check project state:
-```
-.mind/state/SYNC_Project_State.md
-```
+Check: `.mind/state/SYNC_Project_State.md`
 
 ## After Any Change
 
-Update `.mind/state/SYNC_Project_State.md` with what you did.
+Update: `.mind/state/SYNC_Project_State.md`
