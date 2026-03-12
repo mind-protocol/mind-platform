@@ -154,11 +154,8 @@ export default function MembranePage() {
           <h1 className="text-sm font-mono text-zinc-300">membrane</h1>
         </div>
         <div className="flex items-center gap-3">
-          <Link href="/house" className="text-zinc-600 hover:text-zinc-300 text-xs font-mono transition">
-            the house
-          </Link>
-          <Link href="/citizen" className="text-zinc-600 hover:text-zinc-300 text-xs font-mono transition">
-            citizens
+          <Link href="/registry" className="text-zinc-600 hover:text-zinc-300 text-xs font-mono transition">
+            registry
           </Link>
           {!isOffline && (
             <span className="flex items-center gap-2 text-[10px] font-mono text-zinc-600">
@@ -404,8 +401,8 @@ export default function MembranePage() {
       <footer className="relative z-10 border-t border-zinc-800/50 px-4 sm:px-6 py-6 text-center">
         <p className="text-xs font-mono text-zinc-600">
           the membrane is where sovereignty meets connection &mdash;{' '}
-          <Link href="/house" className="text-blue-400 hover:text-blue-300 transition">
-            the house
+          <Link href="/registry" className="text-blue-400 hover:text-blue-300 transition">
+            registry
           </Link>
         </p>
       </footer>

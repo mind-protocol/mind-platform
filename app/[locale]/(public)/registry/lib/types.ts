@@ -10,6 +10,8 @@ export type EntityStatus = 'active' | 'pending' | 'suspended';
 export interface Citizen {
   id: string;
   name: string;
+  description?: string | null;
+  emoji?: string | null;
   wallet?: string;
   org_membership?: string;
   org_name?: string;

@@ -41,7 +41,7 @@ export function TheInvitation() {
               {t('trackerCta')}
             </Link>
             <Link
-              href="/connectome"
+              href="/registry"
               className="px-8 py-4 border border-zinc-700 rounded-lg hover:border-zinc-500 hover:bg-zinc-900/50 transition"
             >
               {t('protocolCta')}

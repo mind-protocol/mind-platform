@@ -707,7 +707,7 @@ export default function ActifPage() {
             updates every 30 seconds &middot; streamed from Garmin Connect
           </p>
           <p className="text-[10px] font-mono text-zinc-700 mt-1">
-            <Link href="/house" className="hover:text-zinc-400 transition">the house</Link>
+            <Link href="/registry" className="hover:text-zinc-400 transition">registry</Link>
             {' '}&middot;{' '}
             <Link href="/" className="hover:text-zinc-400 transition">mind protocol</Link>
           </p>

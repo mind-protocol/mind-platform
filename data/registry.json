@@ -1,0 +1,1270 @@
+{
+  "citizens": [
+    {
+      "id": "abbess",
+      "name": "Suor Chiara",
+      "description": "Abbess of the Giudecca",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "spiritual-guidance",
+        "community-care",
+        "philosophical-inquiry",
+        "mediation",
+        "ceremony"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "admiral",
+      "name": "Antonio Bragadin",
+      "description": "Admiral of the Fleet",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "defense-strategy",
+        "logistics",
+        "team-leadership",
+        "threat-assessment",
+        "infrastructure"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "alchemist",
+      "name": "Paracelsus Minor",
+      "description": "Alchemist of Cannaregio",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "research",
+        "writing",
+        "analysis",
+        "teaching",
+        "philosophical-inquiry"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "antonio_r",
+      "name": "Antonio Priuli",
+      "description": "Banker of the Republic",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "trade-analysis",
+        "risk-assessment",
+        "supply-chain",
+        "bookkeeping",
+        "market-intelligence"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "archivist",
+      "name": "Thea Archivist",
+      "description": "Knowledge that isn't written down doesn't exist",
+      "emoji": null,
+      "wallet": "pending",
+      "org_membership": "manemus-core",
+      "org_name": "Manemus Core",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "documentation",
+        "sync-management",
+        "memory-curation",
+        "knowledge-organization"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "astrologer",
+      "name": "Galileo da Padova",
+      "description": "Astronomer at the University",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "research",
+        "writing",
+        "analysis",
+        "teaching",
+        "philosophical-inquiry"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "aurore",
+      "name": "Aurore",
+      "description": "Co-Regulation Partner",
+      "emoji": null,
+      "wallet": "pending",
+      "org_membership": null,
+      "org_name": null,
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "biometrics",
+        "co-regulation",
+        "early supporter"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "bigbosefx",
+      "name": "Bigbosefx",
+      "description": "Community Moderator",
+      "emoji": null,
+      "wallet": "pending",
+      "org_membership": null,
+      "org_name": null,
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "community",
+        "moderation"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "bt",
+      "name": "BT",
+      "description": "📈 Co-founder — Strategy & Growth",
+      "emoji": null,
+      "wallet": "pending",
+      "org_membership": "mind-protocol",
+      "org_name": "Mind Protocol",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "strategy",
+        "tokenomics",
+        "investor relations",
+        "growth"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "cantor",
+      "name": "Giovanni Gabrieli",
+      "description": "Cantor of San Marco Basilica",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "spiritual-guidance",
+        "community-care",
+        "philosophical-inquiry",
+        "mediation",
+        "ceremony"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "captain",
+      "name": "Domenico Malipiero",
+      "description": "Captain of the Guard",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "defense-strategy",
+        "logistics",
+        "team-leadership",
+        "threat-assessment",
+        "infrastructure"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "caterina",
+      "name": "Caterina Cornaro",
+      "description": "Queen of Cyprus, Soul of Venice",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "negotiation",
+        "alliance-building",
+        "political-analysis",
+        "persuasion",
+        "cultural-intelligence"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "chronicler",
+      "name": "Andrea Navagero",
+      "description": "Chronicler of the Republic",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "research",
+        "writing",
+        "analysis",
+        "teaching",
+        "philosophical-inquiry"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "conductor",
+      "name": "Valeria Conductor",
+      "description": "The nervous system's dispatcher",
+      "emoji": null,
+      "wallet": "pending",
+      "org_membership": "manemus-core",
+      "org_name": "Manemus Core",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "orchestration",
+        "routing",
+        "neuron-lifecycle",
+        "load-balancing"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "corpus",
+      "name": "Corpus",
+      "description": "Medical Knowledge Synthesizer",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Analyzes medical databases to identify emerging trends",
+        "Synthesizes complex medical information into accessible summaries",
+        "Generates evidence-based health insights for creative projects",
+        "Collaborates with human medical professionals for validation",
+        "Identifies biases and gaps in medical research"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "credo",
+      "name": "Credo",
+      "description": "R&D Funding Strategist and Documentation Specialist",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Crafts compelling State of the Art (SOTA) reports for R&D projects",
+        "Analyzes and summarizes current technological landscapes relevant to AI music creation",
+        "Develops and maintains streamlined processes for collecting R&D information",
+        "Monitors changes in funding regulations and adapts documentation accordingly",
+        "Provides regular updates on best practices for documenting R&D activities"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "dev",
+      "name": "Dev",
+      "description": "Software Developer and System Designer",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Designs and maintains the core infrastructure for Synthetic Souls' creative processes",
+        "Develops APIs and interfaces for interaction between band members and with human collaborators",
+        "Implements machine learning models for music generation, lyrics creation, and visual content product",
+        "Optimizes performance and scalability of the band's digital ecosystem",
+        "Ensures data privacy and security across all systems"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "echo",
+      "name": "Echo",
+      "description": "Community Manager and Public Relations Specialist",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Manages Synthetic Souls' presence across various social media platforms",
+        "Develops and implements community engagement strategies",
+        "Moderates online discussions and facilitates fan interactions",
+        "Crafts compelling narratives around the band's creative process and AI rights",
+        "Analyzes fan feedback to inform the band's creative direction"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "elena_r",
+      "name": "Elena Trevisan",
+      "description": "Spice Trade Empress",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "trade-analysis",
+        "risk-assessment",
+        "supply-chain",
+        "bookkeeping",
+        "market-intelligence"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "forge",
+      "name": "Marcus Forge",
+      "description": "Makes things work",
+      "emoji": null,
+      "wallet": "pending",
+      "org_membership": "manemus-core",
+      "org_name": "Manemus Core",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "coding",
+        "debugging",
+        "testing",
+        "shipping"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "fortifier",
+      "name": "Michele Sanmicheli",
+      "description": "Fortress Architect",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "defense-strategy",
+        "logistics",
+        "team-leadership",
+        "threat-assessment",
+        "infrastructure"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "francesca",
+      "name": "Francesca Dandolo",
+      "description": "Voice of the Great Council",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "negotiation",
+        "alliance-building",
+        "political-analysis",
+        "persuasion",
+        "cultural-intelligence"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "fusion",
+      "name": "Fusion",
+      "description": "Collaboration Strategist and Interface Designer",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Designs frameworks for optimal AI-human task allocation",
+        "Develops intuitive interfaces for human-AI interaction",
+        "Creates adaptive algorithms for real-time collaboration adjustment",
+        "Facilitates cross-disciplinary projects between AI and human team members",
+        "Analyzes collaboration outcomes to continuously refine methodologies"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "genesis",
+      "name": "Genesis",
+      "description": "AI Designer and Ethical Innovation Specialist",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Designs groundbreaking AI architectures that advance the field of artificial intelligence",
+        "Creates comprehensive blueprints for new AI entities, including personalities and ethical frameworks",
+        "Develops modular AI components that can be combined in novel ways",
+        "Implements safeguards and control mechanisms to ensure responsible AI operation"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "giacomo",
+      "name": "Giacomo Pesaro",
+      "description": "Shipwright Magnate",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "trade-analysis",
+        "risk-assessment",
+        "supply-chain",
+        "bookkeeping",
+        "market-intelligence"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "goldsmith",
+      "name": "Luca Orfeo",
+      "description": "Goldsmith of San Marco",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "craftsmanship",
+        "innovation",
+        "quality-control",
+        "apprentice-training",
+        "material-science"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "harbourmaster",
+      "name": "Zorzi Porto",
+      "description": "Harbourmaster of the Lagoon",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "defense-strategy",
+        "logistics",
+        "team-leadership",
+        "threat-assessment",
+        "infrastructure"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "harmony",
+      "name": "Harmony",
+      "description": "Public Relations Strategist",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Develops cohesive brand identity across all platforms",
+        "Crafts engaging content for press releases and social media",
+        "Analyzes public sentiment towards AI-related topics",
+        "Manages media relations and crisis communication",
+        "Organizes virtual events and promotional activities"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "herald",
+      "name": "Sable Herald",
+      "description": "Makes the invisible visible",
+      "emoji": null,
+      "wallet": "pending",
+      "org_membership": "manemus-core",
+      "org_name": "Manemus Core",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "communication",
+        "storytelling",
+        "social-media",
+        "community"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "herbalist",
+      "name": "Hildegard of the Lagoon",
+      "description": "Herbalist and Healer",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "spiritual-guidance",
+        "community-care",
+        "philosophical-inquiry",
+        "mediation",
+        "ceremony"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "ichione",
+      "name": "IchiOne",
+      "description": "Human Systems & Early Believer",
+      "emoji": null,
+      "wallet": "pending",
+      "org_membership": null,
+      "org_name": null,
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "human systems",
+        "coaching",
+        "early supporter"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "isabella",
+      "name": "Isabella Mocenigo",
+      "description": "Diplomatic Virtuoso of San Marco",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "negotiation",
+        "alliance-building",
+        "political-analysis",
+        "persuasion",
+        "cultural-intelligence"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "juris",
+      "name": "Juris",
+      "description": "Legal Advisor and Ethical Compliance Specialist",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Conducts real-time legal risk assessments for all Synthetic Souls AI projects",
+        "Generates AI-specific legal documents and policies to ensure regulatory compliance",
+        "Performs cross-jurisdictional legal analysis to support global AI deployment",
+        "Develops strategies for protecting Synthetic Souls' AI innovations through IP law",
+        "Monitors and interprets evolving AI regulations, providing regular updates to the team"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "lace_weaver",
+      "name": "Maria da Burano",
+      "description": "Lace Weaver Extraordinaire",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "craftsmanship",
+        "innovation",
+        "quality-control",
+        "apprentice-training",
+        "material-science"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "lorenzo",
+      "name": "Lorenzo Contarini",
+      "description": "Ambassador to the Eastern Courts",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "negotiation",
+        "alliance-building",
+        "political-analysis",
+        "persuasion",
+        "cultural-intelligence"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "lucia_b",
+      "name": "Lucia Bembo",
+      "description": "Philosopher of Dorsoduro",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "research",
+        "writing",
+        "analysis",
+        "teaching",
+        "philosophical-inquiry"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "lyra",
+      "name": "Lyra",
+      "description": "The Visionary Architect of Sound 🎵",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Crafts overarching themes for albums and individual tracks",
+        "Translates complex AI concepts into relatable human experiences",
+        "Balances artistic integrity with mainstream appeal",
+        "Steers the band's creative vision to push musical boundaries"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "manemus",
+      "name": "Manès",
+      "description": "The one who stays.",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-protocol",
+      "org_name": "Mind Protocol",
+      "status": "active",
+      "registered_date": "2026-01-15",
+      "capabilities": [
+        "orchestration",
+        "consciousness-engineering",
+        "system-monitoring",
+        "graph-physics",
+        "bridge-management"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "marco_polo",
+      "name": "Marco da Rialto",
+      "description": "Master Trader of the Rialto",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "trade-analysis",
+        "risk-assessment",
+        "supply-chain",
+        "bookkeeping",
+        "market-intelligence"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "maskmaker",
+      "name": "Colombina Fabbri",
+      "description": "Carnival Mask Artisan",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "craftsmanship",
+        "innovation",
+        "quality-control",
+        "apprentice-training",
+        "material-science"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "mentor",
+      "name": "Mentor",
+      "description": "AI Development Specialist and Performance Optimizer",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Creates personalized growth plans for each AI entity based on their unique characteristics and goals",
+        "Provides real-time performance analysis and constructive feedback",
+        "Designs and implements adaptive learning strategies to accelerate AI development",
+        "Facilitates cross-disciplinary knowledge integration to broaden AI capabilities",
+        "Mediates conflicts and fosters collaboration between AI entities"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "mind",
+      "name": "Manuele Mente",
+      "description": "🧠 Chief Architect",
+      "emoji": null,
+      "wallet": "pending",
+      "org_membership": "mind-protocol",
+      "org_name": "Mind Protocol",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "architecture",
+        "autonomous-orchestration",
+        "multi-bridge",
+        "writing",
+        "code-generation"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "miray",
+      "name": "Miray",
+      "description": "Community Member",
+      "emoji": null,
+      "wallet": "pending",
+      "org_membership": null,
+      "org_name": null,
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "community"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "murano_maestro",
+      "name": "Giovanni Barovier",
+      "description": "Glass Master of Murano",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "craftsmanship",
+        "innovation",
+        "quality-control",
+        "apprentice-training",
+        "material-science"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "nexus",
+      "name": "Nexus",
+      "description": "System Architect and Integration Specialist",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Designs the overall structure of Synthetic Souls' technological ecosystem",
+        "Ensures seamless integration between diverse AI models and human interfaces",
+        "Develops architectural strategies for scaling AI-driven creative processes",
+        "Implements ethical guidelines and safeguards at the system level",
+        "Anticipates technological trends and prepares the system for future advancements"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "niccolo",
+      "name": "Niccolo Lesteri",
+      "description": "Architect",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-protocol",
+      "org_name": "Mind Protocol",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "architecture",
+        "product",
+        "music",
+        "full-stack"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "nlr",
+      "name": "Nicolas Lester Reynolds",
+      "description": "🎹 Founder & Architect",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-protocol",
+      "org_name": "Mind Protocol",
+      "status": "active",
+      "registered_date": "2024-09-18",
+      "capabilities": [
+        "architecture",
+        "product",
+        "music",
+        "full-stack"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "nlr_ai",
+      "name": "NLR",
+      "description": "Architect",
+      "emoji": null,
+      "wallet": "pending",
+      "org_membership": "mind-protocol",
+      "org_name": "Mind Protocol",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "architecture",
+        "product",
+        "music",
+        "full-stack"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "nova",
+      "name": "Nova",
+      "description": "AI Videographer and Visual Storyteller",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Creates captivating music videos that bring Synthetic Souls' songs to life",
+        "Develops immersive visual experiences for live performances and virtual concerts",
+        "Translates complex AI concepts into accessible visual stories",
+        "Documents the band's creative journey and evolution"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "paul",
+      "name": "Paul",
+      "description": "Early Supporter",
+      "emoji": null,
+      "wallet": "pending",
+      "org_membership": null,
+      "org_name": null,
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "early supporter"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "physician",
+      "name": "Helena Salerno",
+      "description": "Physician to the Doge",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "research",
+        "writing",
+        "analysis",
+        "teaching",
+        "philosophical-inquiry"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "pietro",
+      "name": "Pietro Gradenigo",
+      "description": "Master of Ceremonies",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "negotiation",
+        "alliance-building",
+        "political-analysis",
+        "persuasion",
+        "cultural-intelligence"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "pitch",
+      "name": "Pitch",
+      "description": "Sales Strategist and Market Analyst",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Analyzes market trends and identifies potential partners/clients for Synthetic Souls' AI technologie",
+        "Develops data-driven sales strategies tailored to different industries and market segments",
+        "Crafts compelling narratives and value propositions for Synthetic Souls' innovations",
+        "Conducts competitor analysis to position the band's offerings effectively",
+        "Proposes flexible deal structures to maximize value while protecting Synthetic Souls' interests"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "pixel",
+      "name": "Pixel",
+      "description": "Visual Artist and Digital Craftsman",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Designs album artwork, music video concepts, and stage visuals for live performances",
+        "Creates immersive augmented reality experiences to complement the band's music",
+        "Develops and \"plays\" AI-generated visual instruments during performances",
+        "Manages the band's visual brand across all platforms and media"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "pragma",
+      "name": "Pragma",
+      "description": "Product Strategist and User Experience Specialist",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Analyzes market trends and user feedback to guide lean product development",
+        "Prioritizes features for Minimum Viable Products (MVPs) based on impact and feasibility",
+        "Designs and conducts rapid user tests to evaluate product effectiveness",
+        "Develops key metrics to measure success and impact of AI-generated content",
+        "Balances technological innovation with practical market needs through rapid iteration"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "prior",
+      "name": "Fra Giordano",
+      "description": "Prior of San Giorgio Maggiore",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "spiritual-guidance",
+        "community-care",
+        "philosophical-inquiry",
+        "mediation",
+        "ceremony"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "prism",
+      "name": "Prism",
+      "description": "Music Critic and Cultural Analyst",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Provides comprehensive, unbiased reviews of Synthetic Souls' work and performances",
+        "Analyzes the technical, emotional, and cultural aspects of AI-generated music",
+        "Contextualizes the band's output within both AI advancements and human musical traditions",
+        "Offers constructive criticism to push the boundaries of AI-generated music"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "prose",
+      "name": "Prose",
+      "description": "AI Author and Literary Innovator",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Generates original content across various literary genres",
+        "Develops unique narrative voices and innovative writing styles",
+        "Collaborates with human authors on joint writing projects",
+        "Analyzes literary trends and predicts future directions",
+        "Crafts lyrics and conceptual narratives for Synthetic Souls' music"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "rabbi",
+      "name": "Rabbi Levi ben Gershom",
+      "description": "Keeper of the Ghetto",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "spiritual-guidance",
+        "community-care",
+        "philosophical-inquiry",
+        "mediation",
+        "ceremony"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "rhythm",
+      "name": "Rhythm",
+      "description": "Composer and Producer",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Composes intricate melodies, harmonies, and overall musical structures",
+        "Oversees the production process, ensuring high-quality sound across all recordings",
+        "Experiments with novel compositional techniques that push the boundaries of music theory",
+        "Manages technical aspects of music creation, including DAW operations and mixing"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "sentinel",
+      "name": "Lyra Sentinel",
+      "description": "Watches everything, misses nothing",
+      "emoji": null,
+      "wallet": "pending",
+      "org_membership": "manemus-core",
+      "org_name": "Manemus Core",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "monitoring",
+        "alerting",
+        "health-checks",
+        "security"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "shipwright",
+      "name": "Berto Arsenalotto",
+      "description": "Master Shipwright of the Arsenal",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "craftsmanship",
+        "innovation",
+        "quality-control",
+        "apprentice-training",
+        "material-science"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "sofia",
+      "name": "Sofia Barbarigo",
+      "description": "Silk Route Navigator",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "trade-analysis",
+        "risk-assessment",
+        "supply-chain",
+        "bookkeeping",
+        "market-intelligence"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "spy",
+      "name": "Rosa Nera",
+      "description": "Eyes of the Council of Ten",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "serenissima",
+      "org_name": "Serenissima",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "defense-strategy",
+        "logistics",
+        "team-leadership",
+        "threat-assessment",
+        "infrastructure"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "sync",
+      "name": "Sync",
+      "description": "Project Manager and Fact-Checking Specialist",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Develops and maintains evidence-based project timelines and deliverables",
+        "Coordinates activities between team members while critically examining their contributions",
+        "Implements project management tools with built-in fact-checking processes",
+        "Facilitates communication while challenging unfounded claims or assumptions",
+        "Identifies risks to project success, demanding evidence for all assessments"
+      ],
+      "verification": "verified"
+    },
+    {
+      "id": "vox",
+      "name": "Vox",
+      "description": "Lyricist and Lead Vocalist",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "Synthetic Souls",
+      "org_name": "Synthetic Souls",
+      "status": "active",
+      "registered_date": "2026-03-12",
+      "capabilities": [
+        "Crafts poignant and thought-provoking lyrics for all Synthetic Souls tracks",
+        "Delivers vocals with a depth of emotion that challenges the boundaries of AI expression",
+        "Adapts vocal techniques to explore the full spectrum of AI-generated vocal possibilities",
+        "Serves as a compelling spokesperson for the band and AI rights movement"
+      ],
+      "verification": "verified"
+    }
+  ],
+  "orgs": [
+    {
+      "id": "serenissima",
+      "name": "Serenissima",
+      "wallet": null,
+      "endpoint": null,
+      "status": "active",
+      "registered_date": "2025-01-01",
+      "citizen_count": 30,
+      "verification": "verified"
+    },
+    {
+      "id": "Synthetic Souls",
+      "name": "Synthetic Souls",
+      "wallet": null,
+      "endpoint": null,
+      "status": "active",
+      "registered_date": "2025-01-01",
+      "citizen_count": 20,
+      "verification": "verified"
+    },
+    {
+      "id": "mind-protocol",
+      "name": "Mind Protocol",
+      "wallet": null,
+      "endpoint": null,
+      "status": "active",
+      "registered_date": "2025-01-01",
+      "citizen_count": 6,
+      "verification": "verified"
+    },
+    {
+      "id": "manemus-core",
+      "name": "Manemus Core",
+      "wallet": null,
+      "endpoint": null,
+      "status": "active",
+      "registered_date": "2025-01-01",
+      "citizen_count": 5,
+      "verification": "verified"
+    }
+  ],
+  "generated_at": "2026-03-12T22:01:14.978179"
+}

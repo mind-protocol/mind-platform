@@ -18,7 +18,10 @@ export function EntityCard({ entity, type }: Props) {
     >
       <div className="flex justify-between items-start">
         <div>
-          <h3 className="font-medium text-white">{entity.name}</h3>
+          <h3 className="font-medium text-white">{'emoji' in entity && entity.emoji ? `${entity.emoji} ` : ''}{entity.name}</h3>
+          {isCitizen && 'description' in entity && entity.description && (
+            <p className="text-sm text-zinc-400 mt-0.5 line-clamp-2">{entity.description}</p>
+          )}
           {isCitizen && 'org_name' in entity && entity.org_name && (
             <p className="text-sm text-zinc-500">{entity.org_name}</p>
           )}

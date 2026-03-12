@@ -42,10 +42,6 @@ const NAV_GROUPS: NavGroup[] = [
     labelKey: 'groupExplore',
     items: [
       { href: '/team', key: 'team' },
-      { href: '/graph', key: 'graph' },
-      { href: '/citizen', key: 'citizens' },
-      { href: '/house', key: 'house' },
-      { href: '/connectome', key: 'connectome' },
       { href: '/blog', key: 'blog' },
       { href: '/research', key: 'research' },
       { href: '/music', key: 'music' },

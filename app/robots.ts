@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/sign/', '/house/', '/connectome/'],
+        disallow: ['/api/', '/sign/'],
       },
     ],
     sitemap: 'https://mindprotocol.ai/sitemap.xml',
