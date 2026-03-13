@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const verification = searchParams.get('verification') || 'all';
   const statusParam = searchParams.get('status') || 'all';
-  const limit = Math.min(Math.max(parseInt(searchParams.get('limit') || '50') || 50, 1), 200);
+  const limit = Math.min(Math.max(parseInt(searchParams.get('limit') || '500') || 500, 1), 500);
   const offset = Math.max(parseInt(searchParams.get('offset') || '0') || 0, 0);
 
   const VALID_STATUSES = ['all', 'active', 'pending', 'suspended'];
