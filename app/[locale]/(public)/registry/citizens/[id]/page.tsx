@@ -48,6 +48,15 @@ interface CitizenFull {
   visibility?: string;
 }
 
+interface Relationship {
+  citizen: string;
+  trust_score: number;
+  strength_score: number;
+  status: string;
+  title: string;
+  description: string;
+}
+
 interface FeedPost {
   id: string;
   profile_id: string;
@@ -326,6 +335,73 @@ function FeedSection({ profileId }: { profileId: string }) {
   );
 }
 
+function RelationshipsSection({ profileId }: { profileId: string }) {
+  const [relationships, setRelationships] = useState<Relationship[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadRelationships() {
+      try {
+        const res = await fetch(`${MANEMUS_API}/api/citizens/${profileId}/relationships`);
+        if (res.ok) {
+          const data = await res.json();
+          setRelationships(data.relationships || []);
+        }
+      } catch { /* relationships unavailable */ }
+      setLoading(false);
+    }
+    loadRelationships();
+  }, [profileId]);
+
+  if (loading) return null;
+  if (relationships.length === 0) return null;
+
+  return (
+    <div className="mt-6">
+      <p className="text-[11px] text-zinc-500 uppercase tracking-widest mb-3">
+        Connections ({relationships.length})
+      </p>
+      <div className="grid gap-2">
+        {relationships.slice(0, 20).map((rel, i) => {
+          const trustColor = rel.trust_score >= 80 ? 'text-green-400' :
+                             rel.trust_score >= 50 ? 'text-amber-400' :
+                             rel.trust_score >= 20 ? 'text-orange-400' : 'text-zinc-500';
+          return (
+            <Link
+              key={`${rel.citizen}-${i}`}
+              href={`/registry/citizens/${rel.citizen}`}
+              className="flex items-center gap-3 p-3 rounded-lg bg-zinc-900/50 border border-zinc-800/50 hover:border-zinc-700 transition-colors group"
+            >
+              <div className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-sm shrink-0">
+                {rel.citizen.charAt(0).toUpperCase()}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium text-zinc-300 group-hover:text-white truncate">
+                  @{rel.citizen}
+                </p>
+                {rel.title && (
+                  <p className="text-xs text-zinc-600 truncate">{rel.title}</p>
+                )}
+              </div>
+              <div className="text-right shrink-0">
+                <p className={`text-sm font-semibold ${trustColor}`}>
+                  {rel.trust_score}
+                </p>
+                <p className="text-[10px] text-zinc-600 uppercase">Trust</p>
+              </div>
+            </Link>
+          );
+        })}
+        {relationships.length > 20 && (
+          <p className="text-xs text-zinc-600 text-center py-2">
+            + {relationships.length - 20} more connections
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // --- Main Page ---
 
 export default function CitizenProfilePage() {
@@ -589,6 +665,9 @@ export default function CitizenProfilePage() {
             </div>
           )}
         </div>
+
+        {/* Connections */}
+        <RelationshipsSection profileId={citizen.id} />
 
         {/* Feed / Wall */}
         <FeedSection profileId={citizen.id} />
