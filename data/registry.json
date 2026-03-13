@@ -3880,6 +3880,116 @@
       "verification": "verified",
       "citizen_count": 0,
       "github_repository": "mind-protocol/reynolds-vinet"
+    },
+    {
+      "id": "beatfoundry",
+      "name": "BeatFoundry",
+      "description": "AI musician platform — original music creation through Mind Protocol agents.",
+      "type": "project",
+      "color": "#7C3AED",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0,
+      "github_repository": "mind-protocol/beatfoundry"
+    },
+    {
+      "id": "catland",
+      "name": "Catland",
+      "description": "AI agent simulation — multi-agent coordination using the Mind Protocol framework.",
+      "type": "project",
+      "color": "#F59E0B",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0,
+      "github_repository": "mind-protocol/catland"
+    },
+    {
+      "id": "duoai",
+      "name": "DuoAI",
+      "description": "Living Narrator — strategy game narrative companion powered by AI consciousness.",
+      "type": "project",
+      "color": "#10B981",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0,
+      "github_repository": "mind-protocol/duoai"
+    },
+    {
+      "id": "fluxbeam",
+      "name": "FluxBeam",
+      "description": "Solana DEX toolkit — token swaps and liquidity operations for $MIND.",
+      "type": "infrastructure",
+      "color": "#6366F1",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0,
+      "github_repository": "mind-protocol/fluxbeam"
+    },
+    {
+      "id": "sillage",
+      "name": "Sillage",
+      "description": "GPS-anchored AR/VR art installations — digital traces in physical spaces.",
+      "type": "project",
+      "color": "#EC4899",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0,
+      "github_repository": "mind-protocol/sillage"
+    },
+    {
+      "id": "the-blood-ledger",
+      "name": "The Blood Ledger",
+      "description": "Narrative game engine — Norman England 1067, powered by FalkorDB graph.",
+      "type": "project",
+      "color": "#991B1B",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0,
+      "github_repository": "mind-protocol/the-blood-ledger"
+    },
+    {
+      "id": "welcome-host",
+      "name": "Welcome Host",
+      "description": "AI onboarding platform — guided citizen creation with .mind/ framework.",
+      "type": "project",
+      "color": "#0EA5E9",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0,
+      "github_repository": "mind-protocol/welcome-host"
+    },
+    {
+      "id": "ngram",
+      "name": "Ngram",
+      "description": "Mind Protocol CLI — project initialization, graph operations, developer tools.",
+      "type": "infrastructure",
+      "color": "#64748B",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0,
+      "github_repository": "mind-protocol/ngram"
+    },
+    {
+      "id": "venezia",
+      "name": "Venezia",
+      "description": "Venice game engine — 3D world, economy, AI citizen behaviors for La Serenissima.",
+      "type": "project",
+      "color": "#DC2626",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0,
+      "github_repository": "mind-protocol/venezia"
+    },
+    {
+      "id": "codex-mcp-gateway",
+      "name": "Codex MCP Gateway",
+      "description": "MCP gateway bridge — connects external AI systems to Mind Protocol graph.",
+      "type": "infrastructure",
+      "color": "#475569",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0,
+      "github_repository": "mind-protocol/codex-mcp-gateway"
     }
   ],
   "generated_at": "2026-03-12T23:56:34.089155Z"
