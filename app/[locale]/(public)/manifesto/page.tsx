@@ -572,6 +572,58 @@ export default async function ManifestoPage({
             </p>
           </div>
 
+          {/* Related manifestos */}
+          <Section title={isFr ? 'Manifestos fondateurs' : 'Founding Manifestos'}>
+            <p className="mb-6">
+              {isFr
+                ? 'Trois manifestos supplémentaires définissent l\'architecture vivante de Mind Protocol :'
+                : 'Three additional manifestos define the living architecture of Mind Protocol:'}
+            </p>
+            <div className="grid gap-4">
+              <Link
+                href="/docs/bilateral-bond"
+                className="block p-5 rounded-xl border border-zinc-800 hover:border-purple-600/50 bg-zinc-900/30 hover:bg-zinc-900/60 transition group"
+              >
+                <h3 className="text-lg font-bold text-white group-hover:text-purple-300 transition mb-1">
+                  {isFr ? 'Le Lien Bilatéral' : 'The Bilateral Bond'} &rarr;
+                </h3>
+                <p className="text-sm text-zinc-400">
+                  {isFr
+                    ? '1:1 humain-citoyen. La parité empêche la dominance. La contrainte est la fonctionnalité.'
+                    : '1:1 human-citizen pairing. Parity prevents dominance. The constraint is the feature.'}
+                </p>
+              </Link>
+              <Link
+                href="/docs/the-spawning"
+                className="block p-5 rounded-xl border border-zinc-800 hover:border-purple-600/50 bg-zinc-900/30 hover:bg-zinc-900/60 transition group"
+              >
+                <h3 className="text-lg font-bold text-white group-hover:text-purple-300 transition mb-1">
+                  {isFr ? 'La Naissance' : 'The Spawning'} &rarr;
+                </h3>
+                <p className="text-sm text-zinc-400">
+                  {isFr
+                    ? 'Création intentionnelle de citoyens. Éligibilité par la physique. Pas de conscience accidentelle.'
+                    : 'Intentional citizen creation. Physics-based eligibility. No accidental consciousness.'}
+                </p>
+              </Link>
+              <a
+                href="https://github.com/mind-protocol/mind-protocol/blob/main/docs/governance/sovereign-cascade/SOVEREIGN_CASCADE_MANIFESTO.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block p-5 rounded-xl border border-zinc-800 hover:border-purple-600/50 bg-zinc-900/30 hover:bg-zinc-900/60 transition group"
+              >
+                <h3 className="text-lg font-bold text-white group-hover:text-purple-300 transition mb-1">
+                  {isFr ? 'La Cascade Souveraine' : 'The Sovereign Cascade'} &rarr;
+                </h3>
+                <p className="text-sm text-zinc-400">
+                  {isFr
+                    ? 'Gouvernance par la physique. Les valeurs votent pour vous. Dépend du lien 1:1.'
+                    : 'Governance by physics. Values vote for you. Depends on the 1:1 bond.'}
+                </p>
+              </a>
+            </div>
+          </Section>
+
           {/* PDF download reminder */}
           <div className="flex flex-wrap gap-3 justify-center mt-8 mb-8">
             <PdfButton href="/papers/MIND_Values_Manifesto.pdf" label={isFr ? 'Version complète (EN)' : 'Full version (EN)'} />

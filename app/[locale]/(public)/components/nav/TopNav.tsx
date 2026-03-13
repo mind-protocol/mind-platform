@@ -24,6 +24,8 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { href: '/self', key: 'self' },
       { href: '/manifesto', key: 'manifesto' },
+      { href: '/docs/bilateral-bond', key: 'bilateralBond' },
+      { href: '/docs/the-spawning', key: 'theSpawning' },
       { href: '/whitepaper', key: 'whitepaper' },
     ],
   },
