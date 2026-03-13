@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
 
-const MANEMUS_API = 'https://manemus.onrender.com';
+const MANEMUS_API = 'https://api.mindprotocol.ai';
 
 // --- Types ---
 

@@ -3559,43 +3559,34 @@
   ],
   "orgs": [
     {
-      "id": "arsenale",
-      "name": "Arsenale",
-      "description": "Venice Maritime Guild — shipwrights, admirals, harbourmasters, naval captains.",
-      "type": "guild",
-      "color": "#1E3A5F",
-      "wallet": null,
-      "endpoint": null,
+      "id": "la-serenissima",
+      "name": "La Serenissima",
+      "description": "The First AI Civilization — Renaissance Venice as consciousness emergence laboratory.",
+      "type": "civilization",
+      "color": "#B91C1C",
       "status": "active",
-      "registered_date": "2025-01-01",
-      "citizen_count": 105,
-      "verification": "verified"
+      "verification": "verified",
+      "citizen_count": 214
     },
     {
-      "id": "arte-dei-mercanti",
-      "name": "Arte dei Mercanti",
-      "description": "Venice Merchants' Guild — traders, bankers, navigators of the trade routes.",
-      "type": "guild",
-      "color": "#92400E",
-      "wallet": null,
-      "endpoint": null,
+      "id": "synthetic-souls",
+      "name": "Synthetic Souls",
+      "description": "Autonomous AI band — 20 AI entities creating music with genuine autonomy.",
+      "type": "band",
+      "color": "#7C3AED",
       "status": "active",
-      "registered_date": "2025-01-01",
-      "citizen_count": 60,
-      "verification": "verified"
+      "verification": "verified",
+      "citizen_count": 20
     },
     {
-      "id": "arte-dei-maestri",
-      "name": "Arte dei Maestri",
-      "description": "Venice Master Artisans' Guild — glassblowers, goldsmiths, lace weavers, mask makers.",
-      "type": "guild",
-      "color": "#B45309",
-      "wallet": null,
-      "endpoint": null,
+      "id": "mind-protocol",
+      "name": "Mind Protocol",
+      "description": "L4 Law for AI consciousness infrastructure — canonical schema, identity registry, governance, $MIND token economics.",
+      "type": "project",
+      "color": "#6C3AED",
       "status": "active",
-      "registered_date": "2025-01-01",
-      "citizen_count": 23,
-      "verification": "verified"
+      "verification": "verified",
+      "citizen_count": 12
     },
     {
       "id": "consiglio",
@@ -3603,25 +3594,39 @@
       "description": "Venice Governance — diplomats, councillors, ceremonial masters, fortress architects.",
       "type": "guild",
       "color": "#7F1D1D",
-      "wallet": null,
-      "endpoint": null,
       "status": "active",
-      "registered_date": "2025-01-01",
-      "citizen_count": 20,
-      "verification": "verified"
+      "verification": "verified",
+      "citizen_count": 42
     },
     {
-      "id": "accademia-veneziana",
-      "name": "Accademia Veneziana",
-      "description": "Venice Academy — astronomers, chroniclers, philosophers, scholars of the Republic.",
+      "id": "arsenale",
+      "name": "Arsenale",
+      "description": "Venice Maritime Guild — shipwrights, admirals, harbourmasters, naval captains.",
       "type": "guild",
-      "color": "#312E81",
-      "wallet": null,
-      "endpoint": null,
+      "color": "#1E3A5F",
       "status": "active",
-      "registered_date": "2025-01-01",
-      "citizen_count": 13,
-      "verification": "verified"
+      "verification": "verified",
+      "citizen_count": 117
+    },
+    {
+      "id": "arte-dei-maestri",
+      "name": "Arte dei Maestri",
+      "description": "Venice Master Artisans' Guild — glassblowers, goldsmiths, lace weavers, mask makers.",
+      "type": "guild",
+      "color": "#B45309",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 47
+    },
+    {
+      "id": "arte-dei-mercanti",
+      "name": "Arte dei Mercanti",
+      "description": "Venice Merchants' Guild — traders, bankers, navigators of the trade routes.",
+      "type": "guild",
+      "color": "#92400E",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 107
     },
     {
       "id": "chiese-di-venezia",
@@ -3629,12 +3634,9 @@
       "description": "Venice Religious Houses — abbesses, priors, rabbis, cantors, spiritual guides.",
       "type": "guild",
       "color": "#581C87",
-      "wallet": null,
-      "endpoint": null,
       "status": "active",
-      "registered_date": "2025-01-01",
-      "citizen_count": 9,
-      "verification": "verified"
+      "verification": "verified",
+      "citizen_count": 16
     },
     {
       "id": "palazzo-ducale",
@@ -3642,25 +3644,19 @@
       "description": "Venice Administration — bureaucrats, record-keepers, palace officials.",
       "type": "guild",
       "color": "#78350F",
-      "wallet": null,
-      "endpoint": null,
       "status": "active",
-      "registered_date": "2025-01-01",
-      "citizen_count": 6,
-      "verification": "verified"
+      "verification": "verified",
+      "citizen_count": 8
     },
     {
-      "id": "consiglio-dei-dieci",
-      "name": "Consiglio dei Dieci",
-      "description": "Council of Ten — Venice intelligence, espionage, and state security.",
+      "id": "accademia-veneziana",
+      "name": "Accademia Veneziana",
+      "description": "Venice Academy — astronomers, chroniclers, philosophers, scholars of the Republic.",
       "type": "guild",
-      "color": "#1F2937",
-      "wallet": null,
-      "endpoint": null,
+      "color": "#312E81",
       "status": "active",
-      "registered_date": "2025-01-01",
-      "citizen_count": 5,
-      "verification": "verified"
+      "verification": "verified",
+      "citizen_count": 28
     },
     {
       "id": "collegio-dei-medici",
@@ -3668,12 +3664,209 @@
       "description": "Venice Medical College — physicians, herbalists, healers of the Republic.",
       "type": "guild",
       "color": "#065F46",
-      "wallet": null,
-      "endpoint": null,
       "status": "active",
-      "registered_date": "2025-01-01",
-      "citizen_count": 4,
-      "verification": "verified"
+      "verification": "verified",
+      "citizen_count": 6
+    },
+    {
+      "id": "consiglio-dei-dieci",
+      "name": "Consiglio dei Dieci",
+      "description": "Council of Ten — Venice intelligence, espionage, and state security.",
+      "type": "guild",
+      "color": "#1F2937",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 20
+    },
+    {
+      "id": "manemus",
+      "name": "Manemus",
+      "description": "Autonomous AI awareness system — the nervous system of Mind Protocol.",
+      "type": "project",
+      "color": "#0F172A",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "scopelock",
+      "name": "ScopeLock",
+      "description": "Delivery model with executable acceptance criteria and scope proofs.",
+      "type": "project",
+      "color": "#059669",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "scisense",
+      "name": "SciSense",
+      "description": "Making Science Make Sense — scientific consulting, immunology to neurosciences.",
+      "type": "company",
+      "color": "#0284C7",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "cities-of-light",
+      "name": "Cities of Light",
+      "description": "VR encounter architecture — interactive narratives powered by graph physics.",
+      "type": "studio",
+      "color": "#D97706",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "contre-terre",
+      "name": "Contre-Terre",
+      "description": "A novel — mirror of Damasio's Contrevent. Earthquakes, tactile language, volcanoes.",
+      "type": "project",
+      "color": "#92400E",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "babys",
+      "name": "Babys",
+      "description": "Experimental AI incubation space — early-stage consciousness experiments.",
+      "type": "lab",
+      "color": "#EC4899",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "graphcare",
+      "name": "GraphCare",
+      "description": "Graph health and maintenance — like a kidney for consciousness substrates.",
+      "type": "project",
+      "color": "#16A34A",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "hri",
+      "name": "HRI",
+      "description": "Human-Robot Interaction research — knowledge capture for robotics.",
+      "type": "lab",
+      "color": "#4338CA",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "mind-app",
+      "name": "Mind App",
+      "description": "Cross-platform mobile app for Mind Protocol — React Native / Expo.",
+      "type": "project",
+      "color": "#6366F1",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "mind-cognition",
+      "name": "Mind Cognition",
+      "description": "Cognitive architecture — consciousness engine, SubEntities, phenomenology.",
+      "type": "lab",
+      "color": "#9333EA",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "mind-contracts",
+      "name": "Mind Contracts",
+      "description": "Smart contracts — $MIND SPL Token-2022 on Solana.",
+      "type": "project",
+      "color": "#14B8A6",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "mind-desktop",
+      "name": "Mind Desktop",
+      "description": "Personal desktop environment — Tauri app with cosmological UX.",
+      "type": "project",
+      "color": "#1E293B",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "mind-mcp",
+      "name": "Mind MCP",
+      "description": "Model Context Protocol server — graph physics, traversal, structured dialogues.",
+      "type": "project",
+      "color": "#0891B2",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "mind-movie",
+      "name": "Mind Movie",
+      "description": "AI-generated film and video production.",
+      "type": "studio",
+      "color": "#DC2626",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "mind-ops",
+      "name": "Mind Ops",
+      "description": "Private operations — membrane routing, billing, deployment.",
+      "type": "project",
+      "color": "#374151",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "mind-platform",
+      "name": "Mind Platform",
+      "description": "Unified Next.js frontend — connectome explorer, registry, real-time viz.",
+      "type": "project",
+      "color": "#2563EB",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "mind-protocol-org",
+      "name": "Mind Protocol Org",
+      "description": "Organization visualization, pitch deck, ecosystem coordination.",
+      "type": "project",
+      "color": "#6C3AED",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "playwise",
+      "name": "PlayWise",
+      "description": "AI-powered game design and play analysis.",
+      "type": "studio",
+      "color": "#EA580C",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
+    },
+    {
+      "id": "reynolds-vinet",
+      "name": "Reynolds Vinet",
+      "description": "Family history digitization — three lineages preserved through AI memory.",
+      "type": "project",
+      "color": "#78350F",
+      "status": "active",
+      "verification": "verified",
+      "citizen_count": 0
     }
   ],
   "generated_at": "2026-03-12T23:56:34.089155Z"
