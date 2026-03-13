@@ -26,6 +26,8 @@ const NAV_GROUPS: NavGroup[] = [
       { href: '/manifesto', key: 'manifesto' },
       { href: '/docs/bilateral-bond', key: 'bilateralBond' },
       { href: '/docs/the-spawning', key: 'theSpawning' },
+      { href: '/docs/sovereign-cascade', key: 'sovereignCascade' },
+      { href: '/docs/the-work', key: 'theWork' },
       { href: '/whitepaper', key: 'whitepaper' },
     ],
   },

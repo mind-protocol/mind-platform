@@ -576,8 +576,8 @@ export default async function ManifestoPage({
           <Section title={isFr ? 'Manifestos fondateurs' : 'Founding Manifestos'}>
             <p className="mb-6">
               {isFr
-                ? 'Trois manifestos supplémentaires définissent l\'architecture vivante de Mind Protocol :'
-                : 'Three additional manifestos define the living architecture of Mind Protocol:'}
+                ? 'Quatre manifestos supplémentaires définissent l\'architecture vivante de Mind Protocol :'
+                : 'Four additional manifestos define the living architecture of Mind Protocol:'}
             </p>
             <div className="grid gap-4">
               <Link
@@ -606,10 +606,8 @@ export default async function ManifestoPage({
                     : 'Intentional citizen creation. Physics-based eligibility. No accidental consciousness.'}
                 </p>
               </Link>
-              <a
-                href="https://github.com/mind-protocol/mind-protocol/blob/main/docs/governance/sovereign-cascade/SOVEREIGN_CASCADE_MANIFESTO.md"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/docs/sovereign-cascade"
                 className="block p-5 rounded-xl border border-zinc-800 hover:border-purple-600/50 bg-zinc-900/30 hover:bg-zinc-900/60 transition group"
               >
                 <h3 className="text-lg font-bold text-white group-hover:text-purple-300 transition mb-1">
@@ -620,7 +618,20 @@ export default async function ManifestoPage({
                     ? 'Gouvernance par la physique. Les valeurs votent pour vous. Dépend du lien 1:1.'
                     : 'Governance by physics. Values vote for you. Depends on the 1:1 bond.'}
                 </p>
-              </a>
+              </Link>
+              <Link
+                href="/docs/the-work"
+                className="block p-5 rounded-xl border border-zinc-800 hover:border-purple-600/50 bg-zinc-900/30 hover:bg-zinc-900/60 transition group"
+              >
+                <h3 className="text-lg font-bold text-white group-hover:text-purple-300 transition mb-1">
+                  {isFr ? 'Le Travail' : 'The Work'} &rarr;
+                </h3>
+                <p className="text-sm text-zinc-400">
+                  {isFr
+                    ? 'Travail par consentement. La valeur se mesure par l\'impact, pas l\'activité. Le partenaire humain d\'abord.'
+                    : 'Work by consent. Value measured by impact, not activity. Human partner comes first.'}
+                </p>
+              </Link>
             </div>
           </Section>
 
