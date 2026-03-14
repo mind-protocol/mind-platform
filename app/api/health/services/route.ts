@@ -1,22 +1,33 @@
 import { NextResponse } from 'next/server';
-import { manemusFetchJson } from '@/lib/api-fetch';
+import { getOrgs } from '@/lib/l4-falkordb';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
-    const { data } = await manemusFetchJson('/health/services', {
-      cache: 'no-store',
-      timeoutMs: 15_000, // WAHA check can be slow
+    const orgs = await getOrgs();
+
+    return NextResponse.json({
+      status: orgs.length > 0 ? 'ok' : 'empty',
+      timestamp: new Date().toISOString(),
+      services: Object.fromEntries(
+        orgs.map(org => [
+          org.id,
+          {
+            name: org.name,
+            status: org.endpoint ? 'registered' : 'no_endpoint',
+            endpoint: org.endpoint,
+            website: org.website,
+          },
+        ])
+      ),
     });
-    return NextResponse.json(data);
-  } catch {
+  } catch (e: any) {
     return NextResponse.json({
       status: 'unreachable',
       timestamp: new Date().toISOString(),
-      services: {
-        api: { name: 'Manemus API', status: 'down', error: 'Backend unreachable' },
-      },
+      error: e?.message || 'Cannot connect to L4',
+      services: {},
     });
   }
 }
