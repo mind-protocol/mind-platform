@@ -15,3 +15,17 @@ embedding:
 # The function receives (citizens_dir: str) and must be idempotent.
 seed:
   script: runtime.l4.citizen_l1_ensure.bulk_ensure_citizens
+
+# Behaviors toggled at init/deploy time.
+# All default to true. Set to false to disable for specific projects.
+# Example: contre-terre citizens don't know their repo or docs.
+behaviors:
+  file_ingest: true       # Ingest repo files as narrative nodes in graph
+  doc_ingest: true        # Ingest docs/ chain into graph (OBJECTIVES, PATTERNS, etc.)
+  mind_ingest: true       # Ingest .mind/ files into graph
+  overview: true          # Generate repository map (map.md)
+  embeddings: true        # Compute embeddings for ingested nodes
+  health_checks: true     # Run health checks after init
+  capabilities_graph: true # Ingest capabilities into graph
+  citizen_seed: true      # Upsert citizen brains at deploy (uses seed.script)
+  mcp_config: true        # Configure .mcp.json for membrane server
