@@ -8,3 +8,10 @@ embedding:
   provider: local
   model: all-mpnet-base-v2
   dimension: 768
+
+# Script to run at deploy for graph seeding/upsert.
+# Default: runtime.l4.citizen_l1_ensure.bulk_ensure_citizens
+# Override with a custom module path to seed differently per project.
+# The function receives (citizens_dir: str) and must be idempotent.
+seed:
+  script: runtime.l4.citizen_l1_ensure.bulk_ensure_citizens
