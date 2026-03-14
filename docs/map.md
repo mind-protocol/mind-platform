@@ -1,22 +1,23 @@
 # Repository Map: mind-platform
 
-*Generated: 2026-03-14 03:28*
+*Generated: 2026-03-14 16:01*
 
-- **Files:** 827
-- **Directories:** 377
-- **Total Size:** 6.2M
-- **Doc Files:** 447
-- **Code Files:** 375
+- **Files:** 836
+- **Directories:** 379
+- **Total Size:** 6.3M
+- **Doc Files:** 448
+- **Code Files:** 382
 - **Areas:** 15 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
 - **DOCS Links:** 26 (0.07 avg per code file)
 
-- markdown: 447
+- markdown: 448
 - tsx: 177
-- typescript: 173
-- python: 22
+- typescript: 174
+- python: 27
 - css: 1
 - html: 1
+- shell: 1
 - javascript: 1
 
 ```
@@ -154,7 +155,7 @@
 │   │   │   ├── register/ (6.4K)
 │   │   │   │   ├── page.tsx (6.0K)
 │   │   │   │   └── (..1 more files)
-│   │   │   ├── registry/ (41.7K)
+│   │   │   ├── registry/ (42.1K)
 │   │   │   │   ├── citizens/ (26.5K)
 │   │   │   │   │   └── [id]/ (26.5K)
 │   │   │   │   │       └── page.tsx (26.5K)
@@ -163,9 +164,9 @@
 │   │   │   │   │   ├── EntityList.tsx (881)
 │   │   │   │   │   ├── RegistryTabs.tsx (1.3K)
 │   │   │   │   │   └── VerificationBadge.tsx (854)
-│   │   │   │   ├── lib/ (2.1K)
+│   │   │   │   ├── lib/ (2.4K)
 │   │   │   │   │   ├── api.ts (1.2K)
-│   │   │   │   │   └── types.ts (920)
+│   │   │   │   │   └── types.ts (1.2K)
 │   │   │   │   ├── orgs/ (6.1K)
 │   │   │   │   │   └── [id]/ (6.1K)
 │   │   │   │   │       └── page.tsx (6.1K)
@@ -308,7 +309,7 @@
 │   │   ├── error.tsx (1.5K)
 │   │   ├── layout.tsx (1.0K)
 │   │   └── not-found.tsx (1.1K)
-│   ├── api/ (104.1K)
+│   ├── api/ (108.6K)
 │   │   ├── actif/ (796)
 │   │   │   └── route.ts (796)
 │   │   ├── auth/ (7.7K)
@@ -390,13 +391,13 @@
 │   │   │   │       └── route.ts (568)
 │   │   │   └── status/ (640)
 │   │   │       └── route.ts (640)
-│   │   ├── health/ (1.3K)
-│   │   │   ├── dashboard/ (671)
-│   │   │   │   └── route.ts (671)
-│   │   │   └── services/ (602)
-│   │   │       └── route.ts (602)
-│   │   ├── register/ (2.7K)
-│   │   │   └── route.ts (2.7K)
+│   │   ├── health/ (5.4K)
+│   │   │   ├── dashboard/ (4.6K)
+│   │   │   │   └── route.ts (4.6K)
+│   │   │   └── services/ (831)
+│   │   │       └── route.ts (831)
+│   │   ├── register/ (3.1K)
+│   │   │   └── route.ts (3.1K)
 │   │   ├── registry/ (7.0K)
 │   │   │   ├── citizens/ (2.5K)
 │   │   │   │   ├── [id]/ (1.2K)
@@ -1060,7 +1061,7 @@
 │   │   ├── VALIDATION_Platform_Invariants.md (5.5K)
 │   │   └── VOCABULARY_Platform_Terms.md (6.1K)
 │   ├── ARCHITECTURE.md (4.6K)
-│   └── map.md (252.4K)
+│   └── map.md (254.4K)
 ├── i18n/ (784)
 │   └── (..3 more files)
 ├── l3/
@@ -1068,7 +1069,7 @@
 │   │   └── (..2 more files)
 │   └── federation/
 │       └── (..2 more files)
-├── lib/ (558.6K)
+├── lib/ (562.1K)
 │   ├── chat/ (9.9K)
 │   │   └── store.ts (9.9K)
 │   ├── constants/ (1.2K)
@@ -1157,6 +1158,7 @@
 │   ├── auth.ts (3.4K)
 │   ├── blog.ts (2.5K)
 │   ├── docs.ts (1.1K)
+│   ├── l4-falkordb.ts (3.6K)
 │   ├── page-context.ts (11.9K)
 │   ├── rate-limit.ts (1.5K)
 │   ├── theme.ts (5.8K)
@@ -1167,15 +1169,18 @@
 │   └── swap.html (25.4K)
 ├── scripts/ (9.6K)
 │   └── process_track_visuals.py (9.6K)
-├── services/ (32.8K)
-│   └── l4-registry/ (32.8K)
+├── services/ (50.9K)
+│   └── l4-registry/ (50.9K)
+│       ├── README.md (2.1K)
 │       ├── db.py (3.6K) →
-│       ├── main.py (12.3K)
+│       ├── main.py (12.2K)
 │       ├── models.py (2.2K) →
-│       ├── queries.py (6.3K) →
-│       ├── transforms.py (7.9K) →
+│       ├── queries.py (6.9K) →
+│       ├── seed.py (14.7K)
+│       ├── start.sh (544)
+│       ├── transforms.py (8.0K) →
 │       └── (..3 more files)
-├── templates/ (343.9K)
+├── templates/ (366.7K)
 │   ├── actors/ (8.2K)
 │   │   ├── architect/ (883)
 │   │   │   └── SYSTEM.md (883)
@@ -1223,6 +1228,13 @@
 │   │   └── (..1 more files)
 │   ├── prompts/ (3.7K)
 │   │   └── PROMPT_Master_5_Force_Sprint_Orchestration.md (3.7K)
+│   ├── scripts/ (22.7K)
+│   │   ├── hooks/ (759)
+│   │   │   └── pre-push (759)
+│   │   ├── generate_render_yaml.py (4.2K)
+│   │   ├── l4_org_announce.py (10.8K)
+│   │   ├── l4_register_citizens.py (3.0K)
+│   │   └── render_env_sync.py (4.1K)
 │   ├── skills/ (120.3K)
 │   │   ├── SKILL_Add_Cluster_Dynamic_Creation.md (26.3K)
 │   │   ├── SKILL_Author_Procedures_Design_And_Structure.md (20.5K)
@@ -1243,12 +1255,12 @@
 │   ├── STYLE.md (4.6K)
 │   ├── SYSTEM.md (11.4K)
 │   └── mindignore (839)
-├── tests/ (144.5K)
-│   ├── api/ (119.0K)
+├── tests/ (145.6K)
+│   ├── api/ (120.1K)
 │   │   ├── auth_routes.test.ts (9.4K)
 │   │   ├── chat_routes.test.ts (9.0K)
 │   │   ├── garmin_routes.test.ts (12.3K)
-│   │   ├── misc_routes.test.ts (29.6K)
+│   │   ├── misc_routes.test.ts (30.7K)
 │   │   ├── sign_routes.test.ts (10.3K)
 │   │   ├── tracker_adverse_route.test.ts (6.9K)
 │   │   ├── tracker_food_route.test.ts (6.9K)
@@ -1274,12 +1286,12 @@
 ├── .mindignore (838)
 ├── AGENTS.md (29.8K)
 ├── README.md (4.1K)
-├── map.md (254.3K)
-├── map_app.md (39.3K)
+├── map.md (256.0K)
+├── map_app.md (39.9K)
 ├── next.config.mjs (787)
 ├── self.md (5.8K)
 ├── tailwind.config.js (1.8K)
-└── tsconfig.tsbuildinfo (573.4K)
+└── tsconfig.tsbuildinfo (574.9K)
 ```
 
 **Definitions:**
@@ -2198,6 +2210,7 @@
 - `GET()`
 
 **Definitions:**
+- `pingEndpoint()`
 - `GET()`
 
 **Definitions:**
@@ -8017,8 +8030,10 @@
 - `docs/physics/subentity/ALGORITHM_SubEntity.md`
 - `docs/physics/subentity/BEHAVIORS_SubEntity.md`
 - `docs/physics/subentity/VALIDATION_SubEntity.md`
+- `docs/registry/ALGORITHM_Registry_Flows.md`
 - `docs/registry/BEHAVIORS_Registry_UX.md`
 - `docs/registry/IMPLEMENTATION_Registry_Code.md`
+- `docs/registry/PATTERNS_Registry_Rules.md`
 - `docs/schema/PATTERNS_Schema.md`
 - `docs/ux/PATTERNS_UX_Principles.md`
 - `docs/vision/PATTERNS_Platform_Vision_And_Architecture.md`
@@ -8278,6 +8293,13 @@
 - `getAllDocSlugs()`
 
 **Definitions:**
+- `getRedis()`
+- `l4Query()`
+- `getOrgs()`
+- `getCitizenCountByOrg()`
+- `disconnect()`
+
+**Definitions:**
 - `extractPage()`
 - `extractSubstancesLoggedToday()`
 - `extractActiveRecommendations()`
@@ -8328,6 +8350,12 @@
 - `def generate_manifest()`
 - `def main()`
 
+**Sections:**
+- # L4 Registry Backend (REFERENCE COPY)
+- ## Endpoints
+- ## Canonical Location
+- ## Environment Variables
+
 **Docs:** `docs/registry/PATTERNS_Registry_Rules.md (P6: Registry = Graph)`
 
 **Definitions:**
@@ -8344,7 +8372,6 @@
 - `async def list_orgs()`
 - `async def get_org()`
 - `async def search_registry()`
-- `def _member_date()`
 
 **Docs:** `docs/registry/PATTERNS_Registry_Rules.md`
 
@@ -8363,6 +8390,13 @@
 **Definitions:**
 - `def build_citizen_filters()`
 - `def build_org_filters()`
+- `def _sanitize_id()`
+
+**Definitions:**
+- `def _date_to_epoch()`
+- `def _now_epoch()`
+- `def seed()`
+- `def main()`
 
 **Docs:** `docs/registry/ALGORITHM_Registry_Flows.md`
 
@@ -8724,6 +8758,35 @@
 - ## Variables
 - ## Prompt (copier/coller)
 - ## Usage Notes
+
+**Definitions:**
+- `def detect_repo_name()`
+- `def detect_runtime()`
+- `def detect_commands()`
+- `def detect_env_keys()`
+- `def generate()`
+
+**Definitions:**
+- `def detect_org_id()`
+- `def detect_repo_name()`
+- `def detect_endpoint()`
+- `def generate_keypair()`
+- `def sign_challenge()`
+- `def connect_l4()`
+- `def first_registration()`
+- `def update_endpoint()`
+- `def announce_org()`
+
+**Definitions:**
+- `def _detect_org_id()`
+- `def _detect_citizens_dir()`
+- `def main()`
+
+**Definitions:**
+- `def load_env()`
+- `def detect_service_id()`
+- `def lookup_service_by_name()`
+- `def sync_env_to_render()`
 
 **Sections:**
 - # Skill: `mind.add_cluster`
@@ -9396,7 +9459,9 @@
 - `docs/connectome/graph_api/IMPLEMENTATION_Graph_API.md`
 - `docs/frontend/app_shell/PATTERNS_App_Shell.md`
 - `docs/landing/IMPLEMENTATION_Landing_Code.md`
+- `docs/registry/ALGORITHM_Registry_Flows.md`
 - `docs/registry/IMPLEMENTATION_Registry_Code.md`
+- `docs/registry/PATTERNS_Registry_Rules.md`
 
 **Sections:**
 - # Repository Map: mind-platform/app

@@ -1,6 +1,6 @@
 # Repository Map: mind-platform/app
 
-*Generated: 2026-03-14 03:28*
+*Generated: 2026-03-14 16:01*
 
 - **Files:** 262
 - **Directories:** 223
@@ -149,7 +149,7 @@
 │   │   ├── register/ (6.4K)
 │   │   │   ├── page.tsx (6.0K)
 │   │   │   └── (..1 more files)
-│   │   ├── registry/ (41.7K)
+│   │   ├── registry/ (42.1K)
 │   │   │   ├── citizens/ (26.5K)
 │   │   │   │   └── [id]/ (26.5K)
 │   │   │   │       └── page.tsx (26.5K)
@@ -158,9 +158,9 @@
 │   │   │   │   ├── EntityList.tsx (881)
 │   │   │   │   ├── RegistryTabs.tsx (1.3K)
 │   │   │   │   └── VerificationBadge.tsx (854)
-│   │   │   ├── lib/ (2.1K)
+│   │   │   ├── lib/ (2.4K)
 │   │   │   │   ├── api.ts (1.2K)
-│   │   │   │   └── types.ts (920)
+│   │   │   │   └── types.ts (1.2K)
 │   │   │   ├── orgs/ (6.1K)
 │   │   │   │   └── [id]/ (6.1K)
 │   │   │   │       └── page.tsx (6.1K)
@@ -303,7 +303,7 @@
 │   ├── error.tsx (1.5K)
 │   ├── layout.tsx (1.0K)
 │   └── not-found.tsx (1.1K)
-├── api/ (104.1K)
+├── api/ (108.6K)
 │   ├── actif/ (796)
 │   │   └── route.ts (796)
 │   ├── auth/ (7.7K)
@@ -385,13 +385,13 @@
 │   │   │       └── route.ts (568)
 │   │   └── status/ (640)
 │   │       └── route.ts (640)
-│   ├── health/ (1.3K)
-│   │   ├── dashboard/ (671)
-│   │   │   └── route.ts (671)
-│   │   └── services/ (602)
-│   │       └── route.ts (602)
-│   ├── register/ (2.7K)
-│   │   └── route.ts (2.7K)
+│   ├── health/ (5.4K)
+│   │   ├── dashboard/ (4.6K)
+│   │   │   └── route.ts (4.6K)
+│   │   └── services/ (831)
+│   │       └── route.ts (831)
+│   ├── register/ (3.1K)
+│   │   └── route.ts (3.1K)
 │   ├── registry/ (7.0K)
 │   │   ├── citizens/ (2.5K)
 │   │   │   ├── [id]/ (1.2K)
@@ -1441,6 +1441,7 @@
 - `GET()`
 
 **Definitions:**
+- `pingEndpoint()`
 - `GET()`
 
 **Definitions:**

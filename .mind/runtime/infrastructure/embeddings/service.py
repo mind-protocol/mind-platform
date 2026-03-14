@@ -7,11 +7,7 @@ Based on Mind Protocol's embedding_service.py pattern.
 DOCS: docs/infrastructure/embeddings/
 """
 
-import hashlib
-import json
 import logging
-import os
-from pathlib import Path
 from typing import List, Dict, Any, Optional
 import numpy as np
 
@@ -20,56 +16,26 @@ logger = logging.getLogger(__name__)
 # Singleton instance
 _embedding_service: Optional['EmbeddingService'] = None
 
-# Cache file location: .mind/cache/embeddings.json
-_CACHE_DIR = Path(".mind/cache")
-_CACHE_FILE = _CACHE_DIR / "embedding_hashes.json"
-
 
 class EmbeddingService:
     """
     Embedding service using sentence-transformers.
 
     Uses all-mpnet-base-v2 (768 dimensions) for high-quality embeddings.
-    Hash-based cache: if text hasn't changed, skip re-embedding.
     """
 
     def __init__(self, model_name: str = "sentence-transformers/all-mpnet-base-v2"):
+        """
+        Initialize embedding service.
+
+        Args:
+            model_name: HuggingFace model name
+        """
         self.model_name = model_name
         self.model = None
-        self.dimension = 768
-        self._cache = {}  # hash -> embedding vector
-        self._cache_hits = 0
-        self._cache_misses = 0
-        self._load_cache()
+        self.dimension = 768  # all-mpnet-base-v2 dimension
 
         logger.info(f"[EmbeddingService] Initializing with {model_name}")
-
-    def _load_cache(self):
-        """Load hash→embedding cache from disk."""
-        try:
-            if _CACHE_FILE.exists():
-                data = json.loads(_CACHE_FILE.read_text())
-                self._cache = data
-                logger.info(f"[EmbeddingService] Cache loaded: {len(self._cache)} entries")
-        except Exception as e:
-            logger.debug(f"[EmbeddingService] Cache load failed: {e}")
-            self._cache = {}
-
-    def save_cache(self):
-        """Persist cache to disk. Called after batch operations."""
-        try:
-            _CACHE_DIR.mkdir(parents=True, exist_ok=True)
-            _CACHE_FILE.write_text(json.dumps(self._cache))
-            logger.info(
-                f"[EmbeddingService] Cache saved: {len(self._cache)} entries "
-                f"(hits={self._cache_hits}, misses={self._cache_misses})"
-            )
-        except Exception as e:
-            logger.debug(f"[EmbeddingService] Cache save failed: {e}")
-
-    @staticmethod
-    def _hash_text(text: str) -> str:
-        return hashlib.sha256(text.encode()).hexdigest()[:16]
 
     def _load_model(self):
         """Lazy load the model. Fails if sentence-transformers not installed."""
@@ -86,66 +52,43 @@ class EmbeddingService:
                 ) from e
 
     def embed(self, text: str) -> List[float]:
-        """Generate embedding for text, using cache if available."""
+        """
+        Generate embedding for text.
+
+        Args:
+            text: Text to embed
+
+        Returns:
+            List of floats (768 dimensions)
+        """
+        self._load_model()
+
         if not text or not text.strip():
             return [0.0] * self.dimension
 
-        h = self._hash_text(text)
-        if h in self._cache:
-            self._cache_hits += 1
-            return self._cache[h]
-
-        self._load_model()
-        embedding = self.model.encode(text, normalize_embeddings=True).tolist()
-        self._cache[h] = embedding
-        self._cache_misses += 1
-        return embedding
+        embedding = self.model.encode(text, normalize_embeddings=True)
+        return embedding.tolist()
 
     def embed_batch(self, texts: List[str]) -> List[List[float]]:
-        """Generate embeddings for multiple texts, skipping cached ones.
-
-        Only sends uncached texts to the model. Returns all results in order.
         """
+        Generate embeddings for multiple texts.
+
+        Args:
+            texts: List of texts to embed
+
+        Returns:
+            List of embedding vectors
+        """
+        self._load_model()
+
         if not texts:
             return []
 
+        # Filter empty texts
         valid_texts = [t if t and t.strip() else " " for t in texts]
-        hashes = [self._hash_text(t) for t in valid_texts]
 
-        # Separate cached from uncached
-        results = [None] * len(valid_texts)
-        uncached_indices = []
-        uncached_texts = []
-
-        for i, h in enumerate(hashes):
-            if h in self._cache:
-                results[i] = self._cache[h]
-                self._cache_hits += 1
-            else:
-                uncached_indices.append(i)
-                uncached_texts.append(valid_texts[i])
-
-        # Only embed what's new
-        if uncached_texts:
-            self._load_model()
-            new_embeddings = self.model.encode(uncached_texts, normalize_embeddings=True).tolist()
-            for idx, emb in zip(uncached_indices, new_embeddings):
-                results[idx] = emb
-                self._cache[hashes[idx]] = emb
-                self._cache_misses += 1
-
-        # Auto-save cache after batch
-        if uncached_texts:
-            self.save_cache()
-
-        cached_pct = round(self._cache_hits / max(self._cache_hits + self._cache_misses, 1) * 100)
-        if len(texts) > 10:
-            logger.info(
-                f"[EmbeddingService] Batch: {len(texts)} total, "
-                f"{len(uncached_texts)} new, {len(texts) - len(uncached_texts)} cached ({cached_pct}%)"
-            )
-
-        return results
+        embeddings = self.model.encode(valid_texts, normalize_embeddings=True)
+        return embeddings.tolist()
 
     def embed_node(self, node: Dict[str, Any]) -> List[float]:
         """

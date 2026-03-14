@@ -408,24 +408,6 @@ LinkBase:
       default: 0.0
       description: "Increases frustration accumulation (Law 18)"
 
-    # === Emotions (Plutchik 4 bipolar axes — retained from v1.9) ===
-    joy_sadness:
-      type: float
-      range: [-1, +1]
-      default: 0.0
-    trust_disgust:
-      type: float
-      range: [-1, +1]
-      default: 0.0
-    fear_anger:
-      type: float
-      range: [-1, +1]
-      default: 0.0
-    surprise_anticipation:
-      type: float
-      range: [-1, +1]
-      default: 0.0
-
     # === Text Data ===
     synthesis:
       type: string
@@ -773,7 +755,6 @@ invariants:
 # RETAINED:
 #   - 5 universal node types
 #   - Single link type
-#   - Plutchik 4 emotion axes on links
 #   - Polarity, hierarchy, permanence on links
 #   - Link synthesis grammar (v2.1)
 #   - Temporal fields (created_at_s, updated_at_s, last_traversed_at_s)
@@ -814,13 +795,7 @@ invariants:
 #    No algorithm, formula, or physics law reads space_type for branching.
 #    No taxonomy. No prescribed values. Free text or null.
 #
-# 5. NO EMOTIONS / NO POLITICS AT L3.
-#    The Plutchik axes (joy_sadness, trust_disgust, fear_anger,
-#    surprise_anticipation) exist on LinkBase but are ALWAYS 0.0 at L3.
-#    All affect lives in L1 only — each brain colors the universe differently.
-#    The universe itself has no feelings.
-#
-# 6. TRUST LIVES ON LINKS, NEVER ON NODES.
+# 5. TRUST LIVES ON LINKS, NEVER ON NODES.
 #    There is no "trusted actor" in the schema. Trust is a property of a
 #    specific relationship between two entities. An actor's "reputation" is
 #    the aggregation of inbound trust values across all links pointing to it:
@@ -867,7 +842,6 @@ l3_universe:
 
   link_at_l3:
     relation_kind: null  # ALWAYS null at L3
-    plutchik_axes: 0.0   # ALWAYS zero — joy_sadness, trust_disgust, fear_anger, surprise_anticipation
     active_dimensions:
       # These carry structural meaning at L3:
       - weight        # Consolidated importance of the relationship
@@ -885,10 +859,6 @@ l3_universe:
       - aversion      # Structural repulsion (anti-correlation tendency)
     frozen_dimensions:
       # These are L1-only — always 0.0 at L3:
-      - joy_sadness
-      - trust_disgust
-      - fear_anger
-      - surprise_anticipation
       - activation_gain  # No cognitive amplification at L3
 
   # --- Physics Laws at L3 ---
@@ -1028,7 +998,6 @@ l3_universe:
 l3_invariants:
   - "5 universal node types only — no L3-specific types"
   - "relation_kind is always null at L3"
-  - "Plutchik emotion axes are always 0.0 at L3"
   - "space_type is free text, optional, never used in algorithmic branching"
   - "Trust lives on links only — no node-level trust field"
   - "Actor reputation is always computed, never stored"
