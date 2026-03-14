@@ -792,25 +792,25 @@ describe('POST /api/register', () => {
 });
 
 // ---------------------------------------------------------------------------
-// GET /api/registry/citizens
+// GET /api/registry/citizens (proxies to L4 backend)
 // ---------------------------------------------------------------------------
 
 describe('GET /api/registry/citizens', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockGraphQuery.mockReset();
+    mockFetch.mockReset();
   });
 
-  it('returns citizen list from FalkorDB', async () => {
-    mockGraphQuery
-      .mockResolvedValueOnce({
-        result_set: [
-          ['c1', 'Alice', 'A description', 'active', 'SPACE_1', 'Org1'],
-        ],
-      })
-      .mockResolvedValueOnce({
-        result_set: [[5]],
-      });
+  it('returns citizen list from L4 backend', async () => {
+    const l4Response = {
+      items: [{ id: 'c1', name: 'Alice', content: 'A description' }],
+      count: 5,
+    };
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => l4Response,
+    });
 
     const { GET } = await import('@/app/api/registry/citizens/route');
     const req = makeGetRequest('http://localhost/api/registry/citizens');
@@ -822,39 +822,53 @@ describe('GET /api/registry/citizens', () => {
     expect(data.count).toBe(5);
   });
 
-  it('returns empty list on DB error', async () => {
-    mockGraphQuery.mockRejectedValueOnce(new Error('DB down'));
+  it('returns 503 when L4 backend is unreachable', async () => {
+    mockFetch.mockRejectedValueOnce(new Error('Connection refused'));
+
+    const { GET } = await import('@/app/api/registry/citizens/route');
+    const req = makeGetRequest('http://localhost/api/registry/citizens');
+    const response = await GET(req);
+    expect(response.status).toBe(503);
+    const data = await response.json();
+    expect(data.error).toContain('unavailable');
+  });
+
+  it('proxies error status from L4 backend', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      json: async () => ({ error: 'Internal error' }),
+    });
 
     const { GET } = await import('@/app/api/registry/citizens/route');
     const req = makeGetRequest('http://localhost/api/registry/citizens');
     const response = await GET(req);
     expect(response.status).toBe(500);
     const data = await response.json();
-    expect(data.items).toEqual([]);
-    expect(data.count).toBe(0);
+    expect(data.error).toContain('L4 backend error');
   });
 });
 
 // ---------------------------------------------------------------------------
-// GET /api/registry/orgs
+// GET /api/registry/orgs (proxies to L4 backend)
 // ---------------------------------------------------------------------------
 
 describe('GET /api/registry/orgs', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockGraphQuery.mockReset();
+    mockFetch.mockReset();
   });
 
-  it('returns org list from FalkorDB', async () => {
-    mockGraphQuery
-      .mockResolvedValueOnce({
-        result_set: [
-          ['SPACE_1', 'Engineering', 'Dev team', 'SPACE', 3],
-        ],
-      })
-      .mockResolvedValueOnce({
-        result_set: [[2]],
-      });
+  it('returns org list from L4 backend', async () => {
+    const l4Response = {
+      items: [{ id: 'SPACE_1', name: 'Engineering', content: 'Dev team', citizen_count: 3 }],
+      count: 2,
+    };
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => l4Response,
+    });
 
     const { GET } = await import('@/app/api/registry/orgs/route');
     const req = makeGetRequest('http://localhost/api/registry/orgs');
@@ -867,15 +881,29 @@ describe('GET /api/registry/orgs', () => {
     expect(data.count).toBe(2);
   });
 
-  it('returns empty list on DB error', async () => {
-    mockGraphQuery.mockRejectedValueOnce(new Error('DB down'));
+  it('returns 503 when L4 backend is unreachable', async () => {
+    mockFetch.mockRejectedValueOnce(new Error('Connection refused'));
 
     const { GET } = await import('@/app/api/registry/orgs/route');
     const req = makeGetRequest('http://localhost/api/registry/orgs');
     const response = await GET(req);
-    expect(response.status).toBe(500);
+    expect(response.status).toBe(503);
     const data = await response.json();
-    expect(data.items).toEqual([]);
-    expect(data.count).toBe(0);
+    expect(data.error).toContain('unavailable');
+  });
+
+  it('proxies error status from L4 backend', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 502,
+      json: async () => ({ error: 'Bad gateway' }),
+    });
+
+    const { GET } = await import('@/app/api/registry/orgs/route');
+    const req = makeGetRequest('http://localhost/api/registry/orgs');
+    const response = await GET(req);
+    expect(response.status).toBe(502);
+    const data = await response.json();
+    expect(data.error).toContain('L4 backend error');
   });
 });

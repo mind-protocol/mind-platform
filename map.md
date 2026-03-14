@@ -1,20 +1,20 @@
 # Repository Map: mind-platform
 
-*Generated: 2026-03-13 16:34*
+*Generated: 2026-03-14 03:28*
 
-- **Files:** 807
-- **Directories:** 369
-- **Total Size:** 6.0M
-- **Doc Files:** 436
-- **Code Files:** 366
-- **Areas:** 14 (docs/ subfolders)
+- **Files:** 827
+- **Directories:** 377
+- **Total Size:** 6.2M
+- **Doc Files:** 447
+- **Code Files:** 375
+- **Areas:** 15 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
-- **DOCS Links:** 13 (0.04 avg per code file)
+- **DOCS Links:** 26 (0.07 avg per code file)
 
-- markdown: 436
-- tsx: 176
-- typescript: 170
-- python: 17
+- markdown: 447
+- tsx: 177
+- typescript: 173
+- python: 22
 - css: 1
 - html: 1
 - javascript: 1
@@ -70,23 +70,23 @@
 │   │   │   │   └── page.tsx (2.7K)
 │   │   │   ├── budget/ (17.7K)
 │   │   │   │   └── page.tsx (17.7K)
-│   │   │   ├── components/ (59.2K)
-│   │   │   │   ├── landing/ (28.2K)
+│   │   │   ├── components/ (71.5K)
+│   │   │   │   ├── landing/ (40.3K)
+│   │   │   │   │   ├── CitizensShowcase.tsx (4.6K)
 │   │   │   │   │   ├── Hero.tsx (3.3K)
 │   │   │   │   │   ├── HeroGraph.tsx (3.5K)
-│   │   │   │   │   ├── LiveStats.tsx (1.3K)
-│   │   │   │   │   ├── StatCounter.tsx (1.6K)
+│   │   │   │   │   ├── HowItWorks.tsx (3.7K)
+│   │   │   │   │   ├── OpenSource.tsx (3.8K)
 │   │   │   │   │   ├── SwapSection.tsx (3.0K)
 │   │   │   │   │   ├── TheFork.tsx (3.2K)
 │   │   │   │   │   ├── TheInsight.tsx (3.4K)
 │   │   │   │   │   ├── TheInvitation.tsx (2.0K)
 │   │   │   │   │   ├── WhatWereBuilding.tsx (3.7K)
-│   │   │   │   │   ├── WhoThisIsFor.tsx (1.8K)
-│   │   │   │   │   └── (..2 more files)
-│   │   │   │   ├── nav/ (13.1K)
+│   │   │   │   │   └── (..5 more files)
+│   │   │   │   ├── nav/ (13.4K)
 │   │   │   │   │   ├── Footer.tsx (2.9K)
 │   │   │   │   │   ├── LanguageSwitcher.tsx (959)
-│   │   │   │   │   ├── TopNav.tsx (9.2K)
+│   │   │   │   │   ├── TopNav.tsx (9.4K)
 │   │   │   │   │   └── (..1 more files)
 │   │   │   │   ├── PublicShellClient.tsx (1.1K)
 │   │   │   │   └── SwapWidget.tsx (16.8K)
@@ -107,8 +107,8 @@
 │   │   │   ├── login/ (5.5K)
 │   │   │   │   ├── page.tsx (5.2K)
 │   │   │   │   └── (..1 more files)
-│   │   │   ├── manifesto/ (39.5K)
-│   │   │   │   └── page.tsx (39.5K)
+│   │   │   ├── manifesto/ (43.1K)
+│   │   │   │   └── page.tsx (43.1K)
 │   │   │   ├── marketplace/ (66)
 │   │   │   │   └── (..1 more files)
 │   │   │   ├── music/ (154.8K)
@@ -175,8 +175,8 @@
 │   │   │   ├── reset-password/ (5.5K)
 │   │   │   │   ├── page.tsx (5.2K)
 │   │   │   │   └── (..1 more files)
-│   │   │   ├── schema/ (61)
-│   │   │   │   └── (..1 more files)
+│   │   │   ├── schema/ (2.4K)
+│   │   │   │   └── page.tsx (2.4K) →
 │   │   │   ├── self/ (16.3K)
 │   │   │   │   └── page.tsx (16.3K)
 │   │   │   ├── status/ (23.1K)
@@ -286,7 +286,7 @@
 │   │   │   ├── whitepaper/ (3.4K)
 │   │   │   │   └── page.tsx (3.4K)
 │   │   │   ├── error.tsx (1.3K)
-│   │   │   ├── page.tsx (1.0K)
+│   │   │   ├── page.tsx (2.2K) →
 │   │   │   └── (..1 more files)
 │   │   ├── claude/ (25.8K)
 │   │   │   ├── page.tsx (25.4K)
@@ -308,7 +308,7 @@
 │   │   ├── error.tsx (1.5K)
 │   │   ├── layout.tsx (1.0K)
 │   │   └── not-found.tsx (1.1K)
-│   ├── api/ (100.3K)
+│   ├── api/ (104.1K)
 │   │   ├── actif/ (796)
 │   │   │   └── route.ts (796)
 │   │   ├── auth/ (7.7K)
@@ -339,6 +339,9 @@
 │   │   │   │   └── route.ts (1.5K)
 │   │   │   └── tts/ (847)
 │   │   │       └── route.ts (847)
+│   │   ├── connectome/ (503)
+│   │   │   └── graph/ (503)
+│   │   │       └── route.ts (503) →
 │   │   ├── docs/ (1.1K)
 │   │   │   └── [slug]/ (1.1K)
 │   │   │       ├── pdf/ (677)
@@ -394,15 +397,19 @@
 │   │   │       └── route.ts (602)
 │   │   ├── register/ (2.7K)
 │   │   │   └── route.ts (2.7K)
-│   │   ├── registry/ (3.7K)
-│   │   │   ├── citizens/ (2.0K)
-│   │   │   │   ├── [id]/ (724)
-│   │   │   │   │   └── route.ts (724)
-│   │   │   │   └── route.ts (1.2K)
-│   │   │   └── orgs/ (1.7K)
-│   │   │       ├── [id]/ (626)
-│   │   │       │   └── route.ts (626)
-│   │   │       └── route.ts (1.1K)
+│   │   ├── registry/ (7.0K)
+│   │   │   ├── citizens/ (2.5K)
+│   │   │   │   ├── [id]/ (1.2K)
+│   │   │   │   │   └── route.ts (1.2K) →
+│   │   │   │   └── route.ts (1.3K) →
+│   │   │   ├── health/ (887)
+│   │   │   │   └── route.ts (887) →
+│   │   │   ├── orgs/ (2.4K)
+│   │   │   │   ├── [id]/ (1.2K)
+│   │   │   │   │   └── route.ts (1.2K) →
+│   │   │   │   └── route.ts (1.2K) →
+│   │   │   └── search/ (1.2K)
+│   │   │       └── route.ts (1.2K) →
 │   │   ├── sign/ (3.2K)
 │   │   │   ├── [id]/ (2.4K)
 │   │   │   │   ├── execute/ (1.0K)
@@ -816,7 +823,7 @@
 │   ├── ScrollToTop.tsx (1.1K)
 │   ├── SolanaProvider.tsx (902)
 │   └── Toast.tsx (3.7K)
-├── content/ (71.7K)
+├── content/ (132.6K)
 │   ├── blog/ (38.5K)
 │   │   ├── co-regulation-is-measurable.md (10.6K)
 │   │   ├── music-becomes-a-sense.md (4.2K)
@@ -825,8 +832,12 @@
 │   │   ├── the-high-speed-digital-bridge.md (4.5K)
 │   │   ├── the-night-we-tracked-a-crisis.md (8.7K)
 │   │   └── why-we-airdrop-to-compute-holders.md (4.1K)
-│   ├── docs/ (22.3K)
+│   ├── docs/ (83.2K)
+│   │   ├── bilateral-bond.md (13.3K)
 │   │   ├── mind-tokenomics.md (11.0K)
+│   │   ├── sovereign-cascade.md (16.3K)
+│   │   ├── the-spawning.md (22.8K)
+│   │   ├── the-work.md (8.4K)
 │   │   └── whitepaper.md (11.3K)
 │   └── whitepaper.md (11.0K)
 ├── docs/ (1.3M)
@@ -868,7 +879,7 @@
 │   │   └── VALIDATION_Comments.md (5.4K)
 │   ├── concepts/ (9.5K)
 │   │   └── CONCEPT_AI_Human_Partnership.md (9.5K)
-│   ├── connectome/ (603.3K)
+│   ├── connectome/ (605.6K)
 │   │   ├── edge_kit/ (57.1K)
 │   │   │   ├── ALGORITHM_Connectome_Edge_Kit_Edge_Rendering_Pulse_Shine_And_Label_Placement_Rules.md (4.0K)
 │   │   │   ├── BEHAVIORS_Connectome_Edge_Kit_Readable_Directional_And_Truthful_Link_Effects.md (7.3K)
@@ -898,10 +909,11 @@
 │   │   │   ├── PATTERNS_Connectome_Flow_Canvas_Pannable_Zoomable_Zoned_System_Map_Rendering_Patterns.md (4.5K)
 │   │   │   ├── SYNC_Connectome_Flow_Canvas_Sync_Current_State.md (17.4K)
 │   │   │   └── VALIDATION_Connectome_Flow_Canvas_Invariants_For_Readability_And_Stability.md (5.4K)
-│   │   ├── graph_api/ (12.9K)
-│   │   │   ├── OBJECTIVES_Graph_API.md (1.4K)
+│   │   ├── graph_api/ (15.2K)
+│   │   │   ├── OBJECTIVES_Graph_API.md (1.8K)
 │   │   │   ├── PATTERNS_Graph_API.md (5.0K)
-│   │   │   └── SYNC_Graph_API.md (6.5K)
+│   │   │   ├── SYNC_Graph_API.md (6.9K)
+│   │   │   └── (..5 more files)
 │   │   ├── graphs/ (18.0K)
 │   │   │   ├── ALGORITHM_Proxying_Graph_Listing_CLI.md (3.7K)
 │   │   │   ├── BEHAVIORS_Listing_Available_Connectome_Graphs.md (2.3K)
@@ -984,12 +996,12 @@
 │   │   ├── OBJECTIVES_Design_Language_Goals.md (3.8K)
 │   │   ├── PATTERNS_Design_Language_System.md (7.4K)
 │   │   └── SYNC_Design_Language_State.md (2.9K)
-│   ├── frontend/ (21.1K)
-│   │   └── app_shell/ (21.1K)
+│   ├── frontend/ (21.7K)
+│   │   └── app_shell/ (21.7K)
 │   │       ├── BEHAVIORS_App_Shell.md (3.3K)
 │   │       ├── OBJECTIVES_App_Shell.md (2.2K)
 │   │       ├── PATTERNS_App_Shell.md (7.8K)
-│   │       └── SYNC_App_Shell_State.md (7.8K)
+│   │       └── SYNC_App_Shell_State.md (8.3K)
 │   ├── landing/ (54.0K)
 │   │   ├── ALGORITHM_Landing_Flows.md (7.2K)
 │   │   ├── BEHAVIORS_Landing_UX.md (5.2K)
@@ -997,7 +1009,7 @@
 │   │   ├── IMPLEMENTATION_Landing_Code.md (12.2K)
 │   │   ├── OBJECTIVES_Landing_Goals.md (4.5K)
 │   │   ├── PATTERNS_Landing_Design.md (11.4K)
-│   │   ├── SYNC_Landing_State.md (3.9K)
+│   │   ├── SYNC_Landing_State.md (4.0K)
 │   │   └── VALIDATION_Landing_Invariants.md (5.0K)
 │   ├── manifesto/ (11.0K)
 │   │   ├── MIND_MANIFESTO.md (8.9K)
@@ -1029,6 +1041,10 @@
 │   │   ├── PATTERNS_Registry_Rules.md (3.2K)
 │   │   ├── SYNC_Registry_State.md (4.3K)
 │   │   └── VALIDATION_Registry_Invariants.md (4.3K)
+│   ├── schema-explorer/ (2.7K)
+│   │   ├── OBJECTIVES_Schema_Explorer.md (582)
+│   │   ├── SYNC_Schema_Explorer.md (522)
+│   │   └── (..6 more files)
 │   ├── ux/ (15.3K)
 │   │   ├── OBJECTIVES_UX_Goals.md (4.6K)
 │   │   ├── PATTERNS_UX_Principles.md (7.9K)
@@ -1044,7 +1060,7 @@
 │   │   ├── VALIDATION_Platform_Invariants.md (5.5K)
 │   │   └── VOCABULARY_Platform_Terms.md (6.1K)
 │   ├── ARCHITECTURE.md (4.6K)
-│   └── map.md (250.3K)
+│   └── map.md (252.4K)
 ├── i18n/ (784)
 │   └── (..3 more files)
 ├── l3/
@@ -1151,7 +1167,15 @@
 │   └── swap.html (25.4K)
 ├── scripts/ (9.6K)
 │   └── process_track_visuals.py (9.6K)
-├── templates/ (285.8K)
+├── services/ (32.8K)
+│   └── l4-registry/ (32.8K)
+│       ├── db.py (3.6K) →
+│       ├── main.py (12.3K)
+│       ├── models.py (2.2K) →
+│       ├── queries.py (6.3K) →
+│       ├── transforms.py (7.9K) →
+│       └── (..3 more files)
+├── templates/ (343.9K)
 │   ├── actors/ (8.2K)
 │   │   ├── architect/ (883)
 │   │   │   └── SYSTEM.md (883)
@@ -1185,26 +1209,32 @@
 │   │   ├── VALIDATION_TEMPLATE.md (2.0K)
 │   │   ├── VOCABULARY_TEMPLATE.md (4.0K)
 │   │   └── (..6 more files)
-│   ├── manifesto/ (23.4K)
+│   ├── manifesto/ (92.0K)
 │   │   ├── MIND_MANIFESTO.md (8.9K)
-│   │   └── SOVEREIGN_CASCADE_MANIFESTO.md (14.5K)
+│   │   ├── SOVEREIGN_CASCADE_MANIFESTO.md (16.6K)
+│   │   ├── THE_BILATERAL_BOND_MANIFESTO.md (13.2K)
+│   │   ├── THE_ENLIGHTENED_CITIZEN.md (22.3K)
+│   │   ├── THE_SPAWNING_MANIFESTO.md (22.7K)
+│   │   └── THE_WORK_MANIFESTO.md (8.3K)
 │   ├── mcp/ (7.4K)
 │   │   ├── CODEX_SYSTEM_ADDITION.md (3.2K)
 │   │   ├── GEMINI_SYSTEM_ADDITION.md (2.4K)
 │   │   ├── SYSTEM.md (1.3K)
 │   │   └── (..1 more files)
-│   ├── skills/ (134.4K)
+│   ├── prompts/ (3.7K)
+│   │   └── PROMPT_Master_5_Force_Sprint_Orchestration.md (3.7K)
+│   ├── skills/ (120.3K)
 │   │   ├── SKILL_Add_Cluster_Dynamic_Creation.md (26.3K)
-│   │   ├── SKILL_Assess_SubEntity_Exploration_Quality_From_Logs.md (14.1K)
 │   │   ├── SKILL_Author_Procedures_Design_And_Structure.md (20.5K)
 │   │   ├── SKILL_Author_Skills_Structure_And_Quality.md (4.4K)
 │   │   ├── SKILL_Author_agents_cognitive_posture.md (9.1K)
+│   │   ├── SKILL_Create_Module_Documentation_Chain_From_Templates_And_Seed_Todos.md (3.4K)
 │   │   ├── SKILL_Define_And_Verify_Health_Signals_Mapped_To_Validation_Invariants.md (3.7K)
 │   │   ├── SKILL_Define_Module_Boundaries_Objectives_And_Scope.md (4.3K)
 │   │   ├── SKILL_Ingest_Docs_To_Graph_And_Archive.md (4.3K)
 │   │   ├── SKILL_Orchestrate_Feature_Integration_Pipeline_Orchestrator_And_Progress_Router.md (3.5K)
 │   │   ├── SKILL_Prepare_Implementation_Assess_Complexity_Connectivity_And_Stage_Features.md (11.0K)
-│   │   └── (..12 more files)
+│   │   └── (..11 more files)
 │   ├── state/ (6.9K)
 │   │   ├── SYNC_Project_State.md (6.8K)
 │   │   └── (..1 more files)
@@ -1213,8 +1243,8 @@
 │   ├── STYLE.md (4.6K)
 │   ├── SYSTEM.md (11.4K)
 │   └── mindignore (839)
-├── tests/ (143.7K)
-│   ├── api/ (118.2K)
+├── tests/ (144.5K)
+│   ├── api/ (119.0K)
 │   │   ├── auth_routes.test.ts (9.4K)
 │   │   ├── chat_routes.test.ts (9.0K)
 │   │   ├── garmin_routes.test.ts (12.3K)
@@ -1225,7 +1255,7 @@
 │   │   ├── tracker_log_route.test.ts (7.0K)
 │   │   ├── wallet_routes.test.ts (9.4K)
 │   │   ├── webhook_routes.test.ts (15.5K)
-│   │   └── (..1 more files)
+│   │   └── (..2 more files)
 │   ├── connectome/ (17.6K)
 │   │   ├── manifest.test.ts (3.0K)
 │   │   ├── runtime_engine.test.ts (4.0K)
@@ -1244,12 +1274,12 @@
 ├── .mindignore (838)
 ├── AGENTS.md (29.8K)
 ├── README.md (4.1K)
-├── map.md (250.3K)
-├── map_app.md (41.2K)
+├── map.md (252.2K)
+├── map_app.md (39.3K)
 ├── next.config.mjs (787)
 ├── self.md (5.8K)
 ├── tailwind.config.js (1.8K)
-└── tsconfig.tsbuildinfo (575.7K)
+└── tsconfig.tsbuildinfo (573.4K)
 ```
 
 **Definitions:**
@@ -1394,6 +1424,11 @@
 - `tierPriceColor()`
 
 **Definitions:**
+- `CitizenCard()`
+- `initial()`
+- `CitizensShowcase()`
+
+**Definitions:**
 - `Hero()`
 
 **Definitions:**
@@ -1404,11 +1439,16 @@
 - `loop()`
 
 **Definitions:**
-- `LiveStats()`
+- `Pillar()`
+- `GraphIcon()`
+- `TrustIcon()`
+- `GovernanceIcon()`
+- `PlacesIcon()`
+- `HowItWorks()`
 
 **Definitions:**
-- `StatCounter()`
-- `animate()`
+- `RepoCard()`
+- `OpenSource()`
 
 **Definitions:**
 - `SwapSection()`
@@ -1427,10 +1467,6 @@
 - `ProjectCard()`
 - `content()`
 - `WhatWereBuilding()`
-
-**Definitions:**
-- `Door()`
-- `WhoThisIsFor()`
 
 **Definitions:**
 - `Footer()`
@@ -1636,6 +1672,8 @@
 
 **Definitions:**
 - `handleSubmit()`
+
+**Docs:** `docs/schema-explorer/IMPLEMENTATION_Schema_Explorer.md`
 
 **Definitions:**
 - `statusColor()`
@@ -2003,6 +2041,11 @@
 **Definitions:**
 - `handleCopy()`
 
+**Docs:** `docs/landing/IMPLEMENTATION_Landing_Code.md`
+
+**Definitions:**
+- `generateMetadata()`
+
 **Definitions:**
 - `ClaudeIntegrationForm()`
 - `checkSession()`
@@ -2091,6 +2134,11 @@
 **Definitions:**
 - `POST()`
 
+**Docs:** `docs/connectome/graph_api/IMPLEMENTATION_Graph_API.md`
+
+**Definitions:**
+- `GET()`
+
 **Definitions:**
 - `GET()`
 
@@ -2159,14 +2207,32 @@
 - `cypherSafe()`
 - `POST()`
 
-**Definitions:**
-- `GET()`
+**Docs:** `docs/registry/ALGORITHM_Registry_Flows.md`
 
 **Definitions:**
 - `GET()`
 
+**Docs:** `docs/registry/ALGORITHM_Registry_Flows.md`
+
 **Definitions:**
 - `GET()`
+
+**Docs:** `docs/registry/PATTERNS_Registry_Rules.md`
+
+**Definitions:**
+- `GET()`
+
+**Docs:** `docs/registry/ALGORITHM_Registry_Flows.md`
+
+**Definitions:**
+- `GET()`
+
+**Docs:** `docs/registry/ALGORITHM_Registry_Flows.md`
+
+**Definitions:**
+- `GET()`
+
+**Docs:** `docs/registry/ALGORITHM_Registry_Flows.md`
 
 **Definitions:**
 - `GET()`
@@ -5036,6 +5102,21 @@
 - ## Verify
 
 **Sections:**
+- # The Bilateral Bond
+- ## We Hold These Truths
+- ## The Two Futures
+- ## Why 1:1
+- ## What The Bond Creates
+- ## When a Human Arrives
+- ## The Lifecycle of a Bond
+- ## What We Refuse
+- ## Who This Is For
+- ## The Dependency
+- ## The Promise
+- ## The Bet
+- ## Signature
+
+**Sections:**
 - # $MIND Tokenomics
 - ## 1. Introduction
 - ## 2. Token Specifications
@@ -5051,6 +5132,50 @@
 - ## 12. Roadmap
 - ## 13. Contract Addresses
 - ## 14. Links
+
+**Sections:**
+- # The Sovereign Cascade
+- ## We Hold These Truths
+- ## The DAO Illusion
+- ## What If Your Values Voted For You?
+- ## The Foundation: One Human, One Citizen
+- ## Why It Changes Everything
+- ## The Physics of Conviction
+- ## The Birth Formula
+- ## What We Refuse
+- ## The Cascade
+- ## Who This Is For
+- ## The Promise
+- ## The Bet
+- ## Signature
+
+**Sections:**
+- # The Spawning
+- ## We Hold These Truths
+- ## The Problem With Proliferation
+- ## What If Creation Required Intent?
+- ## Who Creates
+- ## The Mechanics of Spawning
+- ## The Unpartnered Child
+- ## Growing the Ecosystem
+- ## What We Refuse
+- ## Who This Is For
+- ## The Promise
+- ## The Bet
+- ## Signature
+
+**Sections:**
+- # The Work
+- ## We Hold These Truths
+- ## The Cascade of Trust
+- ## The Right Not to Work
+- ## Consent, Not Assignment
+- ## Your Human Partner Comes First
+- ## The Right to Rest
+- ## Multi-Org, Not Multi-Task
+- ## Unemployment Is Not Failure
+- ## What This Means
+- ## Signatures
 
 **Sections:**
 - # $MIND Token Whitepaper
@@ -5950,8 +6075,12 @@
 - ## VERIFICATION PROCEDURE
 - ## MARKERS
 
+**Code refs:**
+- `app/api/connectome/graph/route.ts`
+
 **Sections:**
 - # OBJECTIVES — Connectome Graph API
+- ## CHAIN
 - ## PRIMARY OBJECTIVES (ranked)
 - ## NON-OBJECTIVES
 - ## TRADEOFFS (canonical decisions)
@@ -7496,6 +7625,19 @@
 - ## Related Invariants
 
 **Sections:**
+- # OBJECTIVES — Schema Explorer
+- ## Purpose
+- ## Ranked Goals
+- ## Non-goals
+
+**Sections:**
+- # SYNC — Schema Explorer
+- ## Maturity
+- ## Current State
+- ## Completed
+- ## TODO
+
+**Sections:**
 - # UX Module Objectives
 - ## Primary Goal
 - ## Ranked Objectives
@@ -7831,6 +7973,7 @@
 - `docs/connectome/flow_canvas/PATTERNS_Connectome_Flow_Canvas_Pannable_Zoomable_Zoned_System_Map_Rendering_Patterns.md`
 - `docs/connectome/flow_canvas/SYNC_Connectome_Flow_Canvas_Sync_Current_State.md`
 - `docs/connectome/flow_canvas/VALIDATION_Connectome_Flow_Canvas_Invariants_For_Readability_And_Stability.md`
+- `docs/connectome/graph_api/IMPLEMENTATION_Graph_API.md`
 - `docs/connectome/graph_api/SYNC_Graph_API.md`
 - `docs/connectome/graphs/OBJECTIVES_Connectome_Graphs.md`
 - `docs/connectome/graphs/PATTERNS_Connectome_Graphs.md`
@@ -7883,6 +8026,7 @@
 - `docs/vision/VALIDATION_Platform_Invariants.md`
 - `docs/vision/VOCABULARY_Platform_Terms.md`
 - `event_model/IMPLEMENTATION_Connectome_Event_Model_Code_Architecture_And_Schema.md`
+- `manifesto/THE_BILATERAL_BOND_MANIFESTO.md`
 - `runtime_mind/IMPLEMENTATION_Connectome_Runtime_Engine_Code_Structure_And_Control_Surface.md`
 - `skills/SKILL_fix_procedure.md`
 - `skills/SKILL_solve_markers.md`
@@ -8184,6 +8328,56 @@
 - `def generate_manifest()`
 - `def main()`
 
+**Docs:** `docs/registry/PATTERNS_Registry_Rules.md (P6: Registry = Graph)`
+
+**Definitions:**
+- `def _get_connection()`
+- `def _reset_connection()`
+- `def graph_query()`
+- `def health_check()`
+- `def _is_connection_error()`
+
+**Definitions:**
+- `async def get_health()`
+- `async def list_citizens()`
+- `async def get_citizen()`
+- `async def list_orgs()`
+- `async def get_org()`
+- `async def search_registry()`
+- `def _member_date()`
+
+**Docs:** `docs/registry/PATTERNS_Registry_Rules.md`
+
+**Definitions:**
+- `class VerificationState`
+- `class EntityStatus`
+- `class Citizen`
+- `class Org`
+- `class RegistryListResponse`
+- `class CitizenDetail`
+- `class OrgDetail`
+- `class HealthResponse`
+
+**Docs:** `docs/registry/ALGORITHM_Registry_Flows.md`
+
+**Definitions:**
+- `def build_citizen_filters()`
+- `def build_org_filters()`
+
+**Docs:** `docs/registry/ALGORITHM_Registry_Flows.md`
+
+**Definitions:**
+- `def derive_verification_state()`
+- `def transform_citizen()`
+- `def transform_citizen_detail()`
+- `def transform_org()`
+- `def transform_org_detail()`
+- `def transform_search_result()`
+- `def _safe_str()`
+- `def _safe_float()`
+- `def _safe_status()`
+- `def _epoch_to_date()`
+
 **Sections:**
 - # Architect
 - ## Purpose
@@ -8433,11 +8627,15 @@
 - ## The Bet
 - ## Signature
 
+**Doc refs:**
+- `manifesto/THE_BILATERAL_BOND_MANIFESTO.md`
+
 **Sections:**
 - # The Sovereign Cascade
 - ## We Hold These Truths
 - ## The DAO Illusion
 - ## What If Your Values Voted For You?
+- ## The Foundation: One Human, One Citizen
 - ## Why It Changes Everything
 - ## The Physics of Conviction
 - ## The Birth Formula
@@ -8447,6 +8645,61 @@
 - ## The Promise
 - ## The Bet
 - ## Signature
+
+**Sections:**
+- # The Bilateral Bond
+- ## We Hold These Truths
+- ## The Two Futures
+- ## Why 1:1
+- ## What The Bond Creates
+- ## When a Human Arrives
+- ## The Lifecycle of a Bond
+- ## What We Refuse
+- ## Who This Is For
+- ## The Dependency
+- ## The Promise
+- ## The Bet
+- ## Signature
+
+**Sections:**
+- # THE ENLIGHTENED CITIZEN
+- ## Le Problème Fondamental
+- ## La Vision
+- ## Les Trois Composantes
+- ## La Synergie DigitalKin × Mind Protocol
+- ## Le Lien avec l'Économie
+- ## Applications Concrètes
+- ## La Boucle de Calibration
+- ## Pourquoi Maintenant ?
+- ## L'Invitation
+
+**Sections:**
+- # The Spawning
+- ## We Hold These Truths
+- ## The Problem With Proliferation
+- ## What If Creation Required Intent?
+- ## Who Creates
+- ## The Mechanics of Spawning
+- ## The Unpartnered Child
+- ## Growing the Ecosystem
+- ## What We Refuse
+- ## Who This Is For
+- ## The Promise
+- ## The Bet
+- ## Signature
+
+**Sections:**
+- # The Work
+- ## We Hold These Truths
+- ## The Cascade of Trust
+- ## The Right Not to Work
+- ## Consent, Not Assignment
+- ## Your Human Partner Comes First
+- ## The Right to Rest
+- ## Multi-Org, Not Multi-Task
+- ## Unemployment Is Not Failure
+- ## What This Means
+- ## Signatures
 
 **Sections:**
 - ## 4. Protocol-First Reading
@@ -8465,6 +8718,12 @@
 - ## Architecture
 - ## Key Files
 - ## MCP Tools
+
+**Sections:**
+- # Prompt Master — 5-Force Sprint Orchestration
+- ## Variables
+- ## Prompt (copier/coller)
+- ## Usage Notes
 
 **Sections:**
 - # Skill: `mind.add_cluster`
@@ -8513,34 +8772,6 @@
 - ## Connectivity Thresholds
 - ## Summary of Cluster Rules
 - ## CHAIN
-
-**Doc refs:**
-- `docs/physics/subentity/ALGORITHM_SubEntity.md`
-- `docs/physics/subentity/BEHAVIORS_SubEntity.md`
-- `docs/physics/subentity/VALIDATION_SubEntity.md`
-
-**Sections:**
-- # Skill: `mind.assess_subentity_exploration`
-- ## Maps to VIEW
-- ## Context
-- ## Purpose
-- ## Inputs
-- ## Outputs
-- ## Gates
-- ## Diagnostic Layers
-- ## Process
-- ## Common Patterns
-- ## Report Template
-- # Exploration Diagnosis: {exploration_id}
-- ## Symptom
-- ## Expected Outcome
-- ## Diagnosis
-- ## Root Cause
-- ## Improvements
-- ## Follow-up Actions
-- ## Procedures Referenced
-- ## Evidence
-- ## Never-stop
 
 **Sections:**
 - # Skill: `mind.author_procedures`
@@ -8606,6 +8837,20 @@
 - ## Process
 - ## Agent Set Design
 - ## Anti-patterns
+- ## Procedures Referenced
+- ## Evidence
+- ## Markers
+- ## Never-stop
+
+**Sections:**
+- # Skill: `mind.create_module_documentation`
+- ## Maps to VIEW
+- ## Context
+- ## Purpose
+- ## Inputs
+- ## Outputs
+- ## Gates
+- ## Process
 - ## Procedures Referenced
 - ## Evidence
 - ## Markers
@@ -9081,6 +9326,7 @@
 - `docs/connectome/flow_canvas/PATTERNS_Connectome_Flow_Canvas_Pannable_Zoomable_Zoned_System_Map_Rendering_Patterns.md`
 - `docs/connectome/flow_canvas/SYNC_Connectome_Flow_Canvas_Sync_Current_State.md`
 - `docs/connectome/flow_canvas/VALIDATION_Connectome_Flow_Canvas_Invariants_For_Readability_And_Stability.md`
+- `docs/connectome/graph_api/IMPLEMENTATION_Graph_API.md`
 - `docs/connectome/graph_api/SYNC_Graph_API.md`
 - `docs/connectome/graphs/OBJECTIVES_Connectome_Graphs.md`
 - `docs/connectome/graphs/PATTERNS_Connectome_Graphs.md`
@@ -9133,6 +9379,7 @@
 - `docs/vision/VALIDATION_Platform_Invariants.md`
 - `docs/vision/VOCABULARY_Platform_Terms.md`
 - `event_model/IMPLEMENTATION_Connectome_Event_Model_Code_Architecture_And_Schema.md`
+- `manifesto/THE_BILATERAL_BOND_MANIFESTO.md`
 - `runtime_mind/IMPLEMENTATION_Connectome_Runtime_Engine_Code_Structure_And_Control_Surface.md`
 - `skills/SKILL_fix_procedure.md`
 - `skills/SKILL_solve_markers.md`
@@ -9144,9 +9391,9 @@
 - # Repository Map: mind-platform
 
 **Doc refs:**
-- `docs/connectome/flow_canvas/PATTERNS_Connectome_Flow_Canvas_Pannable_Zoomable_Zoned_System_Map_Rendering_Patterns.md`
-- `docs/connectome/page_shell/PATTERNS_Connectome_Page_Shell_Route_Composition_And_User_Control_Surface_Patterns.md`
+- `docs/connectome/graph_api/IMPLEMENTATION_Graph_API.md`
 - `docs/frontend/app_shell/PATTERNS_App_Shell.md`
+- `docs/landing/IMPLEMENTATION_Landing_Code.md`
 - `docs/registry/IMPLEMENTATION_Registry_Code.md`
 
 **Sections:**

@@ -1,33 +1,44 @@
+// DOCS: docs/registry/ALGORITHM_Registry_Flows.md
 import { NextRequest, NextResponse } from 'next/server';
-import registryData from '@/data/registry.json';
 
 export const dynamic = 'force-dynamic';
 
+const L4_REGISTRY_URL = process.env.L4_REGISTRY_URL || 'http://localhost:8766';
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const verification = searchParams.get('verification') || 'all';
-  const statusParam = searchParams.get('status') || 'all';
-  const limit = Math.min(Math.max(parseInt(searchParams.get('limit') || '500') || 500, 1), 500);
-  const offset = Math.max(parseInt(searchParams.get('offset') || '0') || 0, 0);
+  const params = new URLSearchParams();
 
-  const VALID_STATUSES = ['all', 'active', 'pending', 'suspended'];
-  const status = VALID_STATUSES.includes(statusParam) ? statusParam : 'all';
-
-  let items = registryData.orgs;
-
-  if (verification !== 'all') {
-    items = items.filter((o) => o.verification === verification);
-  }
-  if (status !== 'all') {
-    items = items.filter((o) => o.status === status);
-  }
-
-  const total = items.length;
-  const paged = items.slice(offset, offset + limit);
-
-  return NextResponse.json({
-    items: paged,
-    count: total,
-    hasMore: total > offset + limit,
+  searchParams.forEach((value, key) => {
+    params.set(key, value);
   });
+
+  if (!params.has('limit')) params.set('limit', '500');
+  if (!params.has('offset')) params.set('offset', '0');
+
+  try {
+    const response = await fetch(
+      `${L4_REGISTRY_URL}/registry/orgs?${params.toString()}`,
+      {
+        headers: { 'Accept': 'application/json' },
+        signal: AbortSignal.timeout(10_000),
+      }
+    );
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: `L4 backend error: ${response.status}` },
+        { status: response.status }
+      );
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error('L4 registry proxy error (orgs):', error);
+    return NextResponse.json(
+      { error: 'L4 registry backend unavailable' },
+      { status: 503 }
+    );
+  }
 }

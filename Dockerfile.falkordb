@@ -1,0 +1,11 @@
+FROM falkordb/falkordb:latest
+
+# The base image entrypoint (run.sh) starts redis-server with:
+#   - $REDIS_ARGS prepended
+#   - --dir $FALKORDB_DATA_PATH (default: /var/lib/falkordb/data)
+#   - --loadmodule falkordb.so $FALKORDB_ARGS
+#
+# Persistence and data path are configured via environment variables
+# in render.yaml.  No CMD override needed.
+
+EXPOSE 6379

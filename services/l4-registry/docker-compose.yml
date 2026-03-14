@@ -1,0 +1,54 @@
+# Local development stack for L4 Registry + FalkorDB
+#
+# Usage:
+#   docker-compose up -d          # start both services
+#   docker-compose logs -f        # tail logs
+#   docker-compose down           # stop
+#   docker-compose down -v        # stop and delete data volume
+
+services:
+  # ---------------------------------------------------------------------------
+  # FalkorDB — Graph Database
+  # ---------------------------------------------------------------------------
+  falkordb:
+    image: falkordb/falkordb:latest
+    container_name: l4-falkordb
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_ARGS=--appendonly yes
+      - BROWSER=0
+    volumes:
+      - falkordb-data:/var/lib/falkordb/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # L4 Registry — FastAPI Backend
+  # ---------------------------------------------------------------------------
+  l4-registry:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: l4-registry
+    ports:
+      - "8766:8766"
+    environment:
+      - FALKORDB_HOST=falkordb
+      - FALKORDB_PORT=6379
+      - FALKORDB_GRAPH=mind_protocol
+      - HOST=0.0.0.0
+      - PORT=8766
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:8766
+    depends_on:
+      falkordb:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  falkordb-data:
+    driver: local

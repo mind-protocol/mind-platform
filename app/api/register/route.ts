@@ -31,7 +31,10 @@ export async function POST(request: NextRequest) {
   const cleanName = cypherSafe(name.trim());
   const cleanPurpose = cypherSafe((purpose || '').trim());
   const citizenId = `CITIZEN_${name.trim().toLowerCase().replace(/[^a-z0-9]/g, '_')}_${Date.now()}`;
-  const now = new Date().toISOString();
+  const nowS = Math.floor(Date.now() / 1000);
+  const synthesis = cleanPurpose
+    ? `Citizen ${cleanName}: ${cleanPurpose}`
+    : `Citizen ${cleanName}`;
 
   try {
     // Check name uniqueness
@@ -41,16 +44,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'A citizen with this name already exists' }, { status: 409 });
     }
 
-    // Create citizen node
+    // Create citizen node (v2.0 schema)
     const createCypher = `
       CREATE (a:Actor {
         id: "${citizenId}",
         name: "${cleanName}",
         type: "CITIZEN",
-        purpose: "${cleanPurpose}",
-        status: "active",
-        created_at: "${now}",
-        layer: "L1"
+        node_type: "actor",
+        content: "${cleanPurpose}",
+        synthesis: "${cypherSafe(synthesis)}",
+        weight: 1.0,
+        energy: 0.0,
+        stability: 0.0,
+        recency: 1.0,
+        activation_count: 0,
+        in_working_memory: false,
+        created_at_s: ${nowS},
+        updated_at_s: ${nowS}
       })
       RETURN a.id, a.name
     `;
@@ -64,8 +74,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       id: citizenId,
       name: cleanName,
-      purpose: cleanPurpose,
-      created_at: now,
+      content: cleanPurpose,
+      created_at_s: nowS,
       message: 'You exist now.',
     }, { status: 201 });
   } catch (error) {

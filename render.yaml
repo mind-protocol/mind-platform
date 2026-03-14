@@ -1,0 +1,61 @@
+# Render Blueprint — Mind Protocol L4 Infrastructure
+#
+# Deploys:
+#   1. FalkorDB (private Docker service, persistent disk)
+#   2. L4 Registry (public Python/Docker web service)
+#
+# Usage:
+#   Connect this repo to Render, or run:
+#     render blueprint apply
+#
+# The Next.js frontend is deployed separately (Vercel or another Render service).
+
+services:
+  # ---------------------------------------------------------------------------
+  # FalkorDB — Graph Database (private, internal only)
+  # ---------------------------------------------------------------------------
+  - type: pserv
+    name: falkordb
+    runtime: docker
+    repo: https://github.com/mind-protocol/mind-platform
+    dockerfilePath: ./Dockerfile.falkordb
+    region: oregon
+    plan: starter
+    disk:
+      name: falkordb-data
+      mountPath: /var/lib/falkordb/data
+      sizeGB: 10
+    envVars:
+      - key: REDIS_ARGS
+        value: "--appendonly yes"
+      - key: BROWSER
+        value: "0"
+
+  # ---------------------------------------------------------------------------
+  # L4 Registry — FastAPI Backend (public web service)
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: l4-registry
+    runtime: docker
+    repo: https://github.com/mind-protocol/mind-platform
+    dockerfilePath: ./services/l4-registry/Dockerfile
+    dockerContext: ./services/l4-registry
+    region: oregon
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: FALKORDB_HOST
+        fromService:
+          type: pserv
+          name: falkordb
+          property: host
+      - key: FALKORDB_PORT
+        value: "6379"
+      - key: FALKORDB_GRAPH
+        value: mind_protocol
+      - key: HOST
+        value: "0.0.0.0"
+      - key: PORT
+        value: "8766"
+      - key: CORS_ORIGINS
+        value: "https://mindprotocol.ai,https://www.mindprotocol.ai,http://localhost:3000"

@@ -2,8 +2,13 @@
 
 ```
 LAST_UPDATED: 2026-03-14
-UPDATED_BY: Codex (groundwork agent)
+UPDATED_BY: Claude Opus 4.6 (groundwork agent)
 ```
+
+> **Deployment configuration created for Render + local dev.** `render.yaml` blueprint deploys
+> FalkorDB (private Docker service with persistent disk) and L4 Registry (public FastAPI web service).
+> `docker-compose.yml` for local development. `seed.py` populates FalkorDB from `data/registry.json`
+> with v2.0 schema Actor nodes, Thing nodes, and LINK relationships.
 
 ---
 
@@ -89,6 +94,68 @@ This section is the canonical assignment board consumed during Context Cascade p
 ---
 
 ## RECENT CHANGES
+
+### 2026-03-14: Render Deployment Configuration + Seed Script
+
+- **What:** Created deployment infrastructure for FalkorDB + L4 Registry on Render, local docker-compose for development, and a seed script to populate the graph from registry.json.
+- **Why:** L4 Registry backend needs to be deployable to production (Render) and testable locally with real data.
+- **Impact:**
+  - New: `render.yaml` — Render Blueprint defining FalkorDB (pserv, persistent disk at `/var/lib/falkordb/data`) and L4 Registry (web service, health check at `/health`)
+  - New: `Dockerfile.falkordb` — Thin wrapper over `falkordb/falkordb:latest` for Render Docker builds
+  - New: `services/l4-registry/docker-compose.yml` — Local dev stack (FalkorDB + L4 Registry, healthcheck, named volume)
+  - New: `services/l4-registry/seed.py` — Seeds 286 citizens, 41 orgs, capabilities, and relationships (belongs_to, has_capability, verified_by) with v2.0 schema fields
+  - New: `services/l4-registry/README.md` — Service documentation with local dev, deployment, and architecture sections
+
+### 2026-03-14: L4 Registry Backend Code Review and Fixes
+
+- **What:** Reviewed all 7 files in `services/l4-registry/` against v2.0 schema, FalkorDB API, TypeScript types, and algorithm docs. Fixed 6 issues.
+- **Why:** Code review for correctness before production deployment.
+- **Fixes applied:**
+  1. **queries.py**: Changed all `:link` relationship labels to `:LINK` (uppercase) — FalkorDB is case-sensitive, rest of codebase uses `:LINK`
+  2. **queries.py**: Added input validation to `build_citizen_filters` and `build_org_filters` — status validated against enum, org ID sanitized to prevent Cypher injection
+  3. **transforms.py**: Fixed `_epoch_to_date` numeric string branch — was returning raw integer string instead of converting to YYYY-MM-DD date
+  4. **Dockerfile**: Added non-root user (`appuser`), `chown`, and `USER` directive for production security
+  5. **types.ts**: Added missing fields to `Org` interface (`description`, `type`, `color`, `github_repository`, `org_type`, `universe`) to match Python model. Added `CitizenDetail` and `OrgDetail` interfaces
+  6. **main.py**: Member creation in `get_org` now uses `_safe_status` and `_epoch_to_date` directly instead of raw values, removed orphaned `_member_date` helper. Added ValueError handling for filter validation (returns 400)
+- **Verified correct:** db.py FalkorDB connection pattern, derive_verification_state algorithm matches Flow 4, Pydantic models complete, .env.example matches all env vars
+
+### 2026-03-14: Register Route Updated to v2.0 Schema
+
+- **What:** Updated `app/api/register/route.ts` to use v2.0 NodeBase fields instead of legacy fields.
+- **Why:** Schema v2.0 migration required all node creation to use the new field set. The register route was still writing non-schema fields (`purpose`, `status`, `layer`, `created_at` as ISO string).
+- **Impact:**
+  - Removed: `purpose` (moved to `content`), `status` (not on NodeBase in v2.0), `layer` (not in v2.0), `created_at` (ISO string)
+  - Added: `node_type: "actor"`, `content`, `synthesis`, `weight: 1.0`, `energy: 0.0`, `stability: 0.0`, `recency: 1.0`, `activation_count: 0`, `in_working_memory: false`, `created_at_s` (unix int), `updated_at_s` (unix int)
+  - Response JSON updated: returns `content` and `created_at_s` instead of `purpose` and `created_at`
+  - Validation logic unchanged (name length, Cypher injection protection, uniqueness check, auth check)
+  - Type-checked clean against project tsconfig
+
+### 2026-03-14: L4 Registry Backend Service Created
+
+- **What:** Created Python FastAPI backend service at `services/l4-registry/` that serves registry data from FalkorDB graph database. Updated all Next.js API proxy routes to call the L4 backend instead of reading from static JSON.
+- **Why:** The registry needs to read live data from the L4 graph (FalkorDB), not static JSON. Separation of concerns: Next.js is the L3 frontend, Python service is the L4 data layer.
+- **Impact:**
+  - New service: `services/l4-registry/` — 7 files (main.py, models.py, db.py, queries.py, transforms.py, Dockerfile, requirements.txt)
+  - Endpoints: GET /health, GET /registry/citizens, GET /registry/citizens/{id}, GET /registry/orgs, GET /registry/orgs/{id}, GET /registry/search?q=
+  - Updated: 4 existing Next.js API routes now proxy to L4 backend
+  - New: 2 Next.js API routes (search, health) for L4 proxy
+  - Env var: `L4_REGISTRY_URL` (default: `http://localhost:8766`)
+  - Verification state derived from graph link properties (polarity + permanence) per ALGORITHM_Registry_Flows.md
+  - No fallbacks: if L4 is down, proxy returns 503
+
+### 2026-03-14: Schema v1.9.0 to v2.0 Migration
+
+- **What:** Replaced schema.yaml (v1.9.0) with v2.0 in both `.mind/schema.yaml` and `templates/schema.yaml`. Deleted 5 obsolete SubEntity files.
+- **Why:** v2.0 replaces SubEntity traversal model with Working Memory + 21 physics laws + 7 cognitive types + limbic system. SubEntity no longer exists.
+- **Impact:**
+  - Schema files updated: `.mind/schema.yaml`, `templates/schema.yaml`
+  - Deleted: `.mind/skills/SKILL_Assess_SubEntity_Exploration_Quality_From_Logs.md`
+  - Deleted: `templates/skills/SKILL_Assess_SubEntity_Exploration_Quality_From_Logs.md`
+  - Deleted: `.mind/procedures/assess_exploration.yaml`
+  - Deleted: `templates/procedures/assess_exploration.yaml`
+  - Deleted: `.claude/skills/assess-subentity-exploration-quality-from-logs/` (entire directory)
+- **Remaining work:**
+  - `map.md` and `docs/map.md` contain stale SubEntity references (auto-generated, will refresh on next `mind overview`).
 
 ### 2026-03-14: One-shot batch on top 10 next items
 
@@ -819,6 +886,30 @@ Graph Explorer could benefit from keyboard shortcuts for navigation.
 ---
 
 ## Init: 2026-03-13 16:35
+
+| Setting | Value |
+|---------|-------|
+| Version | v0.0.0 |
+| Database | falkordb |
+| Graph | mind_platform |
+
+**Steps completed:** ecosystem, capabilities, runtime, ai_configs, skills, database_config, database_setup, file_ingest, capabilities_graph, env_example, mcp_config, gitignore, overview, embeddings, health_checks
+
+---
+
+## Init: 2026-03-14 03:19
+
+| Setting | Value |
+|---------|-------|
+| Version | v0.0.0 |
+| Database | falkordb |
+| Graph | mind_platform |
+
+**Steps completed:** ecosystem, capabilities, runtime, ai_configs, skills, database_config, database_setup, file_ingest, capabilities_graph, env_example, mcp_config, gitignore, overview, embeddings, health_checks
+
+---
+
+## Init: 2026-03-14 03:29
 
 | Setting | Value |
 |---------|-------|

@@ -1,18 +1,18 @@
 # Repository Map: mind-platform/app
 
-*Generated: 2026-03-13 16:34*
+*Generated: 2026-03-14 03:28*
 
-- **Files:** 258
-- **Directories:** 219
+- **Files:** 262
+- **Directories:** 223
 - **Total Size:** 2.0M
 - **Doc Files:** 0
-- **Code Files:** 258
-- **Areas:** 14 (docs/ subfolders)
+- **Code Files:** 262
+- **Areas:** 15 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
-- **DOCS Links:** 2 (0.01 avg per code file)
+- **DOCS Links:** 11 (0.04 avg per code file)
 
-- tsx: 171
-- typescript: 86
+- tsx: 172
+- typescript: 89
 - css: 1
 
 ```
@@ -65,23 +65,23 @@
 │   │   │   └── page.tsx (2.7K)
 │   │   ├── budget/ (17.7K)
 │   │   │   └── page.tsx (17.7K)
-│   │   ├── components/ (59.2K)
-│   │   │   ├── landing/ (28.2K)
+│   │   ├── components/ (71.5K)
+│   │   │   ├── landing/ (40.3K)
+│   │   │   │   ├── CitizensShowcase.tsx (4.6K)
 │   │   │   │   ├── Hero.tsx (3.3K)
 │   │   │   │   ├── HeroGraph.tsx (3.5K)
-│   │   │   │   ├── LiveStats.tsx (1.3K)
-│   │   │   │   ├── StatCounter.tsx (1.6K)
+│   │   │   │   ├── HowItWorks.tsx (3.7K)
+│   │   │   │   ├── OpenSource.tsx (3.8K)
 │   │   │   │   ├── SwapSection.tsx (3.0K)
 │   │   │   │   ├── TheFork.tsx (3.2K)
 │   │   │   │   ├── TheInsight.tsx (3.4K)
 │   │   │   │   ├── TheInvitation.tsx (2.0K)
 │   │   │   │   ├── WhatWereBuilding.tsx (3.7K)
-│   │   │   │   ├── WhoThisIsFor.tsx (1.8K)
-│   │   │   │   └── (..2 more files)
-│   │   │   ├── nav/ (13.1K)
+│   │   │   │   └── (..5 more files)
+│   │   │   ├── nav/ (13.4K)
 │   │   │   │   ├── Footer.tsx (2.9K)
 │   │   │   │   ├── LanguageSwitcher.tsx (959)
-│   │   │   │   ├── TopNav.tsx (9.2K)
+│   │   │   │   ├── TopNav.tsx (9.4K)
 │   │   │   │   └── (..1 more files)
 │   │   │   ├── PublicShellClient.tsx (1.1K)
 │   │   │   └── SwapWidget.tsx (16.8K)
@@ -102,8 +102,8 @@
 │   │   ├── login/ (5.5K)
 │   │   │   ├── page.tsx (5.2K)
 │   │   │   └── (..1 more files)
-│   │   ├── manifesto/ (39.5K)
-│   │   │   └── page.tsx (39.5K)
+│   │   ├── manifesto/ (43.1K)
+│   │   │   └── page.tsx (43.1K)
 │   │   ├── marketplace/ (66)
 │   │   │   └── (..1 more files)
 │   │   ├── music/ (154.8K)
@@ -170,8 +170,8 @@
 │   │   ├── reset-password/ (5.5K)
 │   │   │   ├── page.tsx (5.2K)
 │   │   │   └── (..1 more files)
-│   │   ├── schema/ (61)
-│   │   │   └── (..1 more files)
+│   │   ├── schema/ (2.4K)
+│   │   │   └── page.tsx (2.4K) →
 │   │   ├── self/ (16.3K)
 │   │   │   └── page.tsx (16.3K)
 │   │   ├── status/ (23.1K)
@@ -281,7 +281,7 @@
 │   │   ├── whitepaper/ (3.4K)
 │   │   │   └── page.tsx (3.4K)
 │   │   ├── error.tsx (1.3K)
-│   │   ├── page.tsx (1.0K)
+│   │   ├── page.tsx (2.2K) →
 │   │   └── (..1 more files)
 │   ├── claude/ (25.8K)
 │   │   ├── page.tsx (25.4K)
@@ -303,7 +303,7 @@
 │   ├── error.tsx (1.5K)
 │   ├── layout.tsx (1.0K)
 │   └── not-found.tsx (1.1K)
-├── api/ (100.3K)
+├── api/ (104.1K)
 │   ├── actif/ (796)
 │   │   └── route.ts (796)
 │   ├── auth/ (7.7K)
@@ -334,6 +334,9 @@
 │   │   │   └── route.ts (1.5K)
 │   │   └── tts/ (847)
 │   │       └── route.ts (847)
+│   ├── connectome/ (503)
+│   │   └── graph/ (503)
+│   │       └── route.ts (503) →
 │   ├── docs/ (1.1K)
 │   │   └── [slug]/ (1.1K)
 │   │       ├── pdf/ (677)
@@ -389,15 +392,19 @@
 │   │       └── route.ts (602)
 │   ├── register/ (2.7K)
 │   │   └── route.ts (2.7K)
-│   ├── registry/ (3.7K)
-│   │   ├── citizens/ (2.0K)
-│   │   │   ├── [id]/ (724)
-│   │   │   │   └── route.ts (724)
-│   │   │   └── route.ts (1.2K)
-│   │   └── orgs/ (1.7K)
-│   │       ├── [id]/ (626)
-│   │       │   └── route.ts (626)
-│   │       └── route.ts (1.1K)
+│   ├── registry/ (7.0K)
+│   │   ├── citizens/ (2.5K)
+│   │   │   ├── [id]/ (1.2K)
+│   │   │   │   └── route.ts (1.2K) →
+│   │   │   └── route.ts (1.3K) →
+│   │   ├── health/ (887)
+│   │   │   └── route.ts (887) →
+│   │   ├── orgs/ (2.4K)
+│   │   │   ├── [id]/ (1.2K)
+│   │   │   │   └── route.ts (1.2K) →
+│   │   │   └── route.ts (1.2K) →
+│   │   └── search/ (1.2K)
+│   │       └── route.ts (1.2K) →
 │   ├── sign/ (3.2K)
 │   │   ├── [id]/ (2.4K)
 │   │   │   ├── execute/ (1.0K)
@@ -660,6 +667,11 @@
 - `tierPriceColor()`
 
 **Definitions:**
+- `CitizenCard()`
+- `initial()`
+- `CitizensShowcase()`
+
+**Definitions:**
 - `Hero()`
 
 **Definitions:**
@@ -670,11 +682,16 @@
 - `loop()`
 
 **Definitions:**
-- `LiveStats()`
+- `Pillar()`
+- `GraphIcon()`
+- `TrustIcon()`
+- `GovernanceIcon()`
+- `PlacesIcon()`
+- `HowItWorks()`
 
 **Definitions:**
-- `StatCounter()`
-- `animate()`
+- `RepoCard()`
+- `OpenSource()`
 
 **Definitions:**
 - `SwapSection()`
@@ -693,10 +710,6 @@
 - `ProjectCard()`
 - `content()`
 - `WhatWereBuilding()`
-
-**Definitions:**
-- `Door()`
-- `WhoThisIsFor()`
 
 **Definitions:**
 - `Footer()`
@@ -902,6 +915,8 @@
 
 **Definitions:**
 - `handleSubmit()`
+
+**Docs:** `docs/schema-explorer/IMPLEMENTATION_Schema_Explorer.md`
 
 **Definitions:**
 - `statusColor()`
@@ -1269,6 +1284,11 @@
 **Definitions:**
 - `handleCopy()`
 
+**Docs:** `docs/landing/IMPLEMENTATION_Landing_Code.md`
+
+**Definitions:**
+- `generateMetadata()`
+
 **Definitions:**
 - `ClaudeIntegrationForm()`
 - `checkSession()`
@@ -1357,6 +1377,11 @@
 **Definitions:**
 - `POST()`
 
+**Docs:** `docs/connectome/graph_api/IMPLEMENTATION_Graph_API.md`
+
+**Definitions:**
+- `GET()`
+
 **Definitions:**
 - `GET()`
 
@@ -1425,14 +1450,32 @@
 - `cypherSafe()`
 - `POST()`
 
-**Definitions:**
-- `GET()`
+**Docs:** `docs/registry/ALGORITHM_Registry_Flows.md`
 
 **Definitions:**
 - `GET()`
 
+**Docs:** `docs/registry/ALGORITHM_Registry_Flows.md`
+
 **Definitions:**
 - `GET()`
+
+**Docs:** `docs/registry/PATTERNS_Registry_Rules.md`
+
+**Definitions:**
+- `GET()`
+
+**Docs:** `docs/registry/ALGORITHM_Registry_Flows.md`
+
+**Definitions:**
+- `GET()`
+
+**Docs:** `docs/registry/ALGORITHM_Registry_Flows.md`
+
+**Definitions:**
+- `GET()`
+
+**Docs:** `docs/registry/ALGORITHM_Registry_Flows.md`
 
 **Definitions:**
 - `GET()`
