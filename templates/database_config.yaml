@@ -15,6 +15,7 @@ embedding:
 # The function receives (citizens_dir: str) and must be idempotent.
 seed:
   script: runtime.l4.citizen_l1_ensure.bulk_ensure_citizens
+  brain_json: data/base_seed_brain.json  # Path to pre-generated seed brain (relative to project root)
 
 # Behaviors toggled at init/deploy time.
 # All default to true. Set to false to disable for specific projects.
