@@ -29,3 +29,5 @@ behaviors:
   capabilities_graph: true # Ingest capabilities into graph
   citizen_seed: true      # Upsert citizen brains at deploy (uses seed.script)
   mcp_config: true        # Configure .mcp.json for membrane server
+  know_all_citizens: true  # Inject ALL citizen Actor nodes into graph (full directory)
+  relational_seeds: true   # Create relationship links between citizens from profiles
