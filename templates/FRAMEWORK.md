@@ -320,13 +320,39 @@ If you're initializing on an existing project:
 
 ## WHEN DOCS DON'T EXIST
 
-Create them. Use templates in `.mind/templates/`.
+Create them — but **ALWAYS read the template first.**
+
+### Mandatory: Read Template Before Writing
+
+**BEFORE writing any doc in the chain, you MUST read the corresponding template in `.mind/docs/`.**
+
+The full doc chain is: `OBJECTIVES → PATTERNS → BEHAVIORS → ALGORITHM → VALIDATION → HEALTH → IMPLEMENTATION → SYNC`
+
+Each has a template: `{TYPE}_TEMPLATE.md`. The template defines required sections (CHAIN block, MARKERS, structure). Writing a doc without reading its template produces non-compliant docs with missing sections.
+
+**Non-negotiable steps:**
+1. Read `.mind/docs/{TYPE}_TEMPLATE.md`
+2. Identify required sections in the template
+3. Write your doc following the template structure
+4. Verify all required sections are present
+
+**HEALTH is NOT optional.** It is part of the chain. Forgetting it means the module has no runtime verification design.
+
+### Minimum Viable Docs
 
 At minimum, create:
 - PATTERNS (why this module exists, what design approach)
 - SYNC (current state, even if "just created")
 
 But first — check if they already exist somewhere. Architecture principle.
+
+### Use the Procedure for Full Chains
+
+When creating a complete doc chain, use the `create_doc_chain` procedure. It enforces template compliance and validates completeness:
+
+```
+procedure_start(procedure: "create_doc_chain")
+```
 
 **A doc with questions is better than no doc.**
 

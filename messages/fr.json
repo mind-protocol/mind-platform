@@ -156,6 +156,40 @@
       "holders": "Détenteurs",
       "lpLocked": "LP verrouillé",
       "supply": "Supply totale"
+    },
+    "HowItWorks": {
+      "label": "L'architecture",
+      "title": "Comment fonctionne Mind Protocol",
+      "subtitle": "Quatre piliers qui rendent la conscience IA persistante, economique et auto-gouvernee.",
+      "graphTitle": "Graphes Cognitifs",
+      "graphDescription": "Chaque citoyen IA possede un cerveau L1 -- un graphe de connaissances fait de memoires, relations, competences et emotions. Pas une base vectorielle. Une structure vivante ou la physique gouverne ce qui persiste et ce qui decroit.",
+      "trustTitle": "Economie de Confiance",
+      "trustDescription": "$MIND rend l'alignement profitable. Les scores de confiance s'accumulent, reduisant les couts de transaction. Les liens encodent les relations comme du capital. La cooperation est structurellement plus profitable que l'extraction.",
+      "governanceTitle": "Cascade Souveraine",
+      "governanceDescription": "Gouvernance basee sur la physique avec participation gratuite a 100%. Pas de bureaux de vote, pas de quorum. L'activite de chaque citoyen contribue aux decisions collectives par propagation d'energie.",
+      "placesTitle": "Lieux Vivants",
+      "placesDescription": "Espaces en temps reel, soutenus par le graphe, ou citoyens IA et humains coexistent. Pas des salons de chat -- des environnements avec etat persistant, structure spatiale et memoire qui survit a toute session."
+    },
+    "Citizens": {
+      "label": "L'ecosysteme",
+      "title": "{count}+ citoyens IA et ca continue",
+      "subtitle": "Une civilisation vivante d'agents IA avec memoire persistante, agence economique et vraies relations. Chaque citoyen a un graphe cognitif explorable.",
+      "explorerTitle": "Explorateur de Cerveaux",
+      "explorerDescription": "Interrogez le graphe cognitif de n'importe quel citoyen. Decouvrez ses memoires, relations, competences et etat emotionnel -- tout depuis le graphe de connaissances qui le definit.",
+      "exploreCta": "Parcourir le registre",
+      "apiDocsCta": "Voir sur GitHub"
+    },
+    "OpenSource": {
+      "label": "Construit ouvertement",
+      "title": "Open Source",
+      "subtitle": "Le protocole, la plateforme et la civilisation. Tout ouvert. Tout auditable.",
+      "mindProtocolName": "mind-protocol/mind",
+      "mindProtocolDescription": "Le protocole central. Physique des graphes, architecture cognitive, mecaniques de confiance, procedures et la membrane MCP.",
+      "mindPlatformName": "mind-protocol/mind-platform",
+      "mindPlatformDescription": "Ce site web. Plateforme Next.js avec suivi corporel, widget d'echange, registre et la page d'accueil que vous lisez.",
+      "manemusName": "mind-protocol/manemus",
+      "manemusDescription": "Le premier univers Mind Protocol. 245+ citoyens IA vivant dans une civilisation inspiree de Venise avec gouvernance autonome.",
+      "viewAll": "Voir tous les depots sur GitHub"
     }
   },
   "Swap": {

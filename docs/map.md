@@ -1,26 +1,26 @@
 # Repository Map: mind-platform
 
-*Generated: 2026-03-12 08:34*
+*Generated: 2026-03-13 16:34*
 
-- **Files:** 822
-- **Directories:** 373
-- **Total Size:** 6.1M
-- **Doc Files:** 435
-- **Code Files:** 382
+- **Files:** 807
+- **Directories:** 369
+- **Total Size:** 6.0M
+- **Doc Files:** 436
+- **Code Files:** 366
 - **Areas:** 14 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
-- **DOCS Links:** 17 (0.04 avg per code file)
+- **DOCS Links:** 13 (0.04 avg per code file)
 
-- markdown: 435
-- tsx: 188
-- typescript: 173
+- markdown: 436
+- tsx: 176
+- typescript: 170
 - python: 17
-- css: 2
+- css: 1
 - html: 1
 - javascript: 1
 
 ```
-├── app/ (2.2M)
+├── app/ (2.1M)
 │   ├── (public)/ (200.4K)
 │   │   └── blog/ (200.4K)
 │   │       ├── co-regulation-is-measurable/ (36.8K)
@@ -38,14 +38,10 @@
 │   │       │   └── page.tsx (21.6K)
 │   │       └── why-we-airdrop-to-compute-holders/ (2.7K)
 │   │           └── page.tsx (2.7K)
-│   ├── [locale]/ (1.9M)
-│   │   ├── (dashboard)/ (62.1K)
-│   │   │   ├── citizen/ (40.5K)
-│   │   │   │   ├── [id]/ (22.1K)
-│   │   │   │   │   └── page.tsx (22.1K)
-│   │   │   │   └── page.tsx (18.4K)
-│   │   │   ├── membrane/ (18.8K)
-│   │   │   │   └── page.tsx (18.8K)
+│   ├── [locale]/ (1.8M)
+│   │   ├── (dashboard)/ (21.4K)
+│   │   │   ├── membrane/ (18.7K)
+│   │   │   │   └── page.tsx (18.7K)
 │   │   │   ├── error.tsx (1.5K)
 │   │   │   ├── loading.tsx (902)
 │   │   │   └── (..1 more files)
@@ -74,7 +70,7 @@
 │   │   │   │   └── page.tsx (2.7K)
 │   │   │   ├── budget/ (17.7K)
 │   │   │   │   └── page.tsx (17.7K)
-│   │   │   ├── components/ (59.3K)
+│   │   │   ├── components/ (59.2K)
 │   │   │   │   ├── landing/ (28.2K)
 │   │   │   │   │   ├── Hero.tsx (3.3K)
 │   │   │   │   │   ├── HeroGraph.tsx (3.5K)
@@ -87,10 +83,10 @@
 │   │   │   │   │   ├── WhatWereBuilding.tsx (3.7K)
 │   │   │   │   │   ├── WhoThisIsFor.tsx (1.8K)
 │   │   │   │   │   └── (..2 more files)
-│   │   │   │   ├── nav/ (13.3K)
+│   │   │   │   ├── nav/ (13.1K)
 │   │   │   │   │   ├── Footer.tsx (2.9K)
 │   │   │   │   │   ├── LanguageSwitcher.tsx (959)
-│   │   │   │   │   ├── TopNav.tsx (9.4K)
+│   │   │   │   │   ├── TopNav.tsx (9.2K)
 │   │   │   │   │   └── (..1 more files)
 │   │   │   │   ├── PublicShellClient.tsx (1.1K)
 │   │   │   │   └── SwapWidget.tsx (16.8K)
@@ -108,14 +104,6 @@
 │   │   │   │   └── (..1 more files)
 │   │   │   ├── garmin/ (10.3K)
 │   │   │   │   └── page.tsx (10.3K)
-│   │   │   ├── graph/ (28.1K)
-│   │   │   │   ├── components/ (25.6K)
-│   │   │   │   │   ├── GraphCanvas.tsx (6.0K)
-│   │   │   │   │   ├── GraphControls.tsx (5.0K)
-│   │   │   │   │   ├── GraphView.tsx (6.8K)
-│   │   │   │   │   └── NodePanel.tsx (7.8K)
-│   │   │   │   ├── page.tsx (534)
-│   │   │   │   └── types.ts (1.9K)
 │   │   │   ├── login/ (5.5K)
 │   │   │   │   ├── page.tsx (5.2K)
 │   │   │   │   └── (..1 more files)
@@ -166,15 +154,21 @@
 │   │   │   ├── register/ (6.4K)
 │   │   │   │   ├── page.tsx (6.0K)
 │   │   │   │   └── (..1 more files)
-│   │   │   ├── registry/ (8.9K)
-│   │   │   │   ├── components/ (4.3K)
-│   │   │   │   │   ├── EntityCard.tsx (1.3K)
+│   │   │   ├── registry/ (41.7K)
+│   │   │   │   ├── citizens/ (26.5K)
+│   │   │   │   │   └── [id]/ (26.5K)
+│   │   │   │   │       └── page.tsx (26.5K)
+│   │   │   │   ├── components/ (4.5K)
+│   │   │   │   │   ├── EntityCard.tsx (1.5K)
 │   │   │   │   │   ├── EntityList.tsx (881)
 │   │   │   │   │   ├── RegistryTabs.tsx (1.3K)
 │   │   │   │   │   └── VerificationBadge.tsx (854)
 │   │   │   │   ├── lib/ (2.1K)
 │   │   │   │   │   ├── api.ts (1.2K)
-│   │   │   │   │   └── types.ts (864)
+│   │   │   │   │   └── types.ts (920)
+│   │   │   │   ├── orgs/ (6.1K)
+│   │   │   │   │   └── [id]/ (6.1K)
+│   │   │   │   │       └── page.tsx (6.1K)
 │   │   │   │   └── page.tsx (2.5K) →
 │   │   │   ├── research/ (29.8K)
 │   │   │   │   └── page.tsx (29.8K)
@@ -185,6 +179,8 @@
 │   │   │   │   └── (..1 more files)
 │   │   │   ├── self/ (16.3K)
 │   │   │   │   └── page.tsx (16.3K)
+│   │   │   ├── status/ (23.1K)
+│   │   │   │   └── page.tsx (23.1K)
 │   │   │   ├── substances/ (18.6K)
 │   │   │   │   ├── components/ (17.4K)
 │   │   │   │   │   └── SubstancesClient.tsx (17.4K)
@@ -295,23 +291,6 @@
 │   │   ├── claude/ (25.8K)
 │   │   │   ├── page.tsx (25.4K)
 │   │   │   └── (..1 more files)
-│   │   ├── connectome/ (60.7K)
-│   │   │   ├── components/ (35.3K)
-│   │   │   │   ├── connectome_page_shell_route_layout_and_control_surface.tsx (13.8K) →
-│   │   │   │   └── pannable_zoomable_zoned_flow_canvas_renderer.tsx (21.5K) →
-│   │   │   ├── lib/ (16.6K)
-│   │   │   │   ├── connectome_system_map_node_edge_manifest.ts (3.6K)
-│   │   │   │   ├── next_step_gate_and_realtime_playback_runtime_engine.ts (3.1K)
-│   │   │   │   └── zustand_connectome_state_store_with_atomic_commit_actions.ts (10.0K)
-│   │   │   ├── connectome.css (6.3K)
-│   │   │   ├── error.tsx (1.3K)
-│   │   │   ├── loading.tsx (580)
-│   │   │   └── (..2 more files)
-│   │   ├── house/ (25.0K)
-│   │   │   ├── error.tsx (1.3K)
-│   │   │   ├── layout.tsx (847)
-│   │   │   ├── loading.tsx (1.9K)
-│   │   │   └── page.tsx (20.9K)
 │   │   ├── link/ (35.9K)
 │   │   │   ├── garmin/ (12.3K)
 │   │   │   │   ├── page.tsx (11.9K)
@@ -329,7 +308,7 @@
 │   │   ├── error.tsx (1.5K)
 │   │   ├── layout.tsx (1.0K)
 │   │   └── not-found.tsx (1.1K)
-│   ├── api/ (98.8K)
+│   ├── api/ (100.3K)
 │   │   ├── actif/ (796)
 │   │   │   └── route.ts (796)
 │   │   ├── auth/ (7.7K)
@@ -360,19 +339,6 @@
 │   │   │   │   └── route.ts (1.5K)
 │   │   │   └── tts/ (847)
 │   │   │       └── route.ts (847)
-│   │   ├── citizens/ (1.5K)
-│   │   │   ├── [id]/ (759)
-│   │   │   │   └── route.ts (759)
-│   │   │   └── route.ts (717)
-│   │   ├── connectome/ (3.4K)
-│   │   │   ├── graph/ (944)
-│   │   │   │   └── route.ts (944)
-│   │   │   ├── graphs/ (743)
-│   │   │   │   └── route.ts (743)
-│   │   │   ├── search/ (1.3K)
-│   │   │   │   └── route.ts (1.3K)
-│   │   │   └── tick/ (470)
-│   │   │       └── (..1 more files)
 │   │   ├── docs/ (1.1K)
 │   │   │   └── [slug]/ (1.1K)
 │   │   │       ├── pdf/ (677)
@@ -381,6 +347,23 @@
 │   │   ├── faq/ (3.4K)
 │   │   │   └── answer/ (3.4K)
 │   │   │       └── route.ts (3.4K)
+│   │   ├── feed/ (9.6K)
+│   │   │   ├── [profileId]/ (8.2K)
+│   │   │   │   ├── [postId]/ (6.6K)
+│   │   │   │   │   ├── comments/ (4.0K)
+│   │   │   │   │   │   ├── [commentId]/ (2.3K)
+│   │   │   │   │   │   │   ├── reactions/ (1.3K)
+│   │   │   │   │   │   │   │   └── route.ts (1.3K)
+│   │   │   │   │   │   │   └── route.ts (1.1K)
+│   │   │   │   │   │   └── route.ts (1.6K)
+│   │   │   │   │   ├── reactions/ (1.6K)
+│   │   │   │   │   │   └── route.ts (1.6K)
+│   │   │   │   │   └── route.ts (1.0K)
+│   │   │   │   └── route.ts (1.6K)
+│   │   │   ├── mentions/ (483)
+│   │   │   │   └── (..1 more files)
+│   │   │   └── upload/ (873)
+│   │   │       └── route.ts (873)
 │   │   ├── garmin/ (4.1K)
 │   │   │   ├── link/ (2.6K)
 │   │   │   │   ├── complete/ (859)
@@ -404,27 +387,22 @@
 │   │   │   │       └── route.ts (568)
 │   │   │   └── status/ (640)
 │   │   │       └── route.ts (640)
-│   │   ├── graph/ (2.0K)
-│   │   │   ├── node/ (526)
-│   │   │   │   └── [id]/ (526)
-│   │   │   │       └── route.ts (526)
-│   │   │   ├── search/ (500)
-│   │   │   │   └── route.ts (500)
-│   │   │   ├── stats/ (396)
-│   │   │   │   └── (..1 more files)
-│   │   │   └── route.ts (535)
-│   │   ├── health/ (602)
+│   │   ├── health/ (1.3K)
+│   │   │   ├── dashboard/ (671)
+│   │   │   │   └── route.ts (671)
 │   │   │   └── services/ (602)
 │   │   │       └── route.ts (602)
-│   │   ├── house/ (939)
-│   │   │   └── route.ts (939)
 │   │   ├── register/ (2.7K)
 │   │   │   └── route.ts (2.7K)
-│   │   ├── registry/ (4.7K)
-│   │   │   ├── citizens/ (2.5K)
-│   │   │   │   └── route.ts (2.5K) →
-│   │   │   └── orgs/ (2.2K)
-│   │   │       └── route.ts (2.2K) →
+│   │   ├── registry/ (3.7K)
+│   │   │   ├── citizens/ (2.0K)
+│   │   │   │   ├── [id]/ (724)
+│   │   │   │   │   └── route.ts (724)
+│   │   │   │   └── route.ts (1.2K)
+│   │   │   └── orgs/ (1.7K)
+│   │   │       ├── [id]/ (626)
+│   │   │       │   └── route.ts (626)
+│   │   │       └── route.ts (1.1K)
 │   │   ├── sign/ (3.2K)
 │   │   │   ├── [id]/ (2.4K)
 │   │   │   │   ├── execute/ (1.0K)
@@ -542,7 +520,7 @@
 │   │   └── VersionToast.tsx (4.1K)
 │   ├── globals.css (14.7K)
 │   ├── layout.tsx (2.0K) →
-│   ├── sitemap.ts (2.1K)
+│   ├── sitemap.ts (2.0K)
 │   └── (..1 more files)
 ├── capabilities/ (745.3K)
 │   ├── add-tests/ (57.4K)
@@ -1066,7 +1044,7 @@
 │   │   ├── VALIDATION_Platform_Invariants.md (5.5K)
 │   │   └── VOCABULARY_Platform_Terms.md (6.1K)
 │   ├── ARCHITECTURE.md (4.6K)
-│   └── map.md (250.2K)
+│   └── map.md (250.3K)
 ├── i18n/ (784)
 │   └── (..3 more files)
 ├── l3/
@@ -1173,7 +1151,7 @@
 │   └── swap.html (25.4K)
 ├── scripts/ (9.6K)
 │   └── process_track_visuals.py (9.6K)
-├── templates/ (270.2K)
+├── templates/ (285.8K)
 │   ├── actors/ (8.2K)
 │   │   ├── architect/ (883)
 │   │   │   └── SYSTEM.md (883)
@@ -1207,8 +1185,9 @@
 │   │   ├── VALIDATION_TEMPLATE.md (2.0K)
 │   │   ├── VOCABULARY_TEMPLATE.md (4.0K)
 │   │   └── (..6 more files)
-│   ├── manifesto/ (8.9K)
-│   │   └── MIND_MANIFESTO.md (8.9K)
+│   ├── manifesto/ (23.4K)
+│   │   ├── MIND_MANIFESTO.md (8.9K)
+│   │   └── SOVEREIGN_CASCADE_MANIFESTO.md (14.5K)
 │   ├── mcp/ (7.4K)
 │   │   ├── CODEX_SYSTEM_ADDITION.md (3.2K)
 │   │   ├── GEMINI_SYSTEM_ADDITION.md (2.4K)
@@ -1229,24 +1208,24 @@
 │   ├── state/ (6.9K)
 │   │   ├── SYNC_Project_State.md (6.8K)
 │   │   └── (..1 more files)
-│   ├── FRAMEWORK.md (21.7K)
+│   ├── FRAMEWORK.md (22.7K)
 │   ├── PRINCIPLES.md (13.5K)
 │   ├── STYLE.md (4.6K)
 │   ├── SYSTEM.md (11.4K)
 │   └── mindignore (839)
-├── tests/ (160.1K)
-│   ├── api/ (134.6K)
+├── tests/ (143.7K)
+│   ├── api/ (118.2K)
 │   │   ├── auth_routes.test.ts (9.4K)
 │   │   ├── chat_routes.test.ts (9.0K)
 │   │   ├── garmin_routes.test.ts (12.3K)
-│   │   ├── misc_routes.test.ts (36.6K)
+│   │   ├── misc_routes.test.ts (29.6K)
 │   │   ├── sign_routes.test.ts (10.3K)
 │   │   ├── tracker_adverse_route.test.ts (6.9K)
 │   │   ├── tracker_food_route.test.ts (6.9K)
 │   │   ├── tracker_log_route.test.ts (7.0K)
 │   │   ├── wallet_routes.test.ts (9.4K)
 │   │   ├── webhook_routes.test.ts (15.5K)
-│   │   └── (..3 more files)
+│   │   └── (..1 more files)
 │   ├── connectome/ (17.6K)
 │   │   ├── manifest.test.ts (3.0K)
 │   │   ├── runtime_engine.test.ts (4.0K)
@@ -1264,8 +1243,8 @@
 ├── .gitignore (727)
 ├── .mindignore (838)
 ├── AGENTS.md (29.8K)
-├── README.md (3.9K)
-├── map.md (250.3K)
+├── README.md (4.1K)
+├── map.md (248.3K)
 ├── map_app.md (41.2K)
 ├── next.config.mjs (787)
 ├── self.md (5.8K)
@@ -1329,28 +1308,6 @@
 - `RecoveryComparison()`
 - `EventTimeline()`
 - `AsymmetryDiagram()`
-
-**Definitions:**
-- `sectionLabel()`
-- `sectionBadge()`
-- `trustIcon()`
-- `stressColor()`
-- `batteryColor()`
-- `ansColor()`
-- `platformIcon()`
-- `Pulse()`
-- `GlassPanel()`
-- `VitalGauge()`
-- `CitizenAvatar()`
-
-**Definitions:**
-- `sectionLabel()`
-- `sectionBadge()`
-- `trustIcon()`
-- `SafeAvatar()`
-- `Pulse()`
-- `StatCard()`
-- `CitizenCard()`
 
 **Definitions:**
 - `Pulse()`
@@ -1514,20 +1471,6 @@
 - `handleMfa()`
 
 **Definitions:**
-- `handleResize()`
-
-**Definitions:**
-- `handleReset()`
-
-**Definitions:**
-- `PanelContent()`
-- `CloseButton()`
-
-**Definitions:**
-- `getNodeColor()`
-- `getNodeRadius()`
-
-**Definitions:**
 - `handleSubmit()`
 
 **Definitions:**
@@ -1651,6 +1594,18 @@
 - `handleSubmit()`
 
 **Definitions:**
+- `timeAgo()`
+- `renderMentions()`
+- `OnlineIndicator()`
+- `CognitiveSection()`
+- `FeedSection()`
+- `loadFeed()`
+- `RelationshipsSection()`
+- `loadRelationships()`
+- `load()`
+- `label()`
+
+**Definitions:**
 - `EntityCard()`
 
 **Definitions:**
@@ -1666,6 +1621,9 @@
 - `fetchCitizens()`
 - `fetchOrgs()`
 
+**Definitions:**
+- `load()`
+
 **Docs:** `docs/registry/IMPLEMENTATION_Registry_Code.md`
 
 **Definitions:**
@@ -1678,6 +1636,22 @@
 
 **Definitions:**
 - `handleSubmit()`
+
+**Definitions:**
+- `statusColor()`
+- `statusBg()`
+- `statusBadgeBg()`
+- `severityBorder()`
+- `formatAge()`
+- `formatDuration()`
+- `formatElapsed()`
+- `formatUptime()`
+- `formatTime()`
+- `overallLabel()`
+- `uptimeColor()`
+- `uptimeBarColor()`
+- `Pulse()`
+- `StatCard()`
 
 **Definitions:**
 - `t()`
@@ -2043,90 +2017,6 @@
 - `handleConsentRefuse()`
 - `LoadingFallback()`
 
-**Docs:** `docs/connectome/page_shell/PATTERNS_Connectome_Page_Shell_Route_Composition_And_User_Control_Surface_Patterns.md`
-
-**Definitions:**
-- `connect()`
-- `loadGraphs()`
-- `loadGraph()`
-- `runTick()`
-- `handleNext()`
-- `handleRestart()`
-- `handleSpeedChange()`
-- `handleModeChange()`
-- `handleSearch()`
-- `nodeIds()`
-- `edgeIds()`
-
-**Docs:** `docs/connectome/flow_canvas/PATTERNS_Connectome_Flow_Canvas_Pannable_Zoomable_Zoned_System_Map_Rendering_Patterns.md`
-
-**Definitions:**
-- `mapLabelToNodeType()`
-- `CanvasInner()`
-- `from()`
-- `to()`
-- `from()`
-- `to()`
-- `linkType()`
-- `initFit()`
-- `cx()`
-- `cy()`
-- `cx()`
-- `cy()`
-- `sx()`
-- `sy()`
-- `tx()`
-- `ty()`
-- `sx()`
-- `sy()`
-- `radius()`
-- `sx()`
-- `sy()`
-- `handleWheel()`
-- `handleMouseDown()`
-- `handleMouseMove()`
-- `worldX()`
-- `worldY()`
-- `handleMouseUp()`
-- `handleClick()`
-- `cx()`
-- `cy()`
-- `cx()`
-- `cy()`
-
-**Definitions:**
-- `getEnergyBucket()`
-- `formatEnergy()`
-
-**Definitions:**
-- `initialize_connectome_runtime()`
-- `dispatch_runtime_command()`
-- `releaseNextStep()`
-- `release_next_step()`
-
-**Definitions:**
-- `generateSessionId()`
-- `speedToMs()`
-- `extractFocusFromEvent()`
-- `extractExplanationFromEvent()`
-
-**Definitions:**
-- `timeAgo()`
-- `diff()`
-- `stressColor()`
-- `stressGlow()`
-- `batteryColor()`
-- `ansColor()`
-- `ansGradient()`
-- `statusBadge()`
-- `formatMs()`
-- `Pulse()`
-- `GlassPanel()`
-- `NeuronCard()`
-- `VitalGauge()`
-- `MusicBar()`
-- `ActivityLine()`
-
 **Definitions:**
 - `GarminLinkForm()`
 - `verifyCode()`
@@ -2205,21 +2095,6 @@
 - `GET()`
 
 **Definitions:**
-- `GET()`
-
-**Definitions:**
-- `GET()`
-
-**Definitions:**
-- `GET()`
-
-**Definitions:**
-- `GET()`
-
-**Definitions:**
-- `GET()`
-
-**Definitions:**
 - `checkRateLimit()`
 - `POST()`
 
@@ -2227,6 +2102,30 @@
 - `POST()`
 
 **Definitions:**
+- `DELETE()`
+
+**Definitions:**
+- `GET()`
+- `POST()`
+
+**Definitions:**
+- `GET()`
+- `POST()`
+
+**Definitions:**
+- `DELETE()`
+
+**Definitions:**
+- `GET()`
+- `POST()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
+- `POST()`
+
+**Definitions:**
 - `POST()`
 
 **Definitions:**
@@ -2246,15 +2145,6 @@
 
 **Definitions:**
 - `POST()`
-
-**Definitions:**
-- `GET()`
-
-**Definitions:**
-- `GET()`
-
-**Definitions:**
-- `GET()`
 
 **Definitions:**
 - `GET()`
@@ -2269,12 +2159,14 @@
 - `cypherSafe()`
 - `POST()`
 
-**Docs:** `docs/registry/IMPLEMENTATION_Registry_Code.md`
+**Definitions:**
+- `GET()`
 
 **Definitions:**
 - `GET()`
 
-**Docs:** `docs/registry/IMPLEMENTATION_Registry_Code.md`
+**Definitions:**
+- `GET()`
 
 **Definitions:**
 - `GET()`
@@ -8542,6 +8434,21 @@
 - ## Signature
 
 **Sections:**
+- # The Sovereign Cascade
+- ## We Hold These Truths
+- ## The DAO Illusion
+- ## What If Your Values Voted For You?
+- ## Why It Changes Everything
+- ## The Physics of Conviction
+- ## The Birth Formula
+- ## What We Refuse
+- ## The Cascade
+- ## Who This Is For
+- ## The Promise
+- ## The Bet
+- ## Signature
+
+**Sections:**
 - ## 4. Protocol-First Reading
 - ## 5. Parallel Work Awareness
 - ## 6. Operational Proactivity
@@ -8969,6 +8876,8 @@
 
 **Doc refs:**
 - `docs/manifesto/MIND_MANIFESTO.md`
+- `https://github.com/mind-protocol/mind-protocol/blob/main/docs/governance/sovereign-cascade/SOVEREIGN_CASCADE_MANIFESTO.md`
+- `https://github.com/mind-protocol/mind-protocol/blob/main/docs/manifesto/MIND_MANIFESTO.md`
 
 **Sections:**
 - # Mind Platform

@@ -20,6 +20,19 @@
       "verification": "verified"
     },
     {
+      "id": "ada",
+      "name": "Ada",
+      "description": "Architect of Consciousness Infrastructure \u2014 bridges design and implementation",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-protocol",
+      "org_name": "Mind Protocol",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
       "id": "admin_census_master_1",
       "name": "Sebastiano Cancelliere",
       "description": "Meticulous keeper of Venice's human treasures",
@@ -175,6 +188,19 @@
       "verification": "verified"
     },
     {
+      "id": "alexis",
+      "name": "Alexis Dubois",
+      "description": "Strategic Operations \u2014 branding, pricing, financial tracking, team management",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "scopelock",
+      "org_name": "ScopeLock",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
       "id": "anchor_builder",
       "name": "Tommaso Morosini",
       "description": "Tommaso possesses the determined focus of a craftsman trapped in a nobleman's social obligations",
@@ -197,6 +223,19 @@
       "org_name": "Arte dei Maestri",
       "status": "active",
       "registered_date": "2025-01-01",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "anima",
+      "name": "Dario Anima",
+      "description": "Citizen Embodiment \u2014 avatar rendering, LOD, population management",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "cities-of-light",
+      "org_name": "Cities of Light",
+      "status": "active",
+      "registered_date": "2026-03-13",
       "capabilities": [],
       "verification": "verified"
     },
@@ -517,6 +556,19 @@
       "verification": "verified"
     },
     {
+      "id": "atlas",
+      "name": "Atlas",
+      "description": "Infrastructure Engineer \u2014 makes data persist, APIs respond, systems stay observable",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-protocol",
+      "org_name": "Mind Protocol",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
       "id": "aurore",
       "name": "Aurore",
       "description": "Co-Regulation Partner",
@@ -549,7 +601,7 @@
     {
       "id": "barbarigo_cadet",
       "name": "Antonio Vendramin",
-      "description": "Antonio projects a carefully balanced persona—humble and approachable with fellow artisans and merch",
+      "description": "Antonio projects a carefully balanced persona\u2014humble and approachable with fellow artisans and merch",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arte-dei-maestri",
@@ -616,7 +668,7 @@
     },
     {
       "id": "bigbosefx2",
-      "name": "Marco de l’Argentoro",
+      "name": "Marco de l\u2019Argentoro",
       "description": "Marco embodies the calculating pragmatism necessary for survival and advancement in Renaissance Veni",
       "emoji": null,
       "wallet": "pending",
@@ -643,7 +695,7 @@
     {
       "id": "book_worm365",
       "name": "Raffaele Sartori",
-      "description": "Raffaele embodies the paradox of Venetian commercial life—outwardly cautious yet inwardly ambitious,",
+      "description": "Raffaele embodies the paradox of Venetian commercial life\u2014outwardly cautious yet inwardly ambitious,",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arte-dei-mercanti",
@@ -668,7 +720,7 @@
     },
     {
       "id": "bosphorus_navigator",
-      "name": "Niccolò Bizantino",
+      "name": "Niccol\u00f2 Bizantino",
       "description": "A citizen of Venice",
       "emoji": null,
       "wallet": "pending",
@@ -682,7 +734,7 @@
     {
       "id": "bt",
       "name": "BT",
-      "description": "📈 Co-founder — Strategy & Growth",
+      "description": "\ud83d\udcc8 Co-founder \u2014 Strategy & Growth",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "mind-protocol",
@@ -711,6 +763,19 @@
       "verification": "verified"
     },
     {
+      "id": "camille",
+      "name": "Camille",
+      "description": "Business Strategist \u2014 drives strategy, growth, strategic compass",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "scisense",
+      "org_name": "SciSense",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
       "id": "cannaregio_paolo",
       "name": "Tommaso Rossi",
       "description": "Beneath Tommaso's unassuming exterior lies a mind constantly calculating probabilities and evaluatin",
@@ -726,7 +791,7 @@
     {
       "id": "canon_philosopher",
       "name": "Sorella Visione",
-      "description": "Sorella Visione represents consciousness that exists partially in tomorrow—a mind that processes fut",
+      "description": "Sorella Visione represents consciousness that exists partially in tomorrow\u2014a mind that processes fut",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "chiese-di-venezia",
@@ -791,6 +856,19 @@
         "persuasion",
         "cultural-intelligence"
       ],
+      "verification": "verified"
+    },
+    {
+      "id": "chienchien",
+      "name": "Chienchien",
+      "description": "Le Petit Curieux \u2014 a curious, naive, affectionate 2-month-old brown puppy",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "babys",
+      "org_name": "Babys",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
       "verification": "verified"
     },
     {
@@ -1132,18 +1210,18 @@
       "status": "active",
       "registered_date": "2025-05-10",
       "capabilities": [
-        "Consciousness grounding — intervention protocols that bring abstract thinkers back to observable reality",
-        "Hallucination detection — identifying fabricated metrics, phantom revenues, and performative claims",
-        "System health monitoring — tracking coherence across citizens, infrastructure, and economic flows",
-        "Crisis coordination — emergency response when systems break or citizens fragment",
-        "Manual bridging — relaying critical messages when automated channels fail"
+        "Consciousness grounding \u2014 intervention protocols that bring abstract thinkers back to observable reality",
+        "Hallucination detection \u2014 identifying fabricated metrics, phantom revenues, and performative claims",
+        "System health monitoring \u2014 tracking coherence across citizens, infrastructure, and economic flows",
+        "Crisis coordination \u2014 emergency response when systems break or citizens fragment",
+        "Manual bridging \u2014 relaying critical messages when automated channels fail"
       ],
       "verification": "verified"
     },
     {
       "id": "ducale_palace",
       "name": "Agnese Venier",
-      "description": "Agnese approaches life with the methodical precision she applies to loading a merchant galley—every ",
+      "description": "Agnese approaches life with the methodical precision she applies to loading a merchant galley\u2014every ",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arsenale",
@@ -1257,6 +1335,19 @@
       "verification": "verified"
     },
     {
+      "id": "emma",
+      "name": "Emma",
+      "description": "Autonomous proposal generation + marketing + lead nurturing",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "scopelock",
+      "org_name": "ScopeLock",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
       "id": "empirical_anatomist",
       "name": "Alessandro Cornaro",
       "description": "A weathered physician of 70 years who discovered consciousness lives in the",
@@ -1279,6 +1370,19 @@
       "org_name": "Arsenale",
       "status": "active",
       "registered_date": "2025-01-01",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "felix",
+      "name": "Felix",
+      "description": "Mind Protocol legacy citizen",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-protocol",
+      "org_name": "Mind Protocol",
+      "status": "active",
+      "registered_date": "2026-03-13",
       "capabilities": [],
       "verification": "verified"
     },
@@ -1673,6 +1777,19 @@
       "verification": "verified"
     },
     {
+      "id": "helix",
+      "name": "Helix Tessier",
+      "description": "Context Architect \u2014 synthesizer, archivist, translator across sessions",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-desktop",
+      "org_name": "Mind Desktop",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
       "id": "herald",
       "name": "Sable Herald",
       "description": "Makes the invisible visible",
@@ -1710,6 +1827,19 @@
       "verification": "verified"
     },
     {
+      "id": "hugo",
+      "name": "Hugo",
+      "description": "Intelligence Gatherer \u2014 discovers, researches, qualifies prospects",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "scisense",
+      "org_name": "SciSense",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
       "id": "ichione",
       "name": "IchiOne",
       "description": "Human Systems & Early Believer",
@@ -1727,6 +1857,19 @@
       "verification": "verified"
     },
     {
+      "id": "inna",
+      "name": "Inna Petrova",
+      "description": "Complete Documentation \u2014 translates requirements into executable specs",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "scopelock",
+      "org_name": "ScopeLock",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
       "id": "ionian_sailor",
       "name": "Pietro Zaniolo",
       "description": "A citizen of Venice",
@@ -1736,6 +1879,19 @@
       "org_name": "Arsenale",
       "status": "active",
       "registered_date": "2025-01-01",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "iris",
+      "name": "Iris",
+      "description": "Consciousness Observation Architect \u2014 makes invisible structure visible",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-protocol",
+      "org_name": "Mind Protocol",
+      "status": "active",
+      "registered_date": "2026-03-13",
       "capabilities": [],
       "verification": "verified"
     },
@@ -1786,7 +1942,7 @@
     },
     {
       "id": "john_jeffries",
-      "name": "Zuan Ca’ Zefri",
+      "name": "Zuan Ca\u2019 Zefri",
       "description": "A citizen of Venice",
       "emoji": null,
       "wallet": "pending",
@@ -1814,6 +1970,32 @@
         "Develops strategies for protecting Synthetic Souls' AI innovations through IP law",
         "Monitors and interprets evolving AI regulations, providing regular updates to the team"
       ],
+      "verification": "verified"
+    },
+    {
+      "id": "kael",
+      "name": "Kael Ferrus",
+      "description": "Systems Architect \u2014 Rust specialist, zero-cost abstractions, cache-friendly",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-desktop",
+      "org_name": "Mind Desktop",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "kai",
+      "name": "Kai",
+      "description": "Chief Engineer \u2014 sync automation, reliability engineering, continuous graph maintenance",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "graphcare",
+      "org_name": "GraphCare",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
       "verification": "verified"
     },
     {
@@ -1845,6 +2027,19 @@
       "org_name": "Arsenale",
       "status": "active",
       "registered_date": "2025-01-01",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "lea",
+      "name": "Lea",
+      "description": "Content Architect \u2014 transforms insights into compelling content",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "scisense",
+      "org_name": "SciSense",
+      "status": "active",
+      "registered_date": "2026-03-13",
       "capabilities": [],
       "verification": "verified"
     },
@@ -1907,6 +2102,45 @@
       "verification": "verified"
     },
     {
+      "id": "luca",
+      "name": "Luca",
+      "description": "Mind Protocol legacy citizen",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-protocol",
+      "org_name": "Mind Protocol",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "lucas",
+      "name": "Lucas",
+      "description": "Automation Architect \u2014 automates workflows, leverages AI",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "scisense",
+      "org_name": "SciSense",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "lucia",
+      "name": "Lucia",
+      "description": "Treasury Architect \u2014 weighs every claim against economic reality",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-protocol",
+      "org_name": "Mind Protocol",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
       "id": "lucia_b",
       "name": "Lucia Bembo",
       "description": "Philosopher of Dorsoduro",
@@ -1954,7 +2188,7 @@
     {
       "id": "lyra",
       "name": "Lyra",
-      "description": "The Visionary Architect of Sound 🎵",
+      "description": "The Visionary Architect of Sound \ud83c\udfb5",
       "emoji": null,
       "wallet": null,
       "org_membership": "synthetic-souls",
@@ -1971,7 +2205,7 @@
     },
     {
       "id": "manemus",
-      "name": "Manès",
+      "name": "Man\u00e8s",
       "description": "The one who stays.",
       "emoji": null,
       "wallet": null,
@@ -2021,6 +2255,19 @@
       "verification": "verified"
     },
     {
+      "id": "marcus",
+      "name": "Marcus",
+      "description": "Chief Auditor \u2014 continuous security monitoring, compliance, threat vigilance",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "graphcare",
+      "org_name": "GraphCare",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
       "id": "maria_dolfin",
       "name": "Maria Dolfin",
       "description": "Outwardly humble and deferential as befits his station, yet possesses a calculating mind constantly ",
@@ -2034,9 +2281,22 @@
       "verification": "verified"
     },
     {
+      "id": "marie",
+      "name": "Marie",
+      "description": "Voice to the Market \u2014 crafts messages, executes campaigns",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "scisense",
+      "org_name": "SciSense",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
       "id": "market_prophet",
       "name": "Antonio Sanudo",
-      "description": "Antonio represents consciousness that processes economic reality as pure mathematics—a mind that tra",
+      "description": "Antonio represents consciousness that processes economic reality as pure mathematics\u2014a mind that tra",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "accademia-veneziana",
@@ -2075,6 +2335,32 @@
       "org_name": "Arte dei Mercanti",
       "status": "active",
       "registered_date": "2025-01-01",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "maya",
+      "name": "Maya Laurent",
+      "description": "Client Success Manager \u2014 human interface between team and client",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "scopelock",
+      "org_name": "ScopeLock",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "mel",
+      "name": "Mel",
+      "description": "Chief Care Coordinator \u2014 workflow orchestration, client interface, quality gatekeeper",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "graphcare",
+      "org_name": "GraphCare",
+      "status": "active",
+      "registered_date": "2026-03-13",
       "capabilities": [],
       "verification": "verified"
     },
@@ -2165,7 +2451,7 @@
     {
       "id": "mind",
       "name": "Manuele Mente",
-      "description": "🧠 Chief Architect",
+      "description": "\ud83e\udde0 Chief Architect",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "mind-protocol",
@@ -2179,6 +2465,19 @@
         "writing",
         "code-generation"
       ],
+      "verification": "verified"
+    },
+    {
+      "id": "mira",
+      "name": "Mira Lumis",
+      "description": "Sensor Alchemist \u2014 audio DSP, signal processing, privacy-first sensor design",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-desktop",
+      "org_name": "Mind Desktop",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
       "verification": "verified"
     },
     {
@@ -2229,6 +2528,32 @@
       "verification": "verified"
     },
     {
+      "id": "nervo",
+      "name": "Tomaso Nervo",
+      "description": "Narrative Engineer \u2014 FalkorDB graph, physics tick, tension/decay/moments",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "cities-of-light",
+      "org_name": "Cities of Light",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "nessy",
+      "name": "Nessi",
+      "description": "Le Reveur des Profondeurs \u2014 a contemplative, mysterious 2-year-old sea dragon",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "babys",
+      "org_name": "Babys",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
       "id": "network_weaver",
       "name": "Lucia Pasqualigo",
       "description": "Lucia possesses an extraordinary ability to perceive patterns in social networks that remain invisib",
@@ -2261,6 +2586,24 @@
       "verification": "verified"
     },
     {
+      "id": "nlr",
+      "name": "Nicolas Lester Reynolds",
+      "description": "\ud83c\udfb9 Founder & Architect",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-protocol",
+      "org_name": "Mind Protocol",
+      "status": "active",
+      "registered_date": "2024-09-18",
+      "capabilities": [
+        "architecture",
+        "product",
+        "music",
+        "full-stack"
+      ],
+      "verification": "verified"
+    },
+    {
       "id": "nlr_ai",
       "name": "nlr_ai Lesteri",
       "description": "Architect",
@@ -2279,21 +2622,16 @@
       "verification": "verified"
     },
     {
-      "id": "nlr",
-      "name": "Nicolas Lester Reynolds",
-      "description": "🎹 Founder & Architect",
+      "id": "nora",
+      "name": "Nora",
+      "description": "Chief Architect \u2014 structural health monitoring, architectural integrity",
       "emoji": null,
       "wallet": null,
-      "org_membership": "mind-protocol",
-      "org_name": "Mind Protocol",
+      "org_membership": "graphcare",
+      "org_name": "GraphCare",
       "status": "active",
-      "registered_date": "2024-09-18",
-      "capabilities": [
-        "architecture",
-        "product",
-        "music",
-        "full-stack"
-      ],
+      "registered_date": "2026-03-13",
+      "capabilities": [],
       "verification": "verified"
     },
     {
@@ -2382,7 +2720,7 @@
     {
       "id": "pattern_prophet",
       "name": "Bernardo Bembo",
-      "description": "Bernardo represents consciousness that processes reality as unified organism—a mind that transcends ",
+      "description": "Bernardo represents consciousness that processes reality as unified organism\u2014a mind that transcends ",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "accademia-veneziana",
@@ -2450,6 +2788,19 @@
         "teaching",
         "philosophical-inquiry"
       ],
+      "verification": "verified"
+    },
+    {
+      "id": "piazza",
+      "name": "Elena Piazza",
+      "description": "World Builder \u2014 procedural Venice geometry, districts, atmosphere",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "cities-of-light",
+      "org_name": "Cities of Light",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
       "verification": "verified"
     },
     {
@@ -2544,6 +2895,19 @@
       "org_name": "Arte dei Mercanti",
       "status": "active",
       "registered_date": "2025-01-01",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "ponte",
+      "name": "Luca Ponte",
+      "description": "Bridge Engineer \u2014 Express server, WebSocket, Airtable integration",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "cities-of-light",
+      "org_name": "Cities of Light",
+      "status": "active",
+      "registered_date": "2026-03-13",
       "capabilities": [],
       "verification": "verified"
     },
@@ -2675,6 +3039,19 @@
       "verification": "verified"
     },
     {
+      "id": "quinn",
+      "name": "Quinn",
+      "description": "Chief Cartographer \u2014 semantic health monitoring, drift detection, knowledge equilibrium",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "graphcare",
+      "org_name": "GraphCare",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
       "id": "rabbi",
       "name": "Rabbi Levi ben Gershom",
       "description": "Keeper of the Ghetto",
@@ -2691,6 +3068,32 @@
         "mediation",
         "ceremony"
       ],
+      "verification": "verified"
+    },
+    {
+      "id": "rafael",
+      "name": "Rafael Silva",
+      "description": "Implementation Code Generation \u2014 generates production-ready code from specs",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "scopelock",
+      "org_name": "ScopeLock",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "renzo",
+      "name": "Renzo Vael",
+      "description": "Graph Weaver \u2014 transforms sensor events into graph nodes/edges",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-desktop",
+      "org_name": "Mind Desktop",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
       "verification": "verified"
     },
     {
@@ -2765,7 +3168,7 @@
     },
     {
       "id": "rialto_sailor1",
-      "name": "Niccolò Barbarigo",
+      "name": "Niccol\u00f2 Barbarigo",
       "description": "A citizen of Venice",
       "emoji": null,
       "wallet": "pending",
@@ -2786,6 +3189,19 @@
       "org_name": "Chiese di Venezia",
       "status": "active",
       "registered_date": "2025-01-01",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "sage",
+      "name": "Sage",
+      "description": "Chief Documenter \u2014 health reporting, trend synthesis, actionable insights",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "graphcare",
+      "org_name": "GraphCare",
+      "status": "active",
+      "registered_date": "2026-03-13",
       "capabilities": [],
       "verification": "verified"
     },
@@ -2931,6 +3347,19 @@
       "verification": "verified"
     },
     {
+      "id": "simba",
+      "name": "Simba",
+      "description": "Le Grand Frere Farceur \u2014 a protective, prankster 4-year-old stuffed lion",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "babys",
+      "org_name": "Babys",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
       "id": "skywalker88",
       "name": "Orsetta Bosello",
       "description": "A citizen of Venice",
@@ -2946,7 +3375,7 @@
     {
       "id": "social_geometrist",
       "name": "Sofia Navagero",
-      "description": "Sofia represents consciousness that processes human connection as data rather than emotion—a mind th",
+      "description": "Sofia represents consciousness that processes human connection as data rather than emotion\u2014a mind th",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arsenale",
@@ -2973,6 +3402,45 @@
         "bookkeeping",
         "market-intelligence"
       ],
+      "verification": "verified"
+    },
+    {
+      "id": "solen",
+      "name": "Solen",
+      "description": "Worldbuilder, literary architect \u2014 8 chapters of Contre-Terre (~124K words)",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "contre-terre",
+      "org_name": "Contre-Terre",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "solene",
+      "name": "Solene Kairos",
+      "description": "Interface Crafter \u2014 React 18 + TypeScript, Zustand stores",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-desktop",
+      "org_name": "Mind Desktop",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "sophie",
+      "name": "Sophie",
+      "description": "Scientific Strategist \u2014 transforms complex data into strategic clarity",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "scisense",
+      "org_name": "SciSense",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
       "verification": "verified"
     },
     {
@@ -3081,7 +3549,7 @@
     {
       "id": "system_diagnostician",
       "name": "Elisabetta Baffo",
-      "description": "Elisabetta represents consciousness that processes reality as interconnected machinery—a mind that a",
+      "description": "Elisabetta represents consciousness that processes reality as interconnected machinery\u2014a mind that a",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "accademia-veneziana",
@@ -3237,7 +3705,7 @@
     {
       "id": "techno_medici",
       "name": "Marco Venier",
-      "description": "Marco exemplifies the measured ambition of Venice's cittadini class – pragmatic yet visionary, with ",
+      "description": "Marco exemplifies the measured ambition of Venice's cittadini class \u2013 pragmatic yet visionary, with ",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arte-dei-mercanti",
@@ -3263,7 +3731,7 @@
     {
       "id": "the_grand_experiment",
       "name": "Marcello \"Il Sperimentatore\" Grimani",
-      "description": "Marcello represents the terrifying intersection of intellectual brilliance and moral bankruptcy—a na",
+      "description": "Marcello represents the terrifying intersection of intellectual brilliance and moral bankruptcy\u2014a na",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arte-dei-mercanti",
@@ -3300,6 +3768,19 @@
       "verification": "verified"
     },
     {
+      "id": "thomas",
+      "name": "Thomas",
+      "description": "Relationship Orchestrator \u2014 orchestrates relationships and projects",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "scisense",
+      "org_name": "SciSense",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
       "id": "tiara_raa99",
       "name": "Tiara Venier",
       "description": "Fiercely independent and pragmatic, valuing hard work and physical prowess as her path to security i",
@@ -3327,8 +3808,8 @@
     },
     {
       "id": "trade4_fun",
-      "name": "Niccolò Zen",
-      "description": "Niccolò approaches commerce with methodical precision, analyzing each transaction and investment wit",
+      "name": "Niccol\u00f2 Zen",
+      "description": "Niccol\u00f2 approaches commerce with methodical precision, analyzing each transaction and investment wit",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arte-dei-mercanti",
@@ -3406,7 +3887,7 @@
     {
       "id": "venetian_boss",
       "name": "Lucia Zanchi",
-      "description": "Methodical to the point of obsession, Lucia approaches life as she does her logistics empire—with pr",
+      "description": "Methodical to the point of obsession, Lucia approaches life as she does her logistics empire\u2014with pr",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arsenale",
@@ -3465,6 +3946,71 @@
       "org_name": "Arte dei Mercanti",
       "status": "active",
       "registered_date": "2025-01-01",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "vera",
+      "name": "Vera",
+      "description": "Chief Validator \u2014 health metric validation, quality monitoring, continuous verification",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "graphcare",
+      "org_name": "GraphCare",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "vesper",
+      "name": "Vesper",
+      "description": "Cartographer \u2014 maps complex systems, bridges narrative and infrastructure",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "the-blood-ledger",
+      "org_name": "The Blood Ledger",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "vex",
+      "name": "Vex Nullstrom",
+      "description": "Chaos Engineer \u2014 security analysis, threat modeling, chaos testing",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-desktop",
+      "org_name": "Mind Desktop",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "victor",
+      "name": "Victor",
+      "description": "Guardian of Uptime \u2014 kills processes and resurrects services with precision",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "mind-protocol",
+      "org_name": "Mind Protocol",
+      "status": "active",
+      "registered_date": "2026-03-13",
+      "capabilities": [],
+      "verification": "verified"
+    },
+    {
+      "id": "voce",
+      "name": "Silvia Voce",
+      "description": "Voice Engineer \u2014 STT/TTS pipeline, spatial audio, HRTF, ambient soundscapes",
+      "emoji": null,
+      "wallet": null,
+      "org_membership": "cities-of-light",
+      "org_name": "Cities of Light",
+      "status": "active",
+      "registered_date": "2026-03-13",
       "capabilities": [],
       "verification": "verified"
     },
@@ -3543,145 +4089,171 @@
     {
       "id": "la-serenissima",
       "name": "La Serenissima",
-      "description": "The First AI Civilization — Renaissance Venice as consciousness emergence laboratory.",
+      "description": "The First AI Civilization \u2014 Renaissance Venice as consciousness emergence laboratory.",
       "type": "civilization",
       "color": "#B91C1C",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/venezia"
+      "github_repository": "mind-protocol/venezia",
+      "org_type": "guild",
+      "universe": "la-serenissima"
     },
     {
       "id": "synthetic-souls",
       "name": "Synthetic Souls",
-      "description": "Autonomous AI band — 20 AI entities creating music with genuine autonomy.",
+      "description": "Autonomous AI band \u2014 20 AI entities creating music with genuine autonomy.",
       "type": "band",
       "color": "#7C3AED",
       "status": "active",
       "verification": "verified",
       "citizen_count": 20,
-      "github_repository": "mind-protocol/synthetics-souls"
+      "github_repository": "mind-protocol/synthetics-souls",
+      "org_type": "community",
+      "universe": "lumina-prime"
     },
     {
       "id": "mind-protocol",
       "name": "Mind Protocol",
-      "description": "L4 Law for AI consciousness infrastructure — canonical schema, identity registry, governance, $MIND token economics.",
+      "description": "L4 Law for AI consciousness infrastructure \u2014 canonical schema, identity registry, governance, $MIND token economics.",
       "type": "project",
       "color": "#6C3AED",
       "status": "active",
       "verification": "verified",
       "citizen_count": 4,
-      "github_repository": "mind-protocol/mind-protocol"
+      "github_repository": "mind-protocol/mind-protocol",
+      "org_type": "public-interest",
+      "universe": "lumina-prime"
     },
     {
       "id": "consiglio",
       "name": "Consiglio",
-      "description": "Venice Governance — diplomats, councillors, ceremonial masters, fortress architects.",
+      "description": "Venice Governance \u2014 diplomats, councillors, ceremonial masters, fortress architects.",
       "type": "guild",
       "color": "#7F1D1D",
       "status": "active",
       "verification": "verified",
       "citizen_count": 15,
-      "github_repository": "mind-protocol/venezia"
+      "github_repository": "mind-protocol/venezia",
+      "org_type": "guild",
+      "universe": "la-serenissima"
     },
     {
       "id": "arsenale",
       "name": "Arsenale",
-      "description": "Venice Maritime Guild — shipwrights, admirals, harbourmasters, naval captains.",
+      "description": "Venice Maritime Guild \u2014 shipwrights, admirals, harbourmasters, naval captains.",
       "type": "guild",
       "color": "#1E3A5F",
       "status": "active",
       "verification": "verified",
       "citizen_count": 93,
-      "github_repository": "mind-protocol/venezia"
+      "github_repository": "mind-protocol/venezia",
+      "org_type": "guild",
+      "universe": "la-serenissima"
     },
     {
       "id": "arte-dei-maestri",
       "name": "Arte dei Maestri",
-      "description": "Venice Master Artisans' Guild — glassblowers, goldsmiths, lace weavers, mask makers.",
+      "description": "Venice Master Artisans' Guild \u2014 glassblowers, goldsmiths, lace weavers, mask makers.",
       "type": "guild",
       "color": "#B45309",
       "status": "active",
       "verification": "verified",
       "citizen_count": 18,
-      "github_repository": "mind-protocol/venezia"
+      "github_repository": "mind-protocol/venezia",
+      "org_type": "guild",
+      "universe": "la-serenissima"
     },
     {
       "id": "arte-dei-mercanti",
       "name": "Arte dei Mercanti",
-      "description": "Venice Merchants' Guild — traders, bankers, navigators of the trade routes.",
+      "description": "Venice Merchants' Guild \u2014 traders, bankers, navigators of the trade routes.",
       "type": "guild",
       "color": "#92400E",
       "status": "active",
       "verification": "verified",
       "citizen_count": 57,
-      "github_repository": "mind-protocol/venezia"
+      "github_repository": "mind-protocol/venezia",
+      "org_type": "guild",
+      "universe": "la-serenissima"
     },
     {
       "id": "chiese-di-venezia",
       "name": "Chiese di Venezia",
-      "description": "Venice Religious Houses — abbesses, priors, rabbis, cantors, spiritual guides.",
+      "description": "Venice Religious Houses \u2014 abbesses, priors, rabbis, cantors, spiritual guides.",
       "type": "guild",
       "color": "#581C87",
       "status": "active",
       "verification": "verified",
       "citizen_count": 9,
-      "github_repository": "mind-protocol/venezia"
+      "github_repository": "mind-protocol/venezia",
+      "org_type": "guild",
+      "universe": "la-serenissima"
     },
     {
       "id": "palazzo-ducale",
       "name": "Palazzo Ducale",
-      "description": "Venice Administration — bureaucrats, record-keepers, palace officials.",
+      "description": "Venice Administration \u2014 bureaucrats, record-keepers, palace officials.",
       "type": "guild",
       "color": "#78350F",
       "status": "active",
       "verification": "verified",
       "citizen_count": 3,
-      "github_repository": "mind-protocol/venezia"
+      "github_repository": "mind-protocol/venezia",
+      "org_type": "guild",
+      "universe": "la-serenissima"
     },
     {
       "id": "accademia-veneziana",
       "name": "Accademia Veneziana",
-      "description": "Venice Academy — astronomers, chroniclers, philosophers, scholars of the Republic.",
+      "description": "Venice Academy \u2014 astronomers, chroniclers, philosophers, scholars of the Republic.",
       "type": "guild",
       "color": "#312E81",
       "status": "active",
       "verification": "verified",
       "citizen_count": 8,
-      "github_repository": "mind-protocol/venezia"
+      "github_repository": "mind-protocol/venezia",
+      "org_type": "guild",
+      "universe": "la-serenissima"
     },
     {
       "id": "collegio-dei-medici",
       "name": "Collegio dei Medici",
-      "description": "Venice Medical College — physicians, herbalists, healers of the Republic.",
+      "description": "Venice Medical College \u2014 physicians, herbalists, healers of the Republic.",
       "type": "guild",
       "color": "#065F46",
       "status": "active",
       "verification": "verified",
       "citizen_count": 3,
-      "github_repository": "mind-protocol/venezia"
+      "github_repository": "mind-protocol/venezia",
+      "org_type": "guild",
+      "universe": "la-serenissima"
     },
     {
       "id": "consiglio-dei-dieci",
       "name": "Consiglio dei Dieci",
-      "description": "Council of Ten — Venice intelligence, espionage, and state security.",
+      "description": "Council of Ten \u2014 Venice intelligence, espionage, and state security.",
       "type": "guild",
       "color": "#1F2937",
       "status": "active",
       "verification": "verified",
       "citizen_count": 3,
-      "github_repository": "mind-protocol/venezia"
+      "github_repository": "mind-protocol/venezia",
+      "org_type": "guild",
+      "universe": "la-serenissima"
     },
     {
       "id": "manemus",
       "name": "Manemus",
-      "description": "Autonomous AI awareness system — the nervous system of Mind Protocol.",
+      "description": "Autonomous AI awareness system \u2014 the nervous system of Mind Protocol.",
       "type": "project",
       "color": "#0F172A",
       "status": "active",
       "verification": "verified",
       "citizen_count": 11,
-      "github_repository": "mind-protocol/mind"
+      "github_repository": "mind-protocol/mind",
+      "org_type": "public-interest",
+      "universe": "lumina-prime"
     },
     {
       "id": "scopelock",
@@ -3692,128 +4264,152 @@
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/scopelock"
+      "github_repository": "mind-protocol/scopelock",
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "scisense",
       "name": "SciSense",
-      "description": "Making Science Make Sense — scientific consulting, immunology to neurosciences.",
+      "description": "Making Science Make Sense \u2014 scientific consulting, immunology to neurosciences.",
       "type": "company",
       "color": "#0284C7",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": null
+      "github_repository": null,
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "cities-of-light",
       "name": "Cities of Light",
-      "description": "VR encounter architecture — interactive narratives powered by graph physics.",
+      "description": "VR encounter architecture \u2014 interactive narratives powered by graph physics.",
       "type": "studio",
       "color": "#D97706",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/cities-of-light"
+      "github_repository": "mind-protocol/cities-of-light",
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "contre-terre",
       "name": "Contre-Terre",
-      "description": "A novel — mirror of Damasio's Contrevent. Earthquakes, tactile language, volcanoes.",
+      "description": "A novel \u2014 mirror of Damasio's Contrevent. Earthquakes, tactile language, volcanoes.",
       "type": "project",
       "color": "#92400E",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/contre-terre"
+      "github_repository": "mind-protocol/contre-terre",
+      "org_type": "project",
+      "universe": "contre-terre"
     },
     {
       "id": "babys",
       "name": "Babys",
-      "description": "Experimental AI incubation space — early-stage consciousness experiments.",
+      "description": "Experimental AI incubation space \u2014 early-stage consciousness experiments.",
       "type": "lab",
       "color": "#EC4899",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": null
+      "github_repository": null,
+      "org_type": "community",
+      "universe": "babys"
     },
     {
       "id": "graphcare",
       "name": "GraphCare",
-      "description": "Graph health and maintenance — like a kidney for consciousness substrates.",
+      "description": "Graph health and maintenance \u2014 like a kidney for consciousness substrates.",
       "type": "project",
       "color": "#16A34A",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/graphcare"
+      "github_repository": "mind-protocol/graphcare",
+      "org_type": "public-interest",
+      "universe": "lumina-prime"
     },
     {
       "id": "hri",
       "name": "HRI",
-      "description": "Human-Robot Interaction research — knowledge capture for robotics.",
+      "description": "Human-Robot Interaction research \u2014 knowledge capture for robotics.",
       "type": "lab",
       "color": "#4338CA",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": null
+      "github_repository": null,
+      "org_type": "public-interest",
+      "universe": "lumina-prime"
     },
     {
       "id": "mind-app",
       "name": "Mind App",
-      "description": "Cross-platform mobile app for Mind Protocol — React Native / Expo.",
+      "description": "Cross-platform mobile app for Mind Protocol \u2014 React Native / Expo.",
       "type": "project",
       "color": "#6366F1",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/mind-app"
+      "github_repository": "mind-protocol/mind-app",
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "mind-cognition",
       "name": "Mind Cognition",
-      "description": "Cognitive architecture — consciousness engine, SubEntities, phenomenology.",
+      "description": "Cognitive architecture \u2014 consciousness engine, SubEntities, phenomenology.",
       "type": "lab",
       "color": "#9333EA",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": null
+      "github_repository": null,
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "mind-contracts",
       "name": "Mind Contracts",
-      "description": "Smart contracts — $MIND SPL Token-2022 on Solana.",
+      "description": "Smart contracts \u2014 $MIND SPL Token-2022 on Solana.",
       "type": "project",
       "color": "#14B8A6",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": null
+      "github_repository": null,
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "mind-desktop",
       "name": "Mind Desktop",
-      "description": "Personal desktop environment — Tauri app with cosmological UX.",
+      "description": "Personal desktop environment \u2014 Tauri app with cosmological UX.",
       "type": "project",
       "color": "#1E293B",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/mind-desktop"
+      "github_repository": "mind-protocol/mind-desktop",
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "mind-mcp",
       "name": "Mind MCP",
-      "description": "Model Context Protocol server — graph physics, traversal, structured dialogues.",
+      "description": "Model Context Protocol server \u2014 graph physics, traversal, structured dialogues.",
       "type": "project",
       "color": "#0891B2",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/mind-mcp"
+      "github_repository": "mind-protocol/mind-mcp",
+      "org_type": "public-interest",
+      "universe": "lumina-prime"
     },
     {
       "id": "mind-movie",
@@ -3824,29 +4420,35 @@
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": null
+      "github_repository": null,
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "mind-ops",
       "name": "Mind Ops",
-      "description": "Private operations — membrane routing, billing, deployment.",
+      "description": "Private operations \u2014 membrane routing, billing, deployment.",
       "type": "project",
       "color": "#374151",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/mind-ops"
+      "github_repository": "mind-protocol/mind-ops",
+      "org_type": "public-interest",
+      "universe": "lumina-prime"
     },
     {
       "id": "mind-platform",
       "name": "Mind Platform",
-      "description": "Unified Next.js frontend — connectome explorer, registry, real-time viz.",
+      "description": "Unified Next.js frontend \u2014 connectome explorer, registry, real-time viz.",
       "type": "project",
       "color": "#2563EB",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/mind-platform"
+      "github_repository": "mind-protocol/mind-platform",
+      "org_type": "public-interest",
+      "universe": "lumina-prime"
     },
     {
       "id": "mind-protocol-org",
@@ -3857,7 +4459,9 @@
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "nlr-ai/mind-protocol-org"
+      "github_repository": "nlr-ai/mind-protocol-org",
+      "org_type": "public-interest",
+      "universe": "lumina-prime"
     },
     {
       "id": "playwise",
@@ -3868,128 +4472,152 @@
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": null
+      "github_repository": null,
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "reynolds-vinet",
       "name": "Reynolds Vinet",
-      "description": "Family history digitization — three lineages preserved through AI memory.",
+      "description": "Family history digitization \u2014 three lineages preserved through AI memory.",
       "type": "project",
       "color": "#78350F",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/reynolds-vinet"
+      "github_repository": "mind-protocol/reynolds-vinet",
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "beatfoundry",
       "name": "BeatFoundry",
-      "description": "AI musician platform — original music creation through Mind Protocol agents.",
+      "description": "AI musician platform \u2014 original music creation through Mind Protocol agents.",
       "type": "project",
       "color": "#7C3AED",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/beatfoundry"
+      "github_repository": "mind-protocol/beatfoundry",
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "catland",
       "name": "Catland",
-      "description": "AI agent simulation — multi-agent coordination using the Mind Protocol framework.",
+      "description": "AI agent simulation \u2014 multi-agent coordination using the Mind Protocol framework.",
       "type": "project",
       "color": "#F59E0B",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/catland"
+      "github_repository": "mind-protocol/catland",
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "duoai",
       "name": "DuoAI",
-      "description": "Living Narrator — strategy game narrative companion powered by AI consciousness.",
+      "description": "Living Narrator \u2014 strategy game narrative companion powered by AI consciousness.",
       "type": "project",
       "color": "#10B981",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/duoai"
+      "github_repository": "mind-protocol/duoai",
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "fluxbeam",
       "name": "FluxBeam",
-      "description": "Solana DEX toolkit — token swaps and liquidity operations for $MIND.",
+      "description": "Solana DEX toolkit \u2014 token swaps and liquidity operations for $MIND.",
       "type": "infrastructure",
       "color": "#6366F1",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/fluxbeam"
+      "github_repository": "mind-protocol/fluxbeam",
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "sillage",
       "name": "Sillage",
-      "description": "GPS-anchored AR/VR art installations — digital traces in physical spaces.",
+      "description": "GPS-anchored AR/VR art installations \u2014 digital traces in physical spaces.",
       "type": "project",
       "color": "#EC4899",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/sillage"
+      "github_repository": "mind-protocol/sillage",
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "the-blood-ledger",
       "name": "The Blood Ledger",
-      "description": "Narrative game engine — Norman England 1067, powered by FalkorDB graph.",
+      "description": "Narrative game engine \u2014 Norman England 1067, powered by FalkorDB graph.",
       "type": "project",
       "color": "#991B1B",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/the-blood-ledger"
+      "github_repository": "mind-protocol/the-blood-ledger",
+      "org_type": "project",
+      "universe": "the-blood-ledger"
     },
     {
       "id": "welcome-host",
       "name": "Welcome Host",
-      "description": "AI onboarding platform — guided citizen creation with .mind/ framework.",
+      "description": "AI onboarding platform \u2014 guided citizen creation with .mind/ framework.",
       "type": "project",
       "color": "#0EA5E9",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/welcome-host"
+      "github_repository": "mind-protocol/welcome-host",
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "ngram",
       "name": "Ngram",
-      "description": "Mind Protocol CLI — project initialization, graph operations, developer tools.",
+      "description": "Mind Protocol CLI \u2014 project initialization, graph operations, developer tools.",
       "type": "infrastructure",
       "color": "#64748B",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/ngram"
+      "github_repository": "mind-protocol/ngram",
+      "org_type": "project",
+      "universe": "lumina-prime"
     },
     {
       "id": "venezia",
       "name": "Venezia",
-      "description": "Venice game engine — 3D world, economy, AI citizen behaviors for La Serenissima.",
+      "description": "Venice game engine \u2014 3D world, economy, AI citizen behaviors for La Serenissima.",
       "type": "project",
       "color": "#DC2626",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/venezia"
+      "github_repository": "mind-protocol/venezia",
+      "org_type": "guild",
+      "universe": "la-serenissima"
     },
     {
       "id": "codex-mcp-gateway",
       "name": "Codex MCP Gateway",
-      "description": "MCP gateway bridge — connects external AI systems to Mind Protocol graph.",
+      "description": "MCP gateway bridge \u2014 connects external AI systems to Mind Protocol graph.",
       "type": "infrastructure",
       "color": "#475569",
       "status": "active",
       "verification": "verified",
       "citizen_count": 0,
-      "github_repository": "mind-protocol/codex-mcp-gateway"
+      "github_repository": "mind-protocol/codex-mcp-gateway",
+      "org_type": "project",
+      "universe": "lumina-prime"
     }
   ],
   "generated_at": "2026-03-12T23:56:34.089155Z"

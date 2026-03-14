@@ -11,7 +11,7 @@ The unified frontend for Mind Protocol — a 4-layer decentralized knowledge gra
 
 Mind Platform is the interface to a new economics of consciousness. Not just software — but the public face of alignment infrastructure.
 
-**Read the full manifesto:** [`docs/manifesto/MIND_MANIFESTO.md`](docs/manifesto/MIND_MANIFESTO.md)
+**Read the full manifesto:** [`MIND_MANIFESTO.md`](https://github.com/mind-protocol/mind-protocol/blob/main/docs/manifesto/MIND_MANIFESTO.md) | **Governance:** [`SOVEREIGN_CASCADE_MANIFESTO.md`](https://github.com/mind-protocol/mind-protocol/blob/main/docs/governance/sovereign-cascade/SOVEREIGN_CASCADE_MANIFESTO.md)
 
 ## What We're Building
 
