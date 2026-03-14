@@ -110,7 +110,7 @@ app/(public)/
 
 - [ ] Test page renders correctly (npm run dev)
 - [ ] Verify /manifesto page renders full manifesto
-- [ ] Add metadata/OG tags for social sharing
+- [x] Add metadata/OG tags for social sharing (completed 2026-03-14 in `app/[locale]/(public)/page.tsx`).
 
 ### After Launch
 

@@ -46,6 +46,12 @@ The `connectome_graph_api` module provides a single Next.js API route (`/api/con
 
 ## RECENT CHANGES
 
+### 2026-03-14: Graph API skeleton + full doc chain added
+
+- Added implementation skeleton at `app/api/connectome/graph/route.ts` with explicit 501 response.
+- Added `BEHAVIORS`, `ALGORITHM`, `VALIDATION`, `HEALTH`, and `IMPLEMENTATION` docs.
+- Linked implementation and docs through `DOCS:` marker.
+
 ### 2023-12-19: Created SYNC_Graph_API.md
 
 - **What:** Created the `SYNC_Graph_API.md` file for the `connectome_graph_api` module.
@@ -103,7 +109,7 @@ The `connectome_graph_api` module now has its `SYNC` documentation in place, com
 
 ### Doc/Impl Drift
 
-- [ ] IMPL→DOCS: Create `BEHAVIORS_Graph_API.md`, `ALGORITHM_Graph_API.md`, `VALIDATION_Graph_API.md`, `HEALTH_Graph_API.md`, and `IMPLEMENTATION_Graph_API.md` to fully document the module's behavior, logic, verification, health, and code structure. (Referenced in `PATTERNS_Graph_API.md` as a todo).
+- [x] IMPL→DOCS: Create `BEHAVIORS_Graph_API.md`, `ALGORITHM_Graph_API.md`, `VALIDATION_Graph_API.md`, `HEALTH_Graph_API.md`, and `IMPLEMENTATION_Graph_API.md` to fully document the module's behavior, logic, verification, health, and code structure. (Completed 2026-03-14).
 
 ### Tests to Run
 
@@ -115,9 +121,9 @@ The `connectome_graph_api` module now has its `SYNC` documentation in place, com
 ### Immediate
 
 - [x] Create `SYNC_Graph_API.md`.
-- [ ] Update `CHAIN` blocks in `OBJECTIVES_Graph_API.md` and `PATTERNS_Graph_API.md`.
-- [ ] Add `DOCS:` reference to `app/api/connectome/graph/route.ts`.
-- [ ] Update `SYNC_Project_State.md`.
+- [x] Update `CHAIN` blocks in `OBJECTIVES_Graph_API.md` and `PATTERNS_Graph_API.md`. (PATTERNS already contained full chain; OBJECTIVES tracked as N/A.)
+- [x] Add `DOCS:` reference to `app/api/connectome/graph/route.ts`. (Completed 2026-03-14).
+- [x] Update `SYNC_Project_State.md`. (Completed 2026-03-14).
 
 ---
 
