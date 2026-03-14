@@ -6,6 +6,22 @@ CREATED: 2023-11-20
 VERIFIED: 2023-11-20 against Initial Documentation Commit
 ```
 
+
+## CHAIN
+
+```
+THIS:            OBJECTIVES_Graph_API.md (you are here)
+PATTERNS:        ./PATTERNS_Graph_API.md
+BEHAVIORS:       ./BEHAVIORS_Graph_API.md
+ALGORITHM:       ./ALGORITHM_Graph_API.md
+VALIDATION:      ./VALIDATION_Graph_API.md
+HEALTH:          ./HEALTH_Graph_API.md
+IMPLEMENTATION:  ./IMPLEMENTATION_Graph_API.md
+SYNC:            ./SYNC_Graph_API.md
+
+IMPL:            app/api/connectome/graph/route.ts
+```
+
 ## PRIMARY OBJECTIVES (ranked)
 1. Provide graph data to the Connectome UI — Enables visualization and interaction with the graph.
 2. Expose a stable API for graph operations — Allows other modules to reliably consume graph data.

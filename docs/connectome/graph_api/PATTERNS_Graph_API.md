@@ -159,10 +159,10 @@ Fetches the complete graph data for visualization in the Connectome UI.
 ## MARKERS
 
 <!-- @mind:todo
-title: "Add remaining doc chain files"
-priority: low
+title: "Wire Graph API to canonical backend source"
+priority: high
 context: |
-  Only PATTERNS exists. The full chain (BEHAVIORS, ALGORITHM, VALIDATION, HEALTH, IMPLEMENTATION) would help future maintainers.
+  Route now exists and fails loudly with 501 until backend integration is wired.
 task: |
-  Create remaining documentation files when expanding this module.
+  Connect GET /api/connectome/graph to the canonical graph source and return nodes/edges payload.
 -->

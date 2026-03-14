@@ -44,6 +44,12 @@ The `app_shell` module provides the foundational Next.js frontend application st
 
 ## RECENT CHANGES
 
+### 2026-03-14: App shell DOCS marker drift reviewed
+
+- Confirmed `app/layout.tsx` already has a `DOCS:` pointer.
+- Confirmed no root `app/page.tsx` exists in this localized routing setup.
+- Reviewed API/mind scope and kept module-level linkage as default.
+
 ### 2024-02-23: Initial Documentation of App Shell Module
 
 - **What:** Created `OBJECTIVES_App_Shell.md`, `PATTERNS_App_Shell.md`, and `SYNC_App_Shell_State.md` in `docs/frontend/app_shell/`. Updated `modules.yaml` to include the `app_shell` module mapping.
@@ -114,7 +120,7 @@ Initial documentation for the Next.js frontend application shell (`app_shell`) h
 
 ### Doc/Impl Drift
 
-- [ ] DOCS→IMPL: Add `DOCS:` references to `app/layout.tsx`, `app/page.tsx`, and potentially other key files within the `app_shell` scope (e.g., in `app/api/route.ts` files or `app/mind/page.tsx`).
+- [x] DOCS→IMPL: Add `DOCS:` references to `app/layout.tsx`, `app/page.tsx`, and potentially other key files within the `app_shell` scope (e.g., in `app/api/route.ts` files or `app/mind/page.tsx`). (`app/layout.tsx` already linked; root `app/page.tsx` does not exist in this repo structure.)
 
 ### Tests to Run
 
@@ -125,8 +131,8 @@ pnpm dev # (to manually verify the app still runs)
 
 ### Immediate
 
-- [ ] Add `DOCS:` references to `app/layout.tsx` and `app/page.tsx`.
-- [ ] Review `app/api/**/*.ts` and `app/mind/**/*.tsx` to determine if they need individual `DOCS:` references or if the `app_shell` reference is sufficient for now.
+- [x] Add `DOCS:` references to `app/layout.tsx` and `app/page.tsx`. (`app/layout.tsx` linked; no root `app/page.tsx` file present.)
+- [x] Review `app/api/**/*.ts` and `app/mind/**/*.tsx` to determine if they need individual `DOCS:` references or if the `app_shell` reference is sufficient for now. (Current decision: module-level reference sufficient except for dedicated modules like graph API.)
 
 ### Later
 

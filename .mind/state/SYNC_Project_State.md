@@ -1,8 +1,8 @@
 # Project — Sync: Current State
 
 ```
-LAST_UPDATED: 2026-02-25
-UPDATED_BY: Claude (groundwork agent)
+LAST_UPDATED: 2026-03-14
+UPDATED_BY: Codex (groundwork agent)
 ```
 
 ---
@@ -33,6 +33,23 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 ---
 
 ## ACTIVE WORK
+
+## MASTER TODO — 5-Force Sprint Orchestration
+
+This section is the canonical assignment board consumed during Context Cascade phase 1.
+
+- **Force 1 (DONE 2026-03-14):** Readiness audit of manifesto + framework references in onboarding prompts.
+  - Evidence: the master prompt now references explicit manifesto sources (`.mind/manifesto/*.md` + `docs/manifesto/*.md`) and explicit protocol files (`.mind/FRAMEWORK.md`, `.mind/SYSTEM.md`, `.mind/STYLE.md`, `.mind/PRINCIPLES.md`).
+- **Force 2 (DONE 2026-03-14):** Documentation synchronization for orchestration workflows and sprint bootstrap artifacts.
+  - Evidence: the sprint template is canonical in `templates/prompts/` and synchronized with project SYNC + recent changes log.
+- **Force 3 (DONE 2026-03-14):** Validate skills/actors alignment for execution loops (plan → execute → test → commit).
+  - Evidence: Phase 3 keeps the skills+agents requirement and the per-task commit loop.
+- **Force 4 (DONE 2026-03-14):** Verify escalation/proposition marker usage in procedures and templates.
+  - Evidence: marker presence verified across templates and runtime protocol files (`update_sync.yaml`, skills, procedure templates).
+- **Force 5 (DONE 2026-03-14):** Validate commit/PR cadence across autonomous sprint sessions.
+  - Evidence: Phase 4 now requires final status check, SYNC update, and explicit PR creation with validation commands.
+
+@mind:TODO If a new 5-force sprint starts, reopen these items with new owners/dates instead of duplicating the section.
 
 ### Messaging Bots — Telegram + WhatsApp (New)
 
@@ -72,6 +89,40 @@ All browser-side code is self-contained — no dependencies on mind-mcp's Node.j
 ---
 
 ## RECENT CHANGES
+
+### 2026-03-14: One-shot batch on top 10 next items
+
+- **What:** Executed a single batch over the previously listed next items by closing completed work, creating missing schema-explorer docs, adding Graph API skeleton/docs, and tightening landing metadata.
+- **10 delivered items:**
+  1. Verified registry UI implementation exists.
+  2. Verified `docs/auth/` chain exists.
+  3. Implemented schema explorer route.
+  4. Created full `docs/schema-explorer/` chain.
+  5. Added graph API route skeleton with explicit 501 status.
+  6. Added `DOCS:` link in graph API route.
+  7. Created full Graph API doc chain files (BEHAVIORS/ALGORITHM/VALIDATION/HEALTH/IMPLEMENTATION).
+  8. Updated Graph API SYNC checkboxes and recent changes.
+  9. Updated app_shell SYNC drift items to current reality.
+  10. Added landing metadata/OG/Twitter tags.
+
+### 2026-03-14: Added 5-Force Sprint Master Prompt Template
+
+- **What:** Added an authoritative orchestration prompt template for parallel Codex sessions.
+- **Why:** Provide a single reusable prompt artifact aligned with Context Cascade, @mind:TODO planning, and Never-stop escalation/proposition flow.
+- **Impact:**
+  - New template: `templates/prompts/PROMPT_Master_5_Force_Sprint_Orchestration.md`
+  - Added `MASTER TODO — 5-Force Sprint Orchestration` section in project sync for force-specific assignment lookup.
+
+### 2026-03-14: Closed Sprint Master TODO Force 1..5 Assignments
+
+- **What:** Completed and closed all five sprint assignments captured in the MASTER TODO section.
+- **Why:** The previous iteration created assignments but did not close them with explicit verification outcomes.
+- **Impact:**
+  - Force 1: onboarding prompt now points to explicit manifesto and protocol file paths.
+  - Force 2: orchestration artifact + SYNC record are aligned and canonical.
+  - Force 3: plan/execute/test/commit loop remains explicit in the prompt.
+  - Force 4: escalation/proposition markers verified in procedures and skills.
+  - Force 5: prompt now includes explicit finalization + PR cadence requirements.
 
 ### 2026-02-25: Telegram + WhatsApp Messaging Bots
 
@@ -359,15 +410,15 @@ Connectome frontend builds and runs. System Map visualization removed per your r
 
 ### High Priority
 
-- [ ] Implement registry UI with membrane procedures
-- [ ] Create `docs/auth/` doc chain
+- [x] Implement registry UI with membrane procedures (already live at `app/[locale]/(public)/registry/page.tsx`).
+- [x] Create `docs/auth/` doc chain (already present in repo).
 - [ ] Test end-to-end with running FalkorDB database
 
 ### Backlog
 
-- [ ] Create `docs/schema-explorer/` doc chain
+- [x] Create `docs/schema-explorer/` doc chain.
 - [ ] Create browser-safe export entry point in mind-mcp
-- [ ] Add analytics to landing page
+- [x] Add landing page metadata/OG/Twitter social metadata.
 - [ ] Add error states for offline backend
 
 ---
