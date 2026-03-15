@@ -52,8 +52,21 @@ def main():
 
     endpoint_base = os.environ.get("RENDER_EXTERNAL_URL", "")
     if not endpoint_base:
-        repo_name = Path.cwd().name
-        endpoint_base = f"https://{repo_name}.onrender.com"
+        # Try render.yaml service name
+        render_yaml = Path.cwd() / "render.yaml"
+        svc_name = None
+        if render_yaml.exists():
+            try:
+                import yaml
+                with open(render_yaml) as f:
+                    data = yaml.safe_load(f)
+                services = data.get("services", [])
+                if services:
+                    svc_name = services[0].get("name")
+            except Exception:
+                pass
+        svc_name = svc_name or Path.cwd().name
+        endpoint_base = f"https://{svc_name}.onrender.com"
     endpoint_base = endpoint_base.rstrip("/") + "/api/citizens"
 
     citizens_dir = _detect_citizens_dir()

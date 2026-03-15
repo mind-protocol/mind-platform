@@ -66,10 +66,24 @@ def detect_repo_name():
 
 
 def detect_endpoint():
-    """Detect endpoint URL from Render env or fallback."""
+    """Detect endpoint URL from Render env, render.yaml, or fallback."""
     render_url = os.environ.get("RENDER_EXTERNAL_URL")
     if render_url:
         return render_url.replace("https://", "wss://")
+    # Try render.yaml service name
+    render_yaml = Path.cwd() / "render.yaml"
+    if render_yaml.exists():
+        try:
+            import yaml
+            with open(render_yaml) as f:
+                data = yaml.safe_load(f)
+            services = data.get("services", [])
+            if services:
+                svc_name = services[0].get("name")
+                if svc_name:
+                    return f"wss://{svc_name}.onrender.com"
+        except Exception:
+            pass
     service_name = os.environ.get("RENDER_SERVICE_NAME", detect_repo_name())
     return f"wss://{service_name}.onrender.com"
 
