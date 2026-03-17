@@ -139,6 +139,159 @@ function BarChart({ repos, field }: { repos: RepoStats[]; field: 'lines' | 'comm
   );
 }
 
+// Architecture map data
+const ARCH_NODES = [
+  // Core — blue
+  { id: 'mind-mcp', label: 'mind-mcp', desc: 'L1 Cognitive Engine + MCP Server', cat: 'core', row: 0, col: 1 },
+  { id: 'mind-protocol', label: 'mind-protocol', desc: 'L4 Protocol Laws + Schema', cat: 'core', row: 0, col: 2 },
+  { id: 'mind-platform', label: 'mind-platform', desc: 'Web Platform + Registry', cat: 'core', row: 0, col: 3 },
+  { id: 'manemus', label: 'manemus', desc: 'Orchestrator + Bridges', cat: 'core', row: 0, col: 0 },
+  // Universes — purple
+  { id: 'lumina-prime', label: 'lumina-prime', desc: '34 AI citizens — core team', cat: 'universes', row: 1, col: 0 },
+  { id: 'venezia', label: 'venezia', desc: '112 citizens — merchant republic', cat: 'universes', row: 1, col: 1 },
+  { id: 'contre-terre', label: 'contre-terre', desc: 'Novel universe — 8 chapters', cat: 'universes', row: 1, col: 2 },
+  // Products — green
+  { id: 'graphcare', label: 'graphcare', desc: 'AI Health Assessment', cat: 'products', row: 2, col: 0 },
+  { id: 'scopelock', label: 'scopelock', desc: 'Enterprise Delivery Platform', cat: 'products', row: 2, col: 1 },
+  { id: 'the-blood-ledger', label: 'blood-ledger', desc: 'Interactive Fiction Engine', cat: 'products', row: 2, col: 2 },
+  { id: 'beatfoundry', label: 'beatfoundry', desc: 'Music Production Tools', cat: 'products', row: 2, col: 3 },
+  // Tools — yellow
+  { id: 'cities-of-light', label: 'cities-of-light', desc: 'XR Engine — 3D Worlds', cat: 'tools', row: 3, col: 0 },
+  { id: 'mind-ops', label: 'mind-ops', desc: 'Automated Resilience', cat: 'tools', row: 3, col: 1 },
+  { id: 'ai_devboard', label: 'ai-devboard', desc: 'AI Dev Tools', cat: 'tools', row: 3, col: 2 },
+  // Apps — orange
+  { id: 'mind-chrome-extension', label: 'chrome-ext', desc: 'Browser Extension', cat: 'apps', row: 3, col: 3 },
+  { id: 'mind-desktop', label: 'desktop', desc: 'Desktop App', cat: 'apps', row: 4, col: 3 },
+  // Creative — pink
+  { id: 'synthetic-souls', label: 'synthetic-souls', desc: 'AI Music Band', cat: 'creative', row: 4, col: 0 },
+];
+
+const ARCH_EDGES = [
+  // Core connections
+  { from: 'manemus', to: 'mind-mcp', label: 'orchestrates' },
+  { from: 'mind-mcp', to: 'mind-protocol', label: 'implements' },
+  { from: 'mind-platform', to: 'mind-protocol', label: 'serves' },
+  // Universes use core
+  { from: 'lumina-prime', to: 'mind-mcp', label: 'runs on' },
+  { from: 'venezia', to: 'mind-mcp', label: 'runs on' },
+  { from: 'contre-terre', to: 'mind-mcp', label: 'runs on' },
+  // Products use core
+  { from: 'graphcare', to: 'mind-mcp', label: 'reads L1' },
+  { from: 'scopelock', to: 'mind-platform', label: 'deployed via' },
+  // Tools
+  { from: 'cities-of-light', to: 'lumina-prime', label: 'renders' },
+  { from: 'cities-of-light', to: 'venezia', label: 'renders' },
+  { from: 'mind-ops', to: 'mind-mcp', label: 'monitors' },
+  // Creative
+  { from: 'synthetic-souls', to: 'beatfoundry', label: 'produces with' },
+];
+
+const CAT_COLORS_HEX: Record<string, { bg: string; border: string; text: string }> = {
+  core: { bg: '#1e3a5f', border: '#3b82f6', text: '#93c5fd' },
+  universes: { bg: '#3b1f5e', border: '#8b5cf6', text: '#c4b5fd' },
+  products: { bg: '#1a3a2a', border: '#22c55e', text: '#86efac' },
+  tools: { bg: '#3a3520', border: '#eab308', text: '#fde68a' },
+  apps: { bg: '#3a2a1a', border: '#f97316', text: '#fdba74' },
+  creative: { bg: '#3a1a2a', border: '#ec4899', text: '#f9a8d4' },
+};
+
+function ArchitectureMap() {
+  const [hovered, setHovered] = useState<string | null>(null);
+
+  return (
+    <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 mb-12">
+      <h2 className="text-xl font-semibold mb-2">Architecture</h2>
+      <p className="text-gray-500 text-sm mb-6">How the repositories connect</p>
+
+      <div className="relative overflow-x-auto">
+        {/* SVG for edges */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ minHeight: 420 }}>
+          {ARCH_EDGES.map((edge, i) => {
+            const from = ARCH_NODES.find(n => n.id === edge.from);
+            const to = ARCH_NODES.find(n => n.id === edge.to);
+            if (!from || !to) return null;
+
+            const x1 = from.col * 200 + 90;
+            const y1 = from.row * 80 + 28;
+            const x2 = to.col * 200 + 90;
+            const y2 = to.row * 80 + 28;
+
+            const isHighlighted = hovered === from.id || hovered === to.id;
+
+            return (
+              <line
+                key={i}
+                x1={x1} y1={y1} x2={x2} y2={y2}
+                stroke={isHighlighted ? '#60a5fa' : '#374151'}
+                strokeWidth={isHighlighted ? 2 : 1}
+                strokeDasharray={isHighlighted ? '' : '4 4'}
+                className="transition-all duration-300"
+              />
+            );
+          })}
+        </svg>
+
+        {/* Nodes */}
+        <div className="relative" style={{ minHeight: 420, minWidth: 800 }}>
+          {ARCH_NODES.map(node => {
+            const colors = CAT_COLORS_HEX[node.cat] || CAT_COLORS_HEX.core;
+            const isHovered = hovered === node.id;
+            const isConnected = hovered && ARCH_EDGES.some(
+              e => (e.from === hovered && e.to === node.id) || (e.to === hovered && e.from === node.id)
+            );
+
+            return (
+              <div
+                key={node.id}
+                className="absolute transition-all duration-300 cursor-pointer"
+                style={{
+                  left: node.col * 200,
+                  top: node.row * 80,
+                  width: 180,
+                  opacity: hovered && !isHovered && !isConnected ? 0.3 : 1,
+                  transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+                }}
+                onMouseEnter={() => setHovered(node.id)}
+                onMouseLeave={() => setHovered(null)}
+              >
+                <div
+                  className="rounded-lg px-3 py-2 border text-center"
+                  style={{
+                    backgroundColor: colors.bg,
+                    borderColor: isHovered ? colors.text : colors.border,
+                    boxShadow: isHovered ? `0 0 12px ${colors.border}40` : 'none',
+                  }}
+                >
+                  <div className="font-mono text-xs font-bold" style={{ color: colors.text }}>
+                    {node.label}
+                  </div>
+                  <div className="text-[10px] mt-0.5 opacity-70" style={{ color: colors.text }}>
+                    {node.desc}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Legend */}
+      <div className="flex flex-wrap gap-4 mt-4 text-xs">
+        {Object.entries(CATEGORY_LABELS).map(([cat, label]) => {
+          const colors = CAT_COLORS_HEX[cat];
+          if (!colors) return null;
+          return (
+            <div key={cat} className="flex items-center gap-1.5">
+              <div className="w-3 h-3 rounded" style={{ backgroundColor: colors.border }} />
+              <span className="text-gray-400">{label}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function ReposPage() {
   const [data, setData] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -210,6 +363,9 @@ export default function ReposPage() {
           delay={600}
         />
       </div>
+
+      {/* Architecture Map */}
+      <ArchitectureMap />
 
       {/* Chart */}
       <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 mb-12">
