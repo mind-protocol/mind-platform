@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-03-17T21:10:09.345620+00:00",
+  "generated_at": "2026-03-17T21:52:31.251759+00:00",
   "totals": {
-    "repos": 18,
-    "commits": 2447,
-    "files": 39167,
-    "lines": 5921652
+    "repos": 17,
+    "commits": 2437,
+    "files": 40345,
+    "lines": 5805023
   },
   "categories": {
     "core": [
@@ -15,15 +15,12 @@
     ],
     "universes": [
       "contre-terre",
-      "cities-of-light",
       "venezia",
       "lumina-prime"
     ],
     "products": [
       "scopelock",
       "the-blood-ledger",
-      "mind-ops",
-      "duoai",
       "graphcare",
       "beatfoundry"
     ],
@@ -33,7 +30,9 @@
       "mind-app"
     ],
     "tools": [
-      "ai_devboard"
+      "cities-of-light",
+      "ai_devboard",
+      "mind-ops"
     ],
     "creative": []
   },
@@ -55,10 +54,10 @@
     },
     {
       "name": "mind-platform",
-      "commits": 407,
-      "files": 1514,
-      "lines": 891929,
-      "last_commit": "2026-03-17T21:04:49+01:00",
+      "commits": 409,
+      "files": 1518,
+      "lines": 892782,
+      "last_commit": "2026-03-17T22:26:43+01:00",
       "contributors": [
         {
           "count": 48,
@@ -89,10 +88,10 @@
     },
     {
       "name": "mind-protocol",
-      "commits": 72,
-      "files": 914,
-      "lines": 542617,
-      "last_commit": "2026-03-17T21:04:39+01:00",
+      "commits": 74,
+      "files": 918,
+      "lines": 543333,
+      "last_commit": "2026-03-17T22:26:39+01:00",
       "contributors": [
         {
           "count": 48,
@@ -142,7 +141,7 @@
         }
       ],
       "primary_language": "Markdown",
-      "category": "universes"
+      "category": "tools"
     },
     {
       "name": "the-blood-ledger",
@@ -187,7 +186,7 @@
         }
       ],
       "primary_language": "Markdown",
-      "category": "products"
+      "category": "tools"
     },
     {
       "name": "venezia",
@@ -205,26 +204,11 @@
       "category": "universes"
     },
     {
-      "name": "duoai",
-      "commits": 18,
-      "files": 645,
-      "lines": 120512,
-      "last_commit": "2026-02-27T14:15:36+01:00",
-      "contributors": [
-        {
-          "count": 18,
-          "name": "nlr-ai"
-        }
-      ],
-      "primary_language": "Markdown",
-      "category": "products"
-    },
-    {
       "name": "mind-mcp",
-      "commits": 224,
-      "files": 18867,
-      "lines": 116312,
-      "last_commit": "2026-03-15T12:34:41+01:00",
+      "commits": 227,
+      "files": 20679,
+      "lines": 118626,
+      "last_commit": "2026-03-17T22:52:11+01:00",
       "contributors": [
         {
           "count": 50,
@@ -304,13 +288,13 @@
     },
     {
       "name": "lumina-prime",
-      "commits": 26,
-      "files": 2312,
+      "commits": 27,
+      "files": 2315,
       "lines": 66642,
-      "last_commit": "2026-03-15T11:23:23+01:00",
+      "last_commit": "2026-03-17T22:52:26+01:00",
       "contributors": [
         {
-          "count": 26,
+          "count": 27,
           "name": "nlr-ai"
         }
       ],

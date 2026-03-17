@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 interface RepoStats {
   name: string;
@@ -56,19 +56,78 @@ function timeAgo(dateStr: string): string {
   return `${Math.floor(days / 7)}w ago`;
 }
 
-function BarChart({ repos, field }: { repos: RepoStats[]; field: 'lines' | 'commits' | 'files' }) {
-  const max = Math.max(...repos.map(r => r[field]));
-  const sorted = [...repos].sort((a, b) => b[field] - a[field]).slice(0, 12);
+// Animated counter hook
+function useAnimatedNumber(target: number, duration: number = 1500): number {
+  const [current, setCurrent] = useState(0);
+  const startTime = useRef<number | null>(null);
+  const rafRef = useRef<number>(0);
+
+  useEffect(() => {
+    if (target === 0) return;
+    startTime.current = Date.now();
+
+    const animate = () => {
+      const elapsed = Date.now() - (startTime.current || 0);
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCurrent(Math.floor(eased * target));
+
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(animate);
+      }
+    };
+
+    rafRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [target, duration]);
+
+  return current;
+}
+
+function AnimatedStat({ value, label, subtitle, icon, delay = 0 }: {
+  value: number; label: string; subtitle: string; icon: string; delay?: number;
+}) {
+  const [visible, setVisible] = useState(false);
+  const animated = useAnimatedNumber(visible ? value : 0, 2000);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(true), delay);
+    return () => clearTimeout(timer);
+  }, [delay]);
 
   return (
-    <div className="space-y-1">
-      {sorted.map(repo => (
+    <div className={`bg-gray-900 border border-gray-800 rounded-xl p-6 text-center transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <div className="text-3xl mb-2">{icon}</div>
+      <div className="text-3xl font-bold text-white">{formatNumber(animated)}</div>
+      <div className="text-gray-400 text-sm mt-1">{label}</div>
+      <div className="text-gray-600 text-xs mt-1">{subtitle}</div>
+    </div>
+  );
+}
+
+function BarChart({ repos, field }: { repos: RepoStats[]; field: 'lines' | 'commits' | 'files' }) {
+  const max = Math.max(...repos.map(r => r[field]));
+  const sorted = [...repos].sort((a, b) => b[field] - a[field]).slice(0, 14);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(true), 300);
+    return () => clearTimeout(timer);
+  }, [field]);
+
+  return (
+    <div className="space-y-1.5">
+      {sorted.map((repo, i) => (
         <div key={repo.name} className="flex items-center gap-2 text-sm">
-          <span className="w-32 text-right text-gray-400 truncate">{repo.name}</span>
+          <span className="w-36 text-right text-gray-400 truncate font-mono text-xs">{repo.name}</span>
           <div className="flex-1 h-5 bg-gray-800 rounded overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-blue-600 to-cyan-500 rounded"
-              style={{ width: `${(repo[field] / max) * 100}%` }}
+              className="h-full bg-gradient-to-r from-blue-600 to-cyan-500 rounded transition-all duration-1000 ease-out"
+              style={{
+                width: visible ? `${(repo[field] / max) * 100}%` : '0%',
+                transitionDelay: `${i * 50}ms`,
+              }}
             />
           </div>
           <span className="w-16 text-right text-gray-300 font-mono text-xs">
@@ -94,43 +153,62 @@ export default function ReposPage() {
 
   if (loading) return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center">
-      <div className="text-gray-400 animate-pulse">Loading repository stats...</div>
+      <div className="text-gray-400 animate-pulse text-lg">Loading repository stats...</div>
     </div>
   );
 
   if (!data || !data.totals) return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center">
-      <div className="text-gray-400">Stats not available. Run: python3 scripts/generate_repo_stats.py</div>
+      <div className="text-gray-400">Stats not available.</div>
     </div>
   );
 
   const { totals, repos, categories, generated_at } = data;
 
+  // Compute subtitles
+  const firstCommitDate = new Date('2025-06-01'); // approximate project start
+  const daysSinceStart = Math.max(1, Math.floor((Date.now() - firstCommitDate.getTime()) / 86400000));
+  const commitsPerDay = (totals.commits / daysSinceStart).toFixed(1);
+
+  // A book ≈ 200 files, a page ≈ 40 lines
+  const books = Math.round(totals.files / 200);
+  const pages = Math.round(totals.lines / 40);
+
   return (
     <div className="min-h-screen bg-gray-950 text-white p-6 md:p-12 max-w-6xl mx-auto">
       {/* Header */}
-      <div className="mb-12">
-        <h1 className="text-4xl font-bold mb-2">Mind Protocol</h1>
-        <p className="text-gray-400">Repository Statistics — the infrastructure of a civilization</p>
+      <div className="mb-12 animate-fade-in">
+        <h1 className="text-5xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+          Mind Protocol
+        </h1>
+        <p className="text-gray-400 text-lg">The infrastructure of a civilization, in numbers</p>
         <p className="text-gray-600 text-sm mt-1">
-          Updated {timeAgo(generated_at)} · Cache refreshes every 24h
+          Updated {timeAgo(generated_at)}
         </p>
       </div>
 
-      {/* Totals */}
+      {/* Totals — animated counters */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-        {[
-          { label: 'Repositories', value: totals.repos, icon: '📦' },
-          { label: 'Commits', value: totals.commits, icon: '📝' },
-          { label: 'Files', value: totals.files, icon: '📄' },
-          { label: 'Lines of Code', value: totals.lines, icon: '⚡' },
-        ].map(({ label, value, icon }) => (
-          <div key={label} className="bg-gray-900 border border-gray-800 rounded-xl p-6 text-center">
-            <div className="text-3xl mb-2">{icon}</div>
-            <div className="text-3xl font-bold text-white">{formatNumber(value)}</div>
-            <div className="text-gray-400 text-sm mt-1">{label}</div>
-          </div>
-        ))}
+        <AnimatedStat
+          value={totals.repos} label="Repositories" icon="📦"
+          subtitle="across the ecosystem"
+          delay={0}
+        />
+        <AnimatedStat
+          value={totals.commits} label="Commits" icon="📝"
+          subtitle={`~${commitsPerDay} per day`}
+          delay={200}
+        />
+        <AnimatedStat
+          value={totals.files} label="Files" icon="📄"
+          subtitle={`~${books} books worth`}
+          delay={400}
+        />
+        <AnimatedStat
+          value={totals.lines} label="Lines of Code" icon="⚡"
+          subtitle={`~${formatNumber(pages)} pages`}
+          delay={600}
+        />
       </div>
 
       {/* Chart */}
@@ -166,7 +244,7 @@ export default function ReposPage() {
             const catCommits = catRepos.reduce((s, r) => s + r.commits, 0);
 
             return (
-              <div key={cat} className={`border rounded-xl p-4 ${CATEGORY_COLORS[cat] || CATEGORY_COLORS.other}`}>
+              <div key={cat} className={`border rounded-xl p-4 transition-all hover:scale-[1.02] ${CATEGORY_COLORS[cat] || CATEGORY_COLORS.other}`}>
                 <h3 className="font-semibold mb-2">{CATEGORY_LABELS[cat] || cat}</h3>
                 <div className="text-2xl font-bold">{formatNumber(catLines)} lines</div>
                 <div className="text-sm opacity-70">{catRepos.length} repos · {catCommits} commits</div>
@@ -195,7 +273,7 @@ export default function ReposPage() {
           </thead>
           <tbody>
             {repos.map(repo => (
-              <tr key={repo.name} className="border-b border-gray-800/50 hover:bg-gray-800/30">
+              <tr key={repo.name} className="border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors">
                 <td className="p-3 font-mono text-blue-300">
                   <a
                     href={`https://github.com/mind-protocol/${repo.name}`}
@@ -224,9 +302,11 @@ export default function ReposPage() {
 
       {/* Footer */}
       <div className="mt-8 text-center text-gray-600 text-sm">
-        <p>Data generated by <code className="text-gray-400">scripts/generate_repo_stats.py</code></p>
         <p className="mt-1">
-          {totals.repos} repos · {totals.commits.toLocaleString()} commits · {totals.lines.toLocaleString()} lines of code
+          {totals.repos} repos · {totals.commits.toLocaleString()} commits · {totals.lines.toLocaleString()} lines
+        </p>
+        <p className="mt-1 text-gray-700">
+          Event-driven refresh — stats update on every commit, no cron
         </p>
       </div>
     </div>

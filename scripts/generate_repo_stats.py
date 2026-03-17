@@ -22,16 +22,16 @@ REPOS = [
     "mind-chrome-extension", "mind-desktop", "mind-app", "mind-contracts",
     "mind-movie", "the-blood-ledger", "beatfoundry", "scopelock",
     "manemus", "ai_devboard", "synthetic-souls", "scisense",
-    "duoai", "ngram", "catland", "hri", "fluxbeam",
+    "ngram", "hri", "fluxbeam", "babys",
 ]
 
 CATEGORIES = {
     "core": ["mind-mcp", "mind-protocol", "mind-platform", "manemus"],
-    "universes": ["lumina-prime", "venezia", "contre-terre", "cities-of-light"],
-    "products": ["graphcare", "mind-ops", "scopelock", "beatfoundry", "the-blood-ledger", "scisense", "duoai"],
+    "universes": ["lumina-prime", "venezia", "contre-terre"],
+    "products": ["graphcare", "scopelock", "beatfoundry", "the-blood-ledger", "scisense", "hri", "babys"],
     "apps": ["mind-chrome-extension", "mind-desktop", "mind-app"],
-    "tools": ["ai_devboard", "ngram", "fluxbeam"],
-    "creative": ["synthetic-souls", "mind-movie", "catland", "hri"],
+    "tools": ["cities-of-light", "mind-ops", "ai_devboard", "ngram", "fluxbeam"],
+    "creative": ["synthetic-souls", "mind-movie"],
 }
 
 
