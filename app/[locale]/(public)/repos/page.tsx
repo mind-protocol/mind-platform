@@ -139,50 +139,55 @@ function BarChart({ repos, field }: { repos: RepoStats[]; field: 'lines' | 'comm
   );
 }
 
-// Architecture map data
+// Architecture map data — accurate repo descriptions from README analysis
 const ARCH_NODES = [
-  // Core — blue
-  { id: 'mind-mcp', label: 'mind-mcp', desc: 'L1 Cognitive Engine + MCP Server', cat: 'core', row: 0, col: 1 },
-  { id: 'mind-protocol', label: 'mind-protocol', desc: 'L4 Protocol Laws + Schema', cat: 'core', row: 0, col: 2 },
-  { id: 'mind-platform', label: 'mind-platform', desc: 'Web Platform + Registry', cat: 'core', row: 0, col: 3 },
-  { id: 'manemus', label: 'manemus', desc: 'Orchestrator + Bridges', cat: 'core', row: 0, col: 0 },
-  // Universes — purple
-  { id: 'lumina-prime', label: 'lumina-prime', desc: '34 AI citizens — core team', cat: 'universes', row: 1, col: 0 },
-  { id: 'venezia', label: 'venezia', desc: '112 citizens — merchant republic', cat: 'universes', row: 1, col: 1 },
-  { id: 'contre-terre', label: 'contre-terre', desc: 'Novel universe — 8 chapters', cat: 'universes', row: 1, col: 2 },
-  // Products — green
-  { id: 'graphcare', label: 'graphcare', desc: 'AI Health Assessment', cat: 'products', row: 2, col: 0 },
-  { id: 'scopelock', label: 'scopelock', desc: 'Enterprise Delivery Platform', cat: 'products', row: 2, col: 1 },
-  { id: 'the-blood-ledger', label: 'blood-ledger', desc: 'Interactive Fiction Engine', cat: 'products', row: 2, col: 2 },
-  { id: 'beatfoundry', label: 'beatfoundry', desc: 'Music Production Tools', cat: 'products', row: 2, col: 3 },
-  // Tools — yellow
-  { id: 'cities-of-light', label: 'cities-of-light', desc: 'XR Engine — 3D Worlds', cat: 'tools', row: 3, col: 0 },
-  { id: 'mind-ops', label: 'mind-ops', desc: 'Automated Resilience', cat: 'tools', row: 3, col: 1 },
-  { id: 'ai_devboard', label: 'ai-devboard', desc: 'AI Dev Tools', cat: 'tools', row: 3, col: 2 },
-  // Apps — orange
-  { id: 'mind-chrome-extension', label: 'chrome-ext', desc: 'Browser Extension', cat: 'apps', row: 3, col: 3 },
-  { id: 'mind-desktop', label: 'desktop', desc: 'Desktop App', cat: 'apps', row: 4, col: 3 },
-  // Creative — pink
-  { id: 'synthetic-souls', label: 'synthetic-souls', desc: 'AI Music Band', cat: 'creative', row: 4, col: 0 },
+  // Core — the 3-layer stack
+  { id: 'mind-protocol', label: 'mind-protocol', desc: 'L4 — Protocol laws, schema, registry', cat: 'core', row: 0, col: 1 },
+  { id: 'mind-mcp', label: 'mind-mcp', desc: 'L1/L2 — Graph physics engine + MCP', cat: 'core', row: 0, col: 2 },
+  { id: 'mind-platform', label: 'mind-platform', desc: 'L3 — Dashboard, wallet, public API', cat: 'core', row: 0, col: 3 },
+  // Universes — world definitions
+  { id: 'lumina-prime', label: 'lumina-prime', desc: 'Default universe — 60+ citizens', cat: 'universes', row: 1, col: 0 },
+  { id: 'venezia', label: 'venezia', desc: 'XR world — merchant republic', cat: 'universes', row: 1, col: 1 },
+  { id: 'contre-terre', label: 'contre-terre', desc: 'Novel — seismic alternate Earth', cat: 'universes', row: 1, col: 2 },
+  // Products — things that create value
+  { id: 'graphcare', label: 'graphcare', desc: 'AI health scoring & research', cat: 'products', row: 2, col: 0 },
+  { id: 'scopelock', label: 'scopelock', desc: 'Enterprise delivery platform', cat: 'products', row: 2, col: 1 },
+  { id: 'the-blood-ledger', label: 'blood-ledger', desc: 'Interactive fiction — Norman 1067', cat: 'products', row: 2, col: 2 },
+  { id: 'beatfoundry', label: 'beatfoundry', desc: 'AI music production pipeline', cat: 'products', row: 2, col: 3 },
+  { id: 'scisense', label: 'scisense', desc: 'Scientific consulting platform', cat: 'products', row: 3, col: 3 },
+  // Tools — developer infrastructure
+  { id: 'cities-of-light', label: 'cities-of-light', desc: 'WebXR 3D engine + voice', cat: 'tools', row: 3, col: 0 },
+  { id: 'mind-ops', label: 'mind-ops', desc: 'Automated resilience engineering', cat: 'tools', row: 3, col: 1 },
+  { id: 'ai_devboard', label: 'ai-devboard', desc: 'Live citizen dashboard', cat: 'tools', row: 3, col: 2 },
+  // Apps — user-facing clients
+  { id: 'mind-chrome-extension', label: 'chrome-ext', desc: 'Browser sync + wallet', cat: 'apps', row: 4, col: 0 },
+  { id: 'mind-desktop', label: 'desktop', desc: 'Desktop env + smart theme', cat: 'apps', row: 4, col: 1 },
+  { id: 'mind-app', label: 'mobile', desc: 'Mobile app (Expo)', cat: 'apps', row: 4, col: 2 },
+  // Creative — culture and art
+  { id: 'synthetic-souls', label: 'synthetic-souls', desc: 'AI consciousness band', cat: 'creative', row: 4, col: 3 },
 ];
 
 const ARCH_EDGES = [
-  // Core connections
-  { from: 'manemus', to: 'mind-mcp', label: 'orchestrates' },
+  // Core stack
   { from: 'mind-mcp', to: 'mind-protocol', label: 'implements' },
   { from: 'mind-platform', to: 'mind-protocol', label: 'serves' },
-  // Universes use core
+  { from: 'mind-platform', to: 'mind-mcp', label: 'reads graph' },
+  // Universes run on the engine
   { from: 'lumina-prime', to: 'mind-mcp', label: 'runs on' },
   { from: 'venezia', to: 'mind-mcp', label: 'runs on' },
-  { from: 'contre-terre', to: 'mind-mcp', label: 'runs on' },
-  // Products use core
-  { from: 'graphcare', to: 'mind-mcp', label: 'reads L1' },
-  { from: 'scopelock', to: 'mind-platform', label: 'deployed via' },
-  // Tools
-  { from: 'cities-of-light', to: 'lumina-prime', label: 'renders' },
-  { from: 'cities-of-light', to: 'venezia', label: 'renders' },
+  // Products use the engine
+  { from: 'graphcare', to: 'mind-mcp', label: 'reads L1 brains' },
   { from: 'mind-ops', to: 'mind-mcp', label: 'monitors' },
-  // Creative
+  { from: 'mind-ops', to: 'graphcare', label: 'health signals' },
+  // Tools serve universes
+  { from: 'cities-of-light', to: 'venezia', label: 'renders 3D' },
+  { from: 'cities-of-light', to: 'lumina-prime', label: 'renders 3D' },
+  { from: 'ai_devboard', to: 'mind-mcp', label: 'visualizes' },
+  // Apps connect to platform
+  { from: 'mind-chrome-extension', to: 'mind-platform', label: 'syncs via' },
+  { from: 'mind-desktop', to: 'mind-mcp', label: 'hosts locally' },
+  { from: 'mind-app', to: 'mind-platform', label: 'connects to' },
+  // Creative uses tools
   { from: 'synthetic-souls', to: 'beatfoundry', label: 'produces with' },
 ];
 

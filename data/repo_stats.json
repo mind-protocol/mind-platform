@@ -1,14 +1,13 @@
 {
-  "generated_at": "2026-03-17T21:52:31.251759+00:00",
+  "generated_at": "2026-03-17T22:23:27.718952+00:00",
   "totals": {
-    "repos": 17,
-    "commits": 2437,
-    "files": 40345,
-    "lines": 5805023
+    "repos": 16,
+    "commits": 2134,
+    "files": 38493,
+    "lines": 4198060
   },
   "categories": {
     "core": [
-      "manemus",
       "mind-platform",
       "mind-protocol",
       "mind-mcp"
@@ -38,26 +37,11 @@
   },
   "repos": [
     {
-      "name": "manemus",
-      "commits": 309,
-      "files": 1854,
-      "lines": 1607314,
-      "last_commit": "2026-03-13T18:38:53+01:00",
-      "contributors": [
-        {
-          "count": 50,
-          "name": "nlr-ai"
-        }
-      ],
-      "primary_language": "Markdown",
-      "category": "core"
-    },
-    {
       "name": "mind-platform",
-      "commits": 409,
+      "commits": 411,
       "files": 1518,
-      "lines": 892782,
-      "last_commit": "2026-03-17T22:26:43+01:00",
+      "lines": 892950,
+      "last_commit": "2026-03-17T22:58:59+01:00",
       "contributors": [
         {
           "count": 48,
@@ -88,10 +72,10 @@
     },
     {
       "name": "mind-protocol",
-      "commits": 74,
-      "files": 918,
-      "lines": 543333,
-      "last_commit": "2026-03-17T22:26:39+01:00",
+      "commits": 75,
+      "files": 919,
+      "lines": 543515,
+      "last_commit": "2026-03-17T23:20:22+01:00",
       "contributors": [
         {
           "count": 48,
@@ -205,10 +189,10 @@
     },
     {
       "name": "mind-mcp",
-      "commits": 227,
-      "files": 20679,
+      "commits": 230,
+      "files": 20680,
       "lines": 118626,
-      "last_commit": "2026-03-17T22:52:11+01:00",
+      "last_commit": "2026-03-17T23:20:20+01:00",
       "contributors": [
         {
           "count": 50,
@@ -222,7 +206,7 @@
       "name": "graphcare",
       "commits": 15,
       "files": 126,
-      "lines": 87826,
+      "lines": 87827,
       "last_commit": "2025-11-18T22:56:07+01:00",
       "contributors": [
         {

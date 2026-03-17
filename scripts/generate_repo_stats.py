@@ -17,20 +17,27 @@ HOME = Path("/home/mind-protocol")
 OUTPUT = Path(__file__).parent.parent / "data" / "repo_stats.json"
 
 REPOS = [
-    "mind-mcp", "mind-protocol", "lumina-prime", "venezia", "contre-terre",
-    "cities-of-light", "graphcare", "mind-ops", "mind-platform",
-    "mind-chrome-extension", "mind-desktop", "mind-app", "mind-contracts",
-    "mind-movie", "the-blood-ledger", "beatfoundry", "scopelock",
-    "manemus", "ai_devboard", "synthetic-souls", "scisense",
-    "ngram", "hri", "fluxbeam", "babys",
+    # Core stack
+    "mind-mcp", "mind-protocol", "mind-platform",
+    # Universes
+    "lumina-prime", "venezia", "contre-terre",
+    # Products
+    "graphcare", "scopelock", "beatfoundry", "the-blood-ledger",
+    "scisense", "hri", "babys",
+    # Tools
+    "cities-of-light", "mind-ops", "ai_devboard",
+    # Apps
+    "mind-chrome-extension", "mind-desktop", "mind-app",
+    # Creative
+    "synthetic-souls", "mind-movie",
 ]
 
 CATEGORIES = {
-    "core": ["mind-mcp", "mind-protocol", "mind-platform", "manemus"],
+    "core": ["mind-mcp", "mind-protocol", "mind-platform"],
     "universes": ["lumina-prime", "venezia", "contre-terre"],
     "products": ["graphcare", "scopelock", "beatfoundry", "the-blood-ledger", "scisense", "hri", "babys"],
     "apps": ["mind-chrome-extension", "mind-desktop", "mind-app"],
-    "tools": ["cities-of-light", "mind-ops", "ai_devboard", "ngram", "fluxbeam"],
+    "tools": ["cities-of-light", "mind-ops", "ai_devboard"],
     "creative": ["synthetic-souls", "mind-movie"],
 }
 
