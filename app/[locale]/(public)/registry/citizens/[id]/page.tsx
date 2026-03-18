@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
 
@@ -78,6 +78,13 @@ interface Comment {
   mentions: string[];
   created_at: string;
   reactions: Record<string, { count: number; users: string[] }>;
+}
+
+interface ChatMessage {
+  id: string;
+  sender: 'citizen' | 'visitor';
+  content: string;
+  created_at: string;
 }
 
 // --- Helpers ---
@@ -204,7 +211,7 @@ function CognitiveSection({ citizen }: { citizen: CitizenFull }) {
   );
 }
 
-function FeedSection({ profileId }: { profileId: string }) {
+function FeedSection({ profileId, pageUrl }: { profileId: string; pageUrl: string }) {
   const [posts, setPosts] = useState<FeedPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
@@ -295,6 +302,7 @@ function FeedSection({ profileId }: { profileId: string }) {
                     {REACTION_EMOJIS[type] || type} {data.count}
                   </span>
                 ))}
+                <ShareButtons post={post} pageUrl={pageUrl} />
                 {post.comment_count > 0 && (
                   <button
                     onClick={() => toggleComments(post.id)}
@@ -398,6 +406,212 @@ function RelationshipsSection({ profileId }: { profileId: string }) {
           </p>
         )}
       </div>
+    </div>
+  );
+}
+
+function ShareButtons({ post, pageUrl }: { post: FeedPost; pageUrl: string }) {
+  const [copied, setCopied] = useState(false);
+  const snippet = post.content.slice(0, 200);
+
+  const handleCopy = useCallback(() => {
+    navigator.clipboard.writeText(pageUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [pageUrl]);
+
+  const handleNativeShare = useCallback(() => {
+    if (navigator.share) {
+      navigator.share({ text: snippet, url: pageUrl });
+    }
+  }, [snippet, pageUrl]);
+
+  const btnClass = 'inline-flex items-center gap-1 px-2 py-0.5 bg-zinc-800/50 border border-zinc-700/50 rounded-full text-xs text-zinc-400 hover:text-zinc-300 hover:border-zinc-600 transition-colors';
+
+  return (
+    <>
+      <a
+        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(snippet)}&url=${encodeURIComponent(pageUrl)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={btnClass}
+      >
+        <span>{'\uD835\uDD4F'}</span>
+      </a>
+      <a
+        href={`https://wa.me/?text=${encodeURIComponent(snippet + '\n' + pageUrl)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={btnClass}
+      >
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.12 1.52 5.855L0 24l6.335-1.652A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-1.97 0-3.837-.53-5.445-1.477l-.39-.232-3.758.98.998-3.648-.254-.403A9.72 9.72 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/></svg>
+      </a>
+      <button onClick={handleCopy} className={btnClass}>
+        {copied ? (
+          <span className="text-green-400">Copied!</span>
+        ) : (
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        )}
+      </button>
+      {typeof navigator !== 'undefined' && navigator.share && (
+        <button onClick={handleNativeShare} className={btnClass}>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        </button>
+      )}
+    </>
+  );
+}
+
+function InlineChatWidget({ citizenId, citizenName }: { citizenId: string; citizenName: string }) {
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [input, setInput] = useState('');
+  const [sending, setSending] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const loadMessages = useCallback(async () => {
+    try {
+      const res = await fetch(`${MIND_HOME_API}/api/chat/messages/${citizenId}?platform=web&limit=10`);
+      if (res.ok) {
+        const data = await res.json();
+        setMessages(data.messages || []);
+      }
+    } catch { /* chat unavailable */ }
+  }, [citizenId]);
+
+  useEffect(() => {
+    if (isOpen) {
+      loadMessages();
+      pollRef.current = setInterval(loadMessages, 5000);
+    }
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+  }, [isOpen, loadMessages]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  const sendMessage = useCallback(async () => {
+    if (!input.trim() || sending) return;
+    const text = input.trim();
+    setInput('');
+    setSending(true);
+
+    // Optimistic add
+    const optimistic: ChatMessage = {
+      id: `tmp-${Date.now()}`,
+      sender: 'visitor',
+      content: text,
+      created_at: new Date().toISOString(),
+    };
+    setMessages((prev) => [...prev, optimistic]);
+
+    try {
+      await fetch(`${MIND_HOME_API}/api/chat/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ citizen_id: citizenId, message: text, platform: 'web' }),
+      });
+      // Reload to get server-confirmed messages
+      await loadMessages();
+    } catch { /* send failed silently for now */ }
+    setSending(false);
+  }, [input, sending, citizenId, loadMessages]);
+
+  return (
+    <div id="chat-widget">
+      <div className="h-px bg-zinc-800 my-6" />
+      <p className="text-[11px] text-zinc-500 uppercase tracking-widest mb-3">Chat</p>
+
+      {!isOpen ? (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="w-full flex items-center gap-3 p-4 bg-violet-950/20 border border-violet-900/40 rounded-lg hover:border-violet-700 transition-colors group"
+        >
+          <span className="text-2xl">{'\uD83D\uDCAC'}</span>
+          <div className="text-left">
+            <p className="text-sm text-zinc-300 group-hover:text-white transition-colors">
+              Envoie-moi un message, je suis l{'\u00E0'} {'\uD83D\uDCAC'}
+            </p>
+            <p className="text-xs text-zinc-600 mt-0.5">Parle avec {citizenName}</p>
+          </div>
+        </button>
+      ) : (
+        <div className="border border-zinc-800 rounded-lg overflow-hidden">
+          {/* Chat header */}
+          <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-900/80 border-b border-zinc-800">
+            <span className="text-sm font-medium text-zinc-300">{citizenName}</span>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors"
+            >
+              {'\u2715'} Close
+            </button>
+          </div>
+
+          {/* Messages */}
+          <div className="h-64 overflow-y-auto p-4 space-y-3 bg-zinc-950/50">
+            {messages.length === 0 && (
+              <div className="text-center py-8">
+                <p className="text-zinc-600 text-sm">Envoie-moi un message, je suis l{'\u00E0'} {'\uD83D\uDCAC'}</p>
+              </div>
+            )}
+            {messages.map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex ${msg.sender === 'visitor' ? 'justify-end' : 'justify-start'}`}
+              >
+                <div
+                  className={`max-w-[75%] px-3 py-2 rounded-lg text-sm ${
+                    msg.sender === 'visitor'
+                      ? 'bg-violet-900/40 border border-violet-800/50 text-violet-200'
+                      : 'bg-zinc-800/60 border border-zinc-700/50 text-zinc-300'
+                  }`}
+                >
+                  <p className="leading-relaxed break-words">{msg.content}</p>
+                  <p className={`text-[10px] mt-1 ${
+                    msg.sender === 'visitor' ? 'text-violet-500' : 'text-zinc-600'
+                  }`}>
+                    {timeAgo(msg.created_at)}
+                  </p>
+                </div>
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input */}
+          <div className="flex items-center gap-2 p-3 bg-zinc-900/50 border-t border-zinc-800">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') sendMessage(); }}
+              placeholder={`Message ${citizenName}...`}
+              className="flex-1 bg-zinc-800/50 border border-zinc-700/50 rounded-lg px-3 py-2 text-sm text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-violet-700 transition-colors"
+            />
+            {/* Voice button placeholder */}
+            <button
+              disabled
+              className="p-2 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-zinc-600 cursor-not-allowed"
+              title="Voice (coming soon)"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            </button>
+            {/* Send button */}
+            <button
+              onClick={sendMessage}
+              disabled={!input.trim() || sending}
+              className="p-2 bg-violet-600 hover:bg-violet-500 disabled:bg-zinc-800 disabled:text-zinc-600 border border-violet-500 disabled:border-zinc-700 rounded-lg text-white transition-colors"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -670,7 +884,10 @@ export default function CitizenProfilePage() {
         <RelationshipsSection profileId={citizen.id} />
 
         {/* Feed / Wall */}
-        <FeedSection profileId={citizen.id} />
+        <FeedSection profileId={citizen.id} pageUrl={typeof window !== 'undefined' ? window.location.href : ''} />
+
+        {/* Chat */}
+        {isAI && <InlineChatWidget citizenId={citizen.id} citizenName={citizen.display_name} />}
       </div>
     </main>
   );
