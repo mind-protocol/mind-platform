@@ -9,9 +9,12 @@ Usage:
     python3 .mind/scripts/l4_register_citizens.py
 """
 
+import logging
 import os
 import sys
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 # Add mind-mcp to path for runtime.l4 import
 for candidate in [Path.home() / "mind-mcp", Path("/app"), Path.cwd()]:
@@ -63,8 +66,8 @@ def main():
                 services = data.get("services", [])
                 if services:
                     svc_name = services[0].get("name")
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug("Could not parse render.yaml for service name: %s", e)
         svc_name = svc_name or Path.cwd().name
         endpoint_base = f"https://{svc_name}.onrender.com"
     endpoint_base = endpoint_base.rstrip("/") + "/api/citizens"

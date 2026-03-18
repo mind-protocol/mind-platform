@@ -31,7 +31,7 @@ export default function ForgotPasswordPage() {
       if (res.ok) {
         setSent(true);
       } else {
-        const data = await res.json().catch(() => ({}));
+        const data = await res.json().catch(() => ({ /* non-JSON response */ }));
         setError(data.error || t('errorGeneric'));
       }
     } catch {

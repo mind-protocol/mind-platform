@@ -50,7 +50,7 @@ function ClaudeIntegrationForm() {
     try {
       const res = await fetch(`${API_URL}/claude/session/${token}`);
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
+        const data = await res.json().catch(() => ({ /* non-JSON response */ }));
         setStep('invalid');
         setError(data.error || 'Ce lien a expire. Tape /claude dans ton chat pour en generer un nouveau.');
         return;
@@ -158,7 +158,7 @@ function ClaudeIntegrationForm() {
       });
 
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
+        const data = await res.json().catch(() => ({ /* non-JSON response */ }));
         setError(data.error || 'Erreur lors de l\'enregistrement du consentement.');
         setIsSubmitting(false);
         return;

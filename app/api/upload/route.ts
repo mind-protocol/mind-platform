@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Notify citizen via webhook (fire and forget)
-    _notifyCitizen(citizen, file.name, blob.url).catch(() => {});
+    _notifyCitizen(citizen, file.name, blob.url).catch(e => console.warn('Citizen upload notification failed:', e?.message || e));
 
     return NextResponse.json({
       status: "ok",

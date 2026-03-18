@@ -21,11 +21,14 @@ Environment:
 """
 
 import hashlib
+import logging
 import os
 import subprocess
 import sys
 import time
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 # ── Config ──────────────────────────────────────────────────────────────
 
@@ -49,8 +52,8 @@ def detect_org_id():
             parts = remote.split(":")[-1].replace(".git", "").split("/")
             if len(parts) >= 2:
                 return parts[-2]  # org name
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug("Could not detect org from git remote: %s", e)
     return Path.cwd().parent.name
 
 
@@ -61,7 +64,8 @@ def detect_repo_name():
             ["git", "remote", "get-url", "origin"], stderr=subprocess.DEVNULL, text=True
         ).strip()
         return remote.split("/")[-1].replace(".git", "")
-    except Exception:
+    except Exception as e:
+        logger.debug("Could not detect repo name from git remote: %s", e)
         return Path.cwd().name
 
 
@@ -82,8 +86,8 @@ def detect_endpoint():
                 svc_name = services[0].get("name")
                 if svc_name:
                     return f"wss://{svc_name}.onrender.com"
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug("Could not parse render.yaml for endpoint: %s", e)
     service_name = os.environ.get("RENDER_SERVICE_NAME", detect_repo_name())
     return f"wss://{service_name}.onrender.com"
 

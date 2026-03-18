@@ -45,7 +45,10 @@ async function pingEndpoint(url: string, timeoutMs = 8000): Promise<{
     const ms = Date.now() - start;
 
     if (res.ok) {
-      const data = await res.json().catch(() => ({}));
+      const data = await res.json().catch((e: unknown) => {
+        console.debug('Health dashboard JSON parse failed:', e);
+        return { /* non-JSON response */ };
+      });
       return { ok: true, data, ms };
     }
     return { ok: false, ms, error: `HTTP ${res.status}` };

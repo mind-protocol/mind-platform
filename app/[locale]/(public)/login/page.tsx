@@ -33,7 +33,7 @@ export default function LoginPage() {
     fetch(`/api/auth/magic?token=${encodeURIComponent(token)}`)
       .then(async (res) => {
         if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
+          const data = await res.json().catch(() => ({ /* non-JSON response */ }));
           throw new Error(data.error || t('errorMagicLink'));
         }
         router.push('/tracker');
@@ -65,7 +65,7 @@ export default function LoginPage() {
         body: JSON.stringify({ email: email.trim(), password }),
       });
 
-      const data = await res.json().catch(() => ({}));
+      const data = await res.json().catch(() => ({ /* non-JSON response */ }));
 
       if (!res.ok) {
         setError(data.error || t('errorInvalidCredentials'));

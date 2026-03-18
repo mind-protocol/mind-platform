@@ -229,7 +229,7 @@ export default function HealthProfileEditor() {
         body: JSON.stringify(profile),
       });
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
+        const data = await res.json().catch(() => ({ /* non-JSON response */ }));
         setError(data.error || t('saveError'));
         return;
       }

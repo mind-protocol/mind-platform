@@ -51,7 +51,7 @@ export default function ResetPasswordPage() {
         body: JSON.stringify({ token, password }),
       });
 
-      const data = await res.json().catch(() => ({}));
+      const data = await res.json().catch(() => ({ /* non-JSON response */ }));
 
       if (!res.ok) {
         setError(data.error || t('errorMagicLink'));

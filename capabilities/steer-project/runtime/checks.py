@@ -7,6 +7,7 @@ Source: capabilities/steer-project/runtime/checks.py
 DOCS: capabilities/steer-project/HEALTH.md
 """
 
+import logging
 import os
 import re
 import subprocess
@@ -16,6 +17,8 @@ from pathlib import Path
 from typing import List, Optional
 
 from runtime.capability import check, Signal, triggers
+
+logger = logging.getLogger(__name__)
 
 
 # =============================================================================
@@ -108,8 +111,8 @@ def find_escalation_markers() -> List[EscalationMarker]:
                     created=mtime,
                     status="open",  # Would need tracking to know if resolved
                 ))
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug("Could not scan escalation markers: %s", e)
 
     return markers
 
@@ -132,8 +135,8 @@ def get_last_steering_session() -> Optional[SteeringSession]:
                 timestamp=datetime.fromisoformat(parts[0]),
                 findings_count=int(parts[1]),
             )
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug("Could not parse last steering session: %s", e)
 
     return None
 

@@ -351,7 +351,7 @@ export function useAudioEngine(): AudioEngine {
         audioElRef.current.src = '';
       }
       if (audioCtxRef.current) {
-        audioCtxRef.current.close().catch(() => {});
+        audioCtxRef.current.close().catch((e: unknown) => { console.debug('AudioContext close error (safe to ignore):', e); });
       }
       /* eslint-enable react-hooks/exhaustive-deps */
     };

@@ -134,7 +134,7 @@ export default function TrackerStats({ refreshKey }: { refreshKey: number }) {
         if (s) setStats(s);
         if (d) setDaily(d);
       })
-      .catch(() => {})
+      .catch((e: unknown) => { console.debug('TrackerStats fetch failed:', e); })
       .finally(() => setLoading(false));
   }, [period, refreshKey]);
 

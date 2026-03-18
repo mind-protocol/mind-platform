@@ -7,9 +7,12 @@ Installed to: .mind/capabilities/implement-code/runtime/checks.py
 """
 
 import ast
+import logging
 import re
 from datetime import datetime, timedelta
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 # Import from capability runtime infrastructure
 # Located at: runtime/capability/ (MCP code, not copied to .mind/)
@@ -126,8 +129,8 @@ def get_docs_marker(file_path: Path) -> str | None:
             match = re.search(r"DOCS:\s*(.+)", line)
             if match:
                 return match.group(1).strip()
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug("Could not extract DOCS marker from %s: %s", file_path, e)
 
     return None
 
@@ -139,8 +142,8 @@ def get_last_updated(doc_path: Path) -> datetime | None:
         match = re.search(r"LAST_UPDATED:\s*(\d{4}-\d{2}-\d{2})", content)
         if match:
             return datetime.strptime(match.group(1), "%Y-%m-%d")
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug("Could not extract LAST_UPDATED from %s: %s", doc_path, e)
 
     return None
 
@@ -160,13 +163,14 @@ def get_git_mtime(file_path: Path) -> datetime | None:
             # Parse git date format: 2025-12-29 10:30:00 -0500
             date_str = result.stdout.strip().split()[0]
             return datetime.strptime(date_str, "%Y-%m-%d")
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug("Could not get git mtime for %s: %s", file_path, e)
 
     # Fallback to file mtime
     try:
         return datetime.fromtimestamp(file_path.stat().st_mtime)
-    except Exception:
+    except Exception as e:
+        logger.debug("Could not get file mtime for %s: %s", file_path, e)
         return None
 
 

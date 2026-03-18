@@ -11,10 +11,13 @@ Usage:
 """
 
 import json
+import logging
 import os
 import re
 import sys
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 from urllib.request import Request, urlopen
 from urllib.error import URLError
 
@@ -76,8 +79,8 @@ def lookup_service_by_name(name):
             if data:
                 svc = data[0].get("service", data[0])
                 return svc.get("id")
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug("Could not fetch Render service ID: %s", e)
     return None
 
 

@@ -60,7 +60,7 @@ export default function RegisterPage() {
         }),
       });
 
-      const data = await res.json().catch(() => ({}));
+      const data = await res.json().catch(() => ({ /* non-JSON response */ }));
 
       if (!res.ok) {
         setError(data.error || t('errorRegistrationFailed'));

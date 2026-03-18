@@ -25,7 +25,7 @@ export function useHealthProfile(authenticated: boolean) {
     try {
       const r = await fetchWithTimeout('/api/tracker/health', FETCH_TIMEOUT_MS);
       if (!r.ok) {
-        const body = await r.json().catch(() => ({}));
+        const body = await r.json().catch(() => ({ /* non-JSON response */ }));
         throw new Error(body.error || `HTTP ${r.status}`);
       }
       const data = await r.json();
@@ -68,7 +68,7 @@ export function useGrowthData(authenticated: boolean) {
           setDob(data.dob || '');
         }
       })
-      .catch(() => {})
+      .catch((e: unknown) => { console.debug('Growth data fetch failed:', e); })
       .finally(() => setLoading(false));
   }, [authenticated]);
 

@@ -37,7 +37,7 @@ export interface GraphRow {
  */
 export async function l4Query(cypher: string): Promise<GraphRow[]> {
   const redis = getRedis();
-  await redis.connect().catch(() => {}); // already connected is fine
+  await redis.connect().catch((e: unknown) => { console.debug('Redis connect (may already be connected):', e); });
 
   // GRAPH.QUERY returns [header, data, stats]
   const raw: any = await redis.call('GRAPH.QUERY', L4_GRAPH, cypher, '--compact');
@@ -128,7 +128,7 @@ export async function getCitizenCountByOrg(): Promise<Record<string, number>> {
  */
 export async function disconnect() {
   if (_redis) {
-    await _redis.quit().catch(() => {});
+    await _redis.quit().catch((e: unknown) => { console.debug('Redis quit error (safe to ignore):', e); });
     _redis = null;
   }
 }
