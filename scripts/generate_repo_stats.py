@@ -29,7 +29,7 @@ REPOS = [
     # Apps
     "mind-chrome-extension", "mind-desktop", "mind-app",
     # Creative
-    "synthetic-souls", "mind-movie",
+    "synthetic-souls",
 ]
 
 CATEGORIES = {
@@ -38,7 +38,7 @@ CATEGORIES = {
     "products": ["graphcare", "scopelock", "beatfoundry", "the-blood-ledger", "scisense", "hri", "babys"],
     "apps": ["mind-chrome-extension", "mind-desktop", "mind-app"],
     "tools": ["cities-of-light", "mind-ops", "ai_devboard"],
-    "creative": ["synthetic-souls", "mind-movie"],
+    "creative": ["synthetic-souls"],
 }
 
 

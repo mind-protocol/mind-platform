@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-03-18T03:50:29.886384+00:00",
+  "generated_at": "2026-03-18T06:26:16.370985+00:00",
   "totals": {
-    "repos": 16,
-    "commits": 2170,
-    "files": 37839,
-    "lines": 10452613
+    "repos": 17,
+    "commits": 2237,
+    "files": 51725,
+    "lines": 12113047
   },
   "categories": {
     "core": [
@@ -19,32 +19,34 @@
     ],
     "products": [
       "scopelock",
-      "the-blood-ledger",
       "graphcare",
+      "the-blood-ledger",
       "beatfoundry"
     ],
     "apps": [
+      "mind-app",
       "mind-desktop",
-      "mind-chrome-extension",
-      "mind-app"
+      "mind-chrome-extension"
     ],
     "tools": [
+      "mind-ops",
       "cities-of-light",
-      "ai_devboard",
-      "mind-ops"
+      "ai_devboard"
     ],
-    "creative": []
+    "creative": [
+      "synthetic-souls"
+    ]
   },
   "repos": [
     {
       "name": "lumina-prime",
-      "commits": 31,
-      "files": 1559,
-      "lines": 6315428,
-      "last_commit": "2026-03-18T04:50:26+01:00",
+      "commits": 33,
+      "files": 1567,
+      "lines": 6960629,
+      "last_commit": "2026-03-18T05:50:38+01:00",
       "contributors": [
         {
-          "count": 31,
+          "count": 33,
           "name": "nlr-ai"
         }
       ],
@@ -52,11 +54,26 @@
       "category": "universes"
     },
     {
+      "name": "scopelock",
+      "commits": 446,
+      "files": 1638,
+      "lines": 1026531,
+      "last_commit": "2026-03-18T06:06:48+01:00",
+      "contributors": [
+        {
+          "count": 50,
+          "name": "nlr-ai"
+        }
+      ],
+      "primary_language": "Markdown",
+      "category": "products"
+    },
+    {
       "name": "mind-platform",
-      "commits": 414,
-      "files": 1520,
-      "lines": 893203,
-      "last_commit": "2026-03-18T03:39:09+01:00",
+      "commits": 417,
+      "files": 1528,
+      "lines": 894529,
+      "last_commit": "2026-03-18T06:26:52+01:00",
       "contributors": [
         {
           "count": 48,
@@ -71,26 +88,11 @@
       "category": "core"
     },
     {
-      "name": "scopelock",
-      "commits": 444,
-      "files": 733,
-      "lines": 777395,
-      "last_commit": "2025-11-25T00:30:20+01:00",
-      "contributors": [
-        {
-          "count": 50,
-          "name": "nlr-ai"
-        }
-      ],
-      "primary_language": "Markdown",
-      "category": "products"
-    },
-    {
       "name": "mind-protocol",
-      "commits": 76,
-      "files": 920,
-      "lines": 544125,
-      "last_commit": "2026-03-18T00:15:10+01:00",
+      "commits": 78,
+      "files": 947,
+      "lines": 550313,
+      "last_commit": "2026-03-18T06:05:49+01:00",
       "contributors": [
         {
           "count": 48,
@@ -106,13 +108,13 @@
     },
     {
       "name": "contre-terre",
-      "commits": 34,
-      "files": 659,
-      "lines": 507205,
-      "last_commit": "2026-03-15T07:12:33+01:00",
+      "commits": 36,
+      "files": 661,
+      "lines": 507225,
+      "last_commit": "2026-03-18T06:02:04+01:00",
       "contributors": [
         {
-          "count": 32,
+          "count": 34,
           "name": "nlr-ai"
         },
         {
@@ -124,11 +126,45 @@
       "category": "universes"
     },
     {
+      "name": "mind-ops",
+      "commits": 14,
+      "files": 905,
+      "lines": 410734,
+      "last_commit": "2026-03-18T07:19:24+01:00",
+      "contributors": [
+        {
+          "count": 14,
+          "name": "nlr-ai"
+        }
+      ],
+      "primary_language": "Markdown",
+      "category": "tools"
+    },
+    {
+      "name": "graphcare",
+      "commits": 36,
+      "files": 1598,
+      "lines": 292292,
+      "last_commit": "2026-03-18T07:06:08+01:00",
+      "contributors": [
+        {
+          "count": 34,
+          "name": "nlr-ai"
+        },
+        {
+          "count": 2,
+          "name": "NLR"
+        }
+      ],
+      "primary_language": "Markdown",
+      "category": "products"
+    },
+    {
       "name": "cities-of-light",
-      "commits": 76,
-      "files": 727,
-      "lines": 282132,
-      "last_commit": "2026-03-15T06:58:14+01:00",
+      "commits": 78,
+      "files": 738,
+      "lines": 283542,
+      "last_commit": "2026-03-18T06:01:53+01:00",
       "contributors": [
         {
           "count": 48,
@@ -144,10 +180,10 @@
     },
     {
       "name": "the-blood-ledger",
-      "commits": 520,
-      "files": 517,
-      "lines": 201053,
-      "last_commit": "2025-12-20T23:02:09+01:00",
+      "commits": 522,
+      "files": 1086,
+      "lines": 281518,
+      "last_commit": "2026-03-18T06:07:48+01:00",
       "contributors": [
         {
           "count": 50,
@@ -159,13 +195,13 @@
     },
     {
       "name": "ai_devboard",
-      "commits": 41,
-      "files": 1438,
-      "lines": 198497,
-      "last_commit": "2026-03-15T16:53:15+01:00",
+      "commits": 42,
+      "files": 1440,
+      "lines": 198643,
+      "last_commit": "2026-03-18T06:01:42+01:00",
       "contributors": [
         {
-          "count": 41,
+          "count": 42,
           "name": "nlr-ai"
         }
       ],
@@ -173,26 +209,34 @@
       "category": "tools"
     },
     {
-      "name": "mind-ops",
-      "commits": 11,
-      "files": 529,
-      "lines": 141678,
-      "last_commit": "2026-03-12T23:11:31+01:00",
+      "name": "beatfoundry",
+      "commits": 179,
+      "files": 708,
+      "lines": 170376,
+      "last_commit": "2026-03-18T06:09:11+01:00",
       "contributors": [
         {
-          "count": 11,
+          "count": 43,
+          "name": "Lesterpaintstheworld (aider)"
+        },
+        {
+          "count": 4,
           "name": "nlr-ai"
+        },
+        {
+          "count": 3,
+          "name": "Lesterpaintstheworld"
         }
       ],
       "primary_language": "Markdown",
-      "category": "tools"
+      "category": "products"
     },
     {
       "name": "venezia",
-      "commits": 55,
-      "files": 6944,
-      "lines": 121943,
-      "last_commit": "2026-03-15T11:28:07+01:00",
+      "commits": 58,
+      "files": 16383,
+      "lines": 122071,
+      "last_commit": "2026-03-18T06:22:07+01:00",
       "contributors": [
         {
           "count": 50,
@@ -204,10 +248,10 @@
     },
     {
       "name": "mind-mcp",
-      "commits": 250,
-      "files": 20743,
-      "lines": 118626,
-      "last_commit": "2026-03-18T04:48:29+01:00",
+      "commits": 265,
+      "files": 20913,
+      "lines": 118731,
+      "last_commit": "2026-03-18T07:25:23+01:00",
       "contributors": [
         {
           "count": 50,
@@ -218,33 +262,29 @@
       "category": "core"
     },
     {
-      "name": "graphcare",
-      "commits": 23,
-      "files": 162,
-      "lines": 92731,
-      "last_commit": "2026-03-18T03:45:01+01:00",
+      "name": "mind-app",
+      "commits": 4,
+      "files": 546,
+      "lines": 111646,
+      "last_commit": "2026-03-18T06:04:06+01:00",
       "contributors": [
         {
-          "count": 21,
+          "count": 4,
           "name": "nlr-ai"
-        },
-        {
-          "count": 2,
-          "name": "NLR"
         }
       ],
       "primary_language": "Markdown",
-      "category": "products"
+      "category": "apps"
     },
     {
       "name": "mind-desktop",
-      "commits": 16,
-      "files": 479,
-      "lines": 86248,
-      "last_commit": "2026-03-11T12:24:10+01:00",
+      "commits": 18,
+      "files": 535,
+      "lines": 99247,
+      "last_commit": "2026-03-18T06:04:32+01:00",
       "contributors": [
         {
-          "count": 9,
+          "count": 11,
           "name": "nlr-ai"
         },
         {
@@ -261,56 +301,33 @@
     },
     {
       "name": "mind-chrome-extension",
-      "commits": 1,
-      "files": 456,
-      "lines": 84997,
-      "last_commit": "2026-03-16T18:10:12+01:00",
+      "commits": 3,
+      "files": 457,
+      "lines": 85017,
+      "last_commit": "2026-03-18T06:04:18+01:00",
       "contributors": [
-        {
-          "count": 1,
-          "name": "nlr-ai"
-        }
-      ],
-      "primary_language": "Markdown",
-      "category": "apps"
-    },
-    {
-      "name": "mind-app",
-      "commits": 2,
-      "files": 399,
-      "lines": 78281,
-      "last_commit": "2026-03-12T23:11:45+01:00",
-      "contributors": [
-        {
-          "count": 2,
-          "name": "nlr-ai"
-        }
-      ],
-      "primary_language": "Markdown",
-      "category": "apps"
-    },
-    {
-      "name": "beatfoundry",
-      "commits": 176,
-      "files": 54,
-      "lines": 9071,
-      "last_commit": "2025-11-04T02:04:15+01:00",
-      "contributors": [
-        {
-          "count": 46,
-          "name": "Lesterpaintstheworld (aider)"
-        },
         {
           "count": 3,
-          "name": "Lesterpaintstheworld"
-        },
-        {
-          "count": 1,
           "name": "nlr-ai"
         }
       ],
-      "primary_language": "TypeScript",
-      "category": "products"
+      "primary_language": "Markdown",
+      "category": "apps"
+    },
+    {
+      "name": "synthetic-souls",
+      "commits": 8,
+      "files": 75,
+      "lines": 3,
+      "last_commit": "2026-03-08T21:50:41+01:00",
+      "contributors": [
+        {
+          "count": 8,
+          "name": "nlr-ai"
+        }
+      ],
+      "primary_language": "Markdown",
+      "category": "creative"
     }
   ]
 }

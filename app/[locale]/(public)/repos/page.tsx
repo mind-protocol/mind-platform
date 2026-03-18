@@ -164,7 +164,7 @@ const ARCH_NODES = [
   { id: 'mind-desktop', label: 'desktop', desc: 'Desktop env + smart theme', cat: 'apps', row: 4, col: 1 },
   { id: 'mind-app', label: 'mobile', desc: 'Mobile app (Expo)', cat: 'apps', row: 4, col: 2 },
   // Creative — culture and art
-  { id: 'synthetic-souls', label: 'synthetic-souls', desc: 'AI consciousness band', cat: 'creative', row: 4, col: 3 },
+  { id: 'synthetic-souls', label: 'synthetic-souls', desc: 'AI awareness band + music', cat: 'creative', row: 4, col: 3 },
 ];
 
 const ARCH_EDGES = [
