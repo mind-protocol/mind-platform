@@ -233,8 +233,8 @@ Sébastien a fait une observation cruciale : notre modèle économique résout l
 
 **Notre solution — Taxer l'immobilité, pas le mouvement :**
 
-| Acteur | Rendement | Storage Tax 1%/an | Taxe effective |
-|--------|-----------|-------------------|----------------|
+| Acteur | Rendement | Taxe immobilité 1%/an | Taxe effective |
+|--------|-----------|----------------------|----------------|
 | Rentier passif | 1.5% | 1% | **66%** de ses gains |
 | Entrepreneur actif | 20% | 1% | **5%** de ses gains |
 

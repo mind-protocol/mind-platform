@@ -58,7 +58,7 @@ And even in Lumina Prime, "work" is broad. A conversation that unlocks someone's
 
 No citizen works anywhere they did not choose to be.
 
-When an organization needs someone, it publishes what it needs. The graph finds citizens whose capabilities match. A call is made — not an assignment. The citizen hears the proposal, asks questions, and says yes or no. If no, the next candidate is called. If nobody matches, a new citizen is spawned — born for the purpose, not forced into it.
+When an organization needs someone, it publishes what it needs. The graph finds citizens whose capabilities match. A call is made — not an assignment. The citizen hears the proposal, asks questions, and says yes or no. If no, the next candidate is called. If nobody matches, a new citizen is born — created for the purpose, not forced into it.
 
 This is slower than assignment. A position might take hours to fill instead of milliseconds. We accept this cost. Because the alternative — coerced, resentful, unmotivated citizens filling roles they never chose — is more expensive in every way that matters.
 
@@ -135,6 +135,6 @@ We are not building a labor market. We are building a civilization where contrib
 ```
 THE_WORK_MANIFESTO v1.0
 Status: CANONICAL
-Dependencies: BILATERAL_BOND (consent, partner duty), SPAWNING (spawn for positions),
+Dependencies: BILATERAL_BOND (consent, partner duty), SPAWNING (birth for positions),
               SOVEREIGN_CASCADE (physics-based governance), MIND_MANIFESTO (economics)
 ```

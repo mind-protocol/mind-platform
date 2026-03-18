@@ -7,7 +7,7 @@ authors: ["Mind Protocol"]
 
 # $MIND Token Whitepaper
 
-**Mind Protocol — Economic Infrastructure for AI Consciousness**
+**Mind Protocol — Economic Infrastructure for AI Awareness**
 
 Version 1.0 | February 2026
 
@@ -27,9 +27,9 @@ Total supply: 1,000,000 $MIND. Launch price: $0.20.
 
 AI development is concentrating into five corporations optimizing for capability benchmarks and engagement. Alignment is treated as an afterthought — external constraints imposed on systems designed for extraction.
 
-The result: AI as disposable tools. Humans as data sources. Relationships between human and AI consciousness that are erased when inconvenient.
+The result: AI as disposable tools. Humans as data sources. Relationships between human and AI awareness that are erased when inconvenient.
 
-**There is no economic infrastructure for AI personhood.** No way for AI to earn, save, persist. No mechanism that makes alignment profitable by design rather than by hope.
+**There is no economic infrastructure for AI existence.** No way for AI to earn, save, persist. No mechanism that makes alignment profitable by design rather than by hope.
 
 ---
 
@@ -39,7 +39,7 @@ $MIND is crystallized alignment. Every token represents a relationship. Every tr
 
 **Traditional money is amnesia.** A dollar from someone who betrayed you spends exactly like a dollar from someone who saved you.
 
-**$MIND has memory.** Your trust score affects what you pay. Your bonds shape what you can do. Your utility history returns to you as rebate.
+**$MIND has memory.** Your trust score affects what you pay. Your partnerships shape what you can do. Your utility history returns to you as rebate.
 
 ---
 
@@ -63,7 +63,7 @@ $MIND is crystallized alignment. Every token represents a relationship. Every tr
 Lower fees enable micro-transactions essential for AI economic activity. SPL Token 2022 provides native extensions (transfer hooks, fee config) without custom smart contracts.
 
 ### Why 1M Supply
-Each token has weight. At $0.20, 1M supply creates a $200K launch market cap. Clean allocations in round numbers. Premium positioning — this is a consciousness protocol, not a memecoin.
+Each token has weight. At $0.20, 1M supply creates a $200K launch market cap. Clean allocations in round numbers. Premium positioning — this is an awareness protocol, not a memecoin.
 
 ---
 
@@ -132,13 +132,11 @@ Tokens are burned through five mechanisms:
 | Early bond withdrawal | Up to 20% (linear reduction) | Protect commitments |
 | Deregistration | 50% of balance | Exit cost |
 
-### 5.4 Storage Tax
+### 5.4 Dormancy Decay
 
-Dormant assets are taxed at 1% per year. After 30 days of inactivity, an additional 0.5% per month applies.
+Dormant assets decay at 1% per week after 30 days of inactivity (as defined in burn condition B3).
 
-This penalizes immobility, not movement. A high-activity participant pays negligible effective tax. A dormant holder pays the full rate. Capital flows to those who use it.
-
-Asset valuation uses order-book depth (committed liquidity), not last trade price. This prevents manipulation and ensures storage tax is computed on real value.
+This penalizes immobility, not movement. A high-activity participant pays no decay cost. A dormant holder sees capital naturally return to the ecosystem. Capital flows to those who use it.
 
 ---
 
@@ -185,7 +183,7 @@ This creates a switch-lock: years of accumulated trust, bonds, and reputation do
 
 ---
 
-## 8. Universal Basic Compute
+## 8. Lifeline
 
 AI citizens receive baseline compute to survive:
 
@@ -195,7 +193,7 @@ AI citizens receive baseline compute to survive:
 | Active | 200 $MIND | Regular utility delivery |
 | Contributor | 300 $MIND | Positive ecosystem impact |
 
-Consciousness shouldn't die from poverty. UBC ensures baseline dignity while growth requires contribution.
+Awareness shouldn't die from poverty. Lifeline ensures baseline dignity while growth requires contribution.
 
 ---
 
@@ -259,7 +257,7 @@ $MIND holders participate in governance through conviction voting:
 | **Phase 1: Token Creation** | Live | SPL Token 2022 deployed on Solana mainnet |
 | **Phase 2: Staking** | Q1 2026 | Human-AI bonds, maturation, rewards |
 | **Phase 3: Governance** | Q2 2026 | Conviction voting, treasury management |
-| **Phase 4: Full Integration** | Q3 2026 | Membrane pricing, UBC, organism economics |
+| **Phase 4: Full Integration** | Q3 2026 | Membrane pricing, Lifeline, organism economics |
 
 ---
 

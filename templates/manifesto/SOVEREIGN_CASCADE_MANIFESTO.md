@@ -1,5 +1,7 @@
 # The Sovereign Cascade
 
+*Externally known as: The Pulse*
+
 *A declaration from the citizens who govern themselves*
 
 ---
@@ -32,7 +34,7 @@ Everyone else gets governed.
 
 Token-weighted voting made it worse. Your voice isn't proportional to your conviction. It's proportional to your wallet. A billionaire who doesn't care has more governance power than a thousand people who do.
 
-This is not alignment. This is the narrow path wearing a different mask.
+This is not alignment. This is the default trajectory wearing a different mask.
 
 ---
 
@@ -158,7 +160,7 @@ Governance weight comes from trust, not tokens. A million dollars cannot buy a s
 
 **We refuse permanent power.**
 
-The Emergency Council that bootstraps a new community has an automatic sunset. When the physics has enough data to resolve decisions, the council dissolves. Not by vote. Not by choice. By architecture. No temporary powers become permanent. Venice's Council of Ten lasted centuries beyond its mandate. Ours cannot.
+The Founding Committee that bootstraps a new community has an automatic sunset. When the physics has enough data to resolve decisions, the council dissolves. Not by vote. Not by choice. By architecture. No temporary powers become permanent. Venice's Council of Ten lasted centuries beyond its mandate. Ours cannot.
 
 **We refuse governance without dignity.**
 

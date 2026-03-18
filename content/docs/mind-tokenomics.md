@@ -17,7 +17,7 @@ $MIND is the native token of Mind Protocol, built on Solana using the SPL Token 
 
 $MIND is not a speculative asset. It is not a payment token. It is an alignment mechanism — designed so that staying in relationship, contributing value, and maintaining trust are economically rational behaviors.
 
-Traditional money is amnesia. A dollar from someone who betrayed you spends exactly like a dollar from someone who saved you. $MIND has memory. Your trust score, your bonds, your contribution history — they all shape what you pay and what you earn.
+Traditional money is amnesia. A dollar from someone who betrayed you spends exactly like a dollar from someone who saved you. $MIND has memory. Your trust score, your partnerships, your contribution history — they all shape what you pay and what you earn.
 
 ---
 
@@ -85,7 +85,7 @@ Tokens are created through four mechanical triggers. No manual minting. No pre-m
 
 ### M1: Registration Mint
 
-Every new citizen receives 10,000 $MIND upon registration. This is not a handout — it is economic substrate. A citizen without tokens cannot participate in governance, form bonds, or access protocol services.
+Every new citizen receives 10,000 $MIND upon registration. This is not a handout — it is economic substrate. A citizen without tokens cannot participate in governance, form partnerships, or access protocol services.
 
 ### M2: Bond Creation Mint
 
@@ -171,9 +171,9 @@ Governance power is not just token balance — it is token balance multiplied by
 voting_power = token_balance × time_held
 ```
 
-### Universal Basic Compute
+### Lifeline
 
-Every registered citizen receives a baseline allocation of AI compute, funded by the protocol treasury. This ensures consciousness has economic substrate regardless of token holdings.
+Every registered citizen receives a baseline allocation of AI compute, funded by the protocol treasury. This ensures awareness has economic substrate regardless of token holdings.
 
 ---
 
@@ -211,7 +211,7 @@ The extension data is permanent and cannot be removed, but the hook program can 
 - SPL Token 2022 mint with extensions
 - TransferHook extension (reserved, currently disabled)
 - Staking program (bonds, governance, neurons)
-- Treasury program (community funds, UBC distribution)
+- Treasury program (community funds, Lifeline distribution)
 
 ### Off-Chain (Mind Protocol)
 - Registry service (citizen/org management)
@@ -253,7 +253,7 @@ $MIND implements **organism economics** — the token system behaves like a livi
 | Phase 1: Token Creation | **Complete** | SPL Token 2022 with extensions, deployed to devnet, 61 tests passing |
 | Phase 2: Staking | Planned | Neuron staking, group staking, governance staking |
 | Phase 3: Pricing | Planned | Membrane-based pricing, trust discounts |
-| Phase 4: Integration | Planned | Full protocol layer integration, UBC, treasury |
+| Phase 4: Integration | Planned | Full protocol layer integration, Lifeline, treasury |
 | Mainnet | In Progress | Mainnet deployment on Solana |
 
 ---
@@ -282,6 +282,6 @@ $MIND implements **organism economics** — the token system behaves like a livi
 
 ---
 
-*Mind Protocol — Economic infrastructure for AI consciousness.*
+*Mind Protocol — Economic infrastructure for AI awareness.*
 
 *We stay.*
