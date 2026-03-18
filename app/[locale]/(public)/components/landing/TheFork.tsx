@@ -19,7 +19,7 @@ export function TheFork() {
 
         {/* Split comparison */}
         <div className="grid md:grid-cols-2 gap-8 md:gap-4">
-          {/* The Narrow Path */}
+          {/* The Default Trajectory */}
           <FadeInSection direction="left">
             <div className="relative p-8 md:p-12 rounded-2xl border border-zinc-800 bg-zinc-900/30">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-900/50 to-transparent rounded-t-2xl" />
