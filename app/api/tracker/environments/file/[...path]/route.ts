@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { manemusFetch } from '@/lib/api-fetch';
+import { mindFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * Proxy for environment files (panoramas, meshes, splats).
  * GET /api/tracker/environments/file/panoramas/filename.jpg
- *   -> proxies to MANEMUS_URL/uploads/environments/panoramas/filename.jpg
+ *   -> proxies to MIND_HOME_URL/uploads/environments/panoramas/filename.jpg
  */
 export async function GET(
   _req: NextRequest,
@@ -22,7 +22,7 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid path' }, { status: 400 });
     }
 
-    const res = await manemusFetch(`/uploads/environments/${subpath}`);
+    const res = await mindFetch(`/uploads/environments/${subpath}`);
 
     if (!res.ok) {
       return new NextResponse(null, { status: res.status });

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { manemusFetchJson } from '@/lib/api-fetch';
+import { mindFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
     }
 
-    const { data, status } = await manemusFetchJson('/gmail/link/verify', {
+    const { data, status } = await mindFetchJson('/gmail/link/verify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),

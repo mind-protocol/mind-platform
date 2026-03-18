@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { manemusFetchJson } from '@/lib/api-fetch';
+import { mindFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
     }
 
-    const { data, status } = await manemusFetchJson('/garmin/link/verify', {
+    const { data, status } = await mindFetchJson('/garmin/link/verify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),

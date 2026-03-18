@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { manemusFetchJson } from '@/lib/api-fetch';
+import { mindFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +12,7 @@ export async function GET() {
   }
 
   try {
-    const { data } = await manemusFetchJson('/actif/state', {
+    const { data } = await mindFetchJson('/actif/state', {
       cache: 'no-store',
       timeoutMs: 8_000,
     });

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { setSession } from '@/lib/auth';
-import { manemusFetch } from '@/lib/api-fetch';
+import { mindFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const res = await manemusFetch(
+    const res = await mindFetch(
       `/auth/magic?token=${encodeURIComponent(token)}`
     );
 

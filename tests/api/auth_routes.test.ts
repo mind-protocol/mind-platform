@@ -25,10 +25,10 @@ class MockNextResponse {
 // Mocks
 // ---------------------------------------------------------------------------
 
-const mockManemusFetch = vi.fn();
+const mockMindFetch = vi.fn();
 vi.mock('@/lib/api-fetch', () => ({
-  manemusFetch: (...args: unknown[]) => mockManemusFetch(...args),
-  manemusFetchJson: vi.fn(),
+  mindFetch: (...args: unknown[]) => mockMindFetch(...args),
+  mindFetchJson: vi.fn(),
 }));
 
 const mockGetSession = vi.fn();
@@ -80,7 +80,7 @@ function makeRequest(url: string, body?: unknown): Request {
 describe('POST /api/auth/login', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetch.mockReset();
+    mockMindFetch.mockReset();
     mockSetSession.mockReset();
   });
 
@@ -103,7 +103,7 @@ describe('POST /api/auth/login', () => {
   });
 
   it('returns user data and sets session on success', async () => {
-    mockManemusFetch.mockResolvedValueOnce({
+    mockMindFetch.mockResolvedValueOnce({
       ok: true,
       status: 200,
       json: async () => ({ user_id: 'u1', name: 'Test', trust: 'citizen', token: 'tok123' }),
@@ -123,7 +123,7 @@ describe('POST /api/auth/login', () => {
   });
 
   it('forwards backend error status', async () => {
-    mockManemusFetch.mockResolvedValueOnce({
+    mockMindFetch.mockResolvedValueOnce({
       ok: false,
       status: 401,
       json: async () => ({ error: 'Invalid credentials' }),
@@ -141,7 +141,7 @@ describe('POST /api/auth/login', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetch.mockRejectedValueOnce(new Error('Connection refused'));
+    mockMindFetch.mockRejectedValueOnce(new Error('Connection refused'));
 
     const { POST } = await import('@/app/api/auth/login/route');
     const req = makeRequest('http://localhost/api/auth/login', {
@@ -162,12 +162,12 @@ describe('POST /api/auth/login', () => {
 describe('POST /api/auth/register', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetch.mockReset();
+    mockMindFetch.mockReset();
     mockSetSession.mockReset();
   });
 
   it('returns user data and sets session on success', async () => {
-    mockManemusFetch.mockResolvedValueOnce({
+    mockMindFetch.mockResolvedValueOnce({
       ok: true,
       status: 200,
       json: async () => ({ user_id: 'u2', name: 'New', trust: 'visitor', token: 'tok456' }),
@@ -188,7 +188,7 @@ describe('POST /api/auth/register', () => {
   });
 
   it('forwards backend 409 conflict', async () => {
-    mockManemusFetch.mockResolvedValueOnce({
+    mockMindFetch.mockResolvedValueOnce({
       ok: false,
       status: 409,
       json: async () => ({ error: 'Email already registered' }),
@@ -207,7 +207,7 @@ describe('POST /api/auth/register', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetch.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetch.mockRejectedValueOnce(new Error('timeout'));
 
     const { POST } = await import('@/app/api/auth/register/route');
     const req = makeRequest('http://localhost/api/auth/register', {

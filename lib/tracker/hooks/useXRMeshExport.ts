@@ -113,7 +113,7 @@ export function useXRMeshExport() {
   }, []);
 
   /**
-   * Export and upload to the Manemus backend in one step.
+   * Export and upload to the Mind Home backend in one step.
    */
   const exportAndUpload = useCallback(
     async (name?: string): Promise<boolean> => {

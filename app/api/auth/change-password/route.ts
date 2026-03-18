@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { manemusFetch } from '@/lib/api-fetch';
+import { mindFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const res = await manemusFetch('/auth/change-password', {
+    const res = await mindFetch('/auth/change-password', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

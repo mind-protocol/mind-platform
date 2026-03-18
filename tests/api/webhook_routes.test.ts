@@ -165,7 +165,7 @@ describe('POST /api/webhooks/telegram', () => {
   });
 
   it('relays text message and sends reply', async () => {
-    mockRelayChatMessage.mockResolvedValueOnce({ text: 'Bonjour!', source: 'manemus' });
+    mockRelayChatMessage.mockResolvedValueOnce({ text: 'Bonjour!', source: 'mind-home' });
     mockSendTelegramMessage.mockResolvedValueOnce(undefined);
 
     const { POST } = await import('@/app/api/webhooks/telegram/route');
@@ -304,7 +304,7 @@ describe('POST /api/webhooks/whatsapp', () => {
   });
 
   it('relays text message and sends reply', async () => {
-    mockRelayChatMessage.mockResolvedValueOnce({ text: 'Salut!', source: 'manemus' });
+    mockRelayChatMessage.mockResolvedValueOnce({ text: 'Salut!', source: 'mind-home' });
     mockSendWhatsAppMessage.mockResolvedValueOnce(undefined);
     mockMarkWhatsAppMessageRead.mockResolvedValueOnce(undefined);
 

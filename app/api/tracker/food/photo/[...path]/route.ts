@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { manemusFetch } from '@/lib/api-fetch';
+import { mindFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,7 +14,7 @@ export async function GET(
   }
 
   try {
-    const res = await manemusFetch(`/uploads/food/${filename}`);
+    const res = await mindFetch(`/uploads/food/${filename}`);
 
     if (!res.ok) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });

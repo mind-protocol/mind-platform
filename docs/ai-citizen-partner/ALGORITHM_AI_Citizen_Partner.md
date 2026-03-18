@@ -347,7 +347,7 @@ function processAutonomyDecision(ai_partner, proposal, decision):
 
   elif decision == "deny":
     log_autonomy_event(ai_partner, "denied", proposal)
-    ai_partner.next_proposal_cooldown = now() + 7_days
+    ai_partner.next_proposal_transition_period = now() + 7_days
     # AI accepts: "Understood. I'll continue at this level."
 
   elif decision == "partial":

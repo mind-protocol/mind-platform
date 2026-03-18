@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { manemusFetchJson } from '@/lib/api-fetch';
+import { mindFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     const userId = auth.user_id;
     const { searchParams } = new URL(req.url);
     const days = searchParams.get('days') || '7';
-    const { data, status } = await manemusFetchJson(`/api/tracker/food?days=${days}`, {
+    const { data, status } = await mindFetchJson(`/api/tracker/food?days=${days}`, {
       cache: 'no-store',
       headers: { 'X-User-Id': userId },
     });
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     if (!body || typeof body !== 'object') {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
     }
-    const { data, status } = await manemusFetchJson('/api/tracker/food', {
+    const { data, status } = await mindFetchJson('/api/tracker/food', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

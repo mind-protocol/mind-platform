@@ -1,19 +1,19 @@
 # Repository Map: mind-platform
 
-*Generated: 2026-03-14 16:01*
+*Generated: 2026-03-14 17:10*
 
-- **Files:** 836
-- **Directories:** 379
+- **Files:** 838
+- **Directories:** 381
 - **Total Size:** 6.3M
 - **Doc Files:** 448
-- **Code Files:** 382
+- **Code Files:** 384
 - **Areas:** 15 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
 - **DOCS Links:** 26 (0.07 avg per code file)
 
 - markdown: 448
-- tsx: 177
-- typescript: 174
+- tsx: 178
+- typescript: 175
 - python: 27
 - css: 1
 - html: 1
@@ -21,7 +21,7 @@
 - javascript: 1
 
 ```
-├── app/ (2.1M)
+├── app/ (2.2M)
 │   ├── (public)/ (200.4K)
 │   │   └── blog/ (200.4K)
 │   │       ├── co-regulation-is-measurable/ (36.8K)
@@ -309,7 +309,7 @@
 │   │   ├── error.tsx (1.5K)
 │   │   ├── layout.tsx (1.0K)
 │   │   └── not-found.tsx (1.1K)
-│   ├── api/ (108.6K)
+│   ├── api/ (110.6K)
 │   │   ├── actif/ (796)
 │   │   │   └── route.ts (796)
 │   │   ├── auth/ (7.7K)
@@ -333,11 +333,13 @@
 │   │   │   └── [slug]/ (542)
 │   │   │       └── md/ (542)
 │   │   │           └── route.ts (542)
-│   │   ├── chat/ (3.8K)
+│   │   ├── chat/ (5.8K)
 │   │   │   ├── messages/ (1.4K)
 │   │   │   │   └── route.ts (1.4K)
 │   │   │   ├── send/ (1.5K)
 │   │   │   │   └── route.ts (1.5K)
+│   │   │   ├── transcribe/ (2.0K)
+│   │   │   │   └── route.ts (2.0K)
 │   │   │   └── tts/ (847)
 │   │   │       └── route.ts (847)
 │   │   ├── connectome/ (503)
@@ -524,6 +526,8 @@
 │   │       │   └── route.ts (3.5K)
 │   │       └── whatsapp/ (4.4K)
 │   │           └── route.ts (4.4K)
+│   ├── chrome-auth/ (5.8K)
+│   │   └── page.tsx (5.8K)
 │   ├── components/ (4.1K)
 │   │   └── VersionToast.tsx (4.1K)
 │   ├── globals.css (14.7K)
@@ -1061,7 +1065,7 @@
 │   │   ├── VALIDATION_Platform_Invariants.md (5.5K)
 │   │   └── VOCABULARY_Platform_Terms.md (6.1K)
 │   ├── ARCHITECTURE.md (4.6K)
-│   └── map.md (254.4K)
+│   └── map.md (256.0K)
 ├── i18n/ (784)
 │   └── (..3 more files)
 ├── l3/
@@ -1286,7 +1290,7 @@
 ├── .mindignore (838)
 ├── AGENTS.md (29.8K)
 ├── README.md (4.1K)
-├── map.md (256.0K)
+├── map.md (256.3K)
 ├── map_app.md (39.9K)
 ├── next.config.mjs (787)
 ├── self.md (5.8K)
@@ -2146,6 +2150,9 @@
 **Definitions:**
 - `POST()`
 
+**Definitions:**
+- `POST()`
+
 **Docs:** `docs/connectome/graph_api/IMPLEMENTATION_Graph_API.md`
 
 **Definitions:**
@@ -2408,6 +2415,11 @@
 - `verifyWhatsAppSignature()`
 - `GET()`
 - `POST()`
+
+**Definitions:**
+- `ChromeAuthInner()`
+- `sendToExtension()`
+- `handleMessage()`
 
 **Definitions:**
 - `timeAgo()`

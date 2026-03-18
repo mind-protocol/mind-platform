@@ -25,11 +25,11 @@ class MockNextResponse {
 // Mocks
 // ---------------------------------------------------------------------------
 
-const mockManemusFetchJson = vi.fn();
-const mockManemusFetch = vi.fn();
+const mockMindFetchJson = vi.fn();
+const mockMindFetch = vi.fn();
 vi.mock('@/lib/api-fetch', () => ({
-  manemusFetchJson: (...args: unknown[]) => mockManemusFetchJson(...args),
-  manemusFetch: (...args: unknown[]) => mockManemusFetch(...args),
+  mindFetchJson: (...args: unknown[]) => mockMindFetchJson(...args),
+  mindFetch: (...args: unknown[]) => mockMindFetch(...args),
 }));
 
 const mockRequireSession = vi.fn();
@@ -100,11 +100,11 @@ function mockUnauthenticated() {
 describe('GET /api/sign/[id]', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
   });
 
   it('returns contract details by id', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { id: 'contract1', title: 'Test Contract', status: 'pending' },
       status: 200,
     });
@@ -117,11 +117,11 @@ describe('GET /api/sign/[id]', () => {
     expect(data.id).toBe('contract1');
     expect(data.title).toBe('Test Contract');
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith('/sign/contract1');
+    expect(mockMindFetchJson).toHaveBeenCalledWith('/sign/contract1');
   });
 
   it('forwards backend error status', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { error: 'Not found' },
       status: 404,
     });
@@ -133,7 +133,7 @@ describe('GET /api/sign/[id]', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { GET } = await import('@/app/api/sign/[id]/route');
     const req = new Request('http://localhost/api/sign/c1');
@@ -151,7 +151,7 @@ describe('GET /api/sign/[id]', () => {
 describe('POST /api/sign/create', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
     mockRequireSession.mockReset();
     mockAuthenticated();
   });
@@ -168,7 +168,7 @@ describe('POST /api/sign/create', () => {
   });
 
   it('creates contract via backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { id: 'contract_new', status: 'created' },
       status: 201,
     });
@@ -183,14 +183,14 @@ describe('POST /api/sign/create', () => {
     const data = await response.json();
     expect(data.id).toBe('contract_new');
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       '/sign/create',
       expect.objectContaining({ method: 'POST' }),
     );
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
 
     const { POST } = await import('@/app/api/sign/create/route');
     const req = makeNextRequest('http://localhost/api/sign/create', {
@@ -208,7 +208,7 @@ describe('POST /api/sign/create', () => {
 describe('POST /api/sign/[id]/execute', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
     mockRequireSession.mockReset();
     mockAuthenticated();
   });
@@ -225,7 +225,7 @@ describe('POST /api/sign/[id]/execute', () => {
   });
 
   it('executes signing via backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { status: 'executed', tx_hash: 'tx_abc' },
       status: 200,
     });
@@ -239,14 +239,14 @@ describe('POST /api/sign/[id]/execute', () => {
     const data = await response.json();
     expect(data.status).toBe('executed');
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       '/sign/c1/execute',
       expect.objectContaining({ method: 'POST' }),
     );
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { POST } = await import('@/app/api/sign/[id]/execute/route');
     const req = makeNextRequest('http://localhost/api/sign/c1/execute', {
@@ -264,12 +264,12 @@ describe('POST /api/sign/[id]/execute', () => {
 describe('GET /api/sign/[id]/pdf', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetch.mockReset();
+    mockMindFetch.mockReset();
   });
 
   it('returns PDF when backend succeeds', async () => {
     const pdfBytes = new Uint8Array([0x25, 0x50, 0x44, 0x46]); // %PDF
-    mockManemusFetch.mockResolvedValueOnce({
+    mockMindFetch.mockResolvedValueOnce({
       ok: true,
       status: 200,
       arrayBuffer: async () => pdfBytes.buffer,
@@ -280,11 +280,11 @@ describe('GET /api/sign/[id]/pdf', () => {
     const response = await GET(req, { params: Promise.resolve({ id: 'c1' }) });
     expect(response.status).toBe(200);
 
-    expect(mockManemusFetch).toHaveBeenCalledWith('/sign/c1/pdf');
+    expect(mockMindFetch).toHaveBeenCalledWith('/sign/c1/pdf');
   });
 
   it('forwards backend error status', async () => {
-    mockManemusFetch.mockResolvedValueOnce({
+    mockMindFetch.mockResolvedValueOnce({
       ok: false,
       status: 404,
       json: async () => ({ error: 'Contract not found' }),
@@ -297,7 +297,7 @@ describe('GET /api/sign/[id]/pdf', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetch.mockRejectedValueOnce(new Error('Connection refused'));
+    mockMindFetch.mockRejectedValueOnce(new Error('Connection refused'));
 
     const { GET } = await import('@/app/api/sign/[id]/pdf/route');
     const req = new Request('http://localhost/api/sign/c1/pdf');

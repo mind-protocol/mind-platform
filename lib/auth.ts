@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { MANEMUS_URL } from './api-fetch';
+import { MIND_HOME_URL } from './api-fetch';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -26,7 +26,7 @@ export interface SessionPayload {
 
 /**
  * Read the `mind_session` cookie from an incoming request, verify it against
- * the manemus `/auth/verify` endpoint, and return the decoded session payload.
+ * the Mind Home /auth/verify endpoint, and return the decoded session payload.
  * Returns `null` when the cookie is missing or the token is invalid/expired.
  */
 export async function getSession(
@@ -36,7 +36,7 @@ export async function getSession(
   if (!token) return null;
 
   try {
-    const res = await fetch(`${MANEMUS_URL}/auth/verify`, {
+    const res = await fetch(`${MIND_HOME_URL}/auth/verify`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

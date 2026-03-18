@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { manemusFetch, manemusFetchJson } from '@/lib/api-fetch';
+import { mindFetch, mindFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     const userId = auth.user_id;
     const params = req.nextUrl.searchParams.toString();
     const path = `/api/tracker/environments${params ? `?${params}` : ''}`;
-    const { data, status } = await manemusFetchJson(path, {
+    const { data, status } = await mindFetchJson(path, {
       cache: 'no-store',
       headers: { 'X-User-Id': userId },
     });
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
   try {
     const userId = auth.user_id;
     const formData = await req.formData();
-    const res = await manemusFetch('/api/tracker/environments', {
+    const res = await mindFetch('/api/tracker/environments', {
       method: 'POST',
       headers: { 'X-User-Id': userId },
       body: formData,

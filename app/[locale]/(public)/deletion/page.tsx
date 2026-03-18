@@ -28,10 +28,10 @@ export default function DeletionPage() {
                 <p className="text-zinc-400">
                   Send <code className="bg-zinc-800 px-2 py-1 rounded text-amber-500">/delete</code> to{' '}
                   <a
-                    href="https://t.me/manemus_mind_protocol_bot"
+                    href="https://t.me/mind_protocol_bot"
                     className="text-amber-500 hover:text-amber-400"
                   >
-                    @manemus_mind_protocol_bot
+                    @mind_protocol_bot
                   </a>{' '}
                   on Telegram. You will be asked to confirm before deletion proceeds.
                 </p>

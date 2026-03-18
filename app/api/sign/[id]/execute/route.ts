@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { manemusFetchJson } from '@/lib/api-fetch';
+import { mindFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,7 +17,7 @@ export async function POST(
     if (!body || typeof body !== 'object') {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
     }
-    const { data, status } = await manemusFetchJson(`/sign/${id}/execute`, {
+    const { data, status } = await mindFetchJson(`/sign/${id}/execute`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

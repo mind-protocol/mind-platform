@@ -18,7 +18,7 @@ import EnvironmentRenderer from './environments/EnvironmentRenderer';
 import Skybox360 from './Skybox360';
 import MusicReactiveField from './MusicReactiveField';
 import OrbitalCockpit from './OrbitalCockpit';
-import ManemusPresence from './ManemusPresence';
+import MindPresence from './MindPresence';
 import type { RegionId } from './CockpitRegions';
 import type { VoicePhase } from '@/lib/voice/types';
 import { useKeyboardReactive, type KeyboardDebugStats } from '@/lib/tracker/hooks/useKeyboardReactive';
@@ -31,7 +31,7 @@ interface AwarenessMirrorProps {
   activeRegion?: RegionId | null;
   /** Callback to change the active cockpit region */
   setActiveRegion?: (region: RegionId | null) => void;
-  /** Voice call: Manemus analyser for audio reactivity */
+  /** Voice call: Mind analyser for audio reactivity */
   voiceAnalyser?: AnalyserNode | null;
   /** Voice call: current phase */
   voicePhase?: VoicePhase;
@@ -127,7 +127,7 @@ export default function AwarenessMirror({ activeRegion, setActiveRegion, voiceAn
         <CursorGlow awareness={awareness} />
         <BiometricField awareness={awareness} />
         <MusicReactiveField stemsRef={stemsRef} />
-        <ManemusPresence
+        <MindPresence
           analyser={voiceAnalyser ?? null}
           phase={voicePhase ?? 'idle'}
           active={voiceActive ?? false}

@@ -22,7 +22,7 @@ const FAQ_SYSTEM_PROMPT = `You are Mind, the AI assistant of Mind Protocol. You 
 
 ## About Mind Protocol
 - Open-source infrastructure for personal AI agents that understand your body and mind
-- Core product: Manemus — always-on AI daemon that reads biometrics, manages conversations, dispatches tasks
+- Core product: Mind Home — always-on AI daemon that reads biometrics, manages conversations, dispatches tasks
 - Duo Mode: co-regulation between two people sharing biometric data
 - Tracks: stress, HRV, sleep, heart rate, Body Battery, steps, substances (caffeine, supplements, etc.)
 - Integrations: Garmin Connect, Telegram, WhatsApp, web chat

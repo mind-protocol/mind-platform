@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { manemusFetch } from '@/lib/api-fetch';
+import { mindFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,7 +23,7 @@ export async function GET(req: Request) {
       return NextResponse.json(cached.data);
     }
 
-    const res = await manemusFetch(
+    const res = await mindFetch(
       `/spotify/audio-analysis/${DEFAULT_USER_ID}/${encodeURIComponent(trackId)}`
     );
 

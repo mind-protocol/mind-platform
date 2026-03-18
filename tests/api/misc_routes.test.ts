@@ -23,11 +23,11 @@ class MockNextResponse {
 // Mocks
 // ---------------------------------------------------------------------------
 
-const mockManemusFetchJson = vi.fn();
-const mockManemusFetch = vi.fn();
+const mockMindFetchJson = vi.fn();
+const mockMindFetch = vi.fn();
 vi.mock('@/lib/api-fetch', () => ({
-  manemusFetchJson: (...args: unknown[]) => mockManemusFetchJson(...args),
-  manemusFetch: (...args: unknown[]) => mockManemusFetch(...args),
+  mindFetchJson: (...args: unknown[]) => mockMindFetchJson(...args),
+  mindFetch: (...args: unknown[]) => mockMindFetch(...args),
 }));
 
 const mockRequireSession = vi.fn();
@@ -207,11 +207,11 @@ describe('POST /api/translate', () => {
 describe('GET /api/actif', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
   });
 
   it('returns actif state from backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: {
         ts: '2026-02-27T10:00:00Z',
         biometrics: { heart_rate: 72, stress: 25 },
@@ -230,7 +230,7 @@ describe('GET /api/actif', () => {
   });
 
   it('returns offline fallback when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
 
     const { GET } = await import('@/app/api/actif/route');
     const response = await GET();
@@ -249,11 +249,11 @@ describe('GET /api/actif', () => {
 describe('GET /api/token/holders', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
   });
 
   it('returns holder data from backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { holders: [{ address: 'abc', balance: 1000 }], total: 1 },
       status: 200,
     });
@@ -265,11 +265,11 @@ describe('GET /api/token/holders', () => {
     expect(data.holders).toHaveLength(1);
     expect(data.total).toBe(1);
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith('/api/token/holders');
+    expect(mockMindFetchJson).toHaveBeenCalledWith('/api/token/holders');
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { GET } = await import('@/app/api/token/holders/route');
     const response = await GET();
@@ -286,7 +286,7 @@ describe('GET /api/token/holders', () => {
 describe('GET /api/gmail/status', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
   });
 
   it('returns 400 when user_id is missing', async () => {
@@ -299,7 +299,7 @@ describe('GET /api/gmail/status', () => {
   });
 
   it('returns gmail status from backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { linked: true, email: 'test@gmail.com' },
       status: 200,
     });
@@ -313,7 +313,7 @@ describe('GET /api/gmail/status', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { GET } = await import('@/app/api/gmail/status/route');
     const req = new Request('http://localhost/api/gmail/status?user_id=u1');
@@ -329,7 +329,7 @@ describe('GET /api/gmail/status', () => {
 describe('GET /api/gmail/auth/init', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
   });
 
   it('returns 400 when link_code or user_id is missing', async () => {
@@ -342,7 +342,7 @@ describe('GET /api/gmail/auth/init', () => {
   });
 
   it('returns auth URL from backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { auth_url: 'https://accounts.google.com/oauth2/...' },
       status: 200,
     });
@@ -356,7 +356,7 @@ describe('GET /api/gmail/auth/init', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { GET } = await import('@/app/api/gmail/auth/init/route');
     const req = new Request('http://localhost/api/gmail/auth/init?link_code=lc1&user_id=u1');
@@ -372,11 +372,11 @@ describe('GET /api/gmail/auth/init', () => {
 describe('POST /api/gmail/link/verify', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
   });
 
   it('forwards verification to backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { status: 'linked' },
       status: 200,
     });
@@ -392,14 +392,14 @@ describe('POST /api/gmail/link/verify', () => {
     const data = await response.json();
     expect(data.status).toBe('linked');
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       '/gmail/link/verify',
       expect.objectContaining({ method: 'POST' }),
     );
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { POST } = await import('@/app/api/gmail/link/verify/route');
     const req = new Request('http://localhost/api/gmail/link/verify', {
@@ -419,11 +419,11 @@ describe('POST /api/gmail/link/verify', () => {
 describe('POST /api/gmail/oauth/callback', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
   });
 
   it('forwards OAuth callback to backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { status: 'success', email: 'user@gmail.com' },
       status: 200,
     });
@@ -441,7 +441,7 @@ describe('POST /api/gmail/oauth/callback', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { POST } = await import('@/app/api/gmail/oauth/callback/route');
     const req = new Request('http://localhost/api/gmail/oauth/callback', {
@@ -461,7 +461,7 @@ describe('POST /api/gmail/oauth/callback', () => {
 describe('GET /api/spotify/audio-analysis', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetch.mockReset();
+    mockMindFetch.mockReset();
   });
 
   it('returns 400 when track_id is missing', async () => {
@@ -474,7 +474,7 @@ describe('GET /api/spotify/audio-analysis', () => {
   });
 
   it('returns analysis data from backend', async () => {
-    mockManemusFetch.mockResolvedValueOnce({
+    mockMindFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({ tempo: 120, key: 5, mode: 1 }),
     });
@@ -488,7 +488,7 @@ describe('GET /api/spotify/audio-analysis', () => {
   });
 
   it('returns error when backend returns not-ok', async () => {
-    mockManemusFetch.mockResolvedValueOnce({
+    mockMindFetch.mockResolvedValueOnce({
       ok: false,
       status: 404,
     });
@@ -500,7 +500,7 @@ describe('GET /api/spotify/audio-analysis', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetch.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetch.mockRejectedValueOnce(new Error('timeout'));
 
     const { GET } = await import('@/app/api/spotify/audio-analysis/route');
     const req = new Request('http://localhost/api/spotify/audio-analysis?track_id=t1');
@@ -516,11 +516,11 @@ describe('GET /api/spotify/audio-analysis', () => {
 describe('GET /api/spotify/now-playing', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetch.mockReset();
+    mockMindFetch.mockReset();
   });
 
   it('returns now-playing data from backend', async () => {
-    mockManemusFetch.mockResolvedValueOnce({
+    mockMindFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         is_playing: true,
@@ -538,7 +538,7 @@ describe('GET /api/spotify/now-playing', () => {
   });
 
   it('returns is_playing:false when backend returns not-ok', async () => {
-    mockManemusFetch.mockResolvedValueOnce({
+    mockMindFetch.mockResolvedValueOnce({
       ok: false,
       status: 500,
     });
@@ -551,7 +551,7 @@ describe('GET /api/spotify/now-playing', () => {
   });
 
   it('returns is_playing:false when backend is unreachable', async () => {
-    mockManemusFetch.mockRejectedValueOnce(new Error('Connection refused'));
+    mockMindFetch.mockRejectedValueOnce(new Error('Connection refused'));
 
     const { GET } = await import('@/app/api/spotify/now-playing/route');
     const response = await GET();
@@ -568,7 +568,7 @@ describe('GET /api/spotify/now-playing', () => {
 describe('GET /api/spotify/auth/init', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
   });
 
   it('returns 400 when link_code or user_id is missing', async () => {
@@ -581,7 +581,7 @@ describe('GET /api/spotify/auth/init', () => {
   });
 
   it('returns auth URL from backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { auth_url: 'https://accounts.spotify.com/authorize?...' },
       status: 200,
     });
@@ -595,7 +595,7 @@ describe('GET /api/spotify/auth/init', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { GET } = await import('@/app/api/spotify/auth/init/route');
     const req = new Request('http://localhost/api/spotify/auth/init?link_code=lc1&user_id=u1');
@@ -611,11 +611,11 @@ describe('GET /api/spotify/auth/init', () => {
 describe('POST /api/spotify/link/verify', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
   });
 
   it('forwards verification to backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { status: 'linked' },
       status: 200,
     });
@@ -633,7 +633,7 @@ describe('POST /api/spotify/link/verify', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { POST } = await import('@/app/api/spotify/link/verify/route');
     const req = new Request('http://localhost/api/spotify/link/verify', {
@@ -653,11 +653,11 @@ describe('POST /api/spotify/link/verify', () => {
 describe('POST /api/spotify/oauth/callback', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
   });
 
   it('forwards OAuth callback to backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { status: 'success' },
       status: 200,
     });
@@ -675,7 +675,7 @@ describe('POST /api/spotify/oauth/callback', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { POST } = await import('@/app/api/spotify/oauth/callback/route');
     const req = new Request('http://localhost/api/spotify/oauth/callback', {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { manemusFetch } from '@/lib/api-fetch';
+import { mindFetch } from '@/lib/api-fetch';
 import { requireSession } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
@@ -11,7 +11,7 @@ export async function GET(
   const { profileId } = await params;
   const qs = req.nextUrl.searchParams.toString();
   try {
-    const res = await manemusFetch(`/api/feed/${encodeURIComponent(profileId)}${qs ? `?${qs}` : ''}`, { cache: 'no-store' });
+    const res = await mindFetch(`/api/feed/${encodeURIComponent(profileId)}${qs ? `?${qs}` : ''}`, { cache: 'no-store' });
     return NextResponse.json(await res.json(), { status: res.status });
   } catch {
     return NextResponse.json({ error: 'Service unavailable' }, { status: 502 });
@@ -25,13 +25,13 @@ export async function POST(
   const auth = await requireSession(request);
   if (auth instanceof NextResponse) return auth;
   const { profileId } = await params;
-  const apiKey = process.env.MANEMUS_API_KEY;
+  const apiKey = process.env.MIND_HOME_API_KEY;
   if (!apiKey) return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 });
 
   try {
     const body = await request.json();
     body.author_id = auth.user_id;
-    const res = await manemusFetch(`/api/feed/${encodeURIComponent(profileId)}`, {
+    const res = await mindFetch(`/api/feed/${encodeURIComponent(profileId)}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}`, 'X-User-Id': auth.user_id },
       body: JSON.stringify(body),

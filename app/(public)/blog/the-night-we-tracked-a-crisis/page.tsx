@@ -42,7 +42,7 @@ const TIMELINE = [
   { time: '22:30', event: 'Prazepam 1.5 dose sublingual (Nicolas)', type: 'intervention' },
   { time: '23:42', event: 'Tercian + water + omega 3', type: 'intervention' },
   { time: '23:44', event: 'Full bridge shutdown: lights, music, scripts', type: 'baseline' },
-  { time: '23:57', event: 'Rise and shine, Manemus!', type: 'baseline' },
+  { time: '23:57', event: 'Rise and shine, Mind!', type: 'baseline' },
 ];
 
 // ─── Components ────────────────────────────────────────────────
@@ -243,7 +243,7 @@ export default function CrisisTrackingPost() {
             <span className="text-zinc-700">|</span>
             <span>8 min read</span>
             <span className="text-zinc-700 hidden sm:inline">|</span>
-            <span className="hidden sm:inline">Nicolas &amp; Manemus</span>
+            <span className="hidden sm:inline">Nicolas &amp; Mind</span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-mono mb-6">

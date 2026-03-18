@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { manemusFetch } from '@/lib/api-fetch';
+import { mindFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   try {
     const userId = auth.user_id;
     const formData = await req.formData();
-    const res = await manemusFetch('/api/tracker/environments/suggest-name', {
+    const res = await mindFetch('/api/tracker/environments/suggest-name', {
       method: 'POST',
       headers: { 'X-User-Id': userId },
       body: formData,

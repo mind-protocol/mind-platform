@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { manemusFetch } from '@/lib/api-fetch';
+import { mindFetch } from '@/lib/api-fetch';
 
 export async function GET(req: NextRequest) {
   const authResult = await requireSession(req);
@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
   const days = req.nextUrl.searchParams.get('days') || '60';
 
   try {
-    const res = await manemusFetch(`/api/tracker/dependencies?days=${days}`, {
+    const res = await mindFetch(`/api/tracker/dependencies?days=${days}`, {
       headers: {
         'X-User-Id': userId,
       },

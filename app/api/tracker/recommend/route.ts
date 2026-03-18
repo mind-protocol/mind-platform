@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { manemusFetchJson } from '@/lib/api-fetch';
+import { mindFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const userId = auth.user_id;
-    const { data, status } = await manemusFetchJson('/api/tracker/recommend', {
+    const { data, status } = await mindFetchJson('/api/tracker/recommend', {
       cache: 'no-store',
       headers: { 'X-User-Id': userId },
     });

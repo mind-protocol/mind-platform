@@ -1,20 +1,20 @@
 /**
- * Shared fetch utility for API routes proxying to the Manemus backend.
+ * Shared fetch utility for API routes proxying to the Mind Home backend.
  * Provides consistent timeouts, error handling, and headers.
  */
 
-export const MANEMUS_URL =
+export const MIND_HOME_URL =
   process.env.MIND_API_URL ||
-  process.env.MANEMUS_URL ||
+  process.env.MIND_HOME_URL ||
   'https://api.mindprotocol.ai';
 
 const DEFAULT_TIMEOUT_MS = 15_000; // 15 seconds
 
 /**
- * Fetch from the Manemus backend with a timeout.
+ * Fetch from the Mind Home backend with a timeout.
  * Throws if the request times out or fails.
  */
-export async function manemusFetch(
+export async function mindFetch(
   path: string,
   init?: RequestInit & { timeoutMs?: number },
 ): Promise<Response> {
@@ -24,7 +24,7 @@ export async function manemusFetch(
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const res = await fetch(`${MANEMUS_URL}${path}`, {
+    const res = await fetch(`${MIND_HOME_URL}${path}`, {
       ...fetchInit,
       signal: controller.signal,
       headers: {
@@ -38,14 +38,14 @@ export async function manemusFetch(
 }
 
 /**
- * Fetch JSON from Manemus with timeout and automatic JSON parsing.
+ * Fetch JSON from Mind Home with timeout and automatic JSON parsing.
  * Returns { data, status } on success or throws on network/timeout error.
  */
-export async function manemusFetchJson<T = unknown>(
+export async function mindFetchJson<T = unknown>(
   path: string,
   init?: RequestInit & { timeoutMs?: number },
 ): Promise<{ data: T; status: number }> {
-  const res = await manemusFetch(path, init);
+  const res = await mindFetch(path, init);
   const data = await res.json() as T;
   return { data, status: res.status };
 }

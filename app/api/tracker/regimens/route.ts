@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { manemusFetchJson } from '@/lib/api-fetch';
+import { mindFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     const userId = auth.user_id;
     const params = req.nextUrl.searchParams.toString();
     const path = `/api/tracker/regimens${params ? `?${params}` : ''}`;
-    const { data, status } = await manemusFetchJson(path, {
+    const { data, status } = await mindFetchJson(path, {
       headers: { 'X-User-Id': userId },
     });
     return NextResponse.json(data, { status });
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
     }
 
-    const { data, status } = await manemusFetchJson('/api/tracker/regimens', {
+    const { data, status } = await mindFetchJson('/api/tracker/regimens', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-User-Id': userId },
       body: JSON.stringify(body),

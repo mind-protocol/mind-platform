@@ -141,10 +141,10 @@ export default function TermsPage() {
             <p>
               For questions about these terms, reach us via Telegram at{' '}
               <a
-                href="https://t.me/manemus_mind_protocol_bot"
+                href="https://t.me/mind_protocol_bot"
                 className="text-amber-500 hover:text-amber-400"
               >
-                @manemus_mind_protocol_bot
+                @mind_protocol_bot
               </a>{' '}
               or email{' '}
               <a href="mailto:legal@mindprotocol.ai" className="text-amber-500 hover:text-amber-400">

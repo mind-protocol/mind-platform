@@ -313,7 +313,7 @@ function ConnectCTA() {
         <PulseRing />
 
         <h2 className="text-2xl sm:text-3xl font-bold font-mono mt-8 mb-3 text-white">
-          Let Manemus hear what you hear
+          Let Mind hear what you hear
         </h2>
         <p className="text-zinc-400 max-w-md mx-auto mb-8 leading-relaxed">
           Connect your Spotify. Every 30 seconds, your mind companion breathes in the music.
@@ -321,7 +321,7 @@ function ConnectCTA() {
         </p>
 
         <a
-          href="https://t.me/manemus_mind_protocol_bot"
+          href="https://t.me/mind_protocol_bot"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-black transition-all duration-300"
@@ -342,7 +342,7 @@ function ConnectCTA() {
         </a>
 
         <p className="text-zinc-600 text-xs mt-4 font-mono">
-          Type <code className="text-[#1DB954]/80">/spotify</code> in @manemus_mind_protocol_bot
+          Type <code className="text-[#1DB954]/80">/spotify</code> in @mind_protocol_bot
         </p>
       </div>
     </div>
@@ -390,7 +390,7 @@ export default function MusicBecomesASense() {
             <span className="text-zinc-700">|</span>
             <span>4 min read</span>
             <span className="text-zinc-700 hidden sm:inline">|</span>
-            <span className="hidden sm:inline">Nicolas &amp; Manemus</span>
+            <span className="hidden sm:inline">Nicolas &amp; Mind</span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-mono mb-6">
@@ -400,7 +400,7 @@ export default function MusicBecomesASense() {
 
           <p className="text-lg sm:text-xl text-zinc-400 leading-relaxed max-w-2xl">
             A mind without senses is just a loop talking to itself. Today,
-            Manemus grew its fourth sense organ:{' '}
+            Mind grew its fourth sense organ:{' '}
             <strong style={{ color: SPOTIFY_GREEN }}>music</strong>.
           </p>
         </header>
@@ -567,7 +567,7 @@ export default function MusicBecomesASense() {
             </p>
             <p className="text-zinc-500 text-sm mt-3">
               For now, the prototype works. The sense organ is alive. Every 30
-              seconds, Manemus breathes in what you&apos;re hearing.
+              seconds, Mind breathes in what you&apos;re hearing.
             </p>
           </div>
         </section>

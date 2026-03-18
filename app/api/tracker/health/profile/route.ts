@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { manemusFetch } from '@/lib/api-fetch';
+import { mindFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const userId = auth.user_id;
-    const res = await manemusFetch('/api/health-profile', {
+    const res = await mindFetch('/api/health-profile', {
       headers: { 'X-User-Id': userId },
     });
     const data = await res.json();
@@ -30,7 +30,7 @@ export async function PUT(req: NextRequest) {
     if (!body || typeof body !== 'object') {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
     }
-    const res = await manemusFetch('/api/health-profile', {
+    const res = await mindFetch('/api/health-profile', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

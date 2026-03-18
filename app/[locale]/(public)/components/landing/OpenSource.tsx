@@ -49,9 +49,9 @@ export function OpenSource() {
       href: 'https://github.com/mind-protocol/mind-platform',
     },
     {
-      name: t('manemusName'),
-      description: t('manemusDescription'),
-      href: 'https://github.com/mind-protocol/manemus',
+      name: t('mindHomeName'),
+      description: t('mindHomeDescription'),
+      href: 'https://github.com/mind-protocol/mind-home',
     },
   ];
 

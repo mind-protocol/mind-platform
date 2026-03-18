@@ -1,16 +1,16 @@
 /**
- * Chat relay service: forwards messages to MANEMUS backend,
- * falls back to Claude API (Anthropic) if MANEMUS is unreachable.
+ * Chat relay service: forwards messages to Mind Home backend,
+ * falls back to Claude API (Anthropic) if Mind Home is unreachable.
  */
 
-import { MANEMUS_URL } from '../api-fetch';
+import { MIND_HOME_URL } from '../api-fetch';
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-20250514';
-const MANEMUS_TIMEOUT_MS = 8_000;
+const MIND_HOME_TIMEOUT_MS = 8_000;
 
 interface RelayResult {
   text: string;
-  source: 'manemus' | 'claude';
+  source: 'mind-home' | 'claude';
 }
 
 export async function relayChatMessage(
@@ -18,12 +18,12 @@ export async function relayChatMessage(
   content: string,
   senderId: string,
 ): Promise<RelayResult> {
-  // 1. Try MANEMUS first
+  // 1. Try Mind Home first
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), MANEMUS_TIMEOUT_MS);
+    const timeout = setTimeout(() => controller.abort(), MIND_HOME_TIMEOUT_MS);
 
-    const res = await fetch(`${MANEMUS_URL}/chat/send`, {
+    const res = await fetch(`${MIND_HOME_URL}/chat/send`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,11 +42,11 @@ export async function relayChatMessage(
       const data = await res.json();
       const reply = data.response || data.content || data.message || '';
       if (reply) {
-        return { text: reply, source: 'manemus' };
+        return { text: reply, source: 'mind-home' };
       }
     }
   } catch {
-    // MANEMUS unreachable — fall through to Claude
+    // Mind Home unreachable — fall through to Claude
   }
 
   // 2. Fallback: call Claude API directly

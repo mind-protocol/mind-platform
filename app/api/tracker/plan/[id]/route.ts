@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { manemusFetchJson } from '@/lib/api-fetch';
+import { mindFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +15,7 @@ export async function PATCH(
     const userId = auth.user_id;
     const { id } = await params;
     const body = await req.json();
-    const { data, status } = await manemusFetchJson(`/api/tracker/plan/${id}`, {
+    const { data, status } = await mindFetchJson(`/api/tracker/plan/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

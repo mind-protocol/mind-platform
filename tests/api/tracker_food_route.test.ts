@@ -23,9 +23,9 @@ class MockNextResponse {
 // Mocks
 // ---------------------------------------------------------------------------
 
-const mockManemusFetchJson = vi.fn();
+const mockMindFetchJson = vi.fn();
 vi.mock('@/lib/api-fetch', () => ({
-  manemusFetchJson: (...args: unknown[]) => mockManemusFetchJson(...args),
+  mindFetchJson: (...args: unknown[]) => mockMindFetchJson(...args),
 }));
 
 const mockRequireSession = vi.fn();
@@ -74,13 +74,13 @@ function mockUnauthenticated() {
 describe('GET /api/tracker/food', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
     mockRequireSession.mockReset();
   });
 
   it('defaults to 7 days when no days param provided', async () => {
     mockAuthenticated('user-1');
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { entries: [] },
       status: 200,
     });
@@ -92,7 +92,7 @@ describe('GET /api/tracker/food', () => {
     expect(response.status).toBe(200);
 
     // Should call backend with days=7 default
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       '/api/tracker/food?days=7',
       expect.objectContaining({
         headers: expect.objectContaining({ 'X-User-Id': 'user-1' }),
@@ -102,7 +102,7 @@ describe('GET /api/tracker/food', () => {
 
   it('passes custom days param to backend', async () => {
     mockAuthenticated('user-1');
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { entries: [{ id: 'f1', food: 'Apple', calories: 95 }] },
       status: 200,
     });
@@ -115,7 +115,7 @@ describe('GET /api/tracker/food', () => {
     const data = await response.json();
     expect(data.entries).toHaveLength(1);
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       '/api/tracker/food?days=30',
       expect.anything(),
     );
@@ -123,7 +123,7 @@ describe('GET /api/tracker/food', () => {
 
   it('returns 502 when backend is unreachable', async () => {
     mockAuthenticated('user-1');
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { GET } = await import('@/app/api/tracker/food/route');
     const { NextRequest } = await import('next/server');
@@ -152,13 +152,13 @@ describe('GET /api/tracker/food', () => {
 describe('POST /api/tracker/food', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
     mockRequireSession.mockReset();
   });
 
   it('posts food entry with user_id injected', async () => {
     mockAuthenticated('user-1');
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { id: 'f2', food: 'Banana', calories: 105 },
       status: 201,
     });
@@ -175,14 +175,14 @@ describe('POST /api/tracker/food', () => {
     expect(data.food).toBe('Banana');
 
     // Verify user_id is injected into body
-    const sentBody = JSON.parse(mockManemusFetchJson.mock.calls[0][1].body);
+    const sentBody = JSON.parse(mockMindFetchJson.mock.calls[0][1].body);
     expect(sentBody.user_id).toBe('user-1');
     expect(sentBody.food).toBe('Banana');
   });
 
   it('returns 502 when backend is unreachable', async () => {
     mockAuthenticated('user-1');
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
 
     const { POST } = await import('@/app/api/tracker/food/route');
     const { NextRequest } = await import('next/server');

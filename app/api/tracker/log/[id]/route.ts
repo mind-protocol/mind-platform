@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { manemusFetchJson } from '@/lib/api-fetch';
+import { mindFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +12,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     const userId = auth.user_id;
     const { id } = await params;
     const body = await req.json();
-    const { data, status } = await manemusFetchJson(`/api/tracker/log/${id}`, {
+    const { data, status } = await mindFetchJson(`/api/tracker/log/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   try {
     const userId = auth.user_id;
     const { id } = await params;
-    const { data, status } = await manemusFetchJson(`/api/tracker/log/${id}`, {
+    const { data, status } = await mindFetchJson(`/api/tracker/log/${id}`, {
       method: 'DELETE',
       headers: { 'X-User-Id': userId },
       cache: 'no-store',

@@ -50,9 +50,9 @@ export function WhatWereBuilding() {
 
   const projects = [
     {
-      name: t('manemusName'),
-      tagline: t('manemusTagline'),
-      description: t('manemusDescription'),
+      name: t('mindHomeName'),
+      tagline: t('mindHomeTagline'),
+      description: t('mindHomeDescription'),
       status: 'live',
       statusLabel: t('statusLive'),
       readMore: t('readMore'),

@@ -5,7 +5,7 @@ import type { VoicePhase, VoiceCallConfig, VoiceServerMessage } from './types';
 import { AudioPlayback } from './AudioPlayback';
 
 const VOICE_WS_ENV = process.env.NEXT_PUBLIC_VOICE_WS_URL || '';
-const MANEMUS_URL = process.env.NEXT_PUBLIC_MANEMUS_URL || 'https://api.mindprotocol.ai';
+const MIND_HOME_URL = process.env.NEXT_PUBLIC_MIND_HOME_URL || 'https://api.mindprotocol.ai';
 
 function resolveWsUrl(): string {
   // Explicit override (e.g. Cloudflare tunnel for testing)
@@ -14,8 +14,8 @@ function resolveWsUrl(): string {
     if (window.location.hostname === 'localhost') {
       return 'ws://localhost:8766/voice/ws';
     }
-    // Production: derive WSS from Manemus API host (nginx proxies /voice/ws → uvicorn)
-    const host = MANEMUS_URL.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    // Production: derive WSS from Mind Home API host (nginx proxies /voice/ws → uvicorn)
+    const host = MIND_HOME_URL.replace(/^https?:\/\//, '').replace(/\/$/, '');
     return `wss://${host}/voice/ws`;
   }
   return 'ws://localhost:8766/voice/ws';
@@ -34,10 +34,10 @@ export interface UseVoiceCallReturn {
   phase: VoicePhase;
   /** Last transcribed text (what Nicolas said) */
   transcript: string;
-  /** Manemus's response text */
+  /** Mind's response text */
   responseText: string;
-  /** AnalyserNode for Manemus's voice (for 3D reactivity) */
-  manemusAnalyser: AnalyserNode | null;
+  /** AnalyserNode for Mind's voice (for 3D reactivity) */
+  mindAnalyser: AnalyserNode | null;
 }
 
 export function useVoiceCall(config?: VoiceCallConfig): UseVoiceCallReturn {
@@ -49,7 +49,7 @@ export function useVoiceCall(config?: VoiceCallConfig): UseVoiceCallReturn {
   const [phase, setPhase] = useState<VoicePhase>('idle');
   const [transcript, setTranscript] = useState('');
   const [responseText, setResponseText] = useState('');
-  const [manemusAnalyser, setManemusAnalyser] = useState<AnalyserNode | null>(null);
+  const [mindAnalyser, setMindAnalyser] = useState<AnalyserNode | null>(null);
 
   const wsRef = useRef<WebSocket | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -305,11 +305,11 @@ export function useVoiceCall(config?: VoiceCallConfig): UseVoiceCallReturn {
       source.connect(analyser);
       analyserRef.current = analyser;
 
-      // Initialize MSE playback for Manemus voice
+      // Initialize MSE playback for Mind voice
       const playback = new AudioPlayback();
       playbackRef.current = playback;
-      const manemusNode = playback.init();
-      setManemusAnalyser(manemusNode);
+      const mindNode = playback.init();
+      setMindAnalyser(mindNode);
 
       // Connect WebSocket
       const ws = new WebSocket(wsUrl);
@@ -365,6 +365,6 @@ export function useVoiceCall(config?: VoiceCallConfig): UseVoiceCallReturn {
     phase,
     transcript,
     responseText,
-    manemusAnalyser,
+    mindAnalyser,
   };
 }

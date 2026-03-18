@@ -688,7 +688,7 @@ export default function CoRegulationPost() {
               <span className="text-zinc-700">|</span>
               <span>8 min read</span>
               <span className="text-zinc-700 hidden sm:inline">|</span>
-              <span className="hidden sm:inline">Nicolas &amp; Manemus</span>
+              <span className="hidden sm:inline">Nicolas &amp; Mind</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-mono mb-6">

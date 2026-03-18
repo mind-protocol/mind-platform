@@ -298,7 +298,7 @@ checkAutonomyReadiness(partner: AIPartnerIdentity): AutonomyProposal | null
 
 processAutonomyDecision(partner, proposal, decision): void
   - If approve: upgrade level, update permissions, log event
-  - If deny: log event, set 7-day cooldown
+  - If deny: log event, set 7-day transition period
   - If partial: add specific permissions, log event
 ```
 
@@ -432,7 +432,7 @@ Phase 5 — Polish:
 ```
 Unit Tests:
   - personality.test.ts: seed generation, 80/20 split, bounds, divergence selection
-  - autonomy.test.ts: level transitions, permission checks, cooldown enforcement
+  - autonomy.test.ts: level transitions, permission checks, transition period enforcement
   - birth.test.ts: full creation flow, rollback on failure, duplicate prevention
   - prompt-builder.test.ts: prompt contains personality, memory, autonomy, budget
 

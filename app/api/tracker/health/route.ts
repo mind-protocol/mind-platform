@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { manemusFetchJson } from '@/lib/api-fetch';
+import { mindFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
       ? `/api/medical-profile/${section}`
       : '/api/medical-profile';
 
-    const { data, status } = await manemusFetchJson(path, {
+    const { data, status } = await mindFetchJson(path, {
       cache: 'no-store',
       headers: {
         'X-User-Id': userId,

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-const API_URL = process.env.NEXT_PUBLIC_MANEMUS_URL || 'https://api.mindprotocol.ai';
+const API_URL = process.env.NEXT_PUBLIC_MIND_HOME_URL || 'https://api.mindprotocol.ai';
 
 type Step = 'loading' | 'invalid' | 'otp' | 'consent' | 'upload' | 'processing' | 'success' | 'error';
 

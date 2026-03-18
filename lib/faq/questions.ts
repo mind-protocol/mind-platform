@@ -46,15 +46,15 @@ export const FAQ_CATEGORIES: FAQCategory[] = [
         ],
       },
       {
-        id: 'what-is-manemus',
+        id: 'what-is-mind-home',
         category: 'protocol',
         question: {
-          en: 'What is Manemus?',
-          fr: "Qu'est-ce que Manemus ?",
+          en: 'What is Mind Home?',
+          fr: "Qu'est-ce que Mind Home ?",
         },
         answer: {
-          en: "Manemus is Mind Protocol's core AI daemon — the always-on orchestrator that manages Claude sessions, reads biometric data, handles conversations across Telegram and WhatsApp, and dispatches autonomous tasks. Think of it as the 'nervous system' that connects your wearable data to AI intelligence.",
-          fr: "Manemus est le daemon IA central de Mind Protocol — l'orchestrateur toujours actif qui gère les sessions Claude, lit les données biométriques, gère les conversations via Telegram et WhatsApp, et dispatche des tâches autonomes. C'est le 'système nerveux' qui connecte vos données wearable à l'intelligence artificielle.",
+          en: "Mind Home is Mind Protocol's core AI daemon — the always-on orchestrator that manages Claude sessions, reads biometric data, handles conversations across Telegram and WhatsApp, and dispatches autonomous tasks. Think of it as the 'nervous system' that connects your wearable data to AI intelligence.",
+          fr: "Mind Home est le daemon IA central de Mind Protocol — l'orchestrateur toujours actif qui gère les sessions Claude, lit les données biométriques, gère les conversations via Telegram et WhatsApp, et dispatche des tâches autonomes. C'est le 'système nerveux' qui connecte vos données wearable à l'intelligence artificielle.",
         },
         sources: [{ label: 'self.md', href: '/self' }],
       },
@@ -192,8 +192,8 @@ export const FAQ_CATEGORIES: FAQCategory[] = [
           fr: 'Mes données biométriques sont-elles partagées ?',
         },
         answer: {
-          en: "No. Your biometric data is processed locally by Manemus and never shared with third parties. In Duo Mode, only computed metrics (synchrony scores, phase detection) are shared with your partner — never raw data. The AI processes your data in-session and doesn't retain it after the conversation ends.",
-          fr: "Non. Vos données biométriques sont traitées localement par Manemus et jamais partagées avec des tiers. En mode Duo, seules les métriques calculées (scores de synchronie, détection de phase) sont partagées avec votre partenaire — jamais les données brutes.",
+          en: "No. Your biometric data is processed locally by Mind Home and never shared with third parties. In Duo Mode, only computed metrics (synchrony scores, phase detection) are shared with your partner — never raw data. The AI processes your data in-session and doesn't retain it after the conversation ends.",
+          fr: "Non. Vos données biométriques sont traitées localement par Mind Home et jamais partagées avec des tiers. En mode Duo, seules les métriques calculées (scores de synchronie, détection de phase) sont partagées avec votre partenaire — jamais les données brutes.",
         },
         sources: [{ label: 'Privacy Policy', href: '/privacy' }],
       },
@@ -205,8 +205,8 @@ export const FAQ_CATEGORIES: FAQCategory[] = [
           fr: 'Où sont stockées mes données ?',
         },
         answer: {
-          en: 'Biometric data is stored locally on the Manemus server (JSONL files). The web platform stores user profiles and health records in Supabase (PostgreSQL). All communication is encrypted in transit (TLS). The entire codebase is open-source — you can audit exactly what is collected and how.',
-          fr: "Les données biométriques sont stockées localement sur le serveur Manemus (fichiers JSONL). La plateforme web stocke les profils et dossiers santé dans Supabase (PostgreSQL). Toutes les communications sont chiffrées en transit (TLS). Le code est entièrement open-source — vous pouvez auditer exactement ce qui est collecté.",
+          en: 'Biometric data is stored locally on the Mind Home server (JSONL files). The web platform stores user profiles and health records in Supabase (PostgreSQL). All communication is encrypted in transit (TLS). The entire codebase is open-source — you can audit exactly what is collected and how.',
+          fr: "Les données biométriques sont stockées localement sur le serveur Mind Home (fichiers JSONL). La plateforme web stocke les profils et dossiers santé dans Supabase (PostgreSQL). Toutes les communications sont chiffrées en transit (TLS). Le code est entièrement open-source — vous pouvez auditer exactement ce qui est collecté.",
         },
         sources: [
           { label: 'Privacy Policy', href: '/privacy' },
@@ -241,8 +241,8 @@ export const FAQ_CATEGORIES: FAQCategory[] = [
           fr: 'Comment créer un compte ?',
         },
         answer: {
-          en: 'Go to /register and create an account with your email. You\'ll become a "citizen" of the protocol. From there, you can connect your Garmin watch, start tracking substances, and chat with the AI via the website, Telegram (@manemus_mind_protocol_bot), or WhatsApp.',
-          fr: "Allez sur /register et créez un compte avec votre email. Vous deviendrez un 'citoyen' du protocole. De là, vous pouvez connecter votre montre Garmin, commencer à tracker vos substances, et discuter avec l'IA via le site, Telegram (@manemus_mind_protocol_bot), ou WhatsApp.",
+          en: 'Go to /register and create an account with your email. You\'ll become a "citizen" of the protocol. From there, you can connect your Garmin watch, start tracking substances, and chat with the AI via the website, Telegram (@mind_protocol_bot), or WhatsApp.',
+          fr: "Allez sur /register et créez un compte avec votre email. Vous deviendrez un 'citoyen' du protocole. De là, vous pouvez connecter votre montre Garmin, commencer à tracker vos substances, et discuter avec l'IA via le site, Telegram (@mind_protocol_bot), ou WhatsApp.",
         },
         sources: [{ label: 'Register', href: '/register' }],
       },
@@ -267,8 +267,8 @@ export const FAQ_CATEGORIES: FAQCategory[] = [
           fr: "Comment parler à l'IA ?",
         },
         answer: {
-          en: 'Three ways: (1) The chat widget on this website (bottom-right corner), (2) Telegram — search for @manemus_mind_protocol_bot, (3) WhatsApp — message the number linked on our channels. The AI understands English, French, Chinese, and auto-detects your language.',
-          fr: "Trois façons : (1) Le widget chat sur ce site (coin bas-droit), (2) Telegram — cherchez @manemus_mind_protocol_bot, (3) WhatsApp — envoyez un message au numéro partagé sur nos canaux. L'IA comprend le français, l'anglais, le chinois, et détecte automatiquement votre langue.",
+          en: 'Three ways: (1) The chat widget on this website (bottom-right corner), (2) Telegram — search for @mind_protocol_bot, (3) WhatsApp — message the number linked on our channels. The AI understands English, French, Chinese, and auto-detects your language.',
+          fr: "Trois façons : (1) Le widget chat sur ce site (coin bas-droit), (2) Telegram — cherchez @mind_protocol_bot, (3) WhatsApp — envoyez un message au numéro partagé sur nos canaux. L'IA comprend le français, l'anglais, le chinois, et détecte automatiquement votre langue.",
         },
       },
     ],
@@ -299,8 +299,8 @@ export const FAQ_CATEGORIES: FAQCategory[] = [
           fr: 'Mind Protocol est-il open source ?',
         },
         answer: {
-          en: "Yes. The core repositories (manemus, mind-platform, mind-mcp) are open-source on GitHub under the mind-protocol organization. You can self-host the entire stack. We believe transparency is essential for a protocol that handles personal health data.",
-          fr: "Oui. Les dépôts principaux (manemus, mind-platform, mind-mcp) sont open-source sur GitHub sous l'organisation mind-protocol. Vous pouvez auto-héberger tout le stack. On croit que la transparence est essentielle pour un protocole qui gère des données de santé personnelles.",
+          en: "Yes. The core repositories (mind-home, mind-platform, mind-mcp) are open-source on GitHub under the mind-protocol organization. You can self-host the entire stack. We believe transparency is essential for a protocol that handles personal health data.",
+          fr: "Oui. Les dépôts principaux (mind-home, mind-platform, mind-mcp) sont open-source sur GitHub sous l'organisation mind-protocol. Vous pouvez auto-héberger tout le stack. On croit que la transparence est essentielle pour un protocole qui gère des données de santé personnelles.",
         },
         sources: [{ label: 'GitHub', href: 'https://github.com/mind-protocol' }],
       },

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { manemusFetchJson } from '@/lib/api-fetch';
+import { mindFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     if (!linkCode || !userId) {
       return NextResponse.json({ error: 'link_code and user_id required' }, { status: 400 });
     }
-    const { data, status } = await manemusFetchJson(
+    const { data, status } = await mindFetchJson(
       `/spotify/auth/init?link_code=${encodeURIComponent(linkCode)}&user_id=${encodeURIComponent(userId)}`
     );
     return NextResponse.json(data, { status });

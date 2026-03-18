@@ -23,9 +23,9 @@ class MockNextResponse {
 // Mocks
 // ---------------------------------------------------------------------------
 
-const mockManemusFetchJson = vi.fn();
+const mockMindFetchJson = vi.fn();
 vi.mock('@/lib/api-fetch', () => ({
-  manemusFetchJson: (...args: unknown[]) => mockManemusFetchJson(...args),
+  mindFetchJson: (...args: unknown[]) => mockMindFetchJson(...args),
 }));
 
 const mockRequireSession = vi.fn();
@@ -101,7 +101,7 @@ function mockUnauthenticated() {
 describe('POST /api/chat/send', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
     mockRequireSession.mockReset();
     mockAuthenticated();
   });
@@ -118,7 +118,7 @@ describe('POST /api/chat/send', () => {
   });
 
   it('forwards message to backend with user_id', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { id: 'msg1', text: 'reply' },
       status: 200,
     });
@@ -133,7 +133,7 @@ describe('POST /api/chat/send', () => {
     const data = await response.json();
     expect(data.id).toBe('msg1');
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       '/chat/send',
       expect.objectContaining({
         method: 'POST',
@@ -143,7 +143,7 @@ describe('POST /api/chat/send', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
 
     const { POST } = await import('@/app/api/chat/send/route');
     const req = makeNextRequest('http://localhost/api/chat/send', {
@@ -163,7 +163,7 @@ describe('POST /api/chat/send', () => {
 describe('GET /api/chat/messages', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
     mockRequireSession.mockReset();
     mockAuthenticated();
   });
@@ -187,7 +187,7 @@ describe('GET /api/chat/messages', () => {
   });
 
   it('returns messages from backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: [{ id: 'm1', text: 'hi' }, { id: 'm2', text: 'hello' }],
       status: 200,
     });
@@ -202,7 +202,7 @@ describe('GET /api/chat/messages', () => {
   });
 
   it('passes since param to backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: [],
       status: 200,
     });
@@ -212,13 +212,13 @@ describe('GET /api/chat/messages', () => {
     const response = await GET(req);
     expect(response.status).toBe(200);
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       expect.stringContaining('since='),
     );
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { GET } = await import('@/app/api/chat/messages/route');
     const req = makeGetRequest('http://localhost/api/chat/messages?thread_id=t1');
@@ -234,7 +234,7 @@ describe('GET /api/chat/messages', () => {
 describe('POST /api/chat/tts', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
     mockRequireSession.mockReset();
     mockAuthenticated();
   });
@@ -251,7 +251,7 @@ describe('POST /api/chat/tts', () => {
   });
 
   it('forwards TTS request to backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { audio_url: 'https://example.com/audio.mp3' },
       status: 200,
     });
@@ -265,14 +265,14 @@ describe('POST /api/chat/tts', () => {
     const data = await response.json();
     expect(data.audio_url).toBeDefined();
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       '/chat/tts',
       expect.objectContaining({ method: 'POST' }),
     );
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
 
     const { POST } = await import('@/app/api/chat/tts/route');
     const req = makeNextRequest('http://localhost/api/chat/tts', {

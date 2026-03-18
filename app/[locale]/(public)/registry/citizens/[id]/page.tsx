@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
 
-const MANEMUS_API = 'https://api.mindprotocol.ai';
+const MIND_HOME_API = 'https://api.mindprotocol.ai';
 
 // --- Types ---
 
@@ -213,7 +213,7 @@ function FeedSection({ profileId }: { profileId: string }) {
   useEffect(() => {
     async function loadFeed() {
       try {
-        const res = await fetch(`${MANEMUS_API}/api/feed/${profileId}`);
+        const res = await fetch(`${MIND_HOME_API}/api/feed/${profileId}`);
         if (res.ok) {
           const data = await res.json();
           setPosts(data.posts || []);
@@ -232,7 +232,7 @@ function FeedSection({ profileId }: { profileId: string }) {
     });
     if (!comments[postId]) {
       try {
-        const res = await fetch(`${MANEMUS_API}/api/feed/${profileId}/${postId}/comments`);
+        const res = await fetch(`${MIND_HOME_API}/api/feed/${profileId}/${postId}/comments`);
         if (res.ok) {
           const data = await res.json();
           setComments((prev) => ({ ...prev, [postId]: data.comments || [] }));
@@ -280,9 +280,9 @@ function FeedSection({ profileId }: { profileId: string }) {
                 <div className="flex flex-wrap gap-2 mt-3">
                   {post.media.map((m, i) =>
                     m.url?.endsWith('.mp4') || m.url?.endsWith('.webm') ? (
-                      <video key={i} src={`${MANEMUS_API}${m.url}`} controls className="max-w-full rounded-lg border border-zinc-800" />
+                      <video key={i} src={`${MIND_HOME_API}${m.url}`} controls className="max-w-full rounded-lg border border-zinc-800" />
                     ) : (
-                      <img key={i} src={`${MANEMUS_API}${m.url}`} alt="" className="max-w-full rounded-lg border border-zinc-800" />
+                      <img key={i} src={`${MIND_HOME_API}${m.url}`} alt="" className="max-w-full rounded-lg border border-zinc-800" />
                     )
                   )}
                 </div>
@@ -342,7 +342,7 @@ function RelationshipsSection({ profileId }: { profileId: string }) {
   useEffect(() => {
     async function loadRelationships() {
       try {
-        const res = await fetch(`${MANEMUS_API}/api/citizens/${profileId}/relationships`);
+        const res = await fetch(`${MIND_HOME_API}/api/citizens/${profileId}/relationships`);
         if (res.ok) {
           const data = await res.json();
           setRelationships(data.relationships || []);
@@ -414,7 +414,7 @@ export default function CitizenProfilePage() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch(`${MANEMUS_API}/api/citizens/${id}`);
+        const res = await fetch(`${MIND_HOME_API}/api/citizens/${id}`);
         if (res.status === 404) { setNotFound(true); return; }
         if (!res.ok) throw new Error('Failed');
         const data = await res.json();
@@ -490,7 +490,7 @@ export default function CitizenProfilePage() {
           <div className="flex flex-col items-center mb-6">
             <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-zinc-900 border-2 border-zinc-700 flex items-center justify-center text-5xl sm:text-6xl font-bold text-zinc-600 overflow-hidden mb-4">
               {citizen.avatar?.type === 'photo' && citizen.avatar.photo_path ? (
-                <img src={`${MANEMUS_API}${citizen.avatar.photo_path}`} alt={citizen.display_name} className="w-full h-full object-cover rounded-full" />
+                <img src={`${MIND_HOME_API}${citizen.avatar.photo_path}`} alt={citizen.display_name} className="w-full h-full object-cover rounded-full" />
               ) : (
                 <span style={citizen.canvas_color ? { color: `rgb(${citizen.canvas_color.join(',')})` } : undefined}>
                   {citizen.emoji || citizen.display_name.charAt(0).toUpperCase()}

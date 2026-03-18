@@ -23,9 +23,9 @@ class MockNextResponse {
 // Mocks
 // ---------------------------------------------------------------------------
 
-const mockManemusFetchJson = vi.fn();
+const mockMindFetchJson = vi.fn();
 vi.mock('@/lib/api-fetch', () => ({
-  manemusFetchJson: (...args: unknown[]) => mockManemusFetchJson(...args),
+  mindFetchJson: (...args: unknown[]) => mockMindFetchJson(...args),
 }));
 
 const mockRequireSession = vi.fn();
@@ -97,7 +97,7 @@ function mockUnauthenticated() {
 describe('GET /api/garmin/status', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
     mockRequireSession.mockReset();
     mockAuthenticated();
   });
@@ -112,7 +112,7 @@ describe('GET /api/garmin/status', () => {
   });
 
   it('returns garmin status from backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { linked: true, last_sync: '2026-02-27T10:00:00Z' },
       status: 200,
     });
@@ -124,13 +124,13 @@ describe('GET /api/garmin/status', () => {
     const data = await response.json();
     expect(data.linked).toBe(true);
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       '/garmin/auth/status/u1',
     );
   });
 
   it('encodes user_id in the URL', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { linked: false },
       status: 200,
     });
@@ -140,13 +140,13 @@ describe('GET /api/garmin/status', () => {
     const response = await GET(req);
     expect(response.status).toBe(200);
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       '/garmin/auth/status/user%40email.com',
     );
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
 
     const { GET } = await import('@/app/api/garmin/status/route');
     const req = new Request('http://localhost/api/garmin/status?user_id=u1');
@@ -164,13 +164,13 @@ describe('GET /api/garmin/status', () => {
 describe('POST /api/garmin/link', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
     mockRequireSession.mockReset();
     mockAuthenticated();
   });
 
   it('forwards credentials to backend init endpoint', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { status: 'mfa_required', session_id: 's1' },
       status: 200,
     });
@@ -186,7 +186,7 @@ describe('POST /api/garmin/link', () => {
     const data = await response.json();
     expect(data.status).toBe('mfa_required');
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       '/garmin/auth/init',
       expect.objectContaining({ method: 'POST' }),
     );
@@ -205,7 +205,7 @@ describe('POST /api/garmin/link', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { POST } = await import('@/app/api/garmin/link/route');
     const req = makeRequest('http://localhost/api/garmin/link', {
@@ -224,13 +224,13 @@ describe('POST /api/garmin/link', () => {
 describe('POST /api/garmin/link/verify', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
     mockRequireSession.mockReset();
     mockAuthenticated();
   });
 
   it('forwards MFA code to backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { status: 'linked', user_id: 'u1' },
       status: 200,
     });
@@ -245,7 +245,7 @@ describe('POST /api/garmin/link/verify', () => {
     const data = await response.json();
     expect(data.status).toBe('linked');
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       '/garmin/link/verify',
       expect.objectContaining({ method: 'POST' }),
     );
@@ -264,7 +264,7 @@ describe('POST /api/garmin/link/verify', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { POST } = await import('@/app/api/garmin/link/verify/route');
     const req = makeRequest('http://localhost/api/garmin/link/verify', {
@@ -283,13 +283,13 @@ describe('POST /api/garmin/link/verify', () => {
 describe('POST /api/garmin/link/complete', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
     mockRequireSession.mockReset();
     mockAuthenticated();
   });
 
   it('forwards completion request to backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { status: 'complete', message: 'Garmin linked successfully' },
       status: 200,
     });
@@ -304,7 +304,7 @@ describe('POST /api/garmin/link/complete', () => {
     const data = await response.json();
     expect(data.status).toBe('complete');
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       '/garmin/link/complete',
       expect.objectContaining({ method: 'POST' }),
     );
@@ -320,7 +320,7 @@ describe('POST /api/garmin/link/complete', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('ECONNREFUSED'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('ECONNREFUSED'));
 
     const { POST } = await import('@/app/api/garmin/link/complete/route');
     const req = makeRequest('http://localhost/api/garmin/link/complete', {});
@@ -336,13 +336,13 @@ describe('POST /api/garmin/link/complete', () => {
 describe('POST /api/garmin/verify', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
     mockRequireSession.mockReset();
     mockAuthenticated();
   });
 
   it('forwards MFA verification to backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { verified: true },
       status: 200,
     });
@@ -357,7 +357,7 @@ describe('POST /api/garmin/verify', () => {
     const data = await response.json();
     expect(data.verified).toBe(true);
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       '/garmin/auth/mfa',
       expect.objectContaining({ method: 'POST' }),
     );
@@ -373,7 +373,7 @@ describe('POST /api/garmin/verify', () => {
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { POST } = await import('@/app/api/garmin/verify/route');
     const req = makeRequest('http://localhost/api/garmin/verify', { code: '000' });

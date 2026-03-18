@@ -1,18 +1,18 @@
 # Repository Map: mind-platform/app
 
-*Generated: 2026-03-14 16:01*
+*Generated: 2026-03-14 17:10*
 
-- **Files:** 262
-- **Directories:** 223
+- **Files:** 264
+- **Directories:** 225
 - **Total Size:** 2.0M
 - **Doc Files:** 0
-- **Code Files:** 262
+- **Code Files:** 264
 - **Areas:** 15 (docs/ subfolders)
 - **Modules:** 16 (subfolders in areas)
 - **DOCS Links:** 11 (0.04 avg per code file)
 
-- tsx: 172
-- typescript: 89
+- tsx: 173
+- typescript: 90
 - css: 1
 
 ```
@@ -303,7 +303,7 @@
 │   ├── error.tsx (1.5K)
 │   ├── layout.tsx (1.0K)
 │   └── not-found.tsx (1.1K)
-├── api/ (108.6K)
+├── api/ (110.6K)
 │   ├── actif/ (796)
 │   │   └── route.ts (796)
 │   ├── auth/ (7.7K)
@@ -327,11 +327,13 @@
 │   │   └── [slug]/ (542)
 │   │       └── md/ (542)
 │   │           └── route.ts (542)
-│   ├── chat/ (3.8K)
+│   ├── chat/ (5.8K)
 │   │   ├── messages/ (1.4K)
 │   │   │   └── route.ts (1.4K)
 │   │   ├── send/ (1.5K)
 │   │   │   └── route.ts (1.5K)
+│   │   ├── transcribe/ (2.0K)
+│   │   │   └── route.ts (2.0K)
 │   │   └── tts/ (847)
 │   │       └── route.ts (847)
 │   ├── connectome/ (503)
@@ -518,6 +520,8 @@
 │       │   └── route.ts (3.5K)
 │       └── whatsapp/ (4.4K)
 │           └── route.ts (4.4K)
+├── chrome-auth/ (5.8K)
+│   └── page.tsx (5.8K)
 ├── components/ (4.1K)
 │   └── VersionToast.tsx (4.1K)
 ├── globals.css (14.7K)
@@ -1377,6 +1381,9 @@
 **Definitions:**
 - `POST()`
 
+**Definitions:**
+- `POST()`
+
 **Docs:** `docs/connectome/graph_api/IMPLEMENTATION_Graph_API.md`
 
 **Definitions:**
@@ -1639,6 +1646,11 @@
 - `verifyWhatsAppSignature()`
 - `GET()`
 - `POST()`
+
+**Definitions:**
+- `ChromeAuthInner()`
+- `sendToExtension()`
+- `handleMessage()`
 
 **Definitions:**
 - `timeAgo()`

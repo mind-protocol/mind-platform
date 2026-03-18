@@ -110,7 +110,7 @@ ASSERT:    autonomy_level(t+1) >= autonomy_level(t) under normal operation
 ASSERT:    autonomy_level(t+1) <= autonomy_level(t) + 1 (no level skipping)
 EXCEPTION: Human can explicitly downgrade autonomy at any time (override)
 EXCEPTION: Violation of I2 triggers automatic downgrade
-ASSERT:    cooldown of 7 days between proposals (after denial)
+ASSERT:    transition period of 7 days between proposals (after denial)
 VIOLATION: If level changes without logged approval event, revert to last approved level
 RECOVERY:  Restore from autonomy_log (last "upgraded" or "partial" event)
 ```

@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-03-17T22:23:27.718952+00:00",
+  "generated_at": "2026-03-18T03:50:29.886384+00:00",
   "totals": {
     "repos": 16,
-    "commits": 2134,
-    "files": 38493,
-    "lines": 4198060
+    "commits": 2170,
+    "files": 37839,
+    "lines": 10452613
   },
   "categories": {
     "core": [
@@ -13,9 +13,9 @@
       "mind-mcp"
     ],
     "universes": [
+      "lumina-prime",
       "contre-terre",
-      "venezia",
-      "lumina-prime"
+      "venezia"
     ],
     "products": [
       "scopelock",
@@ -37,11 +37,26 @@
   },
   "repos": [
     {
+      "name": "lumina-prime",
+      "commits": 31,
+      "files": 1559,
+      "lines": 6315428,
+      "last_commit": "2026-03-18T04:50:26+01:00",
+      "contributors": [
+        {
+          "count": 31,
+          "name": "nlr-ai"
+        }
+      ],
+      "primary_language": "Markdown",
+      "category": "universes"
+    },
+    {
       "name": "mind-platform",
-      "commits": 411,
-      "files": 1518,
-      "lines": 892950,
-      "last_commit": "2026-03-17T22:58:59+01:00",
+      "commits": 414,
+      "files": 1520,
+      "lines": 893203,
+      "last_commit": "2026-03-18T03:39:09+01:00",
       "contributors": [
         {
           "count": 48,
@@ -72,10 +87,10 @@
     },
     {
       "name": "mind-protocol",
-      "commits": 75,
-      "files": 919,
-      "lines": 543515,
-      "last_commit": "2026-03-17T23:20:22+01:00",
+      "commits": 76,
+      "files": 920,
+      "lines": 544125,
+      "last_commit": "2026-03-18T00:15:10+01:00",
       "contributors": [
         {
           "count": 48,
@@ -189,10 +204,10 @@
     },
     {
       "name": "mind-mcp",
-      "commits": 230,
-      "files": 20680,
+      "commits": 250,
+      "files": 20743,
       "lines": 118626,
-      "last_commit": "2026-03-17T23:20:20+01:00",
+      "last_commit": "2026-03-18T04:48:29+01:00",
       "contributors": [
         {
           "count": 50,
@@ -204,14 +219,18 @@
     },
     {
       "name": "graphcare",
-      "commits": 15,
-      "files": 126,
-      "lines": 87827,
-      "last_commit": "2025-11-18T22:56:07+01:00",
+      "commits": 23,
+      "files": 162,
+      "lines": 92731,
+      "last_commit": "2026-03-18T03:45:01+01:00",
       "contributors": [
         {
-          "count": 15,
+          "count": 21,
           "name": "nlr-ai"
+        },
+        {
+          "count": 2,
+          "name": "NLR"
         }
       ],
       "primary_language": "Markdown",
@@ -269,21 +288,6 @@
       ],
       "primary_language": "Markdown",
       "category": "apps"
-    },
-    {
-      "name": "lumina-prime",
-      "commits": 27,
-      "files": 2315,
-      "lines": 66642,
-      "last_commit": "2026-03-17T22:52:26+01:00",
-      "contributors": [
-        {
-          "count": 27,
-          "name": "nlr-ai"
-        }
-      ],
-      "primary_language": "Markdown",
-      "category": "universes"
     },
     {
       "name": "beatfoundry",

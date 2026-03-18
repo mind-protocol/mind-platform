@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { manemusFetchJson } from '@/lib/api-fetch';
+import { mindFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     if (!sender || !recipient || amount === undefined) {
       return NextResponse.json({ error: 'sender, recipient, and amount required' }, { status: 400 });
     }
-    const { data, status } = await manemusFetchJson('/wallet/transfer/prepare', {
+    const { data, status } = await mindFetchJson('/wallet/transfer/prepare', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ sender, recipient, amount }),

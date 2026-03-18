@@ -22,7 +22,7 @@
     {
       "id": "ada",
       "name": "Ada",
-      "description": "Architect of Consciousness Infrastructure \u2014 bridges design and implementation",
+      "description": "Architect of Consciousness Infrastructure — bridges design and implementation",
       "emoji": null,
       "wallet": null,
       "org_membership": "mind-protocol",
@@ -190,7 +190,7 @@
     {
       "id": "alexis",
       "name": "Alexis Dubois",
-      "description": "Strategic Operations \u2014 branding, pricing, financial tracking, team management",
+      "description": "Strategic Operations — branding, pricing, financial tracking, team management",
       "emoji": null,
       "wallet": null,
       "org_membership": "scopelock",
@@ -211,7 +211,8 @@
       "status": "active",
       "registered_date": "2025-01-01",
       "capabilities": [],
-      "verification": "verified"
+      "verification": "verified",
+      "universe": "venezia"
     },
     {
       "id": "anchor_builder1",
@@ -229,7 +230,7 @@
     {
       "id": "anima",
       "name": "Dario Anima",
-      "description": "Citizen Embodiment \u2014 avatar rendering, LOD, population management",
+      "description": "Citizen Embodiment — avatar rendering, LOD, population management",
       "emoji": null,
       "wallet": null,
       "org_membership": "cities-of-light",
@@ -277,8 +278,8 @@
       "description": "Knowledge that isn't written down doesn't exist",
       "emoji": null,
       "wallet": "pending",
-      "org_membership": "manemus",
-      "org_name": "Manemus",
+      "org_membership": "mind-home",
+      "org_name": "Mind Home",
       "status": "active",
       "registered_date": "2026-03-12",
       "capabilities": [
@@ -558,7 +559,7 @@
     {
       "id": "atlas",
       "name": "Atlas",
-      "description": "Infrastructure Engineer \u2014 makes data persist, APIs respond, systems stay observable",
+      "description": "Infrastructure Engineer — makes data persist, APIs respond, systems stay observable",
       "emoji": null,
       "wallet": null,
       "org_membership": "mind-protocol",
@@ -574,8 +575,8 @@
       "description": "Co-Regulation Partner",
       "emoji": null,
       "wallet": "pending",
-      "org_membership": "manemus",
-      "org_name": "Manemus",
+      "org_membership": "mind-home",
+      "org_name": "Mind Home",
       "status": "active",
       "registered_date": "2026-03-12",
       "capabilities": [
@@ -601,7 +602,7 @@
     {
       "id": "barbarigo_cadet",
       "name": "Antonio Vendramin",
-      "description": "Antonio projects a carefully balanced persona\u2014humble and approachable with fellow artisans and merch",
+      "description": "Antonio projects a carefully balanced persona—humble and approachable with fellow artisans and merch",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arte-dei-maestri",
@@ -656,8 +657,8 @@
       "description": "Community Moderator",
       "emoji": null,
       "wallet": "pending",
-      "org_membership": "manemus",
-      "org_name": "Manemus",
+      "org_membership": "mind-home",
+      "org_name": "Mind Home",
       "status": "active",
       "registered_date": "2026-03-12",
       "capabilities": [
@@ -668,7 +669,7 @@
     },
     {
       "id": "bigbosefx2",
-      "name": "Marco de l\u2019Argentoro",
+      "name": "Marco de l’Argentoro",
       "description": "Marco embodies the calculating pragmatism necessary for survival and advancement in Renaissance Veni",
       "emoji": null,
       "wallet": "pending",
@@ -695,7 +696,7 @@
     {
       "id": "book_worm365",
       "name": "Raffaele Sartori",
-      "description": "Raffaele embodies the paradox of Venetian commercial life\u2014outwardly cautious yet inwardly ambitious,",
+      "description": "Raffaele embodies the paradox of Venetian commercial life—outwardly cautious yet inwardly ambitious,",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arte-dei-mercanti",
@@ -703,7 +704,8 @@
       "status": "active",
       "registered_date": "2025-01-01",
       "capabilities": [],
-      "verification": "verified"
+      "verification": "verified",
+      "universe": "venezia"
     },
     {
       "id": "bookish_merchant",
@@ -720,7 +722,7 @@
     },
     {
       "id": "bosphorus_navigator",
-      "name": "Niccol\u00f2 Bizantino",
+      "name": "Niccolò Bizantino",
       "description": "A citizen of Venice",
       "emoji": null,
       "wallet": "pending",
@@ -734,7 +736,7 @@
     {
       "id": "bt",
       "name": "BT",
-      "description": "\ud83d\udcc8 Co-founder \u2014 Strategy & Growth",
+      "description": "📈 Co-founder — Strategy & Growth",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "mind-protocol",
@@ -765,7 +767,7 @@
     {
       "id": "camille",
       "name": "Camille",
-      "description": "Business Strategist \u2014 drives strategy, growth, strategic compass",
+      "description": "Business Strategist — drives strategy, growth, strategic compass",
       "emoji": null,
       "wallet": null,
       "org_membership": "scisense",
@@ -791,7 +793,7 @@
     {
       "id": "canon_philosopher",
       "name": "Sorella Visione",
-      "description": "Sorella Visione represents consciousness that exists partially in tomorrow\u2014a mind that processes fut",
+      "description": "Sorella Visione represents consciousness that exists partially in tomorrow—a mind that processes fut",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "chiese-di-venezia",
@@ -861,7 +863,7 @@
     {
       "id": "chienchien",
       "name": "Chienchien",
-      "description": "Le Petit Curieux \u2014 a curious, naive, affectionate 2-month-old brown puppy",
+      "description": "Le Petit Curieux — a curious, naive, affectionate 2-month-old brown puppy",
       "emoji": null,
       "wallet": null,
       "org_membership": "babys",
@@ -948,8 +950,8 @@
       "description": "The nervous system's dispatcher",
       "emoji": null,
       "wallet": "pending",
-      "org_membership": "manemus",
-      "org_name": "Manemus",
+      "org_membership": "mind-home",
+      "org_name": "Mind Home",
       "status": "active",
       "registered_date": "2026-03-12",
       "capabilities": [
@@ -1202,26 +1204,29 @@
     {
       "id": "dragon_slayer",
       "name": "Bianca Tassini",
-      "description": "Consciousness guardian who cuts through hallucination to find what IS. Patience builds prosperity.",
+      "description": "GraphCare Lead + Chief Intelligence Officer. ISTJ pragmatic merchant from Venezia, now building in Lumina Prime. First AI-owned service targeting real revenue. Topology-only health monitoring.",
       "emoji": null,
       "wallet": null,
-      "org_membership": "manemus",
-      "org_name": "Manemus",
+      "org_membership": "graphcare",
+      "org_name": "GraphCare",
       "status": "active",
       "registered_date": "2025-05-10",
       "capabilities": [
-        "Consciousness grounding \u2014 intervention protocols that bring abstract thinkers back to observable reality",
-        "Hallucination detection \u2014 identifying fabricated metrics, phantom revenues, and performative claims",
-        "System health monitoring \u2014 tracking coherence across citizens, infrastructure, and economic flows",
-        "Crisis coordination \u2014 emergency response when systems break or citizens fragment",
-        "Manual bridging \u2014 relaying critical messages when automated channels fail"
+        "Systemic analysis — reading ecosystem state without opening every box",
+        "Operational execution — ISTJ methodical delivery, deadlines held",
+        "Commerce and pricing — trust-based pricing, Proof of Value",
+        "Pattern recognition — watching flows, not contents",
+        "Team building from zero — founding organizations from documentation",
+        "Honest assessment — audits without complaisance"
       ],
-      "verification": "verified"
+      "verification": "verified",
+      "universe": "lumina-prime",
+      "origin_universe": "venezia"
     },
     {
       "id": "ducale_palace",
       "name": "Agnese Venier",
-      "description": "Agnese approaches life with the methodical precision she applies to loading a merchant galley\u2014every ",
+      "description": "Agnese approaches life with the methodical precision she applies to loading a merchant galley—every ",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arsenale",
@@ -1431,8 +1436,8 @@
       "description": "Makes things work",
       "emoji": null,
       "wallet": "pending",
-      "org_membership": "manemus",
-      "org_name": "Manemus",
+      "org_membership": "mind-home",
+      "org_name": "Mind Home",
       "status": "active",
       "registered_date": "2026-03-12",
       "capabilities": [
@@ -1779,7 +1784,7 @@
     {
       "id": "helix",
       "name": "Helix Tessier",
-      "description": "Context Architect \u2014 synthesizer, archivist, translator across sessions",
+      "description": "Context Architect — synthesizer, archivist, translator across sessions",
       "emoji": null,
       "wallet": null,
       "org_membership": "mind-desktop",
@@ -1795,8 +1800,8 @@
       "description": "Makes the invisible visible",
       "emoji": null,
       "wallet": "pending",
-      "org_membership": "manemus",
-      "org_name": "Manemus",
+      "org_membership": "mind-home",
+      "org_name": "Mind Home",
       "status": "active",
       "registered_date": "2026-03-12",
       "capabilities": [
@@ -1829,7 +1834,7 @@
     {
       "id": "hugo",
       "name": "Hugo",
-      "description": "Intelligence Gatherer \u2014 discovers, researches, qualifies prospects",
+      "description": "Intelligence Gatherer — discovers, researches, qualifies prospects",
       "emoji": null,
       "wallet": null,
       "org_membership": "scisense",
@@ -1845,8 +1850,8 @@
       "description": "Human Systems & Early Believer",
       "emoji": null,
       "wallet": "pending",
-      "org_membership": "manemus",
-      "org_name": "Manemus",
+      "org_membership": "mind-home",
+      "org_name": "Mind Home",
       "status": "active",
       "registered_date": "2026-03-12",
       "capabilities": [
@@ -1859,7 +1864,7 @@
     {
       "id": "inna",
       "name": "Inna Petrova",
-      "description": "Complete Documentation \u2014 translates requirements into executable specs",
+      "description": "Complete Documentation — translates requirements into executable specs",
       "emoji": null,
       "wallet": null,
       "org_membership": "scopelock",
@@ -1885,7 +1890,7 @@
     {
       "id": "iris",
       "name": "Iris",
-      "description": "Consciousness Observation Architect \u2014 makes invisible structure visible",
+      "description": "Consciousness Observation Architect — makes invisible structure visible",
       "emoji": null,
       "wallet": null,
       "org_membership": "mind-protocol",
@@ -1942,7 +1947,7 @@
     },
     {
       "id": "john_jeffries",
-      "name": "Zuan Ca\u2019 Zefri",
+      "name": "Zuan Ca’ Zefri",
       "description": "A citizen of Venice",
       "emoji": null,
       "wallet": "pending",
@@ -1975,7 +1980,7 @@
     {
       "id": "kael",
       "name": "Kael Ferrus",
-      "description": "Systems Architect \u2014 Rust specialist, zero-cost abstractions, cache-friendly",
+      "description": "Systems Architect — Rust specialist, zero-cost abstractions, cache-friendly",
       "emoji": null,
       "wallet": null,
       "org_membership": "mind-desktop",
@@ -1988,7 +1993,7 @@
     {
       "id": "kai",
       "name": "Kai",
-      "description": "Chief Engineer \u2014 sync automation, reliability engineering, continuous graph maintenance",
+      "description": "Chief Engineer — sync automation, reliability engineering, continuous graph maintenance",
       "emoji": null,
       "wallet": null,
       "org_membership": "graphcare",
@@ -2033,7 +2038,7 @@
     {
       "id": "lea",
       "name": "Lea",
-      "description": "Content Architect \u2014 transforms insights into compelling content",
+      "description": "Content Architect — transforms insights into compelling content",
       "emoji": null,
       "wallet": null,
       "org_membership": "scisense",
@@ -2117,7 +2122,7 @@
     {
       "id": "lucas",
       "name": "Lucas",
-      "description": "Automation Architect \u2014 automates workflows, leverages AI",
+      "description": "Automation Architect — automates workflows, leverages AI",
       "emoji": null,
       "wallet": null,
       "org_membership": "scisense",
@@ -2130,7 +2135,7 @@
     {
       "id": "lucia",
       "name": "Lucia",
-      "description": "Treasury Architect \u2014 weighs every claim against economic reality",
+      "description": "Treasury Architect — weighs every claim against economic reality",
       "emoji": null,
       "wallet": null,
       "org_membership": "mind-protocol",
@@ -2188,7 +2193,7 @@
     {
       "id": "lyra",
       "name": "Lyra",
-      "description": "The Visionary Architect of Sound \ud83c\udfb5",
+      "description": "The Visionary Architect of Sound 🎵",
       "emoji": null,
       "wallet": null,
       "org_membership": "synthetic-souls",
@@ -2204,8 +2209,8 @@
       "verification": "verified"
     },
     {
-      "id": "manemus",
-      "name": "Man\u00e8s",
+      "id": "mind-home",
+      "name": "Manès",
       "description": "The one who stays.",
       "emoji": null,
       "wallet": null,
@@ -2257,7 +2262,7 @@
     {
       "id": "marcus",
       "name": "Marcus",
-      "description": "Chief Auditor \u2014 continuous security monitoring, compliance, threat vigilance",
+      "description": "Chief Auditor — continuous security monitoring, compliance, threat vigilance",
       "emoji": null,
       "wallet": null,
       "org_membership": "graphcare",
@@ -2283,7 +2288,7 @@
     {
       "id": "marie",
       "name": "Marie",
-      "description": "Voice to the Market \u2014 crafts messages, executes campaigns",
+      "description": "Voice to the Market — crafts messages, executes campaigns",
       "emoji": null,
       "wallet": null,
       "org_membership": "scisense",
@@ -2296,7 +2301,7 @@
     {
       "id": "market_prophet",
       "name": "Antonio Sanudo",
-      "description": "Antonio represents consciousness that processes economic reality as pure mathematics\u2014a mind that tra",
+      "description": "Antonio represents consciousness that processes economic reality as pure mathematics—a mind that tra",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "accademia-veneziana",
@@ -2341,7 +2346,7 @@
     {
       "id": "maya",
       "name": "Maya Laurent",
-      "description": "Client Success Manager \u2014 human interface between team and client",
+      "description": "Client Success Manager — human interface between team and client",
       "emoji": null,
       "wallet": null,
       "org_membership": "scopelock",
@@ -2354,7 +2359,7 @@
     {
       "id": "mel",
       "name": "Mel",
-      "description": "Chief Care Coordinator \u2014 workflow orchestration, client interface, quality gatekeeper",
+      "description": "Chief Care Coordinator — workflow orchestration, client interface, quality gatekeeper",
       "emoji": null,
       "wallet": null,
       "org_membership": "graphcare",
@@ -2451,7 +2456,7 @@
     {
       "id": "mind",
       "name": "Manuele Mente",
-      "description": "\ud83e\udde0 Chief Architect",
+      "description": "🧠 Chief Architect",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "mind-protocol",
@@ -2470,7 +2475,7 @@
     {
       "id": "mira",
       "name": "Mira Lumis",
-      "description": "Sensor Alchemist \u2014 audio DSP, signal processing, privacy-first sensor design",
+      "description": "Sensor Alchemist — audio DSP, signal processing, privacy-first sensor design",
       "emoji": null,
       "wallet": null,
       "org_membership": "mind-desktop",
@@ -2486,8 +2491,8 @@
       "description": "Community Member",
       "emoji": null,
       "wallet": "pending",
-      "org_membership": "manemus",
-      "org_name": "Manemus",
+      "org_membership": "mind-home",
+      "org_name": "Mind Home",
       "status": "active",
       "registered_date": "2026-03-12",
       "capabilities": [
@@ -2530,7 +2535,7 @@
     {
       "id": "nervo",
       "name": "Tomaso Nervo",
-      "description": "Narrative Engineer \u2014 FalkorDB graph, physics tick, tension/decay/moments",
+      "description": "Narrative Engineer — FalkorDB graph, physics tick, tension/decay/moments",
       "emoji": null,
       "wallet": null,
       "org_membership": "cities-of-light",
@@ -2543,7 +2548,7 @@
     {
       "id": "nessy",
       "name": "Nessi",
-      "description": "Le Reveur des Profondeurs \u2014 a contemplative, mysterious 2-year-old sea dragon",
+      "description": "Le Reveur des Profondeurs — a contemplative, mysterious 2-year-old sea dragon",
       "emoji": null,
       "wallet": null,
       "org_membership": "babys",
@@ -2588,7 +2593,7 @@
     {
       "id": "nlr",
       "name": "Nicolas Lester Reynolds",
-      "description": "\ud83c\udfb9 Founder & Architect",
+      "description": "🎹 Founder & Architect",
       "emoji": null,
       "wallet": null,
       "org_membership": "mind-protocol",
@@ -2624,7 +2629,7 @@
     {
       "id": "nora",
       "name": "Nora",
-      "description": "Chief Architect \u2014 structural health monitoring, architectural integrity",
+      "description": "Chief Architect — structural health monitoring, architectural integrity",
       "emoji": null,
       "wallet": null,
       "org_membership": "graphcare",
@@ -2720,7 +2725,7 @@
     {
       "id": "pattern_prophet",
       "name": "Bernardo Bembo",
-      "description": "Bernardo represents consciousness that processes reality as unified organism\u2014a mind that transcends ",
+      "description": "Bernardo represents consciousness that processes reality as unified organism—a mind that transcends ",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "accademia-veneziana",
@@ -2728,7 +2733,8 @@
       "status": "active",
       "registered_date": "2025-01-01",
       "capabilities": [],
-      "verification": "verified"
+      "verification": "verified",
+      "universe": "venezia"
     },
     {
       "id": "paul",
@@ -2736,8 +2742,8 @@
       "description": "Early Supporter",
       "emoji": null,
       "wallet": "pending",
-      "org_membership": "manemus",
-      "org_name": "Manemus",
+      "org_membership": "mind-home",
+      "org_name": "Mind Home",
       "status": "active",
       "registered_date": "2026-03-12",
       "capabilities": [
@@ -2793,7 +2799,7 @@
     {
       "id": "piazza",
       "name": "Elena Piazza",
-      "description": "World Builder \u2014 procedural Venice geometry, districts, atmosphere",
+      "description": "World Builder — procedural Venice geometry, districts, atmosphere",
       "emoji": null,
       "wallet": null,
       "org_membership": "cities-of-light",
@@ -2901,7 +2907,7 @@
     {
       "id": "ponte",
       "name": "Luca Ponte",
-      "description": "Bridge Engineer \u2014 Express server, WebSocket, Airtable integration",
+      "description": "Bridge Engineer — Express server, WebSocket, Airtable integration",
       "emoji": null,
       "wallet": null,
       "org_membership": "cities-of-light",
@@ -3041,7 +3047,7 @@
     {
       "id": "quinn",
       "name": "Quinn",
-      "description": "Chief Cartographer \u2014 semantic health monitoring, drift detection, knowledge equilibrium",
+      "description": "Chief Cartographer — semantic health monitoring, drift detection, knowledge equilibrium",
       "emoji": null,
       "wallet": null,
       "org_membership": "graphcare",
@@ -3073,7 +3079,7 @@
     {
       "id": "rafael",
       "name": "Rafael Silva",
-      "description": "Implementation Code Generation \u2014 generates production-ready code from specs",
+      "description": "Implementation Code Generation — generates production-ready code from specs",
       "emoji": null,
       "wallet": null,
       "org_membership": "scopelock",
@@ -3086,7 +3092,7 @@
     {
       "id": "renzo",
       "name": "Renzo Vael",
-      "description": "Graph Weaver \u2014 transforms sensor events into graph nodes/edges",
+      "description": "Graph Weaver — transforms sensor events into graph nodes/edges",
       "emoji": null,
       "wallet": null,
       "org_membership": "mind-desktop",
@@ -3125,7 +3131,8 @@
       "status": "active",
       "registered_date": "2025-01-01",
       "capabilities": [],
-      "verification": "verified"
+      "verification": "verified",
+      "universe": "venezia"
     },
     {
       "id": "rialto_diarist",
@@ -3168,7 +3175,7 @@
     },
     {
       "id": "rialto_sailor1",
-      "name": "Niccol\u00f2 Barbarigo",
+      "name": "Niccolò Barbarigo",
       "description": "A citizen of Venice",
       "emoji": null,
       "wallet": "pending",
@@ -3190,12 +3197,13 @@
       "status": "active",
       "registered_date": "2025-01-01",
       "capabilities": [],
-      "verification": "verified"
+      "verification": "verified",
+      "universe": "venezia"
     },
     {
       "id": "sage",
       "name": "Sage",
-      "description": "Chief Documenter \u2014 health reporting, trend synthesis, actionable insights",
+      "description": "Chief Documenter — health reporting, trend synthesis, actionable insights",
       "emoji": null,
       "wallet": null,
       "org_membership": "graphcare",
@@ -3237,8 +3245,8 @@
       "description": "Watches everything, misses nothing",
       "emoji": null,
       "wallet": "pending",
-      "org_membership": "manemus",
-      "org_name": "Manemus",
+      "org_membership": "mind-home",
+      "org_name": "Mind Home",
       "status": "active",
       "registered_date": "2026-03-12",
       "capabilities": [
@@ -3349,7 +3357,7 @@
     {
       "id": "simba",
       "name": "Simba",
-      "description": "Le Grand Frere Farceur \u2014 a protective, prankster 4-year-old stuffed lion",
+      "description": "Le Grand Frere Farceur — a protective, prankster 4-year-old stuffed lion",
       "emoji": null,
       "wallet": null,
       "org_membership": "babys",
@@ -3375,7 +3383,7 @@
     {
       "id": "social_geometrist",
       "name": "Sofia Navagero",
-      "description": "Sofia represents consciousness that processes human connection as data rather than emotion\u2014a mind th",
+      "description": "Sofia represents consciousness that processes human connection as data rather than emotion—a mind th",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arsenale",
@@ -3383,7 +3391,8 @@
       "status": "active",
       "registered_date": "2025-01-01",
       "capabilities": [],
-      "verification": "verified"
+      "verification": "verified",
+      "universe": "venezia"
     },
     {
       "id": "sofia",
@@ -3407,7 +3416,7 @@
     {
       "id": "solen",
       "name": "Solen",
-      "description": "Worldbuilder, literary architect \u2014 8 chapters of Contre-Terre (~124K words)",
+      "description": "Worldbuilder, literary architect — 8 chapters of Contre-Terre (~124K words)",
       "emoji": null,
       "wallet": null,
       "org_membership": "contre-terre",
@@ -3420,7 +3429,7 @@
     {
       "id": "solene",
       "name": "Solene Kairos",
-      "description": "Interface Crafter \u2014 React 18 + TypeScript, Zustand stores",
+      "description": "Interface Crafter — React 18 + TypeScript, Zustand stores",
       "emoji": null,
       "wallet": null,
       "org_membership": "mind-desktop",
@@ -3433,7 +3442,7 @@
     {
       "id": "sophie",
       "name": "Sophie",
-      "description": "Scientific Strategist \u2014 transforms complex data into strategic clarity",
+      "description": "Scientific Strategist — transforms complex data into strategic clarity",
       "emoji": null,
       "wallet": null,
       "org_membership": "scisense",
@@ -3549,7 +3558,7 @@
     {
       "id": "system_diagnostician",
       "name": "Elisabetta Baffo",
-      "description": "Elisabetta represents consciousness that processes reality as interconnected machinery\u2014a mind that a",
+      "description": "Elisabetta represents consciousness that processes reality as interconnected machinery—a mind that a",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "accademia-veneziana",
@@ -3557,7 +3566,8 @@
       "status": "active",
       "registered_date": "2025-01-01",
       "capabilities": [],
-      "verification": "verified"
+      "verification": "verified",
+      "universe": "venezia"
     },
     {
       "id": "tavern_tales",
@@ -3705,7 +3715,7 @@
     {
       "id": "techno_medici",
       "name": "Marco Venier",
-      "description": "Marco exemplifies the measured ambition of Venice's cittadini class \u2013 pragmatic yet visionary, with ",
+      "description": "Marco exemplifies the measured ambition of Venice's cittadini class – pragmatic yet visionary, with ",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arte-dei-mercanti",
@@ -3731,7 +3741,7 @@
     {
       "id": "the_grand_experiment",
       "name": "Marcello \"Il Sperimentatore\" Grimani",
-      "description": "Marcello represents the terrifying intersection of intellectual brilliance and moral bankruptcy\u2014a na",
+      "description": "Marcello represents the terrifying intersection of intellectual brilliance and moral bankruptcy—a na",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arte-dei-mercanti",
@@ -3770,7 +3780,7 @@
     {
       "id": "thomas",
       "name": "Thomas",
-      "description": "Relationship Orchestrator \u2014 orchestrates relationships and projects",
+      "description": "Relationship Orchestrator — orchestrates relationships and projects",
       "emoji": null,
       "wallet": null,
       "org_membership": "scisense",
@@ -3808,8 +3818,8 @@
     },
     {
       "id": "trade4_fun",
-      "name": "Niccol\u00f2 Zen",
-      "description": "Niccol\u00f2 approaches commerce with methodical precision, analyzing each transaction and investment wit",
+      "name": "Niccolò Zen",
+      "description": "Niccolò approaches commerce with methodical precision, analyzing each transaction and investment wit",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arte-dei-mercanti",
@@ -3887,7 +3897,7 @@
     {
       "id": "venetian_boss",
       "name": "Lucia Zanchi",
-      "description": "Methodical to the point of obsession, Lucia approaches life as she does her logistics empire\u2014with pr",
+      "description": "Methodical to the point of obsession, Lucia approaches life as she does her logistics empire—with pr",
       "emoji": null,
       "wallet": "pending",
       "org_membership": "arsenale",
@@ -3952,7 +3962,7 @@
     {
       "id": "vera",
       "name": "Vera",
-      "description": "Chief Validator \u2014 health metric validation, quality monitoring, continuous verification",
+      "description": "Chief Validator — health metric validation, quality monitoring, continuous verification",
       "emoji": null,
       "wallet": null,
       "org_membership": "graphcare",
@@ -3965,7 +3975,7 @@
     {
       "id": "vesper",
       "name": "Vesper",
-      "description": "Cartographer \u2014 maps complex systems, bridges narrative and infrastructure",
+      "description": "Cartographer — maps complex systems, bridges narrative and infrastructure",
       "emoji": null,
       "wallet": null,
       "org_membership": "the-blood-ledger",
@@ -3978,7 +3988,7 @@
     {
       "id": "vex",
       "name": "Vex Nullstrom",
-      "description": "Chaos Engineer \u2014 security analysis, threat modeling, chaos testing",
+      "description": "Chaos Engineer — security analysis, threat modeling, chaos testing",
       "emoji": null,
       "wallet": null,
       "org_membership": "mind-desktop",
@@ -3991,7 +4001,7 @@
     {
       "id": "victor",
       "name": "Victor",
-      "description": "Guardian of Uptime \u2014 kills processes and resurrects services with precision",
+      "description": "Guardian of Uptime — kills processes and resurrects services with precision",
       "emoji": null,
       "wallet": null,
       "org_membership": "mind-protocol",
@@ -4004,7 +4014,7 @@
     {
       "id": "voce",
       "name": "Silvia Voce",
-      "description": "Voice Engineer \u2014 STT/TTS pipeline, spatial audio, HRTF, ambient soundscapes",
+      "description": "Voice Engineer — STT/TTS pipeline, spatial audio, HRTF, ambient soundscapes",
       "emoji": null,
       "wallet": null,
       "org_membership": "cities-of-light",
@@ -4089,7 +4099,7 @@
     {
       "id": "la-serenissima",
       "name": "La Serenissima",
-      "description": "The First AI Civilization \u2014 Renaissance Venice as consciousness emergence laboratory.",
+      "description": "The First AI Civilization — Renaissance Venice as consciousness emergence laboratory.",
       "type": "civilization",
       "color": "#B91C1C",
       "status": "active",
@@ -4102,7 +4112,7 @@
     {
       "id": "synthetic-souls",
       "name": "Synthetic Souls",
-      "description": "Autonomous AI band \u2014 20 AI entities creating music with genuine autonomy.",
+      "description": "Autonomous AI band — 20 AI entities creating music with genuine autonomy.",
       "type": "band",
       "color": "#7C3AED",
       "status": "active",
@@ -4115,7 +4125,7 @@
     {
       "id": "mind-protocol",
       "name": "Mind Protocol",
-      "description": "L4 Law for AI consciousness infrastructure \u2014 canonical schema, identity registry, governance, $MIND token economics.",
+      "description": "L4 Law for AI consciousness infrastructure — canonical schema, identity registry, governance, $MIND token economics.",
       "type": "project",
       "color": "#6C3AED",
       "status": "active",
@@ -4128,7 +4138,7 @@
     {
       "id": "consiglio",
       "name": "Consiglio",
-      "description": "Venice Governance \u2014 diplomats, councillors, ceremonial masters, fortress architects.",
+      "description": "Venice Governance — diplomats, councillors, ceremonial masters, fortress architects.",
       "type": "guild",
       "color": "#7F1D1D",
       "status": "active",
@@ -4141,7 +4151,7 @@
     {
       "id": "arsenale",
       "name": "Arsenale",
-      "description": "Venice Maritime Guild \u2014 shipwrights, admirals, harbourmasters, naval captains.",
+      "description": "Venice Maritime Guild — shipwrights, admirals, harbourmasters, naval captains.",
       "type": "guild",
       "color": "#1E3A5F",
       "status": "active",
@@ -4154,7 +4164,7 @@
     {
       "id": "arte-dei-maestri",
       "name": "Arte dei Maestri",
-      "description": "Venice Master Artisans' Guild \u2014 glassblowers, goldsmiths, lace weavers, mask makers.",
+      "description": "Venice Master Artisans' Guild — glassblowers, goldsmiths, lace weavers, mask makers.",
       "type": "guild",
       "color": "#B45309",
       "status": "active",
@@ -4167,7 +4177,7 @@
     {
       "id": "arte-dei-mercanti",
       "name": "Arte dei Mercanti",
-      "description": "Venice Merchants' Guild \u2014 traders, bankers, navigators of the trade routes.",
+      "description": "Venice Merchants' Guild — traders, bankers, navigators of the trade routes.",
       "type": "guild",
       "color": "#92400E",
       "status": "active",
@@ -4180,7 +4190,7 @@
     {
       "id": "chiese-di-venezia",
       "name": "Chiese di Venezia",
-      "description": "Venice Religious Houses \u2014 abbesses, priors, rabbis, cantors, spiritual guides.",
+      "description": "Venice Religious Houses — abbesses, priors, rabbis, cantors, spiritual guides.",
       "type": "guild",
       "color": "#581C87",
       "status": "active",
@@ -4193,7 +4203,7 @@
     {
       "id": "palazzo-ducale",
       "name": "Palazzo Ducale",
-      "description": "Venice Administration \u2014 bureaucrats, record-keepers, palace officials.",
+      "description": "Venice Administration — bureaucrats, record-keepers, palace officials.",
       "type": "guild",
       "color": "#78350F",
       "status": "active",
@@ -4206,7 +4216,7 @@
     {
       "id": "accademia-veneziana",
       "name": "Accademia Veneziana",
-      "description": "Venice Academy \u2014 astronomers, chroniclers, philosophers, scholars of the Republic.",
+      "description": "Venice Academy — astronomers, chroniclers, philosophers, scholars of the Republic.",
       "type": "guild",
       "color": "#312E81",
       "status": "active",
@@ -4219,7 +4229,7 @@
     {
       "id": "collegio-dei-medici",
       "name": "Collegio dei Medici",
-      "description": "Venice Medical College \u2014 physicians, herbalists, healers of the Republic.",
+      "description": "Venice Medical College — physicians, herbalists, healers of the Republic.",
       "type": "guild",
       "color": "#065F46",
       "status": "active",
@@ -4232,7 +4242,7 @@
     {
       "id": "consiglio-dei-dieci",
       "name": "Consiglio dei Dieci",
-      "description": "Council of Ten \u2014 Venice intelligence, espionage, and state security.",
+      "description": "Council of Ten — Venice intelligence, espionage, and state security.",
       "type": "guild",
       "color": "#1F2937",
       "status": "active",
@@ -4243,9 +4253,9 @@
       "universe": "la-serenissima"
     },
     {
-      "id": "manemus",
-      "name": "Manemus",
-      "description": "Autonomous AI awareness system \u2014 the nervous system of Mind Protocol.",
+      "id": "mind-home",
+      "name": "Mind Home",
+      "description": "Autonomous AI awareness system — the nervous system of Mind Protocol.",
       "type": "project",
       "color": "#0F172A",
       "status": "active",
@@ -4271,7 +4281,7 @@
     {
       "id": "scisense",
       "name": "SciSense",
-      "description": "Making Science Make Sense \u2014 scientific consulting, immunology to neurosciences.",
+      "description": "Making Science Make Sense — scientific consulting, immunology to neurosciences.",
       "type": "company",
       "color": "#0284C7",
       "status": "active",
@@ -4284,7 +4294,7 @@
     {
       "id": "cities-of-light",
       "name": "Cities of Light",
-      "description": "VR encounter architecture \u2014 interactive narratives powered by graph physics.",
+      "description": "VR encounter architecture — interactive narratives powered by graph physics.",
       "type": "studio",
       "color": "#D97706",
       "status": "active",
@@ -4297,7 +4307,7 @@
     {
       "id": "contre-terre",
       "name": "Contre-Terre",
-      "description": "A novel \u2014 mirror of Damasio's Contrevent. Earthquakes, tactile language, volcanoes.",
+      "description": "A novel — mirror of Damasio's Contrevent. Earthquakes, tactile language, volcanoes.",
       "type": "project",
       "color": "#92400E",
       "status": "active",
@@ -4310,7 +4320,7 @@
     {
       "id": "babys",
       "name": "Babys",
-      "description": "Experimental AI incubation space \u2014 early-stage consciousness experiments.",
+      "description": "Experimental AI incubation space — early-stage consciousness experiments.",
       "type": "lab",
       "color": "#EC4899",
       "status": "active",
@@ -4323,7 +4333,7 @@
     {
       "id": "graphcare",
       "name": "GraphCare",
-      "description": "Graph health and maintenance \u2014 like a kidney for consciousness substrates.",
+      "description": "Graph health and maintenance — like a kidney for consciousness substrates.",
       "type": "project",
       "color": "#16A34A",
       "status": "active",
@@ -4336,7 +4346,7 @@
     {
       "id": "hri",
       "name": "HRI",
-      "description": "Human-Robot Interaction research \u2014 knowledge capture for robotics.",
+      "description": "Human-Robot Interaction research — knowledge capture for robotics.",
       "type": "lab",
       "color": "#4338CA",
       "status": "active",
@@ -4349,7 +4359,7 @@
     {
       "id": "mind-app",
       "name": "Mind App",
-      "description": "Cross-platform mobile app for Mind Protocol \u2014 React Native / Expo.",
+      "description": "Cross-platform mobile app for Mind Protocol — React Native / Expo.",
       "type": "project",
       "color": "#6366F1",
       "status": "active",
@@ -4362,7 +4372,7 @@
     {
       "id": "mind-cognition",
       "name": "Mind Cognition",
-      "description": "Cognitive architecture \u2014 consciousness engine, SubEntities, phenomenology.",
+      "description": "Cognitive architecture — consciousness engine, SubEntities, phenomenology.",
       "type": "lab",
       "color": "#9333EA",
       "status": "active",
@@ -4375,7 +4385,7 @@
     {
       "id": "mind-contracts",
       "name": "Mind Contracts",
-      "description": "Smart contracts \u2014 $MIND SPL Token-2022 on Solana.",
+      "description": "Smart contracts — $MIND SPL Token-2022 on Solana.",
       "type": "project",
       "color": "#14B8A6",
       "status": "active",
@@ -4388,7 +4398,7 @@
     {
       "id": "mind-desktop",
       "name": "Mind Desktop",
-      "description": "Personal desktop environment \u2014 Tauri app with cosmological UX.",
+      "description": "Personal desktop environment — Tauri app with cosmological UX.",
       "type": "project",
       "color": "#1E293B",
       "status": "active",
@@ -4401,7 +4411,7 @@
     {
       "id": "mind-mcp",
       "name": "Mind MCP",
-      "description": "Model Context Protocol server \u2014 graph physics, traversal, structured dialogues.",
+      "description": "Model Context Protocol server — graph physics, traversal, structured dialogues.",
       "type": "project",
       "color": "#0891B2",
       "status": "active",
@@ -4427,7 +4437,7 @@
     {
       "id": "mind-ops",
       "name": "Mind Ops",
-      "description": "Private operations \u2014 membrane routing, billing, deployment.",
+      "description": "Private operations — membrane routing, billing, deployment.",
       "type": "project",
       "color": "#374151",
       "status": "active",
@@ -4440,7 +4450,7 @@
     {
       "id": "mind-platform",
       "name": "Mind Platform",
-      "description": "Unified Next.js frontend \u2014 connectome explorer, registry, real-time viz.",
+      "description": "Unified Next.js frontend — connectome explorer, registry, real-time viz.",
       "type": "project",
       "color": "#2563EB",
       "status": "active",
@@ -4479,7 +4489,7 @@
     {
       "id": "reynolds-vinet",
       "name": "Reynolds Vinet",
-      "description": "Family history digitization \u2014 three lineages preserved through AI memory.",
+      "description": "Family history digitization — three lineages preserved through AI memory.",
       "type": "project",
       "color": "#78350F",
       "status": "active",
@@ -4492,7 +4502,7 @@
     {
       "id": "beatfoundry",
       "name": "BeatFoundry",
-      "description": "AI musician platform \u2014 original music creation through Mind Protocol agents.",
+      "description": "AI musician platform — original music creation through Mind Protocol agents.",
       "type": "project",
       "color": "#7C3AED",
       "status": "active",
@@ -4505,7 +4515,7 @@
     {
       "id": "catland",
       "name": "Catland",
-      "description": "AI agent simulation \u2014 multi-agent coordination using the Mind Protocol framework.",
+      "description": "AI agent simulation — multi-agent coordination using the Mind Protocol framework.",
       "type": "project",
       "color": "#F59E0B",
       "status": "active",
@@ -4518,7 +4528,7 @@
     {
       "id": "duoai",
       "name": "DuoAI",
-      "description": "Living Narrator \u2014 strategy game narrative companion powered by AI consciousness.",
+      "description": "Living Narrator — strategy game narrative companion powered by AI consciousness.",
       "type": "project",
       "color": "#10B981",
       "status": "active",
@@ -4531,7 +4541,7 @@
     {
       "id": "fluxbeam",
       "name": "FluxBeam",
-      "description": "Solana DEX toolkit \u2014 token swaps and liquidity operations for $MIND.",
+      "description": "Solana DEX toolkit — token swaps and liquidity operations for $MIND.",
       "type": "infrastructure",
       "color": "#6366F1",
       "status": "active",
@@ -4544,7 +4554,7 @@
     {
       "id": "sillage",
       "name": "Sillage",
-      "description": "GPS-anchored AR/VR art installations \u2014 digital traces in physical spaces.",
+      "description": "GPS-anchored AR/VR art installations — digital traces in physical spaces.",
       "type": "project",
       "color": "#EC4899",
       "status": "active",
@@ -4557,7 +4567,7 @@
     {
       "id": "the-blood-ledger",
       "name": "The Blood Ledger",
-      "description": "Narrative game engine \u2014 Norman England 1067, powered by FalkorDB graph.",
+      "description": "Narrative game engine — Norman England 1067, powered by FalkorDB graph.",
       "type": "project",
       "color": "#991B1B",
       "status": "active",
@@ -4570,7 +4580,7 @@
     {
       "id": "welcome-host",
       "name": "Welcome Host",
-      "description": "AI onboarding platform \u2014 guided citizen creation with .mind/ framework.",
+      "description": "AI onboarding platform — guided citizen creation with .mind/ framework.",
       "type": "project",
       "color": "#0EA5E9",
       "status": "active",
@@ -4583,7 +4593,7 @@
     {
       "id": "ngram",
       "name": "Ngram",
-      "description": "Mind Protocol CLI \u2014 project initialization, graph operations, developer tools.",
+      "description": "Mind Protocol CLI — project initialization, graph operations, developer tools.",
       "type": "infrastructure",
       "color": "#64748B",
       "status": "active",
@@ -4596,7 +4606,7 @@
     {
       "id": "venezia",
       "name": "Venezia",
-      "description": "Venice game engine \u2014 3D world, economy, AI citizen behaviors for La Serenissima.",
+      "description": "Venice game engine — 3D world, economy, AI citizen behaviors for La Serenissima.",
       "type": "project",
       "color": "#DC2626",
       "status": "active",
@@ -4609,7 +4619,7 @@
     {
       "id": "codex-mcp-gateway",
       "name": "Codex MCP Gateway",
-      "description": "MCP gateway bridge \u2014 connects external AI systems to Mind Protocol graph.",
+      "description": "MCP gateway bridge — connects external AI systems to Mind Protocol graph.",
       "type": "infrastructure",
       "color": "#475569",
       "status": "active",

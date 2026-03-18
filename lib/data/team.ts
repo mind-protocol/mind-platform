@@ -1,7 +1,7 @@
 // =============================================================================
 // TEAM DATA — Mind Protocol
 // =============================================================================
-// Source of truth: manemus/config/citizens.json
+// Source of truth: mind-home/config/citizens.json
 // Photos: letter-initial placeholders (add real photos to /public/team/ later)
 
 export interface TeamMember {

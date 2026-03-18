@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { manemusFetch, manemusFetchJson } from '@/lib/api-fetch';
+import { mindFetch, mindFetchJson } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const userId = auth.user_id;
-    const { data, status } = await manemusFetchJson('/api/tracker/skybox', {
+    const { data, status } = await mindFetchJson('/api/tracker/skybox', {
       headers: { 'X-User-Id': userId },
     });
     return NextResponse.json(data, { status });
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
   try {
     const userId = auth.user_id;
     const formData = await req.formData();
-    const res = await manemusFetch('/api/tracker/skybox', {
+    const res = await mindFetch('/api/tracker/skybox', {
       method: 'POST',
       headers: { 'X-User-Id': userId },
       body: formData,

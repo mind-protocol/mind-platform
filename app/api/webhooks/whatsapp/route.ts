@@ -71,7 +71,7 @@ export async function GET(req: Request) {
 
 /**
  * POST /api/webhooks/whatsapp
- * Receives WhatsApp messages, relays to MANEMUS/Claude, sends reply.
+ * Receives WhatsApp messages, relays to Mind Home/Claude, sends reply.
  */
 export async function POST(req: Request) {
   // Read raw body for HMAC verification before parsing JSON

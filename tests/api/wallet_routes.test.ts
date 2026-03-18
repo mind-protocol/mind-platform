@@ -23,9 +23,9 @@ class MockNextResponse {
 // Mocks
 // ---------------------------------------------------------------------------
 
-const mockManemusFetchJson = vi.fn();
+const mockMindFetchJson = vi.fn();
 vi.mock('@/lib/api-fetch', () => ({
-  manemusFetchJson: (...args: unknown[]) => mockManemusFetchJson(...args),
+  mindFetchJson: (...args: unknown[]) => mockMindFetchJson(...args),
 }));
 
 const mockRequireSession = vi.fn();
@@ -96,7 +96,7 @@ function mockUnauthenticated() {
 describe('GET /api/wallet/balance', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
   });
 
   it('returns 400 when address is missing', async () => {
@@ -109,7 +109,7 @@ describe('GET /api/wallet/balance', () => {
   });
 
   it('returns balance from backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { address: 'abc123', balance: 1000, token: 'MIND' },
       status: 200,
     });
@@ -122,11 +122,11 @@ describe('GET /api/wallet/balance', () => {
     expect(data.balance).toBe(1000);
     expect(data.address).toBe('abc123');
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith('/wallet/balance/abc123');
+    expect(mockMindFetchJson).toHaveBeenCalledWith('/wallet/balance/abc123');
   });
 
   it('encodes address in URL', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { balance: 0 },
       status: 200,
     });
@@ -136,13 +136,13 @@ describe('GET /api/wallet/balance', () => {
     const response = await GET(req);
     expect(response.status).toBe(200);
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       expect.stringContaining('abc'),
     );
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
 
     const { GET } = await import('@/app/api/wallet/balance/route');
     const req = new Request('http://localhost/api/wallet/balance?address=abc123');
@@ -160,11 +160,11 @@ describe('GET /api/wallet/balance', () => {
 describe('GET /api/wallet/price', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
   });
 
   it('returns price data from backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { price_usd: 0.042, market_cap: 42000 },
       status: 200,
     });
@@ -175,11 +175,11 @@ describe('GET /api/wallet/price', () => {
     const data = await response.json();
     expect(data.price_usd).toBe(0.042);
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith('/wallet/price');
+    expect(mockMindFetchJson).toHaveBeenCalledWith('/wallet/price');
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('timeout'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('timeout'));
 
     const { GET } = await import('@/app/api/wallet/price/route');
     const response = await GET();
@@ -196,7 +196,7 @@ describe('GET /api/wallet/price', () => {
 describe('POST /api/wallet/transfer/prepare', () => {
   beforeEach(() => {
     vi.resetModules();
-    mockManemusFetchJson.mockReset();
+    mockMindFetchJson.mockReset();
     mockRequireSession.mockReset();
     mockAuthenticated();
   });
@@ -251,7 +251,7 @@ describe('POST /api/wallet/transfer/prepare', () => {
   });
 
   it('prepares transfer via backend', async () => {
-    mockManemusFetchJson.mockResolvedValueOnce({
+    mockMindFetchJson.mockResolvedValueOnce({
       data: { tx_id: 'tx123', serialized: 'base64...' },
       status: 200,
     });
@@ -267,14 +267,14 @@ describe('POST /api/wallet/transfer/prepare', () => {
     const data = await response.json();
     expect(data.tx_id).toBe('tx123');
 
-    expect(mockManemusFetchJson).toHaveBeenCalledWith(
+    expect(mockMindFetchJson).toHaveBeenCalledWith(
       '/wallet/transfer/prepare',
       expect.objectContaining({ method: 'POST' }),
     );
   });
 
   it('returns 502 when backend is unreachable', async () => {
-    mockManemusFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
+    mockMindFetchJson.mockRejectedValueOnce(new Error('Connection refused'));
 
     const { POST } = await import('@/app/api/wallet/transfer/prepare/route');
     const req = makeNextRequest('http://localhost/api/wallet/transfer/prepare', {

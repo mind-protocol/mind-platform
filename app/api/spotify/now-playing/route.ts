@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { manemusFetch } from '@/lib/api-fetch';
+import { mindFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,7 +16,7 @@ export async function GET() {
       return NextResponse.json(cachedData.data);
     }
 
-    const res = await manemusFetch(
+    const res = await mindFetch(
       `/spotify/now-playing-enriched/${DEFAULT_USER_ID}`,
       { timeoutMs: 8000 }
     );

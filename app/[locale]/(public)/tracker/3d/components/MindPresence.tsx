@@ -6,8 +6,8 @@ import { MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 import type { VoicePhase } from '@/lib/voice/types';
 
-interface ManemusPresenceProps {
-  /** AnalyserNode from Manemus TTS playback — drives audio reactivity */
+interface MindPresenceProps {
+  /** AnalyserNode from Mind TTS playback — drives audio reactivity */
   analyser: AnalyserNode | null;
   /** Current voice call phase */
   phase: VoicePhase;
@@ -16,13 +16,13 @@ interface ManemusPresenceProps {
 }
 
 /**
- * ManemusPresence — Audio-reactive amber orb representing Manemus's voice
+ * MindPresence — Audio-reactive amber orb representing Mind's voice
  * in the Awareness Mirror. Positioned to the right of ConsciousnessCore.
  *
  * Layers: inner core + distortion shell + halo + point light
  * Same multi-layer pattern as ConsciousnessCore.
  */
-export default function ManemusPresence({ analyser, phase, active }: ManemusPresenceProps) {
+export default function MindPresence({ analyser, phase, active }: MindPresenceProps) {
   const groupRef = useRef<THREE.Group>(null);
   const coreRef = useRef<THREE.Mesh>(null);
   const shellRef = useRef<THREE.Mesh>(null);

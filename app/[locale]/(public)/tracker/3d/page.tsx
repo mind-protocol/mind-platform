@@ -503,7 +503,7 @@ export default function Tracker3DPage() {
   // Orbital cockpit region state (3D panel system inside Canvas)
   const [orbitalRegion, setOrbitalRegion] = useState<RegionId | null>(null);
 
-  // Voice call — Manemus live conversation
+  // Voice call — Mind live conversation
   const voiceCall = useVoiceCall();
 
   // Capture wizard (Scan Room)
@@ -683,7 +683,7 @@ export default function Tracker3DPage() {
           <AwarenessMirror
             activeRegion={orbitalRegion}
             setActiveRegion={setOrbitalRegion}
-            voiceAnalyser={voiceCall.manemusAnalyser}
+            voiceAnalyser={voiceCall.mindAnalyser}
             voicePhase={voiceCall.phase}
             voiceActive={voiceCall.isActive}
           />

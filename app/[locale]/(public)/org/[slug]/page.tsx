@@ -116,7 +116,7 @@ const MIND_OVERVIEW = {
   preSalePrice: 0.20,
   initialLiquidity: { sol: 16.21, mind: 7047 },
   deployer: 'CCsJLZR8b19iDgS9hXUYs9q2c928ihzZdfSgZLPYffWg',
-  manemusWallet: '8ZmFaf69469Qd7bWNCw4PP9KCRXNPg2yRbzdbruDdSXD',
+  protocolWallet: '8ZmFaf69469Qd7bWNCw4PP9KCRXNPg2yRbzdbruDdSXD',
   origin: 'Airdrop to $COMPUTE holders (snapshot of on-chain balances)',
 };
 
@@ -372,7 +372,7 @@ function OverviewTab() {
           { label: 'Transfer Fee', value: MIND_OVERVIEW.transferFee, highlight: true },
           { label: 'Pre-sale Price', value: `$${MIND_OVERVIEW.preSalePrice}`, mono: true },
           { label: 'Deployer', value: truncAddr(MIND_OVERVIEW.deployer), mono: true },
-          { label: 'Protocol Wallet', value: truncAddr(MIND_OVERVIEW.manemusWallet), mono: true },
+          { label: 'Protocol Wallet', value: truncAddr(MIND_OVERVIEW.protocolWallet), mono: true },
         ].map((item) => (
           <div key={item.label} className="p-3 rounded-lg border border-zinc-800 bg-zinc-900/30">
             <p className="text-[10px] font-mono text-zinc-600 uppercase">{item.label}</p>

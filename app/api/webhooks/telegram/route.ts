@@ -58,7 +58,7 @@ export async function GET(req: Request) {
 
 /**
  * POST /api/webhooks/telegram
- * Receives Telegram updates, relays to MANEMUS/Claude, sends reply.
+ * Receives Telegram updates, relays to Mind Home/Claude, sends reply.
  */
 export async function POST(req: Request) {
   // Verify X-Telegram-Bot-Api-Secret-Token header

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { manemusFetch } from '@/lib/api-fetch';
+import { mindFetch } from '@/lib/api-fetch';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,7 +9,7 @@ export async function GET(
 ) {
   const { id } = await params;
   try {
-    const res = await manemusFetch(`/sign/${id}/pdf`);
+    const res = await mindFetch(`/sign/${id}/pdf`);
 
     if (!res.ok) {
       const data = await res.json().catch(() => ({ error: 'PDF generation failed' }));
